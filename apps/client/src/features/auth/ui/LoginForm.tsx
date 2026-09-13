@@ -1,9 +1,11 @@
+import * as React from "react";
 import { Link } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
 import { Box, Heading, Text, Button, Input } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 import { AUTH_ROUTES, AUTH_UI_TEXT } from "../constants";
 import { useLoginForm } from "../model/useLoginForm";
+import { renderGoogleSignInButton } from "../lib/googleIdentity";
 
 export function GoogleIcon() {
   return (
@@ -43,8 +45,19 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
     isLoading,
     setValue,
     loginWithGoogle,
+    handleGoogleCredential,
     isGoogleLoading,
   } = useLoginForm();
+
+  const googleBtnRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (googleBtnRef.current) {
+      void renderGoogleSignInButton(googleBtnRef.current, (credential) => {
+        void handleGoogleCredential(credential);
+      });
+    }
+  }, [handleGoogleCredential]);
 
   const fillAccount = (email: string) => {
     setValue("email", email, { shouldValidate: true });
@@ -74,8 +87,8 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         </Text>
       </Box>
 
-      {/* Prominent Google Login Button */}
-      <Box className="pt-0.5">
+      {/* Prominent Google Login Button with official Google Popup overlay */}
+      <Box className="relative w-full pt-0.5 rounded-xl overflow-hidden">
         <button
           type="button"
           disabled={isLoading || isGoogleLoading}
@@ -87,8 +100,24 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
           )}
         >
           <GoogleIcon />
-          <span>{AUTH_UI_TEXT.SOCIAL_GOOGLE}</span>
+          <span>
+            {isGoogleLoading
+              ? "Đang xác thực Google..."
+              : AUTH_UI_TEXT.SOCIAL_GOOGLE}
+          </span>
         </button>
+
+        {/* Overlay nút Google chính thức để kích hoạt popup chuẩn khi click */}
+        <div
+          ref={googleBtnRef}
+          className={cn(
+            "absolute inset-0 opacity-0 cursor-pointer overflow-hidden z-10",
+            "[&_iframe]:!w-full [&_iframe]:!h-full [&_iframe]:!scale-110",
+            (isLoading || isGoogleLoading) && "pointer-events-none",
+          )}
+          tabIndex={-1}
+          aria-hidden="true"
+        />
       </Box>
 
       {/* Divider */}
