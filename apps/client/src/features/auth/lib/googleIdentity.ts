@@ -44,17 +44,12 @@ function loadGoogleScript(): Promise<void> {
 
 /**
  * Hiện popup đăng nhập Google (One Tap), trả ID Token qua callback khi thành công.
- * Nếu chưa cấu hình Google Client ID thật trong .env, tự động cấp demo token để kiểm thử mượt mà.
  */
 export async function promptGoogleSignIn(
   onCredential: (idToken: string) => void,
 ): Promise<void> {
-  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes("sampleclientid")) {
-    console.info(
-      "[Google Sign-In] Đang dùng Google Client ID mẫu. Kích hoạt tài khoản Google Demo cho môi trường thử nghiệm."
-    );
-    onCredential(`demo-google-token-${Date.now()}`);
-    return;
+  if (!GOOGLE_CLIENT_ID) {
+    throw new Error("VITE_GOOGLE_CLIENT_ID chưa được cấu hình.");
   }
 
   await loadGoogleScript();
@@ -68,12 +63,17 @@ export async function promptGoogleSignIn(
     callback: (response) => onCredential(response.credential),
   });
 
-  window.google.accounts.id.prompt((notification) => {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      console.warn(
-        `[Google Sign-In] Google prompt không thể hiển thị (${notification.getNotDisplayedReason?.() || "skipped"}). Kích hoạt tài khoản Google Demo thay thế.`
-      );
-      onCredential(`demo-google-token-${Date.now()}`);
-    }
+  return new Promise((resolve, reject) => {
+    window.google!.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        reject(
+          new Error(
+            "Trình duyệt đã chặn cửa sổ đăng nhập Google. Vui lòng kiểm tra cài đặt cookie/trình duyệt hoặc thử lại.",
+          ),
+        );
+        return;
+      }
+      resolve();
+    });
   });
 }
