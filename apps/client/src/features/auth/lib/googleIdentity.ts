@@ -62,5 +62,18 @@ export async function promptGoogleSignIn(
     client_id: GOOGLE_CLIENT_ID,
     callback: (response) => onCredential(response.credential),
   });
-  window.google.accounts.id.prompt();
+
+  return new Promise((resolve, reject) => {
+    window.google!.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        reject(
+          new Error(
+            "Trình duyệt đã chặn cửa sổ đăng nhập Google. Vui lòng kiểm tra cài đặt cookie/trình duyệt hoặc thử lại.",
+          ),
+        );
+        return;
+      }
+      resolve();
+    });
+  });
 }
