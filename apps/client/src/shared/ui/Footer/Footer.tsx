@@ -63,13 +63,11 @@ export function Footer({
           {/* Cột 1: Green Farm & Tiêu chuẩn */}
           <Box className="space-y-4">
             <Box className="flex items-center gap-2.5">
-              <Box className="flex h-9 w-9 items-center justify-center rounded-xl bg-white border border-border/50 p-1 shadow-xs shrink-0 overflow-hidden">
-                <img
-                  src="/images/logo-1.png"
-                  alt="Green Farm Logo"
-                  className="h-full w-full object-contain"
-                />
-              </Box>
+              <img
+                src="/images/logo-1.png"
+                alt="Green Farm Logo"
+                className="h-9 w-9 shrink-0 object-contain"
+              />
               <Typography.H4 className="text-lg font-bold tracking-tight text-primary">
                 {brandName}
               </Typography.H4>
