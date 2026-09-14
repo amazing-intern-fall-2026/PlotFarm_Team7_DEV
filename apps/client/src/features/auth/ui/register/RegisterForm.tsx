@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 import { Box, Heading, Text, Button, Input } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
-import { useRegisterForm } from "../model/useRegisterForm";
-import { renderGoogleSignInButton } from "../lib/googleIdentity";
-import { GoogleIcon } from "./LoginForm";
+import { AUTH_ROUTES } from "../../constants";
+import { useRegisterForm } from "../../model/useRegisterForm";
+import { renderGoogleSignInButton } from "../../lib/googleIdentity";
+import { GoogleIcon } from "../login/LoginForm";
 
 export interface RegisterFormProps {
   onSwitchToLogin?: () => void;
@@ -13,6 +14,9 @@ export interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) {
+  const navigate = useNavigate();
+  const handleSwitchToLogin = onSwitchToLogin ?? (() => navigate(AUTH_ROUTES.LOGIN));
+
   const {
     registerFullName,
     registerEmail,
@@ -62,18 +66,16 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
             Vui lòng kiểm tra email của bạn để hoàn tất kích hoạt tài khoản và bắt đầu canh tác cùng Green Farm.
           </Text>
 
-          {onSwitchToLogin && (
-            <Button
-              type="button"
-              variant="primary"
-              size="lg"
-              onClick={onSwitchToLogin}
-              className="w-full rounded-xl mt-4 font-bold shadow-md shadow-primary/20"
-              rightIcon={<ArrowRight className="h-4 w-4" />}
-            >
-              Đăng nhập ngay
-            </Button>
-          )}
+          <Button
+            type="button"
+            variant="primary"
+            size="lg"
+            onClick={handleSwitchToLogin}
+            className="w-full rounded-xl mt-4 font-bold shadow-md shadow-primary/20"
+            rightIcon={<ArrowRight className="h-4 w-4" />}
+          >
+            Đăng nhập ngay
+          </Button>
         </Box>
       </Box>
     );
@@ -207,18 +209,16 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
       </Button>
 
       {/* ── Link Đăng nhập ── */}
-      {onSwitchToLogin && (
-        <Box className="text-center text-sm sm:text-base text-muted-foreground pt-1">
-          <span>Bạn đã có tài khoản? </span>
-          <button
-            type="button"
-            onClick={onSwitchToLogin}
-            className="font-semibold text-primary hover:text-primary/80 transition-colors"
-          >
-            Đăng nhập
-          </button>
-        </Box>
-      )}
+      <Box className="text-center text-sm sm:text-base text-muted-foreground pt-1">
+        <span>Bạn đã có tài khoản? </span>
+        <button
+          type="button"
+          onClick={handleSwitchToLogin}
+          className="font-semibold text-primary hover:text-primary/80 transition-colors"
+        >
+          Đăng nhập
+        </button>
+      </Box>
 
       {/* ── Divider ── */}
       <Box className="flex items-center my-3 sm:my-3.5">

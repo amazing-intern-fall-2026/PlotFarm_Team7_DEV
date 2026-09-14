@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
 import { Box, Heading, Text, Button, Input } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
-import { AUTH_ROUTES, AUTH_UI_TEXT } from "../constants";
-import { useLoginForm } from "../model/useLoginForm";
-import { renderGoogleSignInButton } from "../lib/googleIdentity";
+import { AUTH_ROUTES, AUTH_UI_TEXT } from "../../constants";
+import { useLoginForm } from "../../model/useLoginForm";
+import { renderGoogleSignInButton } from "../../lib/googleIdentity";
 
 export function GoogleIcon() {
   return (

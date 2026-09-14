@@ -1,18 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { Box, Text, Logo } from "@/shared/ui";
-import { AUTH_UI_TEXT } from "../constants";
+import { AUTH_ROUTES, AUTH_UI_TEXT } from "../../constants";
 import { LoginForm } from "./LoginForm";
-import { RegisterForm } from "./RegisterForm";
 
 export interface LoginMobileViewProps {
-  tab: "login" | "register";
-  onTabChange: (tab: "login" | "register") => void;
+  onSwitchToRegister?: () => void;
 }
 
-export function LoginMobileView({ tab, onTabChange }: LoginMobileViewProps) {
+export function LoginMobileView({ onSwitchToRegister }: LoginMobileViewProps) {
+  const navigate = useNavigate();
+  const handleSwitchToRegister = onSwitchToRegister ?? (() => navigate(AUTH_ROUTES.REGISTER));
+
   return (
-    <Box className="min-h-screen w-full flex flex-col justify-between p-4 sm:p-6 bg-background">
+    <Box className="min-h-screen w-full flex flex-col justify-between p-4 sm:p-6 bg-background overflow-y-auto">
       {/* Mobile Top Navigation Bar */}
       <Box className="flex items-center justify-between w-full pb-4 border-b border-border/40">
         <Link to="/" className="flex items-center gap-2 select-none">
@@ -30,11 +31,7 @@ export function LoginMobileView({ tab, onTabChange }: LoginMobileViewProps) {
 
       {/* Mobile Form Center Container */}
       <Box className="w-full max-w-sm mx-auto my-auto py-6">
-        {tab === "login" ? (
-          <LoginForm onSwitchToRegister={() => onTabChange("register")} />
-        ) : (
-          <RegisterForm onSwitchToLogin={() => onTabChange("login")} />
-        )}
+        <LoginForm onSwitchToRegister={handleSwitchToRegister} />
       </Box>
 
       {/* Mobile Footer Terms */}
