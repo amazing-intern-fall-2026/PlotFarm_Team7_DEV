@@ -15,10 +15,10 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 
 export const RegisterRequestSchema = z.object({
-  email: z.string().email(),
-  phone: z.string(),
-  password: z.string(),
-  fullName: z.string(),
+  email: z.string().email("Email không đúng định dạng"),
+  phone: z.string().optional(),
+  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+  fullName: z.string().min(2, "Tên người dùng phải có ít nhất 2 ký tự"),
   preferredLocale: z.string().optional(),
 });
 export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
