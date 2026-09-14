@@ -1,47 +1,61 @@
 import type { UserRole, LoginResponseData } from "@repo/shared";
-import { SESSION_KEYS } from "../constants";
-import {
-  safeGetAuth,
-  safeSetAuth,
-  getAccessToken,
-  safeClearAuth,
-} from "@/auth/authStorage";
 
 export type AuthUser = LoginResponseData["user"];
 
-/**
- * Lưu phiên đăng nhập đồng bộ vào cả LocalStorage (SSOT) và SessionStorage.
- */
-export function setAuthSession(data: LoginResponseData): void {
-  // 1. Lưu vào LocalStorage làm SSOT cho axiosClient và toàn app
-  safeSetAuth({
-    user: data.user,
-    accessToken: data.accessToken,
-    refreshToken: data.refreshToken,
-  });
+export const COOKIE_KEYS = {
+  ACCESS_TOKEN: "greenfarm_at",
+  REFRESH_TOKEN: "greenfarm_rt",
+  USER: "greenfarm_user",
+} as const;
 
-  // 2. Giữ đồng bộ sessionStorage cho các components/legacy code
-  try {
-    sessionStorage.setItem(SESSION_KEYS.ACCESS_TOKEN, data.accessToken);
-    if (data.refreshToken) {
-      sessionStorage.setItem(SESSION_KEYS.REFRESH_TOKEN, data.refreshToken);
-    }
-    sessionStorage.setItem(SESSION_KEYS.USER, JSON.stringify(data.user));
-  } catch {
-    // Không làm crash ứng dụng nếu sessionStorage bị hạn chế
+/**
+ * Cookie Utilities thuần túy (Không phụ thuộc LocalStorage / SessionStorage)
+ */
+export function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(
+    new RegExp("(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, "\\$1") + "=([^;]*)"),
+  );
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+export function setCookie(name: string, value: string, days = 7): void {
+  if (typeof document === "undefined") return;
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  const secure = typeof window !== "undefined" && window.location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax${secure}`;
+}
+
+export function removeCookie(name: string): void {
+  if (typeof document === "undefined") return;
+  document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`;
+  if (typeof window !== "undefined" && window.location.hostname) {
+    document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}; SameSite=Lax`;
   }
 }
 
 /**
- * Lấy thông tin user (ưu tiên từ authStorage SSOT, fallback về sessionStorage).
+ * Lưu phiên đăng nhập CHỈ DÙNG COOKIE (Cookie-based Auth SSOT).
+ */
+export function setAuthSession(data: LoginResponseData): void {
+  // 1. Lưu access token vào Cookie
+  setCookie(COOKIE_KEYS.ACCESS_TOKEN, data.accessToken, 7);
+
+  // 2. Lưu refresh token vào Cookie nếu có
+  if (data.refreshToken) {
+    setCookie(COOKIE_KEYS.REFRESH_TOKEN, data.refreshToken, 30);
+  }
+
+  // 3. Lưu thông tin user profile vào Cookie
+  setCookie(COOKIE_KEYS.USER, JSON.stringify(data.user), 7);
+}
+
+/**
+ * Lấy thông tin user từ Cookie.
  */
 export function getStoredUser(): AuthUser | null {
-  const auth = safeGetAuth();
-  if (auth?.user) {
-    return auth.user;
-  }
   try {
-    const raw = sessionStorage.getItem(SESSION_KEYS.USER);
+    const raw = getCookie(COOKIE_KEYS.USER);
     if (!raw) return null;
     return JSON.parse(raw) as AuthUser;
   } catch {
@@ -50,20 +64,21 @@ export function getStoredUser(): AuthUser | null {
 }
 
 /**
- * Lấy access token hiện tại (ưu tiên từ authStorage SSOT, fallback về sessionStorage).
+ * Lấy access token hiện tại từ Cookie.
  */
 export function getStoredAccessToken(): string | null {
-  const token = getAccessToken();
-  if (token) return token;
-  try {
-    return sessionStorage.getItem(SESSION_KEYS.ACCESS_TOKEN);
-  } catch {
-    return null;
-  }
+  return getCookie(COOKIE_KEYS.ACCESS_TOKEN);
 }
 
 /**
- * Kiểm tra xem người dùng đã đăng nhập hay chưa (có token và user object).
+ * Lấy refresh token hiện tại từ Cookie.
+ */
+export function getStoredRefreshToken(): string | null {
+  return getCookie(COOKIE_KEYS.REFRESH_TOKEN);
+}
+
+/**
+ * Kiểm tra xem người dùng đã đăng nhập hay chưa (có Token và User trong Cookie).
  */
 export function isAuthenticated(): boolean {
   return Boolean(getStoredAccessToken() && getStoredUser());
@@ -79,29 +94,22 @@ export function hasRole(allowedRoles: UserRole[]): boolean {
 }
 
 /**
- * Xóa sạch phiên đăng nhập (Tokens, User, và dọn dẹp cookie Google One Tap nếu có).
+ * Xóa sạch toàn bộ Cookie xác thực khi đăng xuất.
  */
 export function clearAuthSession(): void {
-  // Xóa SSOT LocalStorage
-  safeClearAuth();
-
-  // Xóa SessionStorage
-  try {
-    sessionStorage.removeItem(SESSION_KEYS.ACCESS_TOKEN);
-    sessionStorage.removeItem(SESSION_KEYS.REFRESH_TOKEN);
-    sessionStorage.removeItem(SESSION_KEYS.USER);
-  } catch {
-    // ignore
-  }
+  // Xóa các Cookie của ứng dụng
+  removeCookie(COOKIE_KEYS.ACCESS_TOKEN);
+  removeCookie(COOKIE_KEYS.REFRESH_TOKEN);
+  removeCookie(COOKIE_KEYS.USER);
 
   // Xóa cookie g_state do Google Identity Services tự sinh trên domain
-  if (typeof document !== "undefined") {
-    document.cookie = "g_state=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = `g_state=; path=/; domain=${window.location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-  }
+  removeCookie("g_state");
 
-  // Thu hồi trạng thái auto-select của Google
-  if (typeof window !== "undefined" && window.google?.accounts?.id?.disableAutoSelect) {
-    window.google.accounts.id.disableAutoSelect();
+  // Phát event đồng bộ qua các tabs
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("auth:logout"));
+    if (window.google?.accounts?.id?.disableAutoSelect) {
+      window.google.accounts.id.disableAutoSelect();
+    }
   }
 }

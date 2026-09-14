@@ -8,8 +8,8 @@ import {
 } from "react-router-dom";
 import { RootLayout } from "@/widgets/RootLayout";
 import type { AppRole, TopbarBreadcrumbItem } from "@/shared/ui";
-import { LoginPage, ProtectedRoute, clearAuthSession } from "@/features/auth";
-import { AUTH_ROUTES, SESSION_KEYS } from "@/features/auth/constants";
+import { LoginPage, ProtectedRoute, clearAuthSession, getStoredUser } from "@/features/auth";
+import { AUTH_ROUTES } from "@/features/auth/constants";
 import {
   HomePage,
   PlotsPage,
@@ -148,17 +148,12 @@ export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
   const pathname = location.pathname;
 
   const user = React.useMemo(() => {
-    try {
-      const rawUser = sessionStorage.getItem(SESSION_KEYS.USER);
-      if (!rawUser) return undefined;
-      const parsed = JSON.parse(rawUser);
-      return {
-        name: parsed.fullName || parsed.name || "Người dùng",
-        avatarSrc: parsed.avatarUrl || undefined,
-      };
-    } catch {
-      return undefined;
-    }
+    const u = getStoredUser();
+    if (!u) return undefined;
+    return {
+      name: u.fullName || u.userCode || "Người dùng",
+      avatarSrc: u.avatarUrl || undefined,
+    };
   }, [pathname]);
 
   const handleLogout = React.useCallback(() => {

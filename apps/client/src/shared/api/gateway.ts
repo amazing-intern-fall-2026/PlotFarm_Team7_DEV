@@ -10,7 +10,6 @@ import {
   GATEWAY_HEADER_AUTHORIZATION,
   GATEWAY_ERROR_MESSAGES,
 } from "./gateway.constants";
-import { getAccessToken } from "@/auth/authStorage";
 import { encryptPayload } from "./jwe";
 
 export interface GatewayEnvelope<T = unknown> {
@@ -20,22 +19,27 @@ export interface GatewayEnvelope<T = unknown> {
 }
 
 /**
+ * Đọc access token trực tiếp từ Cookie (greenfarm_at)
+ */
+function getStoredToken(): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(/(?:^|; )greenfarm_at=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+/**
  * Dispatch một action tới single gateway endpoint `POST /api/gateway`.
  * - Native fetch, không cần axios.
  * - Response tuân theo ApiResponseEnvelope<T> từ @repo/shared.
  * - Lỗi normalize thành `AppError` (instanceof-safe).
- * - Auto-gắn X-Correlation-ID và Authorization Bearer nếu có AT.
+ * - Tự động đính kèm Cookie token vào Authorization Bearer nếu có.
  */
 export async function dispatchAction<TReq = unknown, TRes = unknown>(
   action: string,
   payload?: TReq,
 ): Promise<TRes> {
   const correlationId = crypto.randomUUID();
-  const token =
-    getAccessToken() ||
-    (typeof sessionStorage !== "undefined"
-      ? sessionStorage.getItem("access_token")
-      : null);
+  const token = getStoredToken();
 
   const envelope: GatewayEnvelope<TReq> = {
     action,
