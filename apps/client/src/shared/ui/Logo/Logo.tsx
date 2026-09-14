@@ -29,7 +29,7 @@ export function Logo({
       >
         {/* Official Green Farm Brand Logo */}
         <img
-          src="/images/logo.png"
+          src="/images/logo-1.png"
           alt="Green Farm Logo"
           className="h-full w-full object-contain"
         />

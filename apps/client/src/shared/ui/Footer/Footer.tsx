@@ -65,7 +65,7 @@ export function Footer({
             <Box className="flex items-center gap-2.5">
               <Box className="flex h-9 w-9 items-center justify-center rounded-xl bg-white border border-border/50 p-1 shadow-xs shrink-0 overflow-hidden">
                 <img
-                  src="/images/logo.png"
+                  src="/images/logo-1.png"
                   alt="Green Farm Logo"
                   className="h-full w-full object-contain"
                 />
