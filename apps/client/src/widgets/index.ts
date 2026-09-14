@@ -13,4 +13,5 @@ export * from "./HomeHero";
 export * from "./SeasonalCrops";
 export * from "./HowItWorks";
 export * from "./PlotsHero";
+export * from "./PlotsFilter";
 
