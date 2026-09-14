@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@repo/database";
 import {
   ERROR_CODES,
+  ERROR_MESSAGES,
   LoginResponseDataSchema,
   RegisterResponseDataSchema,
   ResendOtpResponseDataSchema,
@@ -39,7 +40,7 @@ export class AuthService {
     if (existingUser) {
       if (existingUser.isVerified) {
         throw new AppError(
-          "Email này đã được đăng ký",
+          ERROR_MESSAGES.AUTH.EMAIL_ALREADY_EXISTS,
           409,
           ERROR_CODES.CONFLICT
         );
@@ -119,7 +120,7 @@ export class AuthService {
 
     if (!codeRecord) {
       throw new AppError(
-        "Mã OTP không chính xác hoặc đã được sử dụng",
+        ERROR_MESSAGES.AUTH.INVALID_OTP,
         400,
         ERROR_CODES.INVALID_OTP
       );
@@ -127,7 +128,7 @@ export class AuthService {
 
     if (codeRecord.expiresAt < new Date()) {
       throw new AppError(
-        "Mã OTP đã hết hạn",
+        ERROR_MESSAGES.AUTH.OTP_EXPIRED,
         400,
         ERROR_CODES.OTP_EXPIRED
       );
@@ -135,7 +136,7 @@ export class AuthService {
 
     if (codeRecord.attempts >= 5) {
       throw new AppError(
-        "Bạn đã nhập sai mã quá 5 lần. Vui lòng lấy mã OTP mới",
+        ERROR_MESSAGES.AUTH.OTP_MAX_ATTEMPTS,
         400,
         ERROR_CODES.OTP_MAX_ATTEMPTS
       );
@@ -148,7 +149,7 @@ export class AuthService {
         data: { attempts: { increment: 1 } },
       });
       throw new AppError(
-        "Mã OTP không chính xác",
+        ERROR_MESSAGES.AUTH.INVALID_OTP,
         400,
         ERROR_CODES.INVALID_OTP
       );
@@ -202,7 +203,7 @@ export class AuthService {
 
     if (!user) {
       throw new AppError(
-        "Không tìm thấy tài khoản với email này",
+        ERROR_MESSAGES.AUTH.USER_NOT_FOUND,
         404,
         ERROR_CODES.USER_NOT_FOUND
       );
@@ -210,7 +211,7 @@ export class AuthService {
 
     if (user.isVerified) {
       throw new AppError(
-        "Tài khoản này đã được xác thực",
+        ERROR_MESSAGES.AUTH.ACCOUNT_ALREADY_VERIFIED,
         400,
         ERROR_CODES.BAD_REQUEST
       );
@@ -277,7 +278,7 @@ export class AuthService {
 
     if (!user || !isPasswordValid) {
       throw new AppError(
-        "Email hoặc mật khẩu không chính xác",
+        ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS,
         401,
         ERROR_CODES.UNAUTHORIZED
       );
@@ -285,7 +286,7 @@ export class AuthService {
 
     if (user.deletedAt !== null) {
       throw new AppError(
-        "Tài khoản đã bị khóa",
+        ERROR_MESSAGES.AUTH.ACCOUNT_DISABLED,
         403,
         ERROR_CODES.ACCOUNT_DISABLED
       );
@@ -293,7 +294,7 @@ export class AuthService {
 
     if (!user.isVerified) {
       throw new AppError(
-        "Tài khoản chưa được xác thực email",
+        ERROR_MESSAGES.AUTH.EMAIL_NOT_VERIFIED,
         403,
         ERROR_CODES.ERR_EMAIL_NOT_VERIFIED
       );
