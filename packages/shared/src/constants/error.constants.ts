@@ -23,6 +23,10 @@ export const ERROR_CODES = {
   OTP_COOLDOWN: "ERR_OTP_COOLDOWN",
   CONFLICT: "ERR_CONFLICT",
   INTERNAL_SERVER: "ERR_INTERNAL_SERVER",
+  ORDER_CODE_NOT_FOUND: "ERR_ORDER_CODE_NOT_FOUND",
+  INSUFFICIENT_AMOUNT: "ERR_INSUFFICIENT_AMOUNT",
+  TRANSACTION_ALREADY_PROCESSED: "ERR_TRANSACTION_ALREADY_PROCESSED",
+  WEBHOOK_UNAUTHORIZED: "ERR_WEBHOOK_UNAUTHORIZED",
 } as const;
 
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
@@ -32,4 +36,6 @@ export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
  * Dùng cho FE error message dictionaries — TypeScript sẽ cảnh báo
  * nếu dùng key không tồn tại trong ErrorCode.
  */
-export type ErrorMessageMap = Partial<Record<ErrorCode | "ERR_UNKNOWN", string>>;
+export type ErrorMessageMap = Partial<
+  Record<ErrorCode | "ERR_UNKNOWN", string>
+>;
