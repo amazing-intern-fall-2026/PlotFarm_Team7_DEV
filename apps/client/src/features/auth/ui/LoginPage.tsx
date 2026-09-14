@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { Box, Skeleton } from "@/shared/ui";
 import { useDevice } from "@/shared/lib/device";
 import { ROLE_HOME_ROUTES } from "../constants";
-import { getStoredUser, isAuthenticated } from "../model/authSession";
+import { getStoredUser, isAuthenticated } from "../model/authCookie";
 
 // Code-splitting / Dynamic import: Mobile không tải bundle Desktop Hero, Desktop không tải Mobile Sheet
 const LoginDesktopView = React.lazy(() =>

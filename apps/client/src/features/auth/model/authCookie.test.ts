@@ -8,10 +8,10 @@ import {
   hasRole,
   clearAuthSession,
   COOKIE_KEYS,
-} from "./authSession";
+} from "./authCookie";
 import type { LoginResponseData } from "@repo/shared";
 
-describe("Cookie-Based authSession Unit Tests", () => {
+describe("Cookie-Based authCookie Unit Tests", () => {
   let cookieStore: Record<string, string> = {};
 
   beforeEach(() => {

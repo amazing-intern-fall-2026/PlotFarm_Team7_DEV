@@ -7,7 +7,7 @@ import { AppError } from "@/shared/lib/errors/AppError";
 import { useDebouncedCallback } from "@/shared/lib/hooks/useDebouncedCallback";
 import { authApi } from "../api/authApi";
 import { promptGoogleSignIn } from "../lib/googleIdentity";
-import { setAuthSession } from "./authSession";
+import { setAuthSession } from "./authCookie";
 import {
   ROLE_HOME_ROUTES,
   AUTH_DEBOUNCE_MS,
