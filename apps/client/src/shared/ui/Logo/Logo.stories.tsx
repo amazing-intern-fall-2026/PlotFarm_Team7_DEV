@@ -10,7 +10,7 @@ const meta: Meta<typeof Logo> = {
       description: {
         component: `
 ### 📌 Giới thiệu Component
-**Logo** là biểu tượng nhận diện thương hiệu chính thức của hệ thống **Green Farm** với hình tượng mầm cây vươn lên từ mặt đất trên nền xanh bo góc (\`#23a54f\`).
+**Logo** là biểu tượng nhận diện thương hiệu chính thức của hệ thống **Green Farm** với hình ảnh mái nhà nông trại và chồi lá xanh mát vươn lên đặc trưng.
 
 #### Mục đích sử dụng:
 - Thanh điều hướng chính (Header / Navbar).

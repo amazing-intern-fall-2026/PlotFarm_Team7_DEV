@@ -22,7 +22,7 @@ function HeroBanner() {
     <Box className="relative hidden lg:flex flex-col justify-between h-full p-8 xl:p-10 2xl:p-12 overflow-hidden select-none">
       {/* Background image loaded from public/images/background.jpg */}
       <img
-        src="/images/login-hero-farm.png"
+        src="/images/background.jpg"
         alt="Green Farm Agriculture Sanctuary"
         className="absolute inset-0 h-full w-full object-cover object-center"
       />
