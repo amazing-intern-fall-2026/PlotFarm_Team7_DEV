@@ -1,8 +1,3 @@
-export const DEFAULT_LEASE_DAYS = 60;
-export const PLOT_LOCK_DURATION_SECONDS = 600;
-export const ACCESS_TOKEN_TTL_MINUTES = 15;
-export const REFRESH_TOKEN_TTL_DAYS = 7;
-
 export const ERROR_CODES = {
   VALIDATION: "ERR_VALIDATION",
   INVALID_JSON: "ERR_INVALID_JSON",
@@ -18,7 +13,9 @@ export const ERROR_CODES = {
   ACCOUNT_DISABLED: "ERR_ACCOUNT_DISABLED",
   USER_NOT_FOUND: "ERR_USER_NOT_FOUND",
   FORBIDDEN: "FORBIDDEN",
+  ERR_FORBIDDEN: "ERR_FORBIDDEN",
   UNAUTHORIZED: "ERR_UNAUTHORIZED",
+  EMAIL_NOT_VERIFIED: "ERR_EMAIL_NOT_VERIFIED",
   ERR_EMAIL_NOT_VERIFIED: "ERR_EMAIL_NOT_VERIFIED",
   INVALID_OTP: "ERR_INVALID_OTP",
   OTP_EXPIRED: "ERR_OTP_EXPIRED",
@@ -36,5 +33,3 @@ export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
  * nếu dùng key không tồn tại trong ErrorCode.
  */
 export type ErrorMessageMap = Partial<Record<ErrorCode | "ERR_UNKNOWN", string>>;
-
-
