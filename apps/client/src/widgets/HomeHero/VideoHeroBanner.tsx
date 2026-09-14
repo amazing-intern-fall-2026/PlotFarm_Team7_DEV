@@ -6,7 +6,6 @@ import {
   CheckCircle2,
   Sparkles,
   Layers,
-  ChevronRight,
   X,
 } from "lucide-react";
 import { Box, Typography, Text, Button } from "@/shared/ui";
@@ -255,35 +254,22 @@ export function VideoHeroBanner({
             </Box>
           </Box>
 
-          {/* Cột phải: Khối Thông Số Trực Tiếp (Tự động hiện khi đổi video, biến mất sau 5s) */}
+          {/* Cột phải: Khối Thông Số Trực Tiếp (Tự động hiện khi đổi video, biến mất hoàn toàn sau 5s) */}
           <Box className="lg:col-span-5 xl:col-span-4 flex justify-end">
-            {/* Khi ẩn: Nút mở lại nhỏ gọn unobtrusive */}
-            {!showStatsCard ? (
-              <button
-                type="button"
-                onClick={() => setShowStatsCard(true)}
-                className="hidden lg:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-black/40 hover:bg-black/60 text-white/80 hover:text-white text-xs font-medium backdrop-blur-md transition-all shadow-lg animate-fade-in"
-              >
-                <Layers className="h-3.5 w-3.5 text-emerald-400" />
-                <span>Thông số phân cảnh (LIVE)</span>
-                <ChevronRight className="h-3.5 w-3.5 opacity-60" />
-              </button>
-            ) : (
-              /* Khối thông số chi tiết khi đang hiển thị (trong vòng 5s) */
-              <Box
-                onMouseEnter={() => {
-                  if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-                }}
-                onMouseLeave={() => {
-                  hideTimerRef.current = setTimeout(() => setShowStatsCard(false), 3000);
-                }}
-                className={cn(
-                  "w-full max-w-xs p-4 rounded-2xl border border-white/20 bg-black/60 backdrop-blur-xl space-y-3 shadow-2xl text-left transition-all duration-500",
-                  showStatsCard
-                    ? "opacity-100 translate-x-0 scale-100"
-                    : "opacity-0 translate-x-4 scale-95 pointer-events-none",
-                )}
-              >
+            <Box
+              onMouseEnter={() => {
+                if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+              }}
+              onMouseLeave={() => {
+                hideTimerRef.current = setTimeout(() => setShowStatsCard(false), 2000);
+              }}
+              className={cn(
+                "w-full max-w-xs p-4 rounded-2xl border border-white/20 bg-black/60 backdrop-blur-xl space-y-3 shadow-2xl text-left transition-all duration-500",
+                showStatsCard
+                  ? "opacity-100 translate-x-0 scale-100 pointer-events-auto"
+                  : "opacity-0 translate-x-4 scale-95 pointer-events-none",
+              )}
+            >
                 {/* Header card + nút đóng sớm nếu muốn */}
                 <Box className="flex items-center justify-between pb-2 border-b border-white/10">
                   <Box className="flex items-center gap-1.5">
@@ -361,8 +347,7 @@ export function VideoHeroBanner({
                   </Box>
                 </Box>
               </Box>
-            )}
-          </Box>
+            </Box>
 
         </Box>
       </Box>
