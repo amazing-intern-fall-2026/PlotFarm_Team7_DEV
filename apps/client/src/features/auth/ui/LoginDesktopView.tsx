@@ -22,9 +22,9 @@ function HeroBanner() {
     <Box className="relative hidden lg:flex flex-col justify-between h-full p-8 xl:p-10 2xl:p-12 overflow-hidden select-none">
       {/* Background image loaded from public/images/background.jpg */}
       <img
-        src="/images/background.jpg"
-        alt="PlotFarm Agriculture Sanctuary"
-        className="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000 ease-out"
+        src="/images/login-hero-farm.png"
+        alt="Green Farm Agriculture Sanctuary"
+        className="absolute inset-0 h-full w-full object-cover object-center"
       />
 
       {/* Cinematic dark & bio-green gradient overlays */}
@@ -39,7 +39,7 @@ function HeroBanner() {
           <Logo size="md" />
           <Box>
             <span className="text-xl font-extrabold tracking-tight text-white group-hover:text-emerald-300 transition-colors">
-              PlotFarm
+              Green Farm
             </span>
             <Text
               variant="muted"
@@ -131,7 +131,7 @@ function HeroBanner() {
           </Link>
         </Box>
         <Text className="text-[11px] text-white/50">
-          © 2026 PlotFarm Ecosystem.
+          © 2026 Green Farm Ecosystem.
         </Text>
       </Box>
     </Box>

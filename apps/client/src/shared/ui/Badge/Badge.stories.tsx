@@ -11,7 +11,7 @@ const meta: Meta<typeof Badge> = {
       description: {
         component: `
 ### 📌 Giới thiệu Component
-**Badge** là thẻ nhãn thông tin nhỏ (pill/tag), dùng để hiển thị trạng thái, danh mục hoặc phân loại ngắn gọn trong hệ thống PlotFarm.
+**Badge** là thẻ nhãn thông tin nhỏ (pill/tag), dùng để hiển thị trạng thái, danh mục hoặc phân loại ngắn gọn trong hệ thống Green Farm.
 
 #### Mục đích sử dụng:
 - Thể hiện trạng thái của thửa đất (\`Đang canh tác\`, \`Trống\`, \`Đã hoàn thành\`).

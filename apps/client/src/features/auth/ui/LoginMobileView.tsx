@@ -16,7 +16,7 @@ export function LoginMobileView({ tab, onTabChange }: LoginMobileViewProps) {
       <Box className="flex items-center justify-between w-full pb-4 border-b border-border/40">
         <Link to="/" className="flex items-center gap-2 select-none">
           <Logo size="sm" />
-          <span className="text-base font-bold text-foreground tracking-tight">PlotFarm</span>
+          <span className="text-base font-bold text-foreground tracking-tight">Green Farm</span>
         </Link>
         <Link
           to="/"

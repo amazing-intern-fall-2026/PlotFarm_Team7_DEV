@@ -27,7 +27,7 @@ export function Logo({
           sizeMap.icon
         )}
       >
-        {/* Seedling Sprout in Ground Icon matching PlotFarm Brand */}
+        {/* Seedling Sprout in Ground Icon matching Green Farm Brand */}
         <svg
           viewBox="0 0 24 24"
           width={sizeMap.svgSize}
@@ -46,7 +46,7 @@ export function Logo({
       </div>
       {showText && (
         <span className={cn("font-bold tracking-tight text-foreground", sizeMap.text)}>
-          Plot<span className="text-[#23a54f]">Farm</span>
+          Green <span className="text-[#23a54f]">Farm</span>
         </span>
       )}
     </div>

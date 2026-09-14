@@ -206,21 +206,21 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         <Box className="flex flex-wrap items-center justify-center gap-2">
           <button
             type="button"
-            onClick={() => fillAccount("customer@plotfarm.vn")}
+            onClick={() => fillAccount("customer@greenfarm.vn")}
             className="h-7 sm:h-8 text-xs sm:text-sm font-medium px-3 rounded-lg border border-primary/20 bg-background hover:bg-primary/10 text-foreground transition-colors"
           >
             Khách hàng
           </button>
           <button
             type="button"
-            onClick={() => fillAccount("staff@plotfarm.vn")}
+            onClick={() => fillAccount("staff@greenfarm.vn")}
             className="h-7 sm:h-8 text-xs sm:text-sm font-medium px-3 rounded-lg border border-primary/20 bg-background hover:bg-primary/10 text-foreground transition-colors"
           >
             Kỹ thuật viên
           </button>
           <button
             type="button"
-            onClick={() => fillAccount("admin@plotfarm.vn")}
+            onClick={() => fillAccount("admin@greenfarm.vn")}
             className="h-7 sm:h-8 text-xs sm:text-sm font-medium px-3 rounded-lg border border-primary/20 bg-background hover:bg-primary/10 text-foreground transition-colors"
           >
             Quản trị viên

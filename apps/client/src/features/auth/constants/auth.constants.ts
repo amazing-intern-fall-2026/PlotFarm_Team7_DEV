@@ -65,7 +65,7 @@ export const AUTH_UI_TEXT = {
   TERMS_CONTRACT: "Điều khoản thuê đất",
   TERMS_AND: "và",
   TERMS_PRIVACY: "Chính sách quyền riêng tư",
-  TERMS_SUFFIX: "của nền tảng nông nghiệp số PlotFarm.",
+  TERMS_SUFFIX: "của nền tảng nông nghiệp số Green Farm.",
   REGISTER_TITLE: "Tạo tài khoản mới",
   REGISTER_SUBTITLE: "Đăng ký để bắt đầu hành trình sở hữu nông trại của bạn.",
   REGISTER_WIP_NOTICE: "Tính năng đăng ký đang được hoàn thiện.",

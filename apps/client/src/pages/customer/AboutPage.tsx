@@ -16,7 +16,7 @@ export function AboutPage() {
         <CardHeader>
           <Box className="flex items-center justify-between">
             <CardTitle>Về chúng tôi (/about)</CardTitle>
-            <Badge variant="outline">BioCloud</Badge>
+            <Badge variant="outline">Green Farm</Badge>
           </Box>
           <CardDescription>
             Giải pháp số hoá nông trại thông minh chuẩn VietGAP & GlobalGAP
@@ -24,7 +24,7 @@ export function AboutPage() {
         </CardHeader>
         <CardContent>
           <Text variant="muted" className="text-sm leading-relaxed">
-            BioCloud Farming là nền tảng tiên phong kết nối mô hình nông nghiệp số với hệ thống cảm biến IoT, camera HLS truyền phát thời gian thực và nhật ký canh tác minh bạch.
+            Green Farm là nền tảng tiên phong kết nối mô hình nông nghiệp số với hệ thống cảm biến IoT, camera HLS truyền phát thời gian thực và nhật ký canh tác minh bạch.
           </Text>
         </CardContent>
       </Card>

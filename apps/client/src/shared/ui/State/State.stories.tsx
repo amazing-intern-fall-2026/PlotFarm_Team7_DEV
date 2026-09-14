@@ -12,7 +12,7 @@ const meta: Meta<typeof State> = {
       description: {
         component: `
 ### 📌 Giới thiệu Component State
-**State** là component trung tâm **hợp nhất toàn bộ các trạng thái UI** (\`loading\`, \`fetching\`, \`empty\`, \`error\`, và **\`skeleton\`**) của hệ thống PlotFarm.
+**State** là component trung tâm **hợp nhất toàn bộ các trạng thái UI** (\`loading\`, \`fetching\`, \`empty\`, \`error\`, và **\`skeleton\`**) của hệ thống Green Farm.
 
 #### 🌟 Điểm nổi bật về Skeleton tái sử dụng (Reusable Skeleton):
 - **Tập trung hóa**: Không tạo các file/component skeleton rời rạc lặp code (như CardSkeleton, ProfileSkeleton, TableSkeleton).

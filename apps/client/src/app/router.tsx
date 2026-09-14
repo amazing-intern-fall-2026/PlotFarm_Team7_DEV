@@ -65,7 +65,7 @@ const CUSTOMER_NAV_RULES: RouteNavRule[] = [
   },
   {
     pattern: /.*/,
-    breadcrumbs: [{ label: "PlotFarm" }, { label: "Trang chủ" }],
+    breadcrumbs: [{ label: "Green Farm" }, { label: "Trang chủ" }],
     activeNavId: "home",
   },
 ];

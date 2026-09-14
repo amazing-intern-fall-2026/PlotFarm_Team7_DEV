@@ -28,7 +28,7 @@ export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
  */
 export function Footer({
   className,
-  brandName = "BioCloud Farming",
+  brandName = "Green Farm",
   isLoading = false,
   ...props
 }: FooterProps) {
@@ -202,10 +202,10 @@ export function Footer({
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 text-primary shrink-0" />
                 <a
-                  href="mailto:kythuat@biocloud.dalat.vn"
+                  href="mailto:kythuat@greenfarm.dalat.vn"
                   className="hover:text-primary transition-colors text-sm"
                 >
-                  kythuat@biocloud.dalat.vn
+                  kythuat@greenfarm.dalat.vn
                 </a>
               </li>
             </ul>

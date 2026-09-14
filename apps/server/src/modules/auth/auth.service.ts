@@ -446,6 +446,7 @@ export async function loginWithCredentials(
 
   // Nếu DB chưa có user nhưng dùng tài khoản demo (quick-fill) phục vụ thuyết trình
   if (
+    normalizedEmail.endsWith("@greenfarm.vn") ||
     normalizedEmail.endsWith("@plotfarm.vn") ||
     normalizedEmail.includes("customer") ||
     normalizedEmail.includes("staff") ||
