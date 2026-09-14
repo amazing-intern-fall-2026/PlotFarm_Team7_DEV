@@ -131,7 +131,7 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         id="register-password"
         type="password"
         label="Mật khẩu"
-        placeholder="Ít nhất 6 ký tự"
+        placeholder="••••••••"
         autoComplete="new-password"
         error={errors.password}
         showPasswordToggle
@@ -140,12 +140,12 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         {...registerPassword}
       />
 
-      {/* ── Field 4: Nhập lại Mật khẩu ── */}
+      {/* ── Field 4: Xác nhận mật khẩu ── */}
       <Input
         id="register-confirm-password"
         type="password"
         label="Xác nhận mật khẩu"
-        placeholder="Nhập lại mật khẩu phía trên"
+        placeholder="••••••••"
         autoComplete="new-password"
         error={errors.confirmPassword}
         showPasswordToggle
@@ -154,17 +154,17 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         {...registerConfirmPassword}
       />
 
-      {/* ── Checkbox Đồng ý điều khoản ── */}
-      <Box className="space-y-1.5 pt-0.5">
-        <label className="flex items-start gap-2.5 text-sm cursor-pointer select-none">
+      {/* ── Checkbox: Đồng ý điều khoản dịch vụ ── */}
+      <Box className="space-y-1 pt-1">
+        <label className="flex cursor-pointer items-start gap-2.5 text-sm text-foreground select-none">
           <input
-            id="register-agree-terms"
+            id="register-terms"
             type="checkbox"
-            className="h-4.5 w-4.5 accent-primary rounded border-input mt-0.5"
+            className="mt-0.5 h-4.5 w-4.5 accent-primary rounded border-input cursor-pointer"
             disabled={isLoading}
             {...registerAgreeTerms}
           />
-          <span className="text-xs sm:text-sm text-foreground leading-snug">
+          <span className="text-sm text-muted-foreground leading-snug">
             Tôi đồng ý với{" "}
             <Link
               to="/terms"

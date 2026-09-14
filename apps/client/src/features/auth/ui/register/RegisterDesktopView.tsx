@@ -7,7 +7,7 @@ export interface RegisterDesktopViewProps {
 
 export function RegisterDesktopView({ onSwitchToLogin }: RegisterDesktopViewProps) {
   return (
-    <AuthDesktopLayout>
+    <AuthDesktopLayout formClassName="py-2">
       <RegisterForm onSwitchToLogin={onSwitchToLogin} />
     </AuthDesktopLayout>
   );

@@ -95,18 +95,18 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         {...registerEmail}
       />
 
-      {/* Password Input with Forgot Password Link */}
-      <Box className="space-y-1 text-left">
+      {/* Password Input with Forgot Password inline header */}
+      <Box className="space-y-1.5">
         <Box className="flex items-center justify-between">
           <label
             htmlFor="login-password"
-            className="text-xs sm:text-sm font-medium text-foreground select-none"
+            className="text-sm font-semibold text-foreground select-none"
           >
             {AUTH_UI_TEXT.PASSWORD_LABEL}
           </label>
           <Link
             to={AUTH_ROUTES.FORGOT_PASSWORD}
-            className="text-xs sm:text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+            className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
             {AUTH_UI_TEXT.FORGOT_PASSWORD}
           </Link>
