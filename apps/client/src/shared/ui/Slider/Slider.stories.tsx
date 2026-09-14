@@ -12,8 +12,8 @@ const meta: Meta<typeof Slider> = {
     docs: {
       description: {
         component: `
-### 🎚️ PlotFarm Slider Component
-Thành phần thanh trượt tùy chỉnh theo chuẩn thiết kế BioCloud Farming:
+### 🎚️ Green Farm Slider Component
+Thành phần thanh trượt tùy chỉnh theo chuẩn thiết kế Green Farm:
 - **Tone màu**: Bio Green (\`bg-primary\`), viền bo tròn nhẹ, độ tương phản cao.
 - **Biến thể**: Thanh trượt cơ bản, thanh trượt kèm ô nhập số (Input Box), thanh trượt có nấc mốc phân cấp (Stepped Labels).
 - **Khả năng tiếp cận**: Tuân thủ WAI-ARIA Slider pattern, hỗ trợ bàn phím đầy đủ.
@@ -125,7 +125,7 @@ export const CuratedMatchingCard: Story = {
               Độ chính xác ghép cặp nông trại
             </CardTitle>
             <CardDescription className="text-xs text-muted-foreground mt-1">
-              Điều chỉnh các thông số để hệ thống BioCloud tìm kiếm lô đất và giống rau phù hợp nhất với điều kiện của bạn.
+              Điều chỉnh các thông số để hệ thống Green Farm tìm kiếm lô đất và giống rau phù hợp nhất với điều kiện của bạn.
             </CardDescription>
           </CardHeader>
           <Slider

@@ -21,3 +21,7 @@ pnpm-debug.log*
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Media assets (Large demo videos > 100MB)
+apps/client/public/video/
+*.mp4

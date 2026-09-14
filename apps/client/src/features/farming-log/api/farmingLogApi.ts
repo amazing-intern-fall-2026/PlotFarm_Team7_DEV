@@ -1,5 +1,15 @@
-import { axiosClient } from "@/api/axiosClient";
+import axios, { type AxiosProgressEvent } from "axios";
 import type { FarmingLog, CreateFarmingLogRequest } from "@repo/shared";
+
+function getStoredToken(): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(/(?:^|; )greenfarm_at=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+const API_BASE_URL =
+  (import.meta as unknown as { env?: Record<string, string | undefined> }).env?.VITE_API_URL ||
+  "http://localhost:5000/api";
 
 export interface MediaUploadResponse {
   url: string;
@@ -27,14 +37,16 @@ export const farmingLogApi = {
 
       onProgress?.(45);
 
-      const response = await axiosClient.post<{ data: MediaUploadResponse }>(
-        "/v1/media/upload",
+      const token = getStoredToken();
+      const response = await axios.post<{ data: MediaUploadResponse }>(
+        `${API_BASE_URL}/v1/media/upload`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
-          onUploadProgress: (progressEvent) => {
+          onUploadProgress: (progressEvent: AxiosProgressEvent) => {
             if (progressEvent.total) {
               const percentCompleted = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total
@@ -67,9 +79,16 @@ export const farmingLogApi = {
     contractId: string,
     payload: CreateFarmingLogRequest
   ): Promise<FarmingLog> => {
-    const res = await axiosClient.post<{ data: FarmingLog }>(
-      `/v1/contracts/${contractId}/farming-logs`,
-      payload
+    const token = getStoredToken();
+    const res = await axios.post<{ data: FarmingLog }>(
+      `${API_BASE_URL}/v1/contracts/${contractId}/farming-logs`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
     );
     return res.data.data;
   },

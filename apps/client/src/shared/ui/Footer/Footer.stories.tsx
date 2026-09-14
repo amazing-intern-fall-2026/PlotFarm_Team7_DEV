@@ -11,15 +11,15 @@ const meta: Meta<typeof Footer> = {
     docs: {
       description: {
         component: `
-### 📌 Giới thiệu Component Footer (BioCloud Farming)
-**Footer** là thành phần chân trang chính cho phân hệ Customer / Marketplace, được thiết kế theo nhận diện thực tế của **BioCloud Farming**.
+### 📌 Giới thiệu Component Footer (Green Farm)
+**Footer** là thành phần chân trang chính cho phân hệ Customer / Marketplace, được thiết kế theo nhận diện thực tế của **Green Farm**.
 
 #### 📐 Cấu trúc 4 cột thông tin:
-1. **BioCloud Farming & Chứng chỉ**: Logo mầm cây xanh đậm, giới thiệu nền tảng và 3 huy hiệu tiêu chuẩn: \`VietGAP Certified\`, \`GlobalGAP 100%\`, \`Organic Bio\`.
+1. **Green Farm & Chứng chỉ**: Logo mầm cây xanh đậm, giới thiệu nền tảng và 3 huy hiệu tiêu chuẩn: \`VietGAP Certified\`, \`GlobalGAP 100%\`, \`Organic Bio\`.
 2. **Phân Hệ Canh Tác**: Khám phá ô đất, Quản lý vườn, Nhật ký nông vụ, Thư viện ảnh.
 3. **Tài Khoản & Pháp Lý**: Cài đặt tài khoản, Hợp đồng thuê đất số, Cam kết tiêu chuẩn, Bảo hiểm rủi ro.
 4. **Trang Trại Đà Lạt**: Địa chỉ Đạ Sar (Lạc Dương, Đà Lạt), Hotline kỹ sư nông học 1900 6868, Email kỹ thuật.
-5. **Thanh bản quyền (Sub-footer)**: Bản quyền 2025 & liên kết Bảo mật dữ liệu IoT, Tiêu chuẩn nông sản sạch.
+5. **Thanh bản quyền (Sub-footer)**: Bản quyền 2026 & liên kết Bảo mật dữ liệu IoT, Tiêu chuẩn nông sản sạch.
 6. **Skeleton Loading Tái Sử Dụng**: Tích hợp trực tiếp qua component \`State\` (\`variant="skeleton"\`, \`skeletonPreset="grid"\`), loại bỏ code trùng lặp.
 
 #### 💡 Cách sử dụng:
@@ -27,7 +27,7 @@ const meta: Meta<typeof Footer> = {
 import { Footer } from "@/shared/ui/Footer";
 
 // Hiển thị bình thường
-<Footer brandName="BioCloud Farming" />
+<Footer brandName="Green Farm" />
 
 // Hiển thị trạng thái Skeleton Loading (tái sử dụng qua State)
 <Footer isLoading />
@@ -41,7 +41,7 @@ import { Footer } from "@/shared/ui/Footer";
     brandName: {
       control: "text",
       description: "Tên thương hiệu hiển thị ở cột 1",
-      defaultValue: "BioCloud Farming",
+      defaultValue: "Green Farm",
     },
     isLoading: {
       control: "boolean",
@@ -59,12 +59,12 @@ export default meta;
 type Story = StoryObj<typeof Footer>;
 
 /**
- * 1. Chân trang mặc định chuẩn BioCloud Farming
+ * 1. Chân trang mặc định chuẩn Green Farm
  */
 export const Default: Story = {
-  name: "1. Mặc định (BioCloud Farming)",
+  name: "1. Mặc định (Green Farm)",
   args: {
-    brandName: "BioCloud Farming",
+    brandName: "Green Farm",
     isLoading: false,
   },
 };
@@ -114,9 +114,9 @@ export const InteractiveToggle: Story = {
  * 4. Tùy biến tên thương hiệu (Custom Brand)
  */
 export const CustomBrand: Story = {
-  name: "4. Tùy biến Thương hiệu (PlotFarm)",
+  name: "4. Tùy biến Thương hiệu (Green Farm)",
   args: {
-    brandName: "PlotFarm BioCloud",
+    brandName: "Green Farm Eco",
     isLoading: false,
   },
 };

@@ -15,10 +15,10 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 
 export const RegisterRequestSchema = z.object({
-  email: z.string().email(),
-  phone: z.string(),
-  password: z.string(),
-  fullName: z.string(),
+  email: z.string().email("Email không đúng định dạng"),
+  phone: z.string().optional(),
+  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+  fullName: z.string().min(2, "Tên người dùng phải có ít nhất 2 ký tự"),
   preferredLocale: z.string().optional(),
 });
 export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
@@ -33,13 +33,19 @@ export const RegisterResponseDataSchema = z.object({
 export type RegisterResponseData = z.infer<typeof RegisterResponseDataSchema>;
 
 export const VerifyEmailRequestSchema = z.object({
-  email: z.string().email(),
+  email: z
+    .string()
+    .min(1, "Vui lòng nhập địa chỉ email")
+    .email("Email không đúng định dạng"),
   otpCode: z.string().length(6, "Mã OTP phải gồm 6 chữ số"),
 });
 export type VerifyEmailRequest = z.infer<typeof VerifyEmailRequestSchema>;
 
 export const ResendOtpRequestSchema = z.object({
-  email: z.string().email(),
+  email: z
+    .string()
+    .min(1, "Vui lòng nhập địa chỉ email")
+    .email("Email không đúng định dạng"),
 });
 export type ResendOtpRequest = z.infer<typeof ResendOtpRequestSchema>;
 
@@ -50,8 +56,14 @@ export const ResendOtpResponseDataSchema = z.object({
 export type ResendOtpResponseData = z.infer<typeof ResendOtpResponseDataSchema>;
 
 export const LoginRequestSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+  email: z
+    .string()
+    .min(1, "Vui lòng nhập địa chỉ email")
+    .email("Email không đúng định dạng"),
+  password: z
+    .string()
+    .min(1, "Vui lòng nhập mật khẩu")
+    .min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
 });
 export type LoginRequest = z.infer<typeof LoginRequestSchema>;
 
@@ -92,7 +104,10 @@ export const LogoutResponseDataSchema = z.object({
 export type LogoutResponseData = z.infer<typeof LogoutResponseDataSchema>;
 
 export const ForgotPasswordRequestSchema = z.object({
-  email: z.string().email(),
+  email: z
+    .string()
+    .min(1, "Vui lòng nhập địa chỉ email")
+    .email("Email không đúng định dạng"),
 });
 export type ForgotPasswordRequest = z.infer<typeof ForgotPasswordRequestSchema>;
 
@@ -105,9 +120,12 @@ export type ForgotPasswordResponseData = z.infer<
 >;
 
 export const ResetPasswordRequestSchema = z.object({
-  email: z.string().email(),
-  otpCode: z.string(),
-  newPassword: z.string(),
+  email: z
+    .string()
+    .min(1, "Vui lòng nhập địa chỉ email")
+    .email("Email không đúng định dạng"),
+  otpCode: z.string().min(1, "Vui lòng nhập mã OTP"),
+  newPassword: z.string().min(6, "Mật khẩu mới phải có ít nhất 6 ký tự"),
 });
 export type ResetPasswordRequest = z.infer<typeof ResetPasswordRequestSchema>;
 
@@ -119,8 +137,8 @@ export type ResetPasswordResponseData = z.infer<
 >;
 
 export const ChangePasswordRequestSchema = z.object({
-  currentPassword: z.string(),
-  newPassword: z.string(),
+  currentPassword: z.string().min(1, "Vui lòng nhập mật khẩu hiện tại"),
+  newPassword: z.string().min(6, "Mật khẩu mới phải có ít nhất 6 ký tự"),
 });
 export type ChangePasswordRequest = z.infer<typeof ChangePasswordRequestSchema>;
 

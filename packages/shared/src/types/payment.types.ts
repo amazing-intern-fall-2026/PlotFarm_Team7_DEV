@@ -10,19 +10,11 @@ export const TRANSACTION_STATUSES = [
 ] as const;
 export type PaymentStatus = (typeof TRANSACTION_STATUSES)[number];
 
-export const CreatePaymentOrderRequestSchema = z.object({
-  contractCode: z.string(),
-  paymentMethod: z.enum([
-    "VIETQR",
-    "VNPAY",
-    "MOMO",
-    "BANK_TRANSFER",
-    "MANUAL_CASH",
-  ]),
-  returnUrl: z.string().url().optional(),
+export const CreatePaymentQrRequestSchema = z.object({
+  contractId: z.string().uuid(),
 });
-export type CreatePaymentOrderRequest = z.infer<
-  typeof CreatePaymentOrderRequestSchema
+export type CreatePaymentQrRequest = z.infer<
+  typeof CreatePaymentQrRequestSchema
 >;
 
 export const VietQRPaymentSchema = z.object({

@@ -37,13 +37,10 @@ import {
   Container,
 } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
+import type { UserSummary } from "@/entities/user";
 
-export interface RootLayoutUser {
-  name: string;
-  avatarSrc?: string;
-}
-
-export type AppShellUser = RootLayoutUser;
+export type RootLayoutUser = UserSummary;
+export type AppShellUser = UserSummary;
 
 export interface RootLayoutProps {
   role: AppRole;
@@ -318,6 +315,10 @@ export function RootLayout({
   const { t } = useT();
   const [activeId, setActiveId] = React.useState(activeNavId);
 
+  React.useEffect(() => {
+    setActiveId(activeNavId);
+  }, [activeNavId]);
+
   const handleNavChange = React.useCallback(
     (id: string) => {
       setActiveId(id);
@@ -359,10 +360,8 @@ export function RootLayout({
           onLogoutClick={onLogoutClick}
         />
 
-        <main className="flex-1 w-full py-6 lg:pb-6 pb-20">
-          <Container>
-            {children}
-          </Container>
+        <main className={cn("flex-1 w-full", activeId === "home" ? "pb-20 lg:pb-0" : "py-6 lg:pb-6 pb-20")}>
+          {activeId === "home" ? children : <Container>{children}</Container>}
         </main>
 
         <Footer />
@@ -398,7 +397,7 @@ export function RootLayout({
     <div className="flex items-center gap-3 w-full">
       <Avatar name={user?.name || "Ban Trị"} size="md" status="online" />
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-foreground truncate">{user?.name || "Admin BioCloud"}</p>
+        <p className="text-sm font-bold text-foreground truncate">{user?.name || "Admin Green Farm"}</p>
         <p className="text-xs text-muted-foreground truncate">Toàn quyền hệ thống</p>
       </div>
       <button

@@ -9,4 +9,7 @@
  * 4. Footer/     → Chân trang thông tin chung (chỉ dành riêng cho Khách hàng & Công cộng, ẩn ở Admin/Staff).
  */
 export * from "./RootLayout";
+export * from "./HomeHero";
+export * from "./SeasonalCrops";
+export * from "./HowItWorks";
 

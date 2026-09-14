@@ -66,10 +66,10 @@ export const ReferenceSample: Story = {
 };
 
 /**
- * 2. Đường dẫn Nông trại Thực nghiệm (PlotFarm Flow)
+ * 2. Đường dẫn Nông trại Thực nghiệm (Green Farm Flow)
  */
-export const FarmPlotFlow: Story = {
-  name: "2. Quy trình chọn ô đất (PlotFarm Flow)",
+export const PlotSelectionFlow: Story = {
+  name: "2. Quy trình chọn ô đất (Green Farm Flow)",
   render: () => (
     <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-border">
       <Breadcrumb

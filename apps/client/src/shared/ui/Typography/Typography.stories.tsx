@@ -10,7 +10,7 @@ const meta: Meta<typeof Typography> = {
       description: {
         component: [
           "### 🔤 Giới thiệu Component Typography",
-          "**Typography** là hệ thống kiểu chữ chuẩn hóa duy nhất của PlotFarm, thống nhất toàn bộ các thẻ tiêu đề (h1 tới h6), đoạn văn (p, lead, small, muted), loại bỏ việc tự viết các thẻ văn bản thô thiếu đồng bộ.",
+          "**Typography** là hệ thống kiểu chữ chuẩn hóa duy nhất của Green Farm, thống nhất toàn bộ các thẻ tiêu đề (h1 tới h6), đoạn văn (p, lead, small, muted), loại bỏ việc tự viết các thẻ văn bản thô thiếu đồng bộ.",
           "",
           "#### 🌟 Đặc điểm nổi bật:",
           "- **Tích hợp i18n trực tiếp**: Hỗ trợ prop `i18nKey=\"nav.home\"` giúp tự động nạp bản dịch, chống hardcode chữ trong view.",
@@ -76,7 +76,7 @@ export const BodyAndTextVariants: Story = {
       <div className="flex gap-4 items-center pt-2">
         <Typography variant="large">Chỉ số nổi bật</Typography>
         <Typography variant="small">Cập nhật 5 phút trước</Typography>
-        <Typography variant="muted">Bản quyền BioCloud 2025</Typography>
+        <Typography variant="muted">Bản quyền Green Farm 2026</Typography>
       </div>
     </div>
   ),

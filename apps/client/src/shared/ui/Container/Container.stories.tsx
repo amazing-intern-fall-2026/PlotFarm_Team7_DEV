@@ -12,7 +12,7 @@ const meta: Meta<typeof Container> = {
       description: {
         component: [
           "### 📦 Giới thiệu Component Container",
-          "**Container** là khung bọc giao diện trung tâm chuẩn hóa cho toàn bộ hệ thống PlotFarm.",
+          "**Container** là khung bọc giao diện trung tâm chuẩn hóa cho toàn bộ hệ thống Green Farm.",
           "",
           "#### 🌟 Điểm nổi bật:",
           "- **Đa kích thước (Max-width variants)**: `sm`, `md`, `lg`, `xl`, `2xl`, `7xl` (mặc định), `full`.",
@@ -88,7 +88,7 @@ export const Sizes: Story = {
       </Container>
 
       <Container size="7xl" className="bg-card border border-primary/30 rounded-xl p-4 shadow-xs text-center">
-        <Typography.Text className="font-semibold text-sm text-primary">Container 7xl (chuẩn giao diện PlotFarm)</Typography.Text>
+        <Typography.Text className="font-semibold text-sm text-primary">Container 7xl (chuẩn giao diện Green Farm)</Typography.Text>
       </Container>
     </Box>
   ),

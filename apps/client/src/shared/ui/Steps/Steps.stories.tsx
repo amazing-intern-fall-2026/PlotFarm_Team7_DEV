@@ -10,8 +10,8 @@ const meta: Meta<typeof Steps> = {
     docs: {
       description: {
         component: `
-### 🐾 PlotFarm Steps Component
-Thành phần hiển thị tiến trình đa giai đoạn tuân thủ tông màu nông nghiệp BioCloud (\`#16a34a\`, \`#d97706\`, \`#dc2626\`):
+### 🐾 Green Farm Steps Component
+Thành phần hiển thị tiến trình đa giai đoạn tuân thủ tông màu nông nghiệp Green Farm (\`#16a34a\`, \`#d97706\`, \`#dc2626\`):
 - **Biến thể**: Thanh tiến trình ngang (\`horizontal\`), Dòng thời gian dọc (\`vertical\`), Điều hướng thẻ con nhộng (\`pills\`).
 - **Trạng thái**: Hoàn thành (\`completed\`), Đang thực hiện (\`current\`), Báo lỗi / Cần chú ý (\`error\`), Chưa tới (\`upcoming\`).
         `
@@ -103,7 +103,7 @@ export const VerticalNarrativeDemo: Story = {
             )
           },
           {
-            title: "Cấp chứng nhận canh tác BioCloud",
+            title: "Cấp chứng nhận canh tác Green Farm",
             description: "Khóa cho đến khi giai đoạn 2 hoàn thành thẩm định",
             state: "upcoming"
           }

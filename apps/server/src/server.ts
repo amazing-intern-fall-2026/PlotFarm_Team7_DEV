@@ -8,6 +8,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { mediaRouter } from "./modules/media/media.routes";
 import { diaryRouter } from "./modules/diary/diary.routes";
+import { plotsRoutes } from "./modules/plots/plots.routes";
 import { gatewayController } from "./modules/gateway/gateway.controller";
 
 dotenv.config();
@@ -30,6 +31,7 @@ app.get("/health", (_req: Request, res: Response) => {
 });
 
 import fs from "fs";
+import { paymentsRouter } from "./modules/payments/payments.routes";
 
 const openApiPath = fs.existsSync(path.join(__dirname, "docs/openapi.yaml"))
   ? path.join(__dirname, "docs/openapi.yaml")
@@ -43,10 +45,11 @@ if (fs.existsSync(openApiPath)) {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/v1", authRoutes);
+app.use("/api/v1", paymentsRouter);
+app.use("/api/v1/plots", plotsRoutes);
 app.use("/api/v1", mediaRouter);
 app.use("/api/v1", diaryRouter);
 app.post("/api/gateway", gatewayController);
-
 // Centralized Global Error Handler Middleware (MUST be placed after all routes)
 app.use(errorHandler);
 

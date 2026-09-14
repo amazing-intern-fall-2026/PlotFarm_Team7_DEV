@@ -7,9 +7,9 @@ const meta: Meta = {
     docs: {
       description: {
         component: `
-# PlotFarm Design System & UI Architecture
+# Green Farm Design System & UI Architecture
 
-Chào mừng bạn đến với thư viện thành phần giao diện chuẩn hóa của **PlotFarm**.
+Chào mừng bạn đến với thư viện thành phần giao diện chuẩn hóa của **Green Farm**.
 Hệ thống thiết kế thân thiện, tinh giản, đồng bộ font chữ và màu sắc theo tiêu chuẩn Feature-Sliced Design (FSD).
         `
       }
@@ -27,7 +27,7 @@ export const TongQuan: StoryObj = {
       <div className="rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-green-800 p-8 sm:p-10 text-white shadow-lg">
         <div className="space-y-4 max-w-2xl">
           <span className="inline-block rounded-full bg-white/15 backdrop-blur-md px-3.5 py-1 text-xs font-semibold text-emerald-100 border border-white/20">
-            PlotFarm Design System v1.0.0
+            Green Farm Design System v1.0.0
           </span>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
             Nền Tảng Giao Diện Nông Nghiệp Thân Thiện

@@ -1,0 +1,4 @@
+export const DEFAULT_LEASE_DAYS = 60;
+export const PLOT_LOCK_DURATION_SECONDS = 600;
+export const ACCESS_TOKEN_TTL_MINUTES = 15;
+export const REFRESH_TOKEN_TTL_DAYS = 7;

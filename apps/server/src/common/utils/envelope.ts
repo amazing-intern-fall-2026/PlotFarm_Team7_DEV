@@ -13,6 +13,7 @@ export function buildSuccessResponse<T>(
   options: BuildSuccessOptions = {},
 ): ApiSuccessResponse<T> {
   return {
+    success: true,
     code: options.code ?? 200,
     message,
     meta: {

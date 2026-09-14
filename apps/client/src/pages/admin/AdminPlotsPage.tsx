@@ -28,7 +28,7 @@ export function AdminPlotsPage() {
         </CardHeader>
         <CardContent>
           <Text variant="muted" className="text-sm">
-            Danh sách các ô đất thử nghiệm đang vận hành hệ sinh thái IoT BioCloud.
+            Danh sách các ô đất thử nghiệm đang vận hành hệ sinh thái IoT Green Farm.
           </Text>
         </CardContent>
         <CardFooter>

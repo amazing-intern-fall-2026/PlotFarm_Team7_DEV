@@ -11,7 +11,7 @@ const meta: Meta<typeof Box> = {
       description: {
         component: `
 ### 📦 Giới thiệu Component Box
-**Box** là thành phần vùng chứa bố cục (Layout Container) chuẩn hóa duy nhất của PlotFarm, thay thế cho việc viết trực tiếp các thẻ \`<div>\` thô không nhất quán.
+**Box** là thành phần vùng chứa bố cục (Layout Container) chuẩn hóa duy nhất của Green Farm, thay thế cho việc viết trực tiếp các thẻ \`<div>\` thô không nhất quán.
 
 #### 🌟 Điểm nổi bật:
 - **Ngữ nghĩa linh hoạt qua \`as\`**: Mặc định là \`<div>\`, có thể chuyển thành \`section\`, \`article\`, \`main\`, \`aside\`.

@@ -13,27 +13,11 @@ export interface GoogleProfile {
  * Ném lỗi nếu token không hợp lệ hoặc sai audience (Client ID).
  */
 export async function verifyGoogleIdToken(idToken: string): Promise<GoogleProfile> {
-  if (idToken.startsWith("demo-google-token")) {
-    return {
-      googleId: "google-demo-user-123456",
-      email: "google.user@plotfarm.vn",
-      emailVerified: true,
-      fullName: "Nguyễn Văn An (Google)",
-      avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80",
-    };
-  }
-
   const googleClientId =
     process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID;
 
-  if (!googleClientId || googleClientId.includes("sampleclientid")) {
-    return {
-      googleId: "google-demo-user-123456",
-      email: "google.user@plotfarm.vn",
-      emailVerified: true,
-      fullName: "Nguyễn Văn An (Google)",
-      avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80",
-    };
+  if (!googleClientId) {
+    throw new Error("GOOGLE_CLIENT_ID chưa được cấu hình.");
   }
 
   const client = new OAuth2Client(googleClientId);

@@ -13,7 +13,7 @@ const meta: Meta<typeof Topbar> = {
 **Topbar** là thanh điều hướng trên cùng dạng Dashboard bar dành cho **Admin** và **Farmer**.
 
 #### 🌟 Đặc điểm nổi bật:
-- **Ô tìm kiếm bên trái**: Tích hợp shortcut \`Ctrl+K\` và hiệu ứng focus viền xanh thương hiệu BioCloud.
+- **Ô tìm kiếm bên trái**: Tích hợp shortcut \`Ctrl+K\` và hiệu ứng focus viền xanh thương hiệu Green Farm.
 - **Nút Menu trên di động (Mobile Hamburger)**: Tự động hiện khi kích thước màn hình nhỏ hơn \`1024px\`.
 - **Thông báo thông minh**: Tự động hiển thị huy hiệu số thông báo chưa đọc với biến thể \`99+\`.
 - **Thông tin người dùng**: Tích hợp Avatar trực tuyến cùng nhãn phân quyền theo vai trò (Kỹ thuật viên / Quản trị viên).
