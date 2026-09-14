@@ -3,7 +3,13 @@ import { Button } from "@/shared/ui/Button";
 import { Avatar } from "@/shared/ui/Avatar";
 import { cn } from "@/shared/lib/utils";
 
-export type AppRole = "customer" | "admin" | "farmer";
+export type AppRole =
+  | "customer"
+  | "admin"
+  | "farmer"
+  | "CUSTOMER"
+  | "ADMIN"
+  | "STAFF";
 
 export interface TopbarUser {
   name: string;
@@ -46,8 +52,11 @@ export type TopBarProps = TopbarProps;
 
 const ROLE_COLORS: Record<AppRole, string> = {
   customer: "bg-blue-100 text-blue-700",
+  CUSTOMER: "bg-blue-100 text-blue-700",
   admin: "bg-primary/10 text-primary",
+  ADMIN: "bg-primary/10 text-primary",
   farmer: "bg-amber-100 text-amber-700",
+  STAFF: "bg-amber-100 text-amber-700",
 };
 
 /**

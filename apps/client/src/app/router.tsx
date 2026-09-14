@@ -8,8 +8,8 @@ import {
 } from "react-router-dom";
 import { RootLayout } from "@/widgets/RootLayout";
 import type { AppRole, TopbarBreadcrumbItem } from "@/shared/ui";
-import { LoginPage, ProtectedRoute, clearAuthSession } from "@/features/auth";
-import { AUTH_ROUTES, SESSION_KEYS } from "@/features/auth/constants";
+import { LoginPage, RegisterPage, ProtectedRoute, clearAuthSession, getStoredUser } from "@/features/auth";
+import { AUTH_ROUTES } from "@/features/auth/constants";
 import {
   HomePage,
   PlotsPage,
@@ -112,8 +112,11 @@ const ADMIN_NAV_RULES: RouteNavRule[] = [
 
 const ROLE_NAV_RULES: Record<AppRole, RouteNavRule[]> = {
   customer: CUSTOMER_NAV_RULES,
+  CUSTOMER: CUSTOMER_NAV_RULES,
   farmer: FARMER_NAV_RULES,
+  STAFF: FARMER_NAV_RULES,
   admin: ADMIN_NAV_RULES,
+  ADMIN: ADMIN_NAV_RULES,
 };
 
 const NAV_TARGETS: Record<string, string> = {
@@ -145,17 +148,12 @@ export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
   const pathname = location.pathname;
 
   const user = React.useMemo(() => {
-    try {
-      const rawUser = sessionStorage.getItem(SESSION_KEYS.USER);
-      if (!rawUser) return undefined;
-      const parsed = JSON.parse(rawUser);
-      return {
-        name: parsed.fullName || parsed.name || "Người dùng",
-        avatarSrc: parsed.avatarUrl || undefined,
-      };
-    } catch {
-      return undefined;
-    }
+    const u = getStoredUser();
+    if (!u) return undefined;
+    return {
+      name: u.fullName || u.userCode || "Người dùng",
+      avatarSrc: u.avatarUrl || undefined,
+    };
   }, [pathname]);
 
   const handleLogout = React.useCallback(() => {
@@ -199,6 +197,7 @@ export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
 
 export const router = createBrowserRouter([
   { path: AUTH_ROUTES.LOGIN.slice(1), element: <LoginPage /> },
+  { path: AUTH_ROUTES.REGISTER.slice(1), element: <RegisterPage /> },
   { path: AUTH_ROUTES.FORGOT_PASSWORD.slice(1), element: <Navigate to={AUTH_ROUTES.LOGIN} replace /> },
 
   {

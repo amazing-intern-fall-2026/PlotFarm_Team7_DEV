@@ -5,6 +5,7 @@ import {
   RegisterRequestSchema,
   VerifyEmailRequestSchema,
   ResendOtpRequestSchema,
+  SUCCESS_MESSAGES,
 } from "@repo/shared";
 import { TokenService } from "./token.service";
 import { AuthService } from "./auth.service";
@@ -28,7 +29,7 @@ export class AuthController {
       res.status(201).json(
         buildSuccessResponse(
           result,
-          "Đăng ký tài khoản thành công. Mã OTP xác thực đã được gửi đến email của bạn.",
+          SUCCESS_MESSAGES.AUTH.REGISTER,
           { userCode: result.userCode }
         )
       );
@@ -48,7 +49,7 @@ export class AuthController {
       const result = await AuthService.verifyEmail(parsedData);
 
       res.status(200).json(
-        buildSuccessResponse(result, "Xác thực email thành công", {
+        buildSuccessResponse(result, SUCCESS_MESSAGES.AUTH.VERIFY_EMAIL, {
           userCode: result.user.userCode,
         })
       );
@@ -68,7 +69,7 @@ export class AuthController {
       const result = await AuthService.resendOtp(parsedData);
 
       res.status(200).json(
-        buildSuccessResponse(result, "Mã OTP mới đã được gửi thành công đến email của bạn")
+        buildSuccessResponse(result, SUCCESS_MESSAGES.AUTH.RESEND_OTP)
       );
     } catch (error) {
       next(error);
@@ -90,12 +91,12 @@ export class AuthController {
         validatedBody.refreshToken,
       );
 
-      res.status(200).json({
-        success: true,
-        data: {
-          accessToken: result.accessToken,
-        },
-      });
+      res.status(200).json(
+        buildSuccessResponse(
+          { accessToken: result.accessToken },
+          SUCCESS_MESSAGES.AUTH.REFRESH_TOKEN
+        )
+      );
     } catch (error) {
       next(error);
     }
@@ -111,12 +112,13 @@ export class AuthController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      res.status(200).json({
-        success: true,
-        data: {
-          user: req.user,
-        },
-      });
+      res.status(200).json(
+        buildSuccessResponse(
+          { user: req.user },
+          SUCCESS_MESSAGES.AUTH.GET_PROFILE,
+          { userCode: req.user?.userId }
+        )
+      );
     } catch (error) {
       next(error);
     }
@@ -133,7 +135,7 @@ export class AuthController {
       const data = await AuthService.login(parsedCredentials);
 
       res.status(200).json(
-        buildSuccessResponse(data, "Đăng nhập thành công", {
+        buildSuccessResponse(data, SUCCESS_MESSAGES.AUTH.LOGIN, {
           userCode: data.user.userCode,
         })
       );

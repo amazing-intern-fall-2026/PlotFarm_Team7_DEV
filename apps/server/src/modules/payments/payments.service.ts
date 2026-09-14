@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import { db } from "@repo/database";
 import { AppError } from "../../errors/AppError";
 import { VietQRService } from "./vietqr.service";
@@ -78,13 +77,16 @@ export class PaymentsService {
   }
 }
 
+let orderSeq = Math.floor(Math.random() * 46656);
+
 export function generateOrderCode(): string {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
-  const random = randomUUID().slice(0, 3).toUpperCase();
-  return `PAY-PF${year}-${month}${day}-${random}`;
+  orderSeq = (orderSeq + 1) % 46656;
+  const suffix = orderSeq.toString(36).padStart(3, "0").toUpperCase();
+  return `PAY-PF${year}-${month}${day}-${suffix}`;
 }
 
 export function buildTransferContent(orderCode: string): string {

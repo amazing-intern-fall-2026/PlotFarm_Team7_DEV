@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { VideoHeroBanner } from "@/widgets/HomeHero";
+import { HowItWorksGuide } from "@/widgets/HowItWorks";
+import { SeasonalCropsCarousel } from "@/widgets/SeasonalCrops";
 import {
   Card,
   CardHeader,
@@ -10,36 +13,56 @@ import {
   Badge,
   Box,
   Text,
+  Container,
 } from "@/shared/ui";
 
 export function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <Box className="w-full space-y-6">
-      <Card className="w-full">
-        <CardHeader>
-          <Box className="flex items-center justify-between">
-            <CardTitle>Trang chủ (Marketplace)</CardTitle>
-            <Badge variant="success">VietGAP 100%</Badge>
-          </Box>
-          <CardDescription>
-            Sở hữu vườn rau hữu cơ riêng của bạn - Giám sát 24/7
-          </CardDescription>
-        </CardHeader>
+    <Box className="w-full">
+      {/* 100% Full-bleed Continuous Video Hero Banner */}
+      <VideoHeroBanner />
 
-        <CardContent>
-          <Text variant="muted" className="text-sm leading-relaxed">
-            Kết nối trực tiếp cư dân thành thị với nông trại công nghệ cao tại Đạ Sar, Lạc Dương, Đà Lạt.
-          </Text>
-        </CardContent>
+      {/* Marketplace Showcase & Seasonal Crops Carousel */}
+      <Container className="py-12 space-y-12">
+        {/* Hướng Dẫn / Chuỗi Quy Trình Các Bước Sử Dụng */}
+        <HowItWorksGuide />
 
-        <CardFooter>
-          <Button onClick={() => navigate("/plots")}>
-            Khám phá ô đất ngay →
-          </Button>
-        </CardFooter>
-      </Card>
+        {/* Seasonal Crops Splide Carousel */}
+        <SeasonalCropsCarousel />
+
+        <Card className="w-full">
+          <CardHeader>
+            <Box className="flex items-center justify-between">
+              <CardTitle className="text-foreground font-bold">
+                Sàn Nông Nghiệp Công Nghệ Cao (Marketplace)
+              </CardTitle>
+              <Badge variant="success">VietGAP 100%</Badge>
+            </Box>
+            <CardDescription>
+              Sở hữu vườn rau hữu cơ riêng của bạn - Giám sát sinh trưởng 24/7
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <Text variant="muted" className="text-sm leading-relaxed">
+              Kết nối trực tiếp cư dân thành thị với nông trại công nghệ cao tại Đạ Sar, Lạc Dương, Đà Lạt.
+              Bạn có thể thuê ô đất, chọn giống gieo trồng, theo dõi camera trực tiếp và nhận nông sản tươi chuyển phát tận cửa nhà mỗi tuần.
+            </Text>
+          </CardContent>
+
+          <CardFooter className="flex items-center gap-4">
+            <Button
+              variant="default"
+              onClick={() => navigate("/plots")}
+            >
+              Khám phá danh sách ô đất ngay →
+            </Button>
+          </CardFooter>
+        </Card>
+      </Container>
     </Box>
   );
 }
+

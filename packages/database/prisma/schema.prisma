@@ -252,6 +252,9 @@ model Plot {
 
   contracts                Contract[]
 
+  @@index([farmId])
+  @@index([status])
+  @@index([assignedStaffId])
   @@map("plots")
 }
 
@@ -287,6 +290,10 @@ model Contract {
   harvests            Harvest[]
   shipments           Shipment[]
 
+  @@index([userId])
+  @@index([plotId])
+  @@index([cropId])
+  @@index([status])
   @@map("contracts")
 }
 
@@ -311,6 +318,9 @@ model PaymentOrder {
   paymentTransactions PaymentTransaction[]
   compensations       Compensation[]
 
+  @@index([contractId])
+  @@index([userId])
+  @@index([status])
   @@map("payment_orders")
 }
 
@@ -374,6 +384,9 @@ model FarmingLog {
   soilMoisture  Decimal? @map("soil_moisture") @db.Decimal(5, 2)
   loggedAt      DateTime @default(now()) @map("logged_at")
 
+  @@index([contractId])
+  @@index([staffId])
+  @@index([loggedAt])
   @@map("farming_logs")
 }
 
@@ -393,6 +406,9 @@ model CareRequest {
   createdAt        DateTime          @default(now()) @map("created_at")
   updatedAt        DateTime          @updatedAt @map("updated_at")
 
+  @@index([contractId])
+  @@index([staffId])
+  @@index([status])
   @@map("care_requests")
 }
 
@@ -409,6 +425,8 @@ model Harvest {
   notes         String?
   createdAt     DateTime @default(now()) @map("created_at")
 
+  @@index([contractId])
+  @@index([staffId])
   @@map("harvests")
 }
 
@@ -430,6 +448,8 @@ model Shipment {
   createdAt           DateTime       @default(now()) @map("created_at")
   updatedAt           DateTime       @updatedAt @map("updated_at")
 
+  @@index([contractId])
+  @@index([currentStatus])
   @@map("shipments")
 }
 
@@ -446,5 +466,7 @@ model AuditLog {
   userAgent   String?  @map("user_agent")
   createdAt   DateTime @default(now()) @map("created_at")
 
+  @@index([actorId])
+  @@index([entityTable, entityId])
   @@map("audit_logs")
 }

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import type { UserRole } from "@repo/shared";
 import { AUTH_ROUTES, ROLE_HOME_ROUTES } from "../constants";
-import { getStoredUser, isAuthenticated } from "../model/authSession";
+import { getStoredUser, isAuthenticated } from "../model/authCookie";
 
 export interface ProtectedRouteProps {
   /** Danh sách vai trò được phép truy cập (nếu bỏ trống: chỉ cần đã đăng nhập) */

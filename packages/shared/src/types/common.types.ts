@@ -57,7 +57,7 @@ export const ApiErrorResponseSchema = z.object({
 export type ApiErrorResponse = z.infer<typeof ApiErrorResponseSchema>;
 
 export interface ApiSuccessResponse<T = unknown> {
-  success?: boolean;
+  success: true;
   code?: number;
   message?: string;
   meta?: Meta;
