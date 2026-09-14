@@ -1,28 +1,27 @@
 import type { Request, Response, NextFunction } from "express";
-import { CreatePaymentOrderRequestSchema } from "@repo/shared";
+import { CreatePaymentQrRequestSchema } from "@repo/shared";
 import { PaymentsService } from "./payments.service";
-import { buildSuccessResponse } from "../../common/utils/envelope";
+import { AppError } from "../../errors/AppError";
 
 export class PaymentsController {
   /**
-   * Endpoint: POST /api/v1/payments
-   * Tạo payment order mới, sinh mã QR VietQR với nội dung CF[orderCode]
+   * Endpoint: POST /api/v1/payments/create-qr
+   * Tạo payment order + sinh QR VietQR chuẩn Napas cho hợp đồng đang chờ thanh toán
    */
-  static async createPaymentOrder(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
+  static async createQr(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const payload = req.body?.payload ?? req.body;
-      const parsedData = CreatePaymentOrderRequestSchema.parse(payload);
-      const result = await PaymentsService.createPaymentOrder(parsedData);
+      if (req.user?.role !== "CUSTOMER") {
+        throw AppError.forbidden("Chỉ khách hàng mới có thể tạo thanh toán");
+      }
 
-      res.status(201).json(
-        buildSuccessResponse(result, "Tạo payment order thành công", {
-          userCode: req.user?.userId,
-        }),
-      );
+      const payload = req.body?.payload ?? req.body;
+      const { contractId } = CreatePaymentQrRequestSchema.parse(payload);
+      const result = await PaymentsService.createQr(contractId);
+
+      res.status(201).json({
+        success: true,
+        data: result,
+      });
     } catch (error) {
       next(error);
     }

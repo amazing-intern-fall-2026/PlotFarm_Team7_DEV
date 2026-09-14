@@ -1,31 +1,55 @@
 import { randomUUID } from "crypto";
 import { db } from "@repo/database";
-import type { CreatePaymentOrderRequest } from "@repo/shared";
 import { AppError } from "../../errors/AppError";
 import { VietQRService } from "./vietqr.service";
 
-const QR_EXPIRES_MINUTES = 15;
+const MAX_EXPIRES_MINUTES = 5;
+
+export interface CreateQrResult {
+  paymentOrderId: string;
+  orderCode: string;
+  contractId: string;
+  amount: number;
+  bankInfo: ReturnType<typeof VietQRService.getBankInfo>;
+  transferContent: string;
+  qrImageUrl: string;
+  expiresAt: string;
+}
 
 export class PaymentsService {
-  static async createPaymentOrder(data: CreatePaymentOrderRequest) {
+  static async createQr(contractId: string): Promise<CreateQrResult> {
     const contract = await db.contract.findUnique({
-      where: { contractCode: data.contractCode },
+      where: { id: contractId },
+      include: { plot: true },
     });
 
     if (!contract) {
-      throw AppError.notFound("Không tìm thấy hợp đồng");
+      throw AppError.notFound("Không tìm thấy hợp đồng hợp lệ");
+    }
+
+    if (contract.status !== "PENDING_PAYMENT") {
+      if (contract.status === "ACTIVE") {
+        throw AppError.badRequest(
+          "Hợp đồng đã được thanh toán",
+          "CONTRACT_ALREADY_PAID",
+        );
+      }
+      throw AppError.badRequest(
+        "Hợp đồng không ở trạng thái chờ thanh toán",
+        "CONTRACT_NOT_PENDING",
+      );
     }
 
     const orderCode = generateOrderCode();
     const transferContent = buildTransferContent(orderCode);
     const amount = Number(contract.totalPrice);
 
-    const { qrContent, qrImage } = await VietQRService.generateQr({
-      amount,
-      addInfo: transferContent,
-    });
+    const maxExpiresAt = new Date(Date.now() + MAX_EXPIRES_MINUTES * 60 * 1000);
+    const lockedUntil = contract.plot.lockedUntil;
+    const expiresAt = lockedUntil && lockedUntil < maxExpiresAt ? lockedUntil : maxExpiresAt;
 
-    const expiresAt = new Date(Date.now() + QR_EXPIRES_MINUTES * 60 * 1000);
+    const bankInfo = VietQRService.getBankInfo();
+    const qrImageUrl = VietQRService.buildQrImageUrl(amount, transferContent);
 
     const paymentOrder = await db.paymentOrder.create({
       data: {
@@ -33,20 +57,28 @@ export class PaymentsService {
         contractId: contract.id,
         userId: contract.userId,
         amount,
-        paymentMethod: data.paymentMethod,
+        paymentMethod: "VIETQR",
         paymentType: "CONTRACT_INITIAL",
         status: "PENDING",
-        qrContent,
-        qrImageUrl: qrImage,
+        qrImageUrl,
         expiresAt,
       },
     });
 
-    return paymentOrder;
+    return {
+      paymentOrderId: paymentOrder.id,
+      orderCode: paymentOrder.orderCode,
+      contractId: contract.id,
+      amount,
+      bankInfo,
+      transferContent,
+      qrImageUrl,
+      expiresAt: expiresAt.toISOString(),
+    };
   }
 }
 
-function generateOrderCode(): string {
+export function generateOrderCode(): string {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -55,6 +87,6 @@ function generateOrderCode(): string {
   return `PAY-PF${year}-${month}${day}-${random}`;
 }
 
-function buildTransferContent(orderCode: string): string {
+export function buildTransferContent(orderCode: string): string {
   return `CF${orderCode}`;
 }
