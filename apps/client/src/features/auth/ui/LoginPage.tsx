@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Box, Skeleton } from "@/shared/ui";
 import { useDevice } from "@/shared/lib/device";
-import { ROLE_HOME_ROUTES } from "../constants";
+import { AUTH_ROUTES, ROLE_HOME_ROUTES } from "../constants";
 import { getStoredUser, isAuthenticated } from "../model/authCookie";
 
 // Code-splitting / Dynamic import: Mobile không tải bundle Desktop Hero, Desktop không tải Mobile Sheet
@@ -25,9 +25,34 @@ function AuthFallback() {
   );
 }
 
-export function LoginPage() {
-  const [tab, setTab] = React.useState<"login" | "register">("login");
+export interface LoginPageProps {
+  initialTab?: "login" | "register";
+}
+
+export function LoginPage({ initialTab }: LoginPageProps) {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { isDesktop } = useDevice();
+
+  const isRegisterRoute = location.pathname === AUTH_ROUTES.REGISTER;
+  const defaultTab: "login" | "register" = initialTab ?? (isRegisterRoute ? "register" : "login");
+  const [tab, setTab] = React.useState<"login" | "register">(defaultTab);
+
+  React.useEffect(() => {
+    if (location.pathname === AUTH_ROUTES.REGISTER) {
+      setTab("register");
+    } else if (location.pathname === AUTH_ROUTES.LOGIN) {
+      setTab("login");
+    }
+  }, [location.pathname]);
+
+  const handleTabChange = (newTab: "login" | "register") => {
+    setTab(newTab);
+    const targetRoute = newTab === "register" ? AUTH_ROUTES.REGISTER : AUTH_ROUTES.LOGIN;
+    if (location.pathname !== targetRoute) {
+      navigate(targetRoute);
+    }
+  };
 
   const user = getStoredUser();
   if (user && isAuthenticated()) {
@@ -39,13 +64,18 @@ export function LoginPage() {
     <Box className="fixed inset-0 w-full h-full overflow-hidden bg-background">
       <React.Suspense fallback={<AuthFallback />}>
         {isDesktop ? (
-          <LoginDesktopView tab={tab} onTabChange={setTab} />
+          <LoginDesktopView tab={tab} onTabChange={handleTabChange} />
         ) : (
-          <LoginMobileView tab={tab} onTabChange={setTab} />
+          <LoginMobileView tab={tab} onTabChange={handleTabChange} />
         )}
       </React.Suspense>
     </Box>
   );
 }
 
+export function RegisterPage() {
+  return <LoginPage initialTab="register" />;
+}
+
 export default LoginPage;
+

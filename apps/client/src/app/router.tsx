@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { RootLayout } from "@/widgets/RootLayout";
 import type { AppRole, TopbarBreadcrumbItem } from "@/shared/ui";
-import { LoginPage, ProtectedRoute, clearAuthSession, getStoredUser } from "@/features/auth";
+import { LoginPage, RegisterPage, ProtectedRoute, clearAuthSession, getStoredUser } from "@/features/auth";
 import { AUTH_ROUTES } from "@/features/auth/constants";
 import {
   HomePage,
@@ -197,6 +197,7 @@ export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
 
 export const router = createBrowserRouter([
   { path: AUTH_ROUTES.LOGIN.slice(1), element: <LoginPage /> },
+  { path: AUTH_ROUTES.REGISTER.slice(1), element: <RegisterPage /> },
   { path: AUTH_ROUTES.FORGOT_PASSWORD.slice(1), element: <Navigate to={AUTH_ROUTES.LOGIN} replace /> },
 
   {
