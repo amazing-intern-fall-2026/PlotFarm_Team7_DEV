@@ -472,52 +472,36 @@ export async function loginWithGoogle(idToken: string): Promise<LoginResponseDat
     );
   }
 
-  try {
-    let user = await db.user.findUnique({ where: { googleId: profile.googleId } });
+  let user = await db.user.findUnique({ where: { googleId: profile.googleId } });
 
-    if (!user) {
-      const existingByEmail = await db.user.findUnique({ where: { email: profile.email } });
+  if (!user) {
+    const existingByEmail = await db.user.findUnique({ where: { email: profile.email } });
 
-      if (existingByEmail) {
-        user = await db.user.update({
-          where: { id: existingByEmail.id },
-          data: { googleId: profile.googleId, isVerified: true },
-        });
-      } else {
-        const passwordHash = await bcrypt.hash(randomUUID(), 10);
-        user = await db.user.create({
-          data: {
-            email: profile.email,
-            fullName: profile.fullName,
-            avatarUrl: profile.avatarUrl,
-            googleId: profile.googleId,
-            passwordHash,
-            role: "CUSTOMER",
-            isVerified: true,
-            userCode: generateUserCode(),
-          },
-        });
-      }
+    if (existingByEmail) {
+      user = await db.user.update({
+        where: { id: existingByEmail.id },
+        data: { googleId: profile.googleId, isVerified: true },
+      });
+    } else {
+      const passwordHash = await bcrypt.hash(randomUUID(), 10);
+      user = await db.user.create({
+        data: {
+          email: profile.email,
+          fullName: profile.fullName,
+          avatarUrl: profile.avatarUrl,
+          googleId: profile.googleId,
+          passwordHash,
+          role: "CUSTOMER",
+          isVerified: true,
+          userCode: generateUserCode(),
+        },
+      });
     }
-
-    if (user.deletedAt !== null) {
-      throw AppError.forbidden("Tài khoản đã bị khóa.", ERROR_CODES.ACCOUNT_DISABLED);
-    }
-
-    return buildLoginResponse(user);
-  } catch (err) {
-    if (err instanceof AppError) throw err;
-    console.warn(
-      `[Auth Google] Database not reachable (${(err as Error).message}). Falling back to mock Google login.`,
-    );
-    const mock = getMockLoginResponse(profile.email);
-    return {
-      ...mock,
-      user: {
-        ...mock.user,
-        fullName: profile.fullName,
-        avatarUrl: profile.avatarUrl ?? null,
-      },
-    };
   }
+
+  if (user.deletedAt !== null) {
+    throw AppError.forbidden("Tài khoản đã bị khóa.", ERROR_CODES.ACCOUNT_DISABLED);
+  }
+
+  return buildLoginResponse(user);
 }
