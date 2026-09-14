@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, Eye, EyeOff } from "lucide-react";
-import { Box, Heading, Text, Button } from "@/shared/ui";
+import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
+import { Box, Heading, Text, Button, Input } from "@/shared/ui";
+import { cn } from "@/shared/lib/utils";
 import { useRegisterForm } from "../model/useRegisterForm";
-
+import { renderGoogleSignInButton } from "../lib/googleIdentity";
 import { GoogleIcon } from "./LoginForm";
 
 export interface RegisterFormProps {
@@ -23,18 +24,25 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
     isLoading,
     isGoogleLoading,
     loginWithGoogle,
+    handleGoogleCredential,
     isSuccess,
     registeredEmail,
-    generalError,
   } = useRegisterForm();
 
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const googleBtnRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (googleBtnRef.current) {
+      void renderGoogleSignInButton(googleBtnRef.current, (credential) => {
+        void handleGoogleCredential(credential);
+      });
+    }
+  }, [handleGoogleCredential]);
 
   if (isSuccess) {
     return (
       <Box className="w-full space-y-6 text-left animate-in fade-in-50 duration-300">
-        <Box className="rounded-3xl border border-primary/30 bg-primary/5 p-8 text-center space-y-4 shadow-sm">
+        <Box className="rounded-2xl border border-primary/30 bg-primary/5 p-8 text-center space-y-4 shadow-sm">
           <Box className="h-16 w-16 mx-auto rounded-full bg-primary/10 text-primary flex items-center justify-center shadow-inner">
             <CheckCircle2 className="h-10 w-10" />
           </Box>
@@ -57,13 +65,13 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
           {onSwitchToLogin && (
             <Button
               type="button"
-              variant="default"
+              variant="primary"
               size="lg"
               onClick={onSwitchToLogin}
-              className="w-full rounded-full mt-4 font-bold shadow-md shadow-primary/20 bg-primary hover:bg-primary/90 text-white"
+              className="w-full rounded-xl mt-4 font-bold shadow-md shadow-primary/20"
+              rightIcon={<ArrowRight className="h-4 w-4" />}
             >
-              <span>Đăng nhập ngay</span>
-              <ArrowRight className="h-4 w-4 ml-2" />
+              Đăng nhập ngay
             </Button>
           )}
         </Box>
@@ -72,200 +80,140 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
   }
 
   return (
-    <Box className={`w-full space-y-5 text-left ${className || ""}`}>
+    <Box
+      as="form"
+      onSubmit={handleSubmit}
+      noValidate
+      className={cn("w-full space-y-3.5 xl:space-y-4 text-left", className)}
+    >
       {/* ── Tiêu đề chính ── */}
-      <Box className="space-y-1.5">
+      <Box className="space-y-1.5 text-left">
         <Heading
           level={1}
-          className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight"
+          className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight"
         >
           Khai phá tiềm năng của bạn
         </Heading>
         <Text
           variant="muted"
-          className="text-sm text-muted-foreground leading-relaxed"
+          className="text-sm sm:text-base text-muted-foreground leading-relaxed"
         >
-          Tạo tài khoản để truy cập vào kho tài nguyên nông nghiệp thông minh độc quyền của chúng tôi.
+          Tạo tài khoản để truy cập vào kho tài nguyên học thuật độc quyền của chúng tôi.
         </Text>
       </Box>
 
       {/* ── Thông báo lỗi chung nếu có ── */}
-      {generalError && (
-        <Box
-          role="alert"
-          className="rounded-2xl border border-destructive/30 bg-destructive/10 p-3.5 text-sm font-medium text-destructive animate-in fade-in-50"
-        >
-          {generalError}
+      {errors.general && (
+        <Box className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive flex items-center gap-2">
+          <ShieldCheck className="h-4 w-4 shrink-0 text-destructive" />
+          <span>{errors.general}</span>
         </Box>
       )}
 
-      {/* ── Form Đăng Ký ── */}
-      <form onSubmit={handleSubmit} noValidate className="space-y-3.5">
-        {/* Field 1: Họ và tên */}
-        <Box className="space-y-1">
-          <label className="text-sm font-bold text-foreground block">
-            Họ và tên
-          </label>
+      {/* ── Field 1: Họ và tên ── */}
+      <Input
+        id="register-fullname"
+        type="text"
+        label="Họ và tên"
+        placeholder="Nguyen Van A"
+        autoComplete="name"
+        error={errors.fullName}
+        disabled={isLoading}
+        className="h-11 sm:h-12 rounded-xl text-sm sm:text-base"
+        {...registerFullName}
+      />
+
+      {/* ── Field 2: Địa chỉ Email ── */}
+      <Input
+        id="register-email"
+        type="email"
+        label="Địa chỉ Email"
+        placeholder="example@academic.edu"
+        autoComplete="email"
+        error={errors.email}
+        disabled={isLoading}
+        className="h-11 sm:h-12 rounded-xl text-sm sm:text-base"
+        {...registerEmail}
+      />
+
+      {/* ── Field 3: Mật khẩu ── */}
+      <Input
+        id="register-password"
+        type="password"
+        label="Mật khẩu"
+        placeholder="••••••••"
+        autoComplete="new-password"
+        error={errors.password}
+        showPasswordToggle
+        disabled={isLoading}
+        className="h-11 sm:h-12 rounded-xl text-sm sm:text-base"
+        {...registerPassword}
+      />
+
+      {/* ── Field 4: Xác nhận mật khẩu ── */}
+      <Input
+        id="register-confirm-password"
+        type="password"
+        label="Xác nhận mật khẩu"
+        placeholder="••••••••"
+        autoComplete="new-password"
+        error={errors.confirmPassword}
+        showPasswordToggle
+        disabled={isLoading}
+        className="h-11 sm:h-12 rounded-xl text-sm sm:text-base"
+        {...registerConfirmPassword}
+      />
+
+      {/* ── Checkbox: Đồng ý điều khoản dịch vụ ── */}
+      <Box className="space-y-1 pt-1">
+        <label className="flex cursor-pointer items-start gap-2.5 text-sm text-foreground select-none">
           <input
-            type="text"
-            placeholder="Nguyen Van A"
-            autoComplete="name"
+            id="register-terms"
+            type="checkbox"
+            className="mt-0.5 h-4.5 w-4.5 accent-primary rounded border-input cursor-pointer"
             disabled={isLoading}
-            className={`w-full rounded-2xl border bg-white px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all outline-none ${
-              errors.fullName
-                ? "border-destructive focus:ring-2 focus:ring-destructive/20"
-                : "border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
-            }`}
-            {...registerFullName}
+            {...registerAgreeTerms}
           />
-          {errors.fullName && (
-            <p className="text-xs font-medium text-destructive mt-1">{errors.fullName}</p>
-          )}
-        </Box>
-
-        {/* Field 2: Địa chỉ Email */}
-        <Box className="space-y-1">
-          <label className="text-sm font-bold text-foreground block">
-            Địa chỉ Email
-          </label>
-          <input
-            type="email"
-            placeholder="example@greenfarm.vn"
-            autoComplete="email"
-            disabled={isLoading}
-            className={`w-full rounded-2xl border bg-white px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all outline-none ${
-              errors.email
-                ? "border-destructive focus:ring-2 focus:ring-destructive/20"
-                : "border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
-            }`}
-            {...registerEmail}
-          />
-          {errors.email && (
-            <p className="text-xs font-medium text-destructive mt-1">{errors.email}</p>
-          )}
-        </Box>
-
-        {/* Field 3: Mật khẩu */}
-        <Box className="space-y-1">
-          <label className="text-sm font-bold text-foreground block">
-            Mật khẩu
-          </label>
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="••••••••"
-              autoComplete="new-password"
-              disabled={isLoading}
-              className={`w-full rounded-2xl border bg-white pl-4 pr-11 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all outline-none ${
-                errors.password
-                  ? "border-destructive focus:ring-2 focus:ring-destructive/20"
-                  : "border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
-              }`}
-              {...registerPassword}
-            />
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
-              aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+          <span className="text-sm text-muted-foreground leading-snug">
+            Tôi đồng ý với{" "}
+            <Link
+              to="/terms"
+              className="font-medium text-primary hover:text-primary/80 hover:underline transition-colors"
             >
-              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </button>
-          </div>
-          {errors.password && (
-            <p className="text-xs font-medium text-destructive mt-1">{errors.password}</p>
-          )}
-        </Box>
-
-        {/* Field 4: Xác nhận mật khẩu */}
-        <Box className="space-y-1">
-          <label className="text-sm font-bold text-foreground block">
-            Xác nhận mật khẩu
-          </label>
-          <div className="relative">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="••••••••"
-              autoComplete="new-password"
-              disabled={isLoading}
-              className={`w-full rounded-2xl border bg-white pl-4 pr-11 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all outline-none ${
-                errors.confirmPassword
-                  ? "border-destructive focus:ring-2 focus:ring-destructive/20"
-                  : "border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
-              }`}
-              {...registerConfirmPassword}
-            />
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
-              aria-label={showConfirmPassword ? "Ẩn mật khẩu xác nhận" : "Hiện mật khẩu xác nhận"}
-            >
-              {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </button>
-          </div>
-          {errors.confirmPassword && (
-            <p className="text-xs font-medium text-destructive mt-1">{errors.confirmPassword}</p>
-          )}
-        </Box>
-
-        {/* Checkbox: Đồng ý điều khoản dịch vụ */}
-        <Box className="pt-1">
-          <label className="flex items-start gap-3 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              className="mt-1 h-5 w-5 rounded-md border-slate-300 text-primary focus:ring-primary/30 accent-primary cursor-pointer"
-              {...registerAgreeTerms}
-            />
-            <span className="text-sm text-foreground leading-snug">
-              Tôi đồng ý với{" "}
-              <Link
-                to="/terms"
-                className="font-bold text-primary hover:underline transition-all"
-              >
-                Điều khoản dịch vụ
-              </Link>
-            </span>
-          </label>
-          {errors.agreeTerms && (
-            <p className="text-xs font-medium text-destructive mt-1 pl-8">{errors.agreeTerms}</p>
-          )}
-
-          <p className="text-[11px] text-muted-foreground leading-relaxed mt-2 pl-8">
-            Chính sách áp dụng: Chính sách bảo mật & Hợp đồng canh tác Green Farm phiên bản 1.0, hiệu lực từ 2026.
+              Điều khoản dịch vụ
+            </Link>
+          </span>
+        </label>
+        {errors.agreeTerms && (
+          <p className="text-xs font-medium text-destructive pl-7">
+            {errors.agreeTerms}
           </p>
-        </Box>
+        )}
+        <Text variant="muted" className="text-xs text-muted-foreground pl-7 leading-relaxed">
+          Chính sách áp dụng: Chính sách dành cho Mentee phiên bản 1.0, hiệu lực từ 31/7/2026.
+        </Text>
+      </Box>
 
-        {/* Nút Tạo tài khoản mới → (Theme Green Farm) */}
-        <Button
-          type="submit"
-          disabled={isLoading}
-          className="w-full h-12 rounded-full text-base font-bold shadow-md shadow-primary/25 bg-primary hover:bg-primary/90 text-white transition-all transform active:scale-[0.99] mt-2 flex items-center justify-center gap-2"
-        >
-          {isLoading ? (
-            <span className="inline-flex items-center gap-2">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-              Đang khởi tạo tài khoản...
-            </span>
-          ) : (
-            <>
-              <span>Tạo tài khoản mới</span>
-              <ArrowRight className="h-5 w-5" />
-            </>
-          )}
-        </Button>
-      </form>
+      {/* ── Nút Tạo tài khoản mới → (Primary Design System Button) ── */}
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        className="w-full h-12 rounded-xl text-base sm:text-lg font-bold shadow-md shadow-primary/25 hover:shadow-primary/40 transition-all active:scale-[0.99] flex items-center justify-center text-center mt-2"
+        isLoading={isLoading}
+        rightIcon={<ArrowRight className="h-5 w-5" />}
+      >
+        Tạo tài khoản mới
+      </Button>
 
       {/* ── Link Đăng nhập ── */}
       {onSwitchToLogin && (
-        <Box className="text-center text-sm text-muted-foreground pt-1">
+        <Box className="text-center text-sm sm:text-base text-muted-foreground pt-1">
           <span>Bạn đã có tài khoản? </span>
           <button
             type="button"
             onClick={onSwitchToLogin}
-            className="font-bold text-primary hover:text-primary/80 hover:underline transition-colors"
+            className="font-semibold text-primary hover:text-primary/80 transition-colors"
           >
             Đăng nhập
           </button>
@@ -273,25 +221,44 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
       )}
 
       {/* ── Divider ── */}
-      <Box className="relative my-4">
-        <Box className="absolute inset-0 flex items-center">
-          <Box className="w-full border-t border-border/60" />
-        </Box>
-        <Box className="relative flex justify-center text-[11px] uppercase font-bold tracking-wider text-muted-foreground">
-          <span className="bg-background px-3">HOẶC ĐĂNG KÝ NHANH VỚI</span>
-        </Box>
+      <Box className="flex items-center my-3 sm:my-3.5">
+        <Box className="flex-1 border-t border-border" />
+        <span className="px-3 text-xs uppercase tracking-wider font-semibold text-muted-foreground whitespace-nowrap select-none">
+          HOẶC ĐĂNG KÝ NHANH VỚI
+        </span>
+        <Box className="flex-1 border-t border-border" />
       </Box>
 
-      {/* ── Google SSO Button (Bo viền chuẩn Theme Xanh) ── */}
-      <button
-        type="button"
-        onClick={loginWithGoogle}
-        disabled={isGoogleLoading || isLoading}
-        className="w-full h-12 rounded-full border-2 border-primary text-foreground font-semibold flex items-center justify-center gap-3 hover:bg-primary/5 active:scale-[0.99] transition-all disabled:opacity-50 shadow-sm"
-      >
-        <GoogleIcon />
-        <span className="text-sm font-semibold">Google</span>
-      </button>
+      {/* ── Google SSO Button (Consistent with LoginForm) ── */}
+      <Box className="relative w-full pt-0.5 rounded-xl overflow-hidden">
+        <button
+          type="button"
+          disabled={isLoading || isGoogleLoading}
+          onClick={() => void loginWithGoogle()}
+          className={cn(
+            "w-full h-11 sm:h-12 flex items-center justify-center gap-3 px-4 rounded-xl",
+            "border border-input bg-background hover:bg-muted/60 text-foreground font-medium text-sm sm:text-base",
+            "shadow-xs hover:shadow transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed",
+          )}
+        >
+          <GoogleIcon />
+          <span>
+            {isGoogleLoading ? "Đang xác thực Google..." : "Google"}
+          </span>
+        </button>
+
+        {/* Overlay Google Button chính thức để trigger One Tap / popup */}
+        <div
+          ref={googleBtnRef}
+          className={cn(
+            "absolute inset-0 opacity-0 cursor-pointer overflow-hidden z-10",
+            "[&_iframe]:!w-full [&_iframe]:!h-full [&_iframe]:!scale-110",
+            (isLoading || isGoogleLoading) && "pointer-events-none",
+          )}
+          tabIndex={-1}
+          aria-hidden="true"
+        />
+      </Box>
     </Box>
   );
 }
