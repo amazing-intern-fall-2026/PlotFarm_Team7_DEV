@@ -1,12 +1,10 @@
-import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 import { Box, Heading, Text, Button, Input } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 import { AUTH_ROUTES } from "../../constants";
 import { useRegisterForm } from "../../model/useRegisterForm";
-import { renderGoogleSignInButton } from "../../lib/googleIdentity";
-import { GoogleIcon } from "../login/LoginForm";
+import { GoogleSignInButton, AuthDivider } from "../common";
 
 export interface RegisterFormProps {
   onSwitchToLogin?: () => void;
@@ -32,16 +30,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
     isSuccess,
     registeredEmail,
   } = useRegisterForm();
-
-  const googleBtnRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    if (googleBtnRef.current) {
-      void renderGoogleSignInButton(googleBtnRef.current, (credential) => {
-        void handleGoogleCredential(credential);
-      });
-    }
-  }, [handleGoogleCredential]);
 
   if (isSuccess) {
     return (
@@ -143,7 +131,7 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         id="register-password"
         type="password"
         label="Mật khẩu"
-        placeholder="••••••••"
+        placeholder="Ít nhất 6 ký tự"
         autoComplete="new-password"
         error={errors.password}
         showPasswordToggle
@@ -152,12 +140,12 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         {...registerPassword}
       />
 
-      {/* ── Field 4: Xác nhận mật khẩu ── */}
+      {/* ── Field 4: Nhập lại Mật khẩu ── */}
       <Input
         id="register-confirm-password"
         type="password"
         label="Xác nhận mật khẩu"
-        placeholder="••••••••"
+        placeholder="Nhập lại mật khẩu phía trên"
         autoComplete="new-password"
         error={errors.confirmPassword}
         showPasswordToggle
@@ -166,17 +154,17 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         {...registerConfirmPassword}
       />
 
-      {/* ── Checkbox: Đồng ý điều khoản dịch vụ ── */}
-      <Box className="space-y-1 pt-1">
-        <label className="flex cursor-pointer items-start gap-2.5 text-sm text-foreground select-none">
+      {/* ── Checkbox Đồng ý điều khoản ── */}
+      <Box className="space-y-1.5 pt-0.5">
+        <label className="flex items-start gap-2.5 text-sm cursor-pointer select-none">
           <input
-            id="register-terms"
+            id="register-agree-terms"
             type="checkbox"
-            className="mt-0.5 h-4.5 w-4.5 accent-primary rounded border-input cursor-pointer"
+            className="h-4.5 w-4.5 accent-primary rounded border-input mt-0.5"
             disabled={isLoading}
             {...registerAgreeTerms}
           />
-          <span className="text-sm text-muted-foreground leading-snug">
+          <span className="text-xs sm:text-sm text-foreground leading-snug">
             Tôi đồng ý với{" "}
             <Link
               to="/terms"
@@ -221,44 +209,19 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
       </Box>
 
       {/* ── Divider ── */}
-      <Box className="flex items-center my-3 sm:my-3.5">
-        <Box className="flex-1 border-t border-border" />
-        <span className="px-3 text-xs uppercase tracking-wider font-semibold text-muted-foreground whitespace-nowrap select-none">
-          HOẶC ĐĂNG KÝ NHANH VỚI
-        </span>
-        <Box className="flex-1 border-t border-border" />
-      </Box>
+      <AuthDivider label="HOẶC ĐĂNG KÝ NHANH VỚI" />
 
       {/* ── Google SSO Button (Consistent with LoginForm) ── */}
-      <Box className="relative w-full pt-0.5 rounded-xl overflow-hidden">
-        <button
-          type="button"
-          disabled={isLoading || isGoogleLoading}
-          onClick={() => void loginWithGoogle()}
-          className={cn(
-            "w-full h-11 sm:h-12 flex items-center justify-center gap-3 px-4 rounded-xl",
-            "border border-input bg-background hover:bg-muted/60 text-foreground font-medium text-sm sm:text-base",
-            "shadow-xs hover:shadow transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed",
-          )}
-        >
-          <GoogleIcon />
-          <span>
-            {isGoogleLoading ? "Đang xác thực Google..." : "Google"}
-          </span>
-        </button>
-
-        {/* Overlay Google Button chính thức để trigger One Tap / popup */}
-        <div
-          ref={googleBtnRef}
-          className={cn(
-            "absolute inset-0 opacity-0 cursor-pointer overflow-hidden z-10",
-            "[&_iframe]:!w-full [&_iframe]:!h-full [&_iframe]:!scale-110",
-            (isLoading || isGoogleLoading) && "pointer-events-none",
-          )}
-          tabIndex={-1}
-          aria-hidden="true"
-        />
-      </Box>
+      <GoogleSignInButton
+        isLoading={isLoading || isGoogleLoading}
+        onCredentialResponse={(credential) => {
+          void handleGoogleCredential(credential);
+        }}
+        onFallbackClick={() => {
+          void loginWithGoogle();
+        }}
+        text="Google"
+      />
     </Box>
   );
 }

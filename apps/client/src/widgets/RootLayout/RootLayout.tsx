@@ -36,13 +36,10 @@ import {
   Container,
 } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
+import type { UserSummary } from "@/entities/user";
 
-export interface RootLayoutUser {
-  name: string;
-  avatarSrc?: string;
-}
-
-export type AppShellUser = RootLayoutUser;
+export type RootLayoutUser = UserSummary;
+export type AppShellUser = UserSummary;
 
 export interface RootLayoutProps {
   role: AppRole;

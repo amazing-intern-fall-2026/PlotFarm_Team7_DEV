@@ -3,4 +3,5 @@ export * from "./constants";
 export * from "./model/authCookie";
 export * from "./model/useLoginForm";
 export * from "./model/useRegisterForm";
+export * from "./model/useGoogleAuth";
 export * from "./ui";

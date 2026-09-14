@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -6,8 +5,8 @@ import { LoginRequestSchema, z, type LoginResponseData, type UserRole } from "@r
 import { AppError } from "@/shared/lib/errors/AppError";
 import { useDebouncedCallback } from "@/shared/lib/hooks/useDebouncedCallback";
 import { authApi } from "../api/authApi";
-import { promptGoogleSignIn } from "../lib/googleIdentity";
 import { setAuthSession } from "./authCookie";
+import { useGoogleAuth } from "./useGoogleAuth";
 import {
   ROLE_HOME_ROUTES,
   AUTH_DEBOUNCE_MS,
@@ -32,56 +31,20 @@ export interface LoginFormErrors {
 export function useLoginForm() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [googleError, setGoogleError] = useState<string | undefined>();
+  const {
+    isGoogleLoading,
+    googleError,
+    handleGoogleCredential,
+    loginWithGoogle,
+  } = useGoogleAuth();
 
   const completeLogin = (data: LoginResponseData) => {
-    // Đồng bộ cả SSOT LocalStorage lẫn SessionStorage
     setAuthSession(data);
-
     const from = (location.state as { from?: { pathname?: string } })?.from
       ?.pathname;
     const roleHome =
       ROLE_HOME_ROUTES[data.user.role as UserRole] ?? AUTH_ROUTES.LOGIN;
     navigate(from || roleHome, { replace: true });
-  };
-
-  const handleGoogleCredential = async (idToken: string) => {
-    setGoogleError(undefined);
-    setIsGoogleLoading(true);
-    try {
-      const data = await authApi.loginGoogle(idToken);
-      completeLogin(data);
-    } catch (err) {
-      if (err instanceof AppError) {
-        setGoogleError(getAuthErrorMessage(err.errorCode));
-      } else if (err instanceof Error) {
-        setGoogleError(err.message);
-      } else {
-        setGoogleError(getAuthErrorMessage("ERR_UNKNOWN"));
-      }
-    } finally {
-      setIsGoogleLoading(false);
-    }
-  };
-
-  const loginWithGoogle = async () => {
-    setGoogleError(undefined);
-    setIsGoogleLoading(true);
-    try {
-      await promptGoogleSignIn((idToken) => {
-        void handleGoogleCredential(idToken);
-      });
-    } catch (err) {
-      if (err instanceof AppError) {
-        setGoogleError(getAuthErrorMessage(err.errorCode));
-      } else if (err instanceof Error) {
-        setGoogleError(err.message);
-      } else {
-        setGoogleError(getAuthErrorMessage("ERR_UNKNOWN"));
-      }
-      setIsGoogleLoading(false);
-    }
   };
 
   const {
