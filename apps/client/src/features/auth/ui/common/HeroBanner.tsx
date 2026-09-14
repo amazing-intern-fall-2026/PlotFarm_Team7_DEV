@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import {
+  Radio,
   ChevronLeft,
   CheckCircle2,
   Monitor,
@@ -57,91 +58,73 @@ export function HeroBanner() {
         </Link>
       </Box>
 
-      {/* Center Hero Content */}
-      <Box className="relative z-10 max-w-lg space-y-6 my-auto py-8">
-        <Box className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-400/30 bg-emerald-950/60 backdrop-blur-md shadow-lg">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-          </span>
-          <span className="text-xs font-semibold text-emerald-300 tracking-wide">
-            {AUTH_UI_TEXT.HERO_LIVE_BADGE}
-          </span>
+      {/* Center Narrative Content */}
+      <Box className="relative z-10 max-w-xl my-auto py-4 xl:py-6 space-y-4">
+        <Box className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] text-emerald-300 backdrop-blur-md">
+          <Radio className="h-2.5 w-2.5 text-emerald-400 animate-pulse" />
+          <span>{AUTH_UI_TEXT.HERO_LIVE_BADGE}</span>
         </Box>
 
-        <Box className="space-y-3">
-          <Typography
-            variant="h1"
-            className="text-3xl xl:text-4xl 2xl:text-5xl font-extrabold text-white leading-tight tracking-tight drop-shadow-md"
-          >
-            {AUTH_UI_TEXT.HERO_HEADLINE}
-          </Typography>
-          <Text className="text-sm xl:text-base text-white/85 leading-relaxed font-normal max-w-md">
-            {AUTH_UI_TEXT.HERO_SUBTITLE}
+        <Typography
+          as="h1"
+          className="text-2xl xl:text-3xl 2xl:text-4xl font-extrabold text-white leading-tight tracking-tight drop-shadow-md"
+        >
+          {AUTH_UI_TEXT.HERO_HEADLINE}
+        </Typography>
+
+        <Text className="text-xs xl:text-sm text-white/85 leading-relaxed font-normal">
+          {AUTH_UI_TEXT.HERO_SUBTITLE}
+        </Text>
+
+        {/* Social proof trust badge */}
+        <Box className="pt-2 flex items-center gap-3">
+          <Box className="flex -space-x-2">
+            {["HN", "SG", "DL", "DN"].map((initials) => (
+              <Avatar
+                key={initials}
+                name={initials}
+                size="sm"
+                className="border-2 border-black/60 bg-emerald-800 text-white text-[10px] font-semibold h-7 w-7 shadow-sm"
+              />
+            ))}
+          </Box>
+          <Text className="text-xs text-white/80">
+            {AUTH_UI_TEXT.HERO_PROOF_PREFIX}{" "}
+            <strong className="text-emerald-300 font-bold">
+              {AUTH_UI_TEXT.HERO_PROOF_COUNT}
+            </strong>{" "}
+            {AUTH_UI_TEXT.HERO_PROOF_SUFFIX}
           </Text>
         </Box>
 
         {/* Feature Pills */}
-        <Box className="grid grid-cols-3 gap-2.5 pt-2">
-          <Box className="flex items-center gap-2 p-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-            <span className="text-xs text-white/90 font-medium">
-              {AUTH_UI_TEXT.HERO_PILL_SOIL}
-            </span>
-          </Box>
-          <Box className="flex items-center gap-2 p-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
-            <Monitor className="h-4 w-4 text-emerald-400 shrink-0" />
-            <span className="text-xs text-white/90 font-medium">
-              {AUTH_UI_TEXT.HERO_PILL_CAMERA}
-            </span>
-          </Box>
-          <Box className="flex items-center gap-2 p-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
-            <Truck className="h-4 w-4 text-emerald-400 shrink-0" />
-            <span className="text-xs text-white/90 font-medium">
-              {AUTH_UI_TEXT.HERO_PILL_DELIVERY}
-            </span>
-          </Box>
-        </Box>
-
-        {/* Testimonial Quote Card */}
-        <Box className="p-4 rounded-2xl border border-emerald-500/20 bg-emerald-950/40 backdrop-blur-md space-y-3">
-          <Text className="text-xs xl:text-sm text-emerald-100/90 italic leading-relaxed">
-            {AUTH_UI_TEXT.HERO_QUOTE}
-          </Text>
-          <Box className="flex items-center justify-between pt-1 border-t border-emerald-500/20">
-            <Box className="flex items-center gap-2.5">
-              <Avatar
-                name="Minh Thư"
-                size="sm"
-                className="border border-emerald-400/50 bg-emerald-800 text-white font-bold"
-              />
-              <Box>
-                <span className="text-xs font-semibold text-white block">
-                  Chị Minh Thư
-                </span>
-                <span className="text-[10px] text-emerald-300/80">
-                  Chủ thửa A-12 (Đã gắn bó 2 năm)
-                </span>
-              </Box>
-            </Box>
-            <Badge variant="success" className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-[10px]">
-              {AUTH_UI_TEXT.HERO_MODEL_BADGE}
+        <Box className="flex flex-wrap gap-2 pt-1">
+          {[
+            { icon: CheckCircle2, label: AUTH_UI_TEXT.HERO_PILL_SOIL },
+            { icon: Monitor, label: AUTH_UI_TEXT.HERO_PILL_CAMERA },
+            { icon: Truck, label: AUTH_UI_TEXT.HERO_PILL_DELIVERY },
+          ].map(({ icon: Icon, label }) => (
+            <Badge
+              key={label}
+              variant="outline"
+              icon={<Icon className="h-3 w-3 text-emerald-400" />}
+              className="rounded-full bg-black/40 border-white/15 text-[11px] text-white/90 px-3 py-1 backdrop-blur-md"
+            >
+              {label}
             </Badge>
-          </Box>
+          ))}
         </Box>
       </Box>
 
-      {/* Hero Bottom Bar */}
-      <Box className="relative z-10 flex items-center justify-between text-xs text-white/70 pt-4 border-t border-white/10">
-        <Box className="flex items-center gap-4">
-          <Link to="/about" className="hover:text-white transition-colors">
-            {AUTH_UI_TEXT.ABOUT_US}
-          </Link>
-          <span>•</span>
+      {/* Bottom Footer Links */}
+      <Box className="relative z-10 flex flex-wrap items-center justify-between text-xs text-white/60 border-t border-white/10 pt-4">
+        <Box className="flex items-center gap-6">
           <Link to="/terms" className="hover:text-white transition-colors">
             {AUTH_UI_TEXT.POLICY}
           </Link>
-          <span>•</span>
+          <Link to="/about" className="hover:text-white transition-colors">
+            {AUTH_UI_TEXT.ABOUT_US}
+          </Link>
           <Link to="/support" className="hover:text-white transition-colors">
             {AUTH_UI_TEXT.REPORT_ISSUE}
           </Link>
