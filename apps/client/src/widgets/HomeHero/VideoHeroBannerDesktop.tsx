@@ -116,7 +116,7 @@ export function VideoHeroBannerDesktop({
                 <Button
                   variant="primary"
                   size="default"
-                  className="h-11 px-6 rounded-xl text-sm md:text-base font-bold shadow-md shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all bg-emerald-600 hover:bg-emerald-500 border-none text-white"
+                  className="h-11 px-6 rounded-xl text-sm md:text-base font-bold shadow-md shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all bg-primary hover:bg-primary/90 border-none text-primary-foreground"
                   rightIcon={<ArrowRight className="h-4 w-4" />}
                 >
                   {primaryCtaText}

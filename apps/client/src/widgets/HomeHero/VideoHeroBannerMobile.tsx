@@ -121,7 +121,7 @@ export function VideoHeroBannerMobile({
             <Button
               variant="primary"
               size="default"
-              className="w-full h-10 px-5 rounded-xl text-sm font-bold shadow-md shadow-primary/30 active:scale-[0.98] transition-all bg-emerald-600 hover:bg-emerald-500 border-none text-white justify-center"
+              className="w-full h-10 px-5 rounded-xl text-sm font-bold shadow-md shadow-primary/30 active:scale-[0.98] transition-all bg-primary hover:bg-primary/90 border-none text-primary-foreground justify-center"
               rightIcon={<ArrowRight className="h-4 w-4" />}
             >
               {primaryCtaText}

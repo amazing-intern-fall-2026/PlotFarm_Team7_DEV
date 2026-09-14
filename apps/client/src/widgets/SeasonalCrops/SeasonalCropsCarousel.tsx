@@ -72,36 +72,41 @@ export function SeasonalCropsCarousel({
         {/* ── 1. Header Block with Title and Prev/Next Arrows ── */}
         <Box className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
           <Box className="space-y-1.5 text-left">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
+            {/* Season badge — dùng text-secondary design token */}
+            <span className="text-xs font-bold uppercase tracking-wider text-secondary">
               {seasonBadge}
             </span>
             <Typography
               as="h2"
-              className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"
+              className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight"
             >
               {title}
             </Typography>
-            <Text className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
+            <Text className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
               {subtitle}
             </Text>
           </Box>
 
-          {/* Splide Custom Top-Right Arrows */}
+          {/* Splide Custom Top-Right Arrows — dùng Button shared/ui */}
           <Box className="splide__arrows flex items-center gap-2 self-end sm:self-center shrink-0">
-            <button
+            <Button
               type="button"
-              className="splide__arrow splide__arrow--prev !static !transform-none w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm flex items-center justify-center transition-all cursor-pointer"
+              variant="outline"
+              size="icon"
+              className="splide__arrow splide__arrow--prev !static !transform-none w-9 h-9 rounded-full"
               aria-label="Giống trước"
             >
               <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="splide__arrow splide__arrow--next !static !transform-none w-9 h-9 rounded-full border border-emerald-800 bg-emerald-800 hover:bg-emerald-900 text-white shadow-sm flex items-center justify-center transition-all cursor-pointer"
+              variant="default"
+              size="icon"
+              className="splide__arrow splide__arrow--next !static !transform-none w-9 h-9 rounded-full"
               aria-label="Giống tiếp theo"
             >
               <ChevronRight className="h-4 w-4" />
-            </button>
+            </Button>
           </Box>
         </Box>
 
@@ -109,10 +114,10 @@ export function SeasonalCropsCarousel({
         <SplideTrack>
           {items.map((crop) => (
             <SplideSlide key={crop.cropCode} className="pb-4">
-              <Card className="h-full flex flex-col justify-between overflow-hidden border border-slate-200/90 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group">
-                
+              <Card className="h-full flex flex-col justify-between overflow-hidden rounded-2xl group">
+
                 {/* Image & Badge */}
-                <Box className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100">
+                <Box className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                   <img
                     src={crop.imageUrl}
                     alt={crop.name}
@@ -121,7 +126,8 @@ export function SeasonalCropsCarousel({
                   />
                   {crop.tagBadge && (
                     <Badge
-                      className="absolute top-3 left-3 bg-white/95 text-slate-800 text-[11px] font-semibold backdrop-blur-md shadow-sm border border-slate-200/80 px-2.5 py-0.5 rounded-full"
+                      variant="outline"
+                      className="absolute top-3 left-3 bg-card/95 text-card-foreground text-[11px] font-semibold backdrop-blur-md shadow-sm px-2.5 py-0.5 rounded-full"
                     >
                       {crop.tagBadge}
                     </Badge>
@@ -133,58 +139,59 @@ export function SeasonalCropsCarousel({
                   <Box className="space-y-1.5">
                     <Typography
                       as="h3"
-                      className="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-emerald-700 transition-colors"
+                      className="text-base sm:text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors"
                     >
                       {crop.name}
                     </Typography>
-                    <Text className="text-xs text-slate-500 leading-relaxed line-clamp-2 min-h-[32px]">
+                    <Text className="text-xs text-muted-foreground leading-relaxed line-clamp-2 min-h-[32px]">
                       {crop.description}
                     </Text>
                   </Box>
 
                   {/* 3 Metric Specs */}
-                  <Box className="space-y-2 pt-2 border-t border-slate-100 text-xs">
+                  <Box className="space-y-2 pt-2 border-t border-border text-xs">
                     <Box className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-slate-500">
-                        <Clock className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                        <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
                         Chu kỳ thu hoạch
                       </span>
-                      <span className="font-semibold text-slate-800">
+                      <span className="font-semibold text-foreground">
                         {crop.durationLabel}
                       </span>
                     </Box>
 
                     <Box className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-slate-500">
-                        <Hourglass className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                        <Hourglass className="h-3.5 w-3.5 text-primary shrink-0" />
                         Sản lượng dự kiến
                       </span>
-                      <span className="font-semibold text-slate-800">
+                      <span className="font-semibold text-foreground">
                         {crop.expectedYieldKg}
                       </span>
                     </Box>
 
                     <Box className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-slate-500">
-                        <Sprout className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                        <Sprout className="h-3.5 w-3.5 text-primary shrink-0" />
                         Thổ nhưỡng
                       </span>
-                      <span className="font-semibold text-slate-800 truncate max-w-[150px]">
+                      <span className="font-semibold text-foreground truncate max-w-[150px]">
                         {crop.soilType}
                       </span>
                     </Box>
                   </Box>
                 </CardContent>
 
-                {/* Card Footer Button */}
+                {/* Card Footer Button — dùng variant="ghost" với accent tone */}
                 <CardFooter className="px-5 pb-5 pt-0">
                   <Button
                     type="button"
+                    variant="outline"
                     onClick={() => navigate(`/plots?crop=${crop.cropSlug}`)}
-                    className="w-full h-10 rounded-full bg-emerald-50/80 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/50 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-none"
+                    className="w-full h-10 rounded-full border-primary/30 bg-accent hover:bg-accent/80 text-accent-foreground font-semibold text-xs sm:text-sm gap-2"
+                    rightIcon={<ArrowRight className="h-3.5 w-3.5" />}
                   >
-                    <span>Chọn gieo giống này</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    Chọn gieo giống này
                   </Button>
                 </CardFooter>
 
@@ -194,7 +201,7 @@ export function SeasonalCropsCarousel({
         </SplideTrack>
       </Splide>
 
-      {/* ── 3. Custom CSS for Splide Pagination Dots ── */}
+      {/* ── 3. Custom CSS for Splide Pagination Dots — dùng design tokens ── */}
       <style>{`
         .seasonal-crops-splide .splide__pagination {
           position: static;
@@ -208,7 +215,7 @@ export function SeasonalCropsCarousel({
         .seasonal-crops-splide .splide__pagination__page {
           width: 0.5rem;
           height: 0.5rem;
-          background: #cbd5e1;
+          background: var(--color-neutral-300);
           border-radius: 9999px;
           border: none;
           transition: all 0.3s ease;
@@ -216,7 +223,7 @@ export function SeasonalCropsCarousel({
         }
         .seasonal-crops-splide .splide__pagination__page.is-active {
           width: 1.5rem;
-          background: #065f46;
+          background: var(--color-primary-700);
           border-radius: 9999px;
           transform: none;
         }
