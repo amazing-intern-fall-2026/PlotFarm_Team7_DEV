@@ -316,6 +316,10 @@ export function RootLayout({
   const { t } = useT();
   const [activeId, setActiveId] = React.useState(activeNavId);
 
+  React.useEffect(() => {
+    setActiveId(activeNavId);
+  }, [activeNavId]);
+
   const handleNavChange = React.useCallback(
     (id: string) => {
       setActiveId(id);
@@ -357,10 +361,8 @@ export function RootLayout({
           onLogoutClick={onLogoutClick}
         />
 
-        <main className="flex-1 w-full py-6 lg:pb-6 pb-20">
-          <Container>
-            {children}
-          </Container>
+        <main className={cn("flex-1 w-full", activeId === "home" ? "pb-20 lg:pb-0" : "py-6 lg:pb-6 pb-20")}>
+          {activeId === "home" ? children : <Container>{children}</Container>}
         </main>
 
         <Footer />
