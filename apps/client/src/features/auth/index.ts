@@ -7,3 +7,4 @@ export * from "./ui/LoginPage";
 export * from "./ui/LoginForm";
 export * from "./ui/RegisterForm";
 export * from "./ui/ProtectedRoute";
+export * from "./ui/AuthSupportFab";

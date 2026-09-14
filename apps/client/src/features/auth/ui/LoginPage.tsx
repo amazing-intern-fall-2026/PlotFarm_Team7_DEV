@@ -4,6 +4,7 @@ import { Box, Skeleton } from "@/shared/ui";
 import { useDevice } from "@/shared/lib/device";
 import { AUTH_ROUTES, ROLE_HOME_ROUTES } from "../constants";
 import { getStoredUser, isAuthenticated } from "../model/authCookie";
+import { AuthSupportFab } from "./AuthSupportFab";
 
 // Code-splitting / Dynamic import: Mobile không tải bundle Desktop Hero, Desktop không tải Mobile Sheet
 const LoginDesktopView = React.lazy(() =>
@@ -69,6 +70,7 @@ export function LoginPage({ initialTab }: LoginPageProps) {
           <LoginMobileView tab={tab} onTabChange={handleTabChange} />
         )}
       </React.Suspense>
+      <AuthSupportFab />
     </Box>
   );
 }
