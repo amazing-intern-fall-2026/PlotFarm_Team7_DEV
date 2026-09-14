@@ -32,6 +32,7 @@ app.get("/health", (_req: Request, res: Response) => {
 });
 
 import fs from "fs";
+import { paymentsRouter } from "./modules/payments/payments.routes";
 
 const openApiPath = fs.existsSync(path.join(__dirname, "docs/openapi.yaml"))
   ? path.join(__dirname, "docs/openapi.yaml")
@@ -44,6 +45,7 @@ if (fs.existsSync(openApiPath)) {
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/v1", paymentsRouter);
 app.use("/api/v1/plots", plotsRoutes);
 app.post("/api/gateway", gatewayController);
 
