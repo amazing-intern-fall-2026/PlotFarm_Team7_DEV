@@ -4,18 +4,17 @@
  * và chuyển trạng thái về Guest mà KHÔNG làm crash ứng dụng React.
  */
 
+import type { LoginResponseData } from "@repo/shared";
+
 export const AUTH_STORAGE_KEY = "plotfarm_auth";
 
 export interface StoredAuthData {
-  user: {
-    id: string;
-    email: string;
-    fullName?: string;
-    role: string;
-  };
+  // Kế thừa trực tiếp từ @repo/shared LoginResponseData.user — SSOT
+  user: LoginResponseData["user"];
   accessToken: string;
   refreshToken?: string;
 }
+
 
 /**
  * Đọc dữ liệu xác thực từ LocalStorage an toàn (Safe Get Auth).

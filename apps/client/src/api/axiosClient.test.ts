@@ -71,7 +71,7 @@ describe("AxiosClient & Auth Storage Resilience Test Suite", () => {
 
   it("TEST 1: should attach Bearer token to request headers", async () => {
     safeSetAuth({
-      user: { id: "usr_1", email: "test@plotfarm.vn", role: "CUSTOMER" },
+      user: { userCode: "usr_1", email: "test@plotfarm.vn", fullName: "Test User", role: "CUSTOMER" },
       accessToken: "valid_access_token_123",
       refreshToken: "valid_refresh_token_123",
     });
@@ -90,7 +90,7 @@ describe("AxiosClient & Auth Storage Resilience Test Suite", () => {
 
   it("TEST 3 (AC-1): 5 concurrent 401 requests must trigger ONLY 1 refresh request and retry all 5", async () => {
     safeSetAuth({
-      user: { id: "usr_1", email: "test@plotfarm.vn", role: "CUSTOMER" },
+      user: { userCode: "usr_1", email: "test@plotfarm.vn", fullName: "Test User", role: "CUSTOMER" },
       accessToken: "expired_access_token",
       refreshToken: "valid_refresh_token",
     });
@@ -152,7 +152,7 @@ describe("AxiosClient & Auth Storage Resilience Test Suite", () => {
 
   it("TEST 4 (AC-2): Tampered JWT must clear auth and reject without calling refresh", async () => {
     safeSetAuth({
-      user: { id: "usr_1", email: "test@plotfarm.vn", role: "CUSTOMER" },
+      user: { userCode: "usr_1", email: "test@plotfarm.vn", fullName: "Test User", role: "CUSTOMER" },
       accessToken: "tampered_token",
       refreshToken: "refresh_token",
     });
@@ -178,7 +178,7 @@ describe("AxiosClient & Auth Storage Resilience Test Suite", () => {
 
   it("TEST 5 (AC-3): Disabled account must clear auth and reject without calling refresh", async () => {
     safeSetAuth({
-      user: { id: "usr_1", email: "test@plotfarm.vn", role: "CUSTOMER" },
+      user: { userCode: "usr_1", email: "test@plotfarm.vn", fullName: "Test User", role: "CUSTOMER" },
       accessToken: "valid_token",
       refreshToken: "refresh_token",
     });
@@ -213,7 +213,7 @@ describe("AxiosClient & Auth Storage Resilience Test Suite", () => {
 
   it("TEST 8: Refresh endpoint itself returning 401 must abort immediately and clear auth", async () => {
     safeSetAuth({
-      user: { id: "usr_1", email: "test@plotfarm.vn", role: "CUSTOMER" },
+      user: { userCode: "usr_1", email: "test@plotfarm.vn", fullName: "Test User", role: "CUSTOMER" },
       accessToken: "expired_token",
       refreshToken: "expired_refresh_token",
     });
