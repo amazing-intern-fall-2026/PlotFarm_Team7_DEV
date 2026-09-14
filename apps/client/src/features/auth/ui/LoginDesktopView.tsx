@@ -15,7 +15,8 @@ import {
   Avatar,
 } from "@/shared/ui";
 import { AUTH_UI_TEXT } from "../constants";
-import { LoginForm, RegisterPlaceholder } from "./LoginForm";
+import { LoginForm } from "./LoginForm";
+import { RegisterForm } from "./RegisterForm";
 
 function HeroBanner() {
   return (
@@ -155,7 +156,7 @@ export function LoginDesktopView({ tab, onTabChange }: LoginDesktopViewProps) {
           {tab === "login" ? (
             <LoginForm onSwitchToRegister={() => onTabChange("register")} />
           ) : (
-            <RegisterPlaceholder onSwitchToLogin={() => onTabChange("login")} />
+            <RegisterForm onSwitchToLogin={() => onTabChange("login")} />
           )}
         </Box>
 

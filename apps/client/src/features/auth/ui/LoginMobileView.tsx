@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { Box, Text, Logo } from "@/shared/ui";
 import { AUTH_UI_TEXT } from "../constants";
-import { LoginForm, RegisterPlaceholder } from "./LoginForm";
+import { LoginForm } from "./LoginForm";
+import { RegisterForm } from "./RegisterForm";
 
 export interface LoginMobileViewProps {
   tab: "login" | "register";
@@ -32,7 +33,7 @@ export function LoginMobileView({ tab, onTabChange }: LoginMobileViewProps) {
         {tab === "login" ? (
           <LoginForm onSwitchToRegister={() => onTabChange("register")} />
         ) : (
-          <RegisterPlaceholder onSwitchToLogin={() => onTabChange("login")} />
+          <RegisterForm onSwitchToLogin={() => onTabChange("login")} />
         )}
       </Box>
 
