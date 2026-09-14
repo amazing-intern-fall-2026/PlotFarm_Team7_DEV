@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { VideoHeroBanner } from "@/widgets/HomeHero";
+import { SeasonalCropsCarousel } from "@/widgets/SeasonalCrops";
 import {
   Card,
   CardHeader,
@@ -22,8 +23,11 @@ export function HomePage() {
       {/* 100% Full-bleed Continuous Video Hero Banner */}
       <VideoHeroBanner />
 
-      {/* Marketplace Showcase Container */}
-      <Container className="py-12 space-y-8">
+      {/* Marketplace Showcase & Seasonal Crops Carousel */}
+      <Container className="py-12 space-y-12">
+        {/* Seasonal Crops Splide Carousel */}
+        <SeasonalCropsCarousel />
+
         <Card className="w-full border border-emerald-100/80 bg-white/80 backdrop-blur shadow-sm">
           <CardHeader>
             <Box className="flex items-center justify-between">
