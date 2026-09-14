@@ -112,8 +112,11 @@ const ADMIN_NAV_RULES: RouteNavRule[] = [
 
 const ROLE_NAV_RULES: Record<AppRole, RouteNavRule[]> = {
   customer: CUSTOMER_NAV_RULES,
+  CUSTOMER: CUSTOMER_NAV_RULES,
   farmer: FARMER_NAV_RULES,
+  STAFF: FARMER_NAV_RULES,
   admin: ADMIN_NAV_RULES,
+  ADMIN: ADMIN_NAV_RULES,
 };
 
 const NAV_TARGETS: Record<string, string> = {

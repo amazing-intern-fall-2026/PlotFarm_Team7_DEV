@@ -10,6 +10,7 @@ import {
   GATEWAY_HEADER_AUTHORIZATION,
   GATEWAY_ERROR_MESSAGES,
 } from "./gateway.constants";
+import { getAccessToken } from "@/auth/authStorage";
 import { encryptPayload } from "./jwe";
 
 export interface GatewayEnvelope<T = unknown> {
@@ -30,7 +31,11 @@ export async function dispatchAction<TReq = unknown, TRes = unknown>(
   payload?: TReq,
 ): Promise<TRes> {
   const correlationId = crypto.randomUUID();
-  const token = sessionStorage.getItem("access_token");
+  const token =
+    getAccessToken() ||
+    (typeof sessionStorage !== "undefined"
+      ? sessionStorage.getItem("access_token")
+      : null);
 
   const envelope: GatewayEnvelope<TReq> = {
     action,

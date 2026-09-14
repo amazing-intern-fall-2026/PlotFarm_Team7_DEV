@@ -1,26 +1,25 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useLocation } from "react-router-dom";
-import type { LoginResponseData, UserRole } from "@repo/shared";
+import { LoginRequestSchema, z, type LoginResponseData, type UserRole } from "@repo/shared";
 import { AppError } from "@/shared/lib/errors/AppError";
 import { useDebouncedCallback } from "@/shared/lib/hooks/useDebouncedCallback";
 import { authApi } from "../api/authApi";
 import { promptGoogleSignIn } from "../lib/googleIdentity";
+import { setAuthSession } from "./authSession";
 import {
-  SESSION_KEYS,
   ROLE_HOME_ROUTES,
-  AUTH_VALIDATION,
-  AUTH_VALIDATION_MESSAGES,
   AUTH_DEBOUNCE_MS,
   AUTH_ROUTES,
   getAuthErrorMessage,
 } from "../constants";
 
-export interface LoginFormValues {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
+export const LoginFormSchema = LoginRequestSchema.extend({
+  rememberMe: z.boolean(),
+});
+
+export type LoginFormValues = z.infer<typeof LoginFormSchema>;
 
 export type LoginFormState = LoginFormValues;
 
@@ -37,9 +36,8 @@ export function useLoginForm() {
   const [googleError, setGoogleError] = useState<string | undefined>();
 
   const completeLogin = (data: LoginResponseData) => {
-    sessionStorage.setItem(SESSION_KEYS.ACCESS_TOKEN, data.accessToken);
-    sessionStorage.setItem(SESSION_KEYS.REFRESH_TOKEN, data.refreshToken);
-    sessionStorage.setItem(SESSION_KEYS.USER, JSON.stringify(data.user));
+    // Đồng bộ cả SSOT LocalStorage lẫn SessionStorage
+    setAuthSession(data);
 
     const from = (location.state as { from?: { pathname?: string } })?.from
       ?.pathname;
@@ -95,6 +93,7 @@ export function useLoginForm() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
+    resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -112,13 +111,6 @@ export function useLoginForm() {
   );
 
   const registerEmail = register("email", {
-    validate: {
-      notEmpty: (val: string) =>
-        (val && val.trim().length > 0) || AUTH_VALIDATION_MESSAGES.EMAIL_REQUIRED,
-      validEmail: (val: string) =>
-        AUTH_VALIDATION.EMAIL_REGEX.test(val?.trim() || "") ||
-        AUTH_VALIDATION_MESSAGES.EMAIL_INVALID,
-    },
     onChange: () => {
       clearErrors("root");
       debouncedTrigger("email");
@@ -126,13 +118,6 @@ export function useLoginForm() {
   });
 
   const registerPassword = register("password", {
-    validate: {
-      notEmpty: (val: string) =>
-        (val && val.length > 0) || AUTH_VALIDATION_MESSAGES.PASSWORD_REQUIRED,
-      minLength: (val: string) =>
-        (val && val.length >= AUTH_VALIDATION.PASSWORD_MIN_LENGTH) ||
-        AUTH_VALIDATION_MESSAGES.PASSWORD_MIN_LENGTH,
-    },
     onChange: () => {
       clearErrors("root");
       debouncedTrigger("password");
