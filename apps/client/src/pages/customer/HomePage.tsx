@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { VideoHeroBanner } from "@/widgets/HomeHero";
+import { HowItWorksGuide } from "@/widgets/HowItWorks";
 import { SeasonalCropsCarousel } from "@/widgets/SeasonalCrops";
 import {
   Card,
@@ -25,6 +26,9 @@ export function HomePage() {
 
       {/* Marketplace Showcase & Seasonal Crops Carousel */}
       <Container className="py-12 space-y-12">
+        {/* Hướng Dẫn / Chuỗi Quy Trình Các Bước Sử Dụng */}
+        <HowItWorksGuide />
+
         {/* Seasonal Crops Splide Carousel */}
         <SeasonalCropsCarousel />
 

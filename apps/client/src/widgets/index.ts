@@ -11,4 +11,5 @@
 export * from "./RootLayout";
 export * from "./HomeHero";
 export * from "./SeasonalCrops";
+export * from "./HowItWorks";
 

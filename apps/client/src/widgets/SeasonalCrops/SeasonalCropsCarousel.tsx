@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
+// Import full CSS bundle — bao gồm Autoplay model (progress bar + play/pause)
+import "@splidejs/splide/css";
 import {
   ChevronLeft,
   ChevronRight,
@@ -48,31 +49,26 @@ export function SeasonalCropsCarousel({
           type: "loop",
           perPage: 3,
           perMove: 1,
+          // ── Autoplay Model ──
           autoplay: true,
           interval: 4500,
           pauseOnHover: true,
           pauseOnFocus: true,
           resetProgress: false,
+          // ─────────────────────
           gap: "1.5rem",
           speed: 700,
           arrows: true,
           pagination: true,
           breakpoints: {
-            1100: {
-              perPage: 2,
-              gap: "1.25rem",
-            },
-            680: {
-              perPage: 1,
-              gap: "1rem",
-            },
+            1100: { perPage: 2, gap: "1.25rem" },
+            680: { perPage: 1, gap: "1rem" },
           },
         }}
       >
         {/* ── 1. Header Block with Title and Prev/Next Arrows ── */}
         <Box className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
           <Box className="space-y-1.5 text-left">
-            {/* Season badge — dùng text-secondary design token */}
             <span className="text-xs font-bold uppercase tracking-wider text-secondary">
               {seasonBadge}
             </span>
@@ -87,13 +83,13 @@ export function SeasonalCropsCarousel({
             </Text>
           </Box>
 
-          {/* Splide Custom Top-Right Arrows — dùng Button shared/ui */}
-          <Box className="splide__arrows flex items-center gap-2 self-end sm:self-center shrink-0">
+          {/* Splide Custom Top-Right Arrows — outline pair */}
+          <Box className="splide__arrows flex items-center gap-2 self-end">
             <Button
               type="button"
               variant="outline"
               size="icon"
-              className="splide__arrow splide__arrow--prev !static !transform-none w-9 h-9 rounded-full"
+              className="splide__arrow splide__arrow--prev !static !transform-none shadow-sm [&_svg]:!transform-none"
               aria-label="Giống trước"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -102,7 +98,7 @@ export function SeasonalCropsCarousel({
               type="button"
               variant="default"
               size="icon"
-              className="splide__arrow splide__arrow--next !static !transform-none w-9 h-9 rounded-full"
+              className="splide__arrow splide__arrow--next !static !transform-none shadow-sm [&_svg]:!transform-none"
               aria-label="Giống tiếp theo"
             >
               <ChevronRight className="h-4 w-4" />
@@ -115,7 +111,6 @@ export function SeasonalCropsCarousel({
           {items.map((crop) => (
             <SplideSlide key={crop.cropCode} className="pb-4">
               <Card className="h-full flex flex-col justify-between overflow-hidden rounded-2xl group">
-
                 {/* Image & Badge */}
                 <Box className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                   <img
@@ -182,7 +177,7 @@ export function SeasonalCropsCarousel({
                   </Box>
                 </CardContent>
 
-                {/* Card Footer Button — dùng variant="ghost" với accent tone */}
+                {/* Card Footer Button */}
                 <CardFooter className="px-5 pb-5 pt-0">
                   <Button
                     type="button"
@@ -194,15 +189,33 @@ export function SeasonalCropsCarousel({
                     Chọn gieo giống này
                   </Button>
                 </CardFooter>
-
               </Card>
             </SplideSlide>
           ))}
         </SplideTrack>
+
+        {/* ── 3. Autoplay Progress Bar — đặt SAU track, khớp Splide Autoplay docs ── */}
+        <div className="splide__progress">
+          <div className="splide__progress__bar" />
+        </div>
       </Splide>
 
-      {/* ── 3. Custom CSS for Splide Pagination Dots — dùng design tokens ── */}
+      {/* ── 4. Custom CSS — Pagination dots + Autoplay progress bar styling ── */}
       <style>{`
+        /* Custom Top-Right Header Arrows — never float over cards */
+        .seasonal-crops-splide .splide__arrows {
+          display: flex;
+          position: static;
+        }
+        .seasonal-crops-splide .splide__arrow {
+          position: static !important;
+          transform: none !important;
+          top: auto !important;
+          left: auto !important;
+          right: auto !important;
+        }
+
+        /* Pagination dots */
         .seasonal-crops-splide .splide__pagination {
           position: static;
           margin-top: 1rem;
@@ -226,6 +239,21 @@ export function SeasonalCropsCarousel({
           background: var(--color-primary-700);
           border-radius: 9999px;
           transform: none;
+        }
+
+        /* Autoplay progress bar — nằm giữa track và pagination dots */
+        .seasonal-crops-splide .splide__progress {
+          height: 3px;
+          background: var(--color-neutral-200);
+          border-radius: 9999px;
+          margin-top: 0.75rem;
+          overflow: hidden;
+        }
+        .seasonal-crops-splide .splide__progress__bar {
+          height: 100%;
+          background: var(--color-primary-600);
+          border-radius: 9999px;
+          transition: width 0ms linear;
         }
       `}</style>
     </Box>
