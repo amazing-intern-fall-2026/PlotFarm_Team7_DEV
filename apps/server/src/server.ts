@@ -6,6 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import { errorHandler } from "./middlewares/errorHandler";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { plotsRoutes } from "./modules/plots/plots.routes";
 import { gatewayController } from "./modules/gateway/gateway.controller";
 
 dotenv.config();
@@ -43,7 +44,9 @@ if (fs.existsSync(openApiPath)) {
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/v1/plots", plotsRoutes);
 app.post("/api/gateway", gatewayController);
+
 
 
 // Centralized Global Error Handler Middleware (MUST be placed after all routes)

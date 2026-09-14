@@ -35,3 +35,16 @@ export const AssignStaffRequestSchema = z.object({
   notes: z.string().optional(),
 });
 export type AssignStaffRequest = z.infer<typeof AssignStaffRequestSchema>;
+
+export const PlotsQuerySchema = z.object({
+  farmId: z.string().uuid("farmId phải là UUID hợp lệ").optional(),
+  status: z.enum(["AVAILABLE", "OCCUPIED", "MAINTENANCE", "RESERVED"]).optional(),
+  page: z.coerce.number().int("page phải là số nguyên").min(1, "page phải lớn hơn hoặc bằng 1").default(1),
+  limit: z.coerce.number().int("limit phải là số nguyên").min(1, "limit phải lớn hơn hoặc bằng 1").max(100, "limit không vượt quá 100").default(20),
+});
+export type PlotsQuery = z.infer<typeof PlotsQuerySchema>;
+
+export const PlotDetailParamsSchema = z.object({
+  id: z.string().uuid("ID ô đất không hợp lệ"),
+});
+export type PlotDetailParams = z.infer<typeof PlotDetailParamsSchema>;
