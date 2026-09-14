@@ -30,3 +30,11 @@ export const ERROR_CODES = {
 
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
 
+/**
+ * Type-safe map từ ErrorCode sang human-readable message.
+ * Dùng cho FE error message dictionaries — TypeScript sẽ cảnh báo
+ * nếu dùng key không tồn tại trong ErrorCode.
+ */
+export type ErrorMessageMap = Partial<Record<ErrorCode | "ERR_UNKNOWN", string>>;
+
+
