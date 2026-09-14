@@ -19,16 +19,18 @@ export const RegisterFormSchema = z
   .object({
     fullName: z
       .string()
+      .min(1, "Vui lòng nhập họ và tên")
       .min(2, "Họ và tên phải có ít nhất 2 ký tự")
       .max(50, "Họ và tên không được vượt quá 50 ký tự"),
     email: z
       .string()
-      .min(1, "Địa chỉ email không được để trống")
-      .email("Địa chỉ email không đúng định dạng"),
+      .min(1, "Vui lòng nhập địa chỉ email")
+      .email("Email không đúng định dạng"),
     password: z
       .string()
+      .min(1, "Vui lòng nhập mật khẩu")
       .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
-      .max(100, "Mật khẩu quá dài"),
+      .max(100, "Mật khẩu không được vượt quá 100 ký tự"),
     confirmPassword: z
       .string()
       .min(1, "Vui lòng xác nhận mật khẩu"),
