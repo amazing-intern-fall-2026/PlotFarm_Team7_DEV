@@ -7,6 +7,7 @@ import {
   RegisterRequestSchema,
   VerifyEmailRequestSchema,
   ResendOtpRequestSchema,
+  type AuthPayload,
 } from "@repo/shared";
 import { AppError } from "../../errors/AppError";
 import { buildSuccessResponse } from "../../common/utils/envelope";
@@ -29,11 +30,8 @@ const JWT_ACCESS_SECRET =
   process.env.JWT_ACCESS_SECRET || "default-access-secret-key-change-in-prod";
 const REQUEST_MAX_SKEW_MS = 60_000;
 
-interface GatewayUser {
-  userId: string;
-  email: string;
-  role: string;
-}
+// GatewayUser is AuthPayload from @repo/shared — no local duplicate needed
+type GatewayUser = AuthPayload;
 
 type ActionHandler = (
   payload: unknown,
