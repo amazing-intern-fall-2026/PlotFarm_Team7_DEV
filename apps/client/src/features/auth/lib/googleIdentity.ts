@@ -6,14 +6,31 @@ declare global {
           initialize: (config: {
             client_id: string;
             callback: (response: { credential: string }) => void;
+            auto_select?: boolean;
+            cancel_on_tap_outside?: boolean;
           }) => void;
           prompt: (
             notification?: (notification: {
               isNotDisplayed: () => boolean;
               isSkippedMoment: () => boolean;
               getNotDisplayedReason?: () => string;
+              getSkippedReason?: () => string;
             }) => void,
           ) => void;
+          renderButton: (
+            parent: HTMLElement,
+            options: {
+              type?: "standard" | "icon";
+              theme?: "outline" | "filled_blue" | "filled_black";
+              size?: "large" | "medium" | "small";
+              text?: "signin_with" | "signup_with" | "continue_with" | "signin";
+              shape?: "rectangular" | "pill" | "circle" | "square";
+              logo_alignment?: "left" | "center";
+              width?: number | string;
+              locale?: string;
+            },
+          ) => void;
+          disableAutoSelect?: () => void;
         };
       };
     };
@@ -26,10 +43,18 @@ const GOOGLE_CLIENT_ID = import.meta.env?.VITE_GOOGLE_CLIENT_ID as
 
 let scriptLoadPromise: Promise<void> | null = null;
 
-function loadGoogleScript(): Promise<void> {
+export function loadGoogleScript(): Promise<void> {
   if (scriptLoadPromise) return scriptLoadPromise;
 
   scriptLoadPromise = new Promise((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[src="https://accounts.google.com/gsi/client"]',
+    );
+    if (existing) {
+      resolve();
+      return;
+    }
+
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
     script.async = true;
@@ -43,23 +68,54 @@ function loadGoogleScript(): Promise<void> {
 }
 
 /**
- * Hiện popup đăng nhập Google (One Tap), trả ID Token qua callback khi thành công.
- * Nếu chưa cấu hình Google Client ID thật trong .env, tự động cấp demo token để kiểm thử mượt mà.
+ * Render Google Official Sign-In Button vào element chỉ định.
+ * Khi user click, Google sẽ trực tiếp kích hoạt popup chọn tài khoản (Account Chooser).
+ */
+export async function renderGoogleSignInButton(
+  container: HTMLElement,
+  onCredential: (idToken: string) => void,
+): Promise<void> {
+  if (!GOOGLE_CLIENT_ID) return;
+
+  await loadGoogleScript();
+
+  if (!window.google?.accounts?.id) return;
+
+  window.google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: (response) => onCredential(response.credential),
+  });
+
+  // Dọn dẹp DOM cũ trong container để tránh duplicate nếu re-render
+  container.innerHTML = "";
+
+  const containerWidth = container.offsetWidth || 380;
+
+  window.google.accounts.id.renderButton(container, {
+    type: "standard",
+    theme: "outline",
+    size: "large",
+    text: "signin_with",
+    shape: "rectangular",
+    logo_alignment: "left",
+    width: Math.min(Math.max(containerWidth, 240), 400),
+    locale: "vi",
+  });
+}
+
+/**
+ * Hiện popup đăng nhập Google (One Tap) hoặc kích hoạt flow đăng nhập.
  */
 export async function promptGoogleSignIn(
   onCredential: (idToken: string) => void,
 ): Promise<void> {
-  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes("sampleclientid")) {
-    console.info(
-      "[Google Sign-In] Đang dùng Google Client ID mẫu. Kích hoạt tài khoản Google Demo cho môi trường thử nghiệm."
-    );
-    onCredential(`demo-google-token-${Date.now()}`);
-    return;
+  if (!GOOGLE_CLIENT_ID) {
+    throw new Error("VITE_GOOGLE_CLIENT_ID chưa được cấu hình.");
   }
 
   await loadGoogleScript();
 
-  if (!window.google) {
+  if (!window.google?.accounts?.id) {
     throw new Error("Google Identity Services chưa sẵn sàng.");
   }
 
@@ -69,11 +125,9 @@ export async function promptGoogleSignIn(
   });
 
   window.google.accounts.id.prompt((notification) => {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      console.warn(
-        `[Google Sign-In] Google prompt không thể hiển thị (${notification.getNotDisplayedReason?.() || "skipped"}). Kích hoạt tài khoản Google Demo thay thế.`
-      );
-      onCredential(`demo-google-token-${Date.now()}`);
+    if (notification.isNotDisplayed()) {
+      const reason = notification.getNotDisplayedReason?.() || "unknown";
+      console.warn(`[Google One Tap] Không thể hiển thị: ${reason}`);
     }
   });
 }

@@ -399,7 +399,7 @@ export function RootLayout({
     <div className="flex items-center gap-3 w-full">
       <Avatar name={user?.name || "Ban Trị"} size="md" status="online" />
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-foreground truncate">{user?.name || "Admin BioCloud"}</p>
+        <p className="text-sm font-bold text-foreground truncate">{user?.name || "Admin Green Farm"}</p>
         <p className="text-xs text-muted-foreground truncate">Toàn quyền hệ thống</p>
       </div>
       <button

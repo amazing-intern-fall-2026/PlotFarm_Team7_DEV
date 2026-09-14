@@ -48,24 +48,40 @@ export function useLoginForm() {
     navigate(from || roleHome, { replace: true });
   };
 
+  const handleGoogleCredential = async (idToken: string) => {
+    setGoogleError(undefined);
+    setIsGoogleLoading(true);
+    try {
+      const data = await authApi.loginGoogle(idToken);
+      completeLogin(data);
+    } catch (err) {
+      if (err instanceof AppError) {
+        setGoogleError(getAuthErrorMessage(err.errorCode));
+      } else if (err instanceof Error) {
+        setGoogleError(err.message);
+      } else {
+        setGoogleError(getAuthErrorMessage("ERR_UNKNOWN"));
+      }
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   const loginWithGoogle = async () => {
     setGoogleError(undefined);
     setIsGoogleLoading(true);
     try {
-      await promptGoogleSignIn(async (idToken) => {
-        try {
-          const data = await authApi.loginGoogle(idToken);
-          completeLogin(data);
-        } catch (err) {
-          const appErr = AppError.fromUnknown(err);
-          setGoogleError(getAuthErrorMessage(appErr.errorCode));
-        } finally {
-          setIsGoogleLoading(false);
-        }
+      await promptGoogleSignIn((idToken) => {
+        void handleGoogleCredential(idToken);
       });
     } catch (err) {
-      const appErr = AppError.fromUnknown(err);
-      setGoogleError(getAuthErrorMessage(appErr.errorCode));
+      if (err instanceof AppError) {
+        setGoogleError(getAuthErrorMessage(err.errorCode));
+      } else if (err instanceof Error) {
+        setGoogleError(err.message);
+      } else {
+        setGoogleError(getAuthErrorMessage("ERR_UNKNOWN"));
+      }
       setIsGoogleLoading(false);
     }
   };
@@ -157,6 +173,7 @@ export function useLoginForm() {
     debouncedTrigger,
     setValue,
     loginWithGoogle,
+    handleGoogleCredential,
     isGoogleLoading,
   };
 }

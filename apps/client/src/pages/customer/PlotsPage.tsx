@@ -28,7 +28,7 @@ export function PlotsPage() {
         </CardHeader>
         <CardContent>
           <Text variant="muted" className="text-sm">
-            Lựa chọn ô đất phù hợp để bắt đầu hành trình canh tác nông nghiệp số cùng kỹ sư BioCloud.
+            Lựa chọn ô đất phù hợp để bắt đầu hành trình canh tác nông nghiệp số cùng kỹ sư Green Farm.
           </Text>
         </CardContent>
         <CardFooter>

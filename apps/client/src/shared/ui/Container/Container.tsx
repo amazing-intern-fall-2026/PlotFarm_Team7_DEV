@@ -26,7 +26,7 @@ const sizeMap: Record<ContainerSize, string> = {
 };
 
 /**
- * Container — Thành phần bọc khung giao diện trung tâm chuẩn hóa cho toàn bộ PlotFarm.
+ * Container — Thành phần bọc khung giao diện trung tâm chuẩn hóa cho toàn bộ Green Farm.
  * Đảm bảo độ rộng tối đa (max-width), tự động căn giữa và đệm lề (gutter) đồng nhất trên mọi màn hình.
  */
 export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(

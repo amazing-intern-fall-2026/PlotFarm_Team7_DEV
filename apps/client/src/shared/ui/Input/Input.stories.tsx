@@ -11,22 +11,15 @@ const meta: Meta<typeof Input> = {
       description: {
         component: `
 ### 📌 Giới thiệu Component
-**Input** là thành phần nhập liệu chuẩn hóa duy nhất của PlotFarm, tích hợp sẵn \`label\`, chú thích (\`hint\`), thông báo lỗi (\`error\`), và các vị trí gắn icon trước/sau (\`leftIcon\`, \`rightIcon\`).
+**Input** là thành phần nhập liệu chuẩn hóa duy nhất của Green Farm, tích hợp sẵn \`label\`, chú thích (\`hint\`), thông báo lỗi (\`error\`), và các vị trí gắn icon trước/sau (\`leftIcon\`, \`rightIcon\`).
 
-#### Mục đích sử dụng:
-- Các trường nhập liệu trong form đăng nhập, đăng ký, quên mật khẩu.
-- Ô tìm kiếm thửa đất, nông sản, bài viết (sử dụng kết hợp \`leftIcon={<Search />}\`).
-- Nhập các thông số diện tích, giá thuê, mã định danh thửa đất.
-
-#### Cách truyền biến (Props & Usage):
+#### Cách sử dụng chuẩn FSD:
 \`\`\`tsx
 import { Input } from "@/shared/ui";
-import { Search, Mail } from "lucide-react";
 
-// Input có icon tìm kiếm
+// Input tìm kiếm cơ bản
 <Input
-  placeholder="Tìm kiếm mảnh đất theo vị trí..."
-  leftIcon={<Search className="h-4 w-4" />}
+  placeholder="Tìm kiếm ô đất canh tác..."
   value={searchTerm}
   onChange={(e) => setSearchTerm(e.target.value)}
 />
@@ -34,7 +27,7 @@ import { Search, Mail } from "lucide-react";
 // Input có label, hint và validation error
 <Input
   label="Email liên hệ"
-  placeholder="farmer@plotfarm.vn"
+  placeholder="farmer@greenfarm.vn"
   leftIcon={<Mail className="h-4 w-4" />}
   error={errors.email?.message}
   hint="Chúng tôi sẽ gửi hợp đồng qua email này"
@@ -112,7 +105,7 @@ export const EmailInput: Story = {
   args: {
     label: "Địa chỉ Email",
     type: "email",
-    placeholder: "nguyenvanan@plotfarm.vn",
+    placeholder: "nguyenvanan@greenfarm.vn",
     leftIcon: <Mail className="h-4 w-4" />
   }
 };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Sprout, MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { State } from "../State";
 import { Box } from "../Box";
@@ -28,7 +28,7 @@ export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
  */
 export function Footer({
   className,
-  brandName = "BioCloud Farming",
+  brandName = "Green Farm",
   isLoading = false,
   ...props
 }: FooterProps) {
@@ -60,11 +60,15 @@ export function Footer({
     >
       <Container className="pt-12 pb-8">
         <Box className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {/* Cột 1: BioCloud Farming & Tiêu chuẩn */}
+          {/* Cột 1: Green Farm & Tiêu chuẩn */}
           <Box className="space-y-4">
             <Box className="flex items-center gap-2.5">
-              <Box className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shrink-0 shadow-xs">
-                <Sprout className="h-4 w-4" />
+              <Box className="flex h-9 w-9 items-center justify-center rounded-xl bg-white border border-border/50 p-1 shadow-xs shrink-0 overflow-hidden">
+                <img
+                  src="/images/logo.png"
+                  alt="Green Farm Logo"
+                  className="h-full w-full object-contain"
+                />
               </Box>
               <Typography.H4 className="text-lg font-bold tracking-tight text-primary">
                 {brandName}
@@ -202,10 +206,10 @@ export function Footer({
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 text-primary shrink-0" />
                 <a
-                  href="mailto:kythuat@biocloud.dalat.vn"
+                  href="mailto:kythuat@greenfarm.dalat.vn"
                   className="hover:text-primary transition-colors text-sm"
                 >
-                  kythuat@biocloud.dalat.vn
+                  kythuat@greenfarm.dalat.vn
                 </a>
               </li>
             </ul>

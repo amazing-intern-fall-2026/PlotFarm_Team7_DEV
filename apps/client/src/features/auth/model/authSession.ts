@@ -40,10 +40,21 @@ export function hasRole(allowedRoles: UserRole[]): boolean {
 }
 
 /**
- * Xóa sạch phiên đăng nhập.
+ * Xóa sạch phiên đăng nhập (Tokens, User, và dọn dẹp cookie Google One Tap nếu có).
  */
 export function clearAuthSession(): void {
   sessionStorage.removeItem(SESSION_KEYS.ACCESS_TOKEN);
   sessionStorage.removeItem(SESSION_KEYS.REFRESH_TOKEN);
   sessionStorage.removeItem(SESSION_KEYS.USER);
+
+  // Xóa cookie g_state do Google Identity Services tự sinh trên domain
+  if (typeof document !== "undefined") {
+    document.cookie = "g_state=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = `g_state=; path=/; domain=${window.location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  }
+
+  // Thu hồi trạng thái auto-select của Google
+  if (typeof window !== "undefined" && window.google?.accounts?.id?.disableAutoSelect) {
+    window.google.accounts.id.disableAutoSelect();
+  }
 }

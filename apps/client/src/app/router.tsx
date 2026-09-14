@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { RootLayout } from "@/widgets/RootLayout";
 import type { AppRole, TopbarBreadcrumbItem } from "@/shared/ui";
-import { LoginPage, ProtectedRoute } from "@/features/auth";
+import { LoginPage, ProtectedRoute, clearAuthSession } from "@/features/auth";
 import { AUTH_ROUTES, SESSION_KEYS } from "@/features/auth/constants";
 import {
   HomePage,
@@ -65,7 +65,7 @@ const CUSTOMER_NAV_RULES: RouteNavRule[] = [
   },
   {
     pattern: /.*/,
-    breadcrumbs: [{ label: "PlotFarm" }, { label: "Trang chủ" }],
+    breadcrumbs: [{ label: "Green Farm" }, { label: "Trang chủ" }],
     activeNavId: "home",
   },
 ];
@@ -159,9 +159,7 @@ export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
   }, [pathname]);
 
   const handleLogout = React.useCallback(() => {
-    sessionStorage.removeItem(SESSION_KEYS.ACCESS_TOKEN);
-    sessionStorage.removeItem(SESSION_KEYS.REFRESH_TOKEN);
-    sessionStorage.removeItem(SESSION_KEYS.USER);
+    clearAuthSession();
     navigate(AUTH_ROUTES.LOGIN);
   }, [navigate]);
 

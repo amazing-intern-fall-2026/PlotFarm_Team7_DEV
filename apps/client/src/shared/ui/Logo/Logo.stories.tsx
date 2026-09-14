@@ -10,7 +10,7 @@ const meta: Meta<typeof Logo> = {
       description: {
         component: `
 ### 📌 Giới thiệu Component
-**Logo** là biểu tượng nhận diện thương hiệu chính thức của hệ thống **PlotFarm** với hình tượng mầm cây vươn lên từ mặt đất trên nền xanh bo góc (\`#23a54f\`).
+**Logo** là biểu tượng nhận diện thương hiệu chính thức của hệ thống **Green Farm** với hình ảnh mái nhà nông trại và chồi lá xanh mát vươn lên đặc trưng.
 
 #### Mục đích sử dụng:
 - Thanh điều hướng chính (Header / Navbar).
@@ -42,7 +42,7 @@ import { Logo } from "@/shared/ui";
     },
     showText: {
       control: "boolean",
-      description: "Hiển thị kèm tên chữ thương hiệu PlotFarm",
+      description: "Hiển thị kèm tên chữ thương hiệu Green Farm",
       table: {
         defaultValue: { summary: "false" }
       }
@@ -62,7 +62,7 @@ export const DefaultIcon: Story = {
 };
 
 export const WithBrandText: Story = {
-  name: "2. Kèm Tên Thương Hiệu PlotFarm",
+  name: "2. Kèm Tên Thương Hiệu Green Farm",
   args: {
     size: "md",
     showText: true

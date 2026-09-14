@@ -144,7 +144,7 @@ export const AdminSidebar: Story = {
       <div className="flex items-center gap-3 w-full">
         <Avatar name="Ban Trị" size="md" status="online" />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-foreground truncate">Admin BioCloud</p>
+          <p className="text-sm font-bold text-foreground truncate">Admin Green Farm</p>
           <p className="text-xs text-muted-foreground truncate">Toàn quyền hệ thống</p>
         </div>
       </div>

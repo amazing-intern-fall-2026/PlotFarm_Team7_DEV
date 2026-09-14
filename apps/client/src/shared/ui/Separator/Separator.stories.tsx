@@ -66,7 +66,7 @@ export const Horizontal: Story = {
   render: () => (
     <div className="max-w-md space-y-4">
       <div>
-        <h4 className="text-sm font-semibold text-foreground">Trang Trại PlotFarm Đà Lạt</h4>
+        <h4 className="text-sm font-semibold text-foreground">Trang Trại Green Farm Đà Lạt</h4>
         <p className="text-xs text-muted-foreground mt-0.5">
           Hệ sinh thái kết nối chủ đất nông nghiệp và người thuê canh tác công nghệ cao.
         </p>

@@ -11,7 +11,7 @@ const meta: Meta<typeof Button> = {
       description: {
         component: `
 ### 📌 Giới thiệu Component
-**Button** là thành phần nút bấm tương tác cơ bản của hệ thống PlotFarm, hỗ trợ đầy đủ các biến thể giao diện (variants), kích thước (sizes), trạng thái đang tải (isLoading), và vị trí gắn icon.
+**Button** là thành phần nút bấm tương tác cơ bản của hệ thống Green Farm, hỗ trợ đầy đủ các biến thể giao diện (variants), kích thước (sizes), trạng thái đang tải (isLoading), và vị trí gắn icon.
 
 #### Mục đích sử dụng:
 - Kích hoạt hành động của người dùng (Submit form, Xác nhận, Hủy bỏ).
