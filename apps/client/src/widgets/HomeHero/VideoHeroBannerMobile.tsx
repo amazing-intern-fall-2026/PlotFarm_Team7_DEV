@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  Radio,
-  CheckCircle2,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, Radio, CheckCircle2, Sparkles } from "lucide-react";
 import { Box, Typography, Text, Button } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 import type { VideoHeroBannerViewProps } from "./types";
@@ -41,11 +36,17 @@ export function VideoHeroBannerMobile({
         onEnded={handleVideoEnded}
         className={cn(
           "absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out",
-          isTransitioning ? "scale-105 opacity-40 blur-xs" : "scale-100 opacity-100 blur-none",
+          isTransitioning
+            ? "scale-105 opacity-40 blur-xs"
+            : "scale-100 opacity-100 blur-none",
         )}
       >
         <source src={currentSlide.videoSrc} type="video/mp4" />
-        <img src="/images/background.jpg" alt="Green Farm Agriculture" className="w-full h-full object-cover" />
+        <img
+          src="/images/background.jpg"
+          alt="Green Farm Agriculture"
+          className="w-full h-full object-cover"
+        />
       </video>
 
       {/* ── 2. Cinematic Gradient Overlays (Tối ưu độ tương phản trên màn hình điện thoại) ── */}
@@ -74,7 +75,9 @@ export function VideoHeroBannerMobile({
               : "opacity-0 -translate-y-2 pointer-events-none",
           )}
         >
-          <span className="font-semibold text-emerald-300">{currentSlide.shortTitle}</span>
+          <span className="font-semibold text-emerald-300">
+            {currentSlide.shortTitle}
+          </span>
           <span className="text-white/40">•</span>
           <span className="text-white/80">{currentSlide.stats.value}</span>
         </Box>
@@ -86,8 +89,10 @@ export function VideoHeroBannerMobile({
         <Typography
           as="h1"
           className={cn(
-            "text-2xl font-extrabold text-white tracking-tight leading-[1.2] drop-shadow-md transition-all duration-500",
-            isTransitioning ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0",
+            "text-2xl font-extrabold text-white tracking-tight leading-[1.35] drop-shadow-md transition-all duration-500",
+            isTransitioning
+              ? "opacity-0 translate-y-2"
+              : "opacity-100 translate-y-0",
           )}
         >
           {currentSlide.headline}
@@ -97,7 +102,9 @@ export function VideoHeroBannerMobile({
         <Text
           className={cn(
             "text-xs text-white/85 leading-relaxed line-clamp-2 font-normal drop-shadow-sm transition-all duration-500 delay-75",
-            isTransitioning ? "opacity-0 translate-y-1" : "opacity-100 translate-y-0",
+            isTransitioning
+              ? "opacity-0 translate-y-1"
+              : "opacity-100 translate-y-0",
           )}
         >
           {currentSlide.subheadline}

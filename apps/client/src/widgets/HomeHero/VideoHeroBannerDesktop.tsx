@@ -33,7 +33,7 @@ export function VideoHeroBannerDesktop({
   return (
     <Box
       className={cn(
-        "relative w-full min-h-[440px] md:min-h-[480px] lg:min-h-[500px] flex items-center overflow-hidden select-none bg-emerald-950",
+        "relative w-full min-h-[480px] md:min-h-[500px] lg:min-h-[520px] flex items-center overflow-hidden select-none bg-emerald-950",
         className,
       )}
     >
@@ -47,11 +47,17 @@ export function VideoHeroBannerDesktop({
         onEnded={handleVideoEnded}
         className={cn(
           "absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out",
-          isTransitioning ? "scale-105 opacity-40 blur-xs" : "scale-100 opacity-100 blur-none",
+          isTransitioning
+            ? "scale-105 opacity-40 blur-xs"
+            : "scale-100 opacity-100 blur-none",
         )}
       >
         <source src={currentSlide.videoSrc} type="video/mp4" />
-        <img src="/images/background.jpg" alt="Green Farm Agriculture" className="w-full h-full object-cover" />
+        <img
+          src="/images/background.jpg"
+          alt="Green Farm Agriculture"
+          className="w-full h-full object-cover"
+        />
       </video>
 
       {/* ── 2. Cinematic Overlays ── */}
@@ -62,27 +68,31 @@ export function VideoHeroBannerDesktop({
       {/* ── 3. Desktop Narrative & 5s Auto-hide Stats Card ── */}
       <Box className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 py-10 md:py-12">
         <Box className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
           {/* Cột trái: Văn bản & CTA Buttons */}
           <Box className="lg:col-span-7 xl:col-span-8 space-y-4 text-left">
-            
             {/* Live Indicator Badge */}
             <Box className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-400/30 text-emerald-300 text-xs font-semibold backdrop-blur-md shadow-md">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span className="tracking-wide uppercase">{currentSlide.badge}</span>
+              <span className="tracking-wide uppercase">
+                {currentSlide.badge}
+              </span>
               <span className="text-white/40">•</span>
-              <span className="text-white/80 font-normal">{currentSlide.tag}</span>
+              <span className="text-white/80 font-normal">
+                {currentSlide.tag}
+              </span>
             </Box>
 
             {/* Tiêu đề chính */}
             <Typography
               as="h1"
               className={cn(
-                "text-3xl md:text-4xl lg:text-[42px] font-extrabold text-white tracking-tight leading-[1.18] drop-shadow-md transition-all duration-500",
-                isTransitioning ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0",
+                "text-3xl md:text-4xl lg:text-[42px] font-extrabold text-white tracking-tight leading-[1.32] drop-shadow-md transition-all duration-500",
+                isTransitioning
+                  ? "opacity-0 translate-y-3"
+                  : "opacity-100 translate-y-0",
               )}
             >
               {currentSlide.headline}
@@ -92,7 +102,9 @@ export function VideoHeroBannerDesktop({
             <Text
               className={cn(
                 "text-sm md:text-base text-white/85 leading-relaxed max-w-xl font-normal drop-shadow-sm transition-all duration-500 delay-75",
-                isTransitioning ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0",
+                isTransitioning
+                  ? "opacity-0 translate-y-2"
+                  : "opacity-100 translate-y-0",
               )}
             >
               {currentSlide.subheadline}
@@ -130,7 +142,9 @@ export function VideoHeroBannerDesktop({
                   size="default"
                   onClick={onSecondaryCtaClick}
                   className="h-11 px-5 rounded-xl text-xs md:text-sm font-semibold border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md active:scale-[0.98] transition-all"
-                  leftIcon={<Sparkles className="h-3.5 w-3.5 text-emerald-300" />}
+                  leftIcon={
+                    <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+                  }
                 >
                   {secondaryCtaText}
                 </Button>
@@ -145,7 +159,10 @@ export function VideoHeroBannerDesktop({
                 if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
               }}
               onMouseLeave={() => {
-                hideTimerRef.current = setTimeout(() => setShowStatsCard(false), 2000);
+                hideTimerRef.current = setTimeout(
+                  () => setShowStatsCard(false),
+                  2000,
+                );
               }}
               className={cn(
                 "w-full max-w-xs p-4 rounded-2xl border border-white/20 bg-black/60 backdrop-blur-xl space-y-3 shadow-2xl text-left transition-all duration-500",
@@ -187,7 +204,9 @@ export function VideoHeroBannerDesktop({
                 </Box>
 
                 <Box className="flex justify-between items-center">
-                  <span className="text-white/70">{currentSlide.stats.label}:</span>
+                  <span className="text-white/70">
+                    {currentSlide.stats.label}:
+                  </span>
                   <span className="font-bold text-emerald-300">
                     {currentSlide.stats.value}
                   </span>
@@ -195,7 +214,9 @@ export function VideoHeroBannerDesktop({
 
                 <Box className="flex justify-between items-center">
                   <span className="text-white/70">Độ ẩm & Nhiệt độ:</span>
-                  <span className="font-semibold text-white">78% • 19.4°C (Đà Lạt)</span>
+                  <span className="font-semibold text-white">
+                    78% • 19.4°C (Đà Lạt)
+                  </span>
                 </Box>
 
                 <Box className="flex justify-between items-center">
@@ -232,7 +253,6 @@ export function VideoHeroBannerDesktop({
               </Box>
             </Box>
           </Box>
-
         </Box>
       </Box>
     </Box>

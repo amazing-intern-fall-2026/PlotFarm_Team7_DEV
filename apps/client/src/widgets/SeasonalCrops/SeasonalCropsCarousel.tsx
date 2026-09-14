@@ -83,13 +83,13 @@ export function SeasonalCropsCarousel({
             </Text>
           </Box>
 
-          {/* Splide Custom Top-Right Arrows — outline pair */}
+          {/* Splide Custom Top-Right Arrows — Theme standard pair */}
           <Box className="splide__arrows flex items-center gap-2 self-end">
             <Button
               type="button"
               variant="outline"
               size="icon"
-              className="splide__arrow splide__arrow--prev !static !transform-none shadow-sm [&_svg]:!transform-none"
+              className="splide__arrow splide__arrow--prev !static !transform-none rounded-xl shadow-xs [&_svg]:!fill-none [&_svg]:!stroke-current [&_svg]:!transform-none"
               aria-label="Giống trước"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -98,7 +98,7 @@ export function SeasonalCropsCarousel({
               type="button"
               variant="default"
               size="icon"
-              className="splide__arrow splide__arrow--next !static !transform-none shadow-sm [&_svg]:!transform-none"
+              className="splide__arrow splide__arrow--next !static !transform-none rounded-xl shadow-sm shadow-primary/20 [&_svg]:!fill-none [&_svg]:!stroke-current [&_svg]:!transform-none"
               aria-label="Giống tiếp theo"
             >
               <ChevronRight className="h-4 w-4" />
@@ -213,6 +213,50 @@ export function SeasonalCropsCarousel({
           top: auto !important;
           left: auto !important;
           right: auto !important;
+          width: 2.5rem !important;
+          height: 2.5rem !important;
+          border-radius: 0.75rem !important;
+          opacity: 1 !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+        }
+        /* Triệt tiêu fill đen mặc định của Splide CSS cho SVG */
+        .seasonal-crops-splide .splide__arrow svg {
+          fill: none !important;
+          stroke: currentColor !important;
+          width: 1rem !important;
+          height: 1rem !important;
+          transform: none !important;
+        }
+        /* Nút Prev — Theme Card Outline */
+        .seasonal-crops-splide .splide__arrow--prev {
+          background: hsl(var(--card)) !important;
+          border: 1px solid hsl(var(--border)) !important;
+          color: hsl(var(--foreground)) !important;
+          box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+        }
+        .seasonal-crops-splide .splide__arrow--prev:hover {
+          background: hsl(var(--accent)) !important;
+          color: hsl(var(--accent-foreground)) !important;
+          border-color: var(--color-primary-400) !important;
+        }
+        /* Nút Next — Theme Primary Green */
+        .seasonal-crops-splide .splide__arrow--next {
+          background: var(--color-primary-600) !important;
+          border: 1px solid transparent !important;
+          color: #ffffff !important;
+          box-shadow: 0 2px 6px 0 rgb(22 163 74 / 0.3) !important;
+        }
+        .seasonal-crops-splide .splide__arrow--next:hover {
+          background: var(--color-primary-700) !important;
+          color: #ffffff !important;
+          box-shadow: 0 4px 12px 0 rgb(22 163 74 / 0.4) !important;
+        }
+        .seasonal-crops-splide .splide__arrow:disabled {
+          opacity: 0.4 !important;
+          cursor: not-allowed !important;
         }
 
         /* Pagination dots */

@@ -12,7 +12,7 @@ export function VideoHeroBanner({
   slides = DEFAULT_FARM_VIDEOS,
   primaryCtaText = "Khám phá ô đất ngay",
   primaryCtaLink = "/plots",
-  secondaryCtaText = "Đặt lịch tham quan",
+  secondaryCtaText = "Đặt lịch tư vấn",
   onSecondaryCtaClick,
   className,
 }: VideoHeroBannerProps) {
