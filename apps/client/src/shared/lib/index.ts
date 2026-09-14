@@ -6,3 +6,4 @@ export * from "./utils";
 export * from "./i18n";
 export * from "./errors/AppError";
 export * from "./hooks/useDebouncedCallback";
+export * from "./device";
