@@ -92,22 +92,21 @@ export const PLOT_DRAWER_MESSAGES = {
 } as const;
 
 export const DEFAULT_PLOT_IMAGES: Record<string, string> = {
-  "PLT-A01": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
-  "PLT-A02": "https://images.unsplash.com/photo-1592417817098-8f3d69109853?auto=format&fit=crop&w=600&q=80",
-  "PLT-A03": "https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=600&q=80",
-  "PLT-A04": "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=600&q=80",
-  "PLT-B01": "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=600&q=80",
-  "PLT-B02": "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=600&q=80",
-  "PLT-B03": "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=600&q=80",
-  "PLT-B04": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=600&q=80",
-  "PLT-C01": "https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&w=600&q=80",
-  "PLT-C02": "https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80",
-  "PLT-C03": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=600&q=80",
-  "PLT-C04": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=600&q=80",
+  "PLT-A01": "/images/plot-1.jpg",
+  "PLT-A02": "/images/plot-2.jpg",
+  "PLT-A03": "/images/plot-3.jpg",
+  "PLT-A04": "/images/plot-1.jpg",
+  "PLT-B01": "/images/plot-2.jpg",
+  "PLT-B02": "/images/plot-3.jpg",
+  "PLT-B03": "/images/plot-1.jpg",
+  "PLT-B04": "/images/plot-2.jpg",
+  "PLT-C01": "/images/plot-3.jpg",
+  "PLT-C02": "/images/plot-1.jpg",
+  "PLT-C03": "/images/plot-2.jpg",
+  "PLT-C04": "/images/plot-3.jpg",
 };
 
-export const FALLBACK_PLOT_IMAGE =
-  "https://images.unsplash.com/photo-1592417817098-8f3d69109853?auto=format&fit=crop&w=600&q=80";
+export const FALLBACK_PLOT_IMAGE = "/images/plot-1.jpg";
 
 export function getPlotImageUrl(plot: { plotCode: string; imageUrl?: string }): string {
   return plot.imageUrl || DEFAULT_PLOT_IMAGES[plot.plotCode] || FALLBACK_PLOT_IMAGE;

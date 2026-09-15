@@ -1,7 +1,8 @@
+import * as React from "react";
 import { Lock, Sprout, Wrench, Video, Cpu, CheckCircle2, ChevronRight, Layers } from "lucide-react";
 import { Card, Button, Badge, Heading, Text, Box } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
-import { PLOT_STATUS_CONFIG, PLOT_CARD_MESSAGES, getPlotImageUrl } from "./constants";
+import { PLOT_STATUS_CONFIG, PLOT_CARD_MESSAGES, getPlotImageUrl, FALLBACK_PLOT_IMAGE } from "./constants";
 import type { PlotCardProps } from "./types";
 
 export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
@@ -18,6 +19,11 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
   }).format(plot.pricePerMonth);
 
   const plotImageUrl = getPlotImageUrl(plot);
+  const [currentImg, setCurrentImg] = React.useState<string>(plotImageUrl);
+
+  React.useEffect(() => {
+    setCurrentImg(plotImageUrl);
+  }, [plotImageUrl]);
 
   return (
     <Card
@@ -47,9 +53,14 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
       {/* ── 1. Thumbnail Ảnh Ô Đất với Overlay Badges ── */}
       <Box className="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-100 dark:bg-muted">
         <img
-          src={plotImageUrl}
+          src={currentImg}
           alt={plot.plotNumber}
           loading="lazy"
+          onError={() => {
+            if (currentImg !== FALLBACK_PLOT_IMAGE) {
+              setCurrentImg(FALLBACK_PLOT_IMAGE);
+            }
+          }}
           className={cn(
             "w-full h-full object-cover transition-transform duration-500 ease-out",
             isAvailable && "group-hover:scale-105"
