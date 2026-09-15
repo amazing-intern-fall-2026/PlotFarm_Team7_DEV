@@ -24,8 +24,8 @@ export function PlotsPage() {
       {/* ── 1. Hero Banner Khám Phá Ô Đất Chuẩn Sinh Thái (Không còn border-b cắt đôi) ── */}
       <PlotsExploreHero />
 
-      {/* ── 2. Khu Vực Chuyển Giao: Floating Docking Filter & Tiêu Đề Danh Mục ── */}
-      <Box id="plot-grid-section" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── 2. Khu Vực Chuyển Giao: Filter Card & Tiêu Đề Danh Mục Thoáng Đãng ── */}
+      <Box id="plot-grid-section" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 md:pt-6">
         <FarmPlotFilter
           counts={counts}
           totalCount={plots.length}
