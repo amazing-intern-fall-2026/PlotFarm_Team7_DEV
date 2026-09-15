@@ -8,6 +8,8 @@ import { errorHandler } from "./middlewares/errorHandler";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { mediaRouter } from "./modules/media/media.routes";
 import { diaryRouter } from "./modules/diary/diary.routes";
+import { careRouter } from "./modules/care/care.routes";
+
 import { plotsRoutes } from "./modules/plots/plots.routes";
 import { gatewayController } from "./modules/gateway/gateway.controller";
 
@@ -49,6 +51,8 @@ app.use("/api/v1", paymentsRouter);
 app.use("/api/v1/plots", plotsRoutes);
 app.use("/api/v1", mediaRouter);
 app.use("/api/v1", diaryRouter);
+app.use("/api/v1", careRouter);
+
 app.post("/api/gateway", gatewayController);
 // Centralized Global Error Handler Middleware (MUST be placed after all routes)
 app.use(errorHandler);

@@ -3,7 +3,6 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import {
   ERROR_CODES,
-  CreateCareRequestSchema,
   RegisterRequestSchema,
   VerifyEmailRequestSchema,
   ResendOtpRequestSchema,
@@ -19,7 +18,6 @@ import {
 } from "../auth/auth.service";
 import { TokenService } from "../auth/token.service";
 import { getMockPlots } from "../plots/plots.service";
-import { createMockCareRequest } from "../care/care.service";
 import { decryptPayload } from "./jwe";
 
 interface GatewayEnvelope {
@@ -124,26 +122,6 @@ const actionRegistry: Record<string, ActionConfig> = {
   },
   "plots.list": {
     handler: async () => getMockPlots(),
-    requireAuth: false,
-  },
-  "care.createRequest": {
-    handler: (payload) => {
-      const { contractCode, ...rest } = (payload ?? {}) as {
-        contractCode?: string;
-        serviceType?: string;
-        customerNote?: string;
-      };
-      const parsed = CreateCareRequestSchema.safeParse(rest);
-      if (!parsed.success) {
-        throw AppError.badRequest(
-          "Dữ liệu yêu cầu chăm sóc không hợp lệ.",
-          ERROR_CODES.VALIDATION,
-        );
-      }
-      return Promise.resolve(
-        createMockCareRequest(contractCode ?? "", parsed.data.serviceType),
-      );
-    },
     requireAuth: false,
   },
 };
