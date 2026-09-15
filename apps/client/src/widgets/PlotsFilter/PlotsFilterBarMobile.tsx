@@ -1,25 +1,22 @@
-import { Search, RotateCcw, X, ChevronDown } from "lucide-react";
+import { Search, RotateCcw, X, ChevronDown, Video, Cpu } from "lucide-react";
 import { Box, Button, Heading, Text } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
-import type { PlotsFilterViewProps, PlotSizeFilter, PlotStatusFilter, PlotSortOption } from "./types";
+import type { PlotsFilterViewProps, PlotStatusFilter, PlotSortOption } from "./types";
 
 export function PlotsFilterBarMobile({
   filters,
   counts,
+  sizeOptions,
   totalFilteredCount,
   onSearchChange,
   onSizeChange,
   onStatusChange,
+  onToggleCamera,
+  onToggleIot,
   onSortChange,
   onReset,
   className,
 }: PlotsFilterViewProps) {
-  const sizeOptions: Array<{ id: PlotSizeFilter; label: string }> = [
-    { id: "all", label: `Tất cả (${counts.total})` },
-    { id: "standard_15m", label: `Chuẩn 15m² (${counts.standard15m})` },
-    { id: "large_20m", label: `Lớn 20m² (${counts.large20m})` },
-  ];
-
   const statusOptions: Array<{
     id: PlotStatusFilter;
     label: string;
@@ -28,7 +25,7 @@ export function PlotsFilterBarMobile({
   }> = [
     {
       id: "available",
-      label: `Sẵn sàng (${counts.available})`,
+      label: `Còn trống (${counts.available})`,
       dotColor: "bg-emerald-500",
       glowClass: "shadow-[0_0_6px_rgba(16,185,129,0.5)]",
     },
@@ -39,12 +36,12 @@ export function PlotsFilterBarMobile({
     },
     {
       id: "occupied",
-      label: `Đang canh tác (${counts.occupied})`,
+      label: `Canh tác (${counts.occupied})`,
       dotColor: "bg-slate-400",
     },
     {
       id: "maintenance",
-      label: `Bảo dưỡng (${counts.maintenance})`,
+      label: `Cải tạo (${counts.maintenance})`,
       dotColor: "bg-amber-700",
     },
   ];
@@ -61,6 +58,8 @@ export function PlotsFilterBarMobile({
     filters.search.trim() !== "" ||
     filters.size !== "all" ||
     filters.status !== "all" ||
+    filters.hasCamera ||
+    filters.hasIot ||
     filters.sortBy !== "camera";
 
   return (
@@ -96,15 +95,15 @@ export function PlotsFilterBarMobile({
           )}
         </Box>
 
-        {/* Row 2: Size Pills (Horizontal scroll touch-friendly) */}
+        {/* Row 2: Size Pills (Sinh động từ mảng sizeOptions) */}
         <Box className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
           {sizeOptions.map((opt) => {
-            const isActive = filters.size === opt.id;
+            const isActive = filters.size === opt.value;
             return (
               <button
-                key={opt.id}
+                key={opt.value}
                 type="button"
-                onClick={() => onSizeChange(opt.id)}
+                onClick={() => onSizeChange(opt.value)}
                 className={cn(
                   "px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all select-none cursor-pointer",
                   isActive
@@ -118,15 +117,16 @@ export function PlotsFilterBarMobile({
           })}
         </Box>
 
-        {/* Row 3: Status Pills (Horizontal scroll) */}
-        <Box className="pt-2 border-t border-border/40 space-y-1.5">
-          <Text
-            variant="small"
-            className="text-[11px] font-bold text-muted-foreground tracking-wider uppercase select-none"
-          >
-            Trạng thái ô:
-          </Text>
+        {/* Row 3: Trạng thái & Tiện ích */}
+        <Box className="pt-2 border-t border-border/40 space-y-2">
+          {/* Trạng thái */}
           <Box className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+            <Text
+              variant="small"
+              className="text-[11px] font-bold text-muted-foreground tracking-wider uppercase select-none shrink-0"
+            >
+              Trạng thái:
+            </Text>
             {statusOptions.map((opt) => {
               const isActive = filters.status === opt.id;
               return (
@@ -148,6 +148,42 @@ export function PlotsFilterBarMobile({
                 </button>
               );
             })}
+          </Box>
+
+          {/* Tiện ích */}
+          <Box className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+            <Text
+              variant="small"
+              className="text-[11px] font-bold text-muted-foreground tracking-wider uppercase select-none shrink-0"
+            >
+              Tiện ích:
+            </Text>
+            <button
+              type="button"
+              onClick={onToggleCamera}
+              className={cn(
+                "px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap shrink-0 inline-flex items-center gap-1 border transition-all select-none",
+                filters.hasCamera
+                  ? "bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold"
+                  : "bg-muted/20 border-border/60 text-muted-foreground"
+              )}
+            >
+              <Video className="h-3 w-3 text-emerald-600" />
+              <span>Camera</span>
+            </button>
+            <button
+              type="button"
+              onClick={onToggleIot}
+              className={cn(
+                "px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap shrink-0 inline-flex items-center gap-1 border transition-all select-none",
+                filters.hasIot
+                  ? "bg-primary/10 text-primary border-primary/30 font-semibold"
+                  : "bg-muted/20 border-border/60 text-muted-foreground"
+              )}
+            >
+              <Cpu className="h-3 w-3 text-primary" />
+              <span>IoT</span>
+            </button>
           </Box>
         </Box>
 

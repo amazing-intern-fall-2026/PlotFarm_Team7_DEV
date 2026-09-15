@@ -1,15 +1,17 @@
 import { Box } from "@/shared/ui";
 import { PlotsExploreHero } from "@/widgets/PlotsHero";
-import { PlotsFilterBar } from "@/widgets/PlotsFilter";
+import { FarmPlotFilter } from "@/widgets/PlotsFilter";
 import { PlotGridMap, PlotDetailDrawer } from "@/widgets/PlotGridMap";
 import { usePlots } from "@/entities/plot";
 import type { PlotStatus } from "@repo/shared";
 
 export function PlotsPage() {
   const {
+    plots,
     filteredPlots,
     loading,
     counts,
+    availableSizes,
     selectedPlot,
     setSelectedPlotId,
     setFilterStatus,
@@ -18,45 +20,39 @@ export function PlotsPage() {
   } = usePlots();
 
   return (
-    <Box className="w-full">
-      {/* Hero Banner Khám Phá Ô Đất Chuẩn Sinh Thái */}
+    <Box className="w-full bg-gradient-to-b from-white via-slate-50/60 to-slate-50 dark:from-background dark:via-background/90 dark:to-background min-h-screen pb-20">
+      {/* ── 1. Hero Banner Khám Phá Ô Đất Chuẩn Sinh Thái (Không còn border-b cắt đôi) ── */}
       <PlotsExploreHero />
 
-      {/* Phân vùng Lưới Ô Đất (Plot Grid & Filter) */}
-      <Box id="plot-grid-section" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-        {/* Thanh tìm kiếm & bộ lọc theo chuẩn giao diện */}
-        <PlotsFilterBar
+      {/* ── 2. Khu Vực Chuyển Giao: Floating Docking Filter & Tiêu Đề Danh Mục ── */}
+      <Box id="plot-grid-section" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FarmPlotFilter
           counts={counts}
-          onFilterChange={(filters) => {
-            setSearchQuery(filters.search);
-            setFilterSize(
-              filters.size === "standard_15m"
-                ? "15"
-                : filters.size === "large_20m"
-                  ? "20"
-                  : "ALL"
-            );
-            setFilterStatus(
-              filters.status === "all"
-                ? "ALL"
-                : (filters.status.toUpperCase() as PlotStatus)
-            );
+          totalCount={plots.length}
+          filteredCount={filteredPlots.length}
+          sizeOptions={availableSizes}
+          onSearchChange={(search) => setSearchQuery(search)}
+          onSizeChange={(size) => setFilterSize(size)}
+          onStatusChange={(status) => {
+            setFilterStatus(status === "all" ? "ALL" : (status as PlotStatus));
           }}
-          onResetFilters={() => {
+          onReset={() => {
             setSearchQuery("");
-            setFilterSize("ALL");
+            setFilterSize("all");
             setFilterStatus("ALL");
           }}
         />
 
-        {/* Lưới Bản Đồ Ô Đất Canh Tác Phân Biệt 4 Trạng Thái */}
-        <PlotGridMap
-          plots={filteredPlots}
-          loading={loading}
-          onSelectPlot={(plot) => setSelectedPlotId(plot.plotCode)}
-        />
+        {/* ── 3. Lưới Bản Đồ Ô Đất Canh Tác Phân Biệt 4 Trạng Thái ── */}
+        <Box className="mt-8">
+          <PlotGridMap
+            plots={filteredPlots}
+            loading={loading}
+            onSelectPlot={(plot) => setSelectedPlotId(plot.plotCode)}
+          />
+        </Box>
 
-        {/* Drawer Chi Tiết Ô Đất Khi Click (Kết Nối US-19) */}
+        {/* ── 4. Drawer Chi Tiết Ô Đất Khi Click (Kết Nối US-19) ── */}
         <PlotDetailDrawer
           isOpen={!!selectedPlot}
           plot={selectedPlot}

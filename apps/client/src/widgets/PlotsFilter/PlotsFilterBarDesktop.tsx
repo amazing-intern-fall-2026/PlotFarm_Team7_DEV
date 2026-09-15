@@ -1,25 +1,22 @@
-import { Search, RotateCcw, X, ChevronDown } from "lucide-react";
+import { Search, RotateCcw, X, ChevronDown, Video, Cpu } from "lucide-react";
 import { Box, Button, Heading, Text } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
-import type { PlotsFilterViewProps, PlotSizeFilter, PlotStatusFilter, PlotSortOption } from "./types";
+import type { PlotsFilterViewProps, PlotStatusFilter, PlotSortOption } from "./types";
 
 export function PlotsFilterBarDesktop({
   filters,
   counts,
+  sizeOptions,
   totalFilteredCount,
   onSearchChange,
   onSizeChange,
   onStatusChange,
+  onToggleCamera,
+  onToggleIot,
   onSortChange,
   onReset,
   className,
 }: PlotsFilterViewProps) {
-  const sizeOptions: Array<{ id: PlotSizeFilter; label: string }> = [
-    { id: "all", label: `Tất cả ô đất (${counts.total})` },
-    { id: "standard_15m", label: `Lô chuẩn 15m² (${counts.standard15m} ô)` },
-    { id: "large_20m", label: `Lô lớn 20m² (${counts.large20m} ô)` },
-  ];
-
   const statusOptions: Array<{
     id: PlotStatusFilter;
     label: string;
@@ -28,23 +25,23 @@ export function PlotsFilterBarDesktop({
   }> = [
     {
       id: "available",
-      label: `Sẵn sàng thuê (${counts.available} ô Available)`,
+      label: `Còn trống (${counts.available})`,
       dotColor: "bg-emerald-500",
       glowClass: "shadow-[0_0_8px_rgba(16,185,129,0.5)]",
     },
     {
       id: "reserved",
-      label: `Đang giữ chỗ (${counts.reserved ?? 0} ô Reserved)`,
+      label: `Đang giữ chỗ (${counts.reserved ?? 0})`,
       dotColor: "bg-amber-500",
     },
     {
       id: "occupied",
-      label: `Đang canh tác (${counts.occupied} ô Occupied)`,
+      label: `Đang canh tác (${counts.occupied})`,
       dotColor: "bg-slate-400",
     },
     {
       id: "maintenance",
-      label: `Đang làm đất / Bảo dưỡng (${counts.maintenance} ô Maintenance)`,
+      label: `Đang cải tạo (${counts.maintenance})`,
       dotColor: "bg-amber-700",
     },
   ];
@@ -61,6 +58,8 @@ export function PlotsFilterBarDesktop({
     filters.search.trim() !== "" ||
     filters.size !== "all" ||
     filters.status !== "all" ||
+    filters.hasCamera ||
+    filters.hasIot ||
     filters.sortBy !== "camera";
 
   return (
@@ -96,16 +95,16 @@ export function PlotsFilterBarDesktop({
           )}
         </Box>
 
-        {/* ── Row 2: Bộ lọc phân loại diện tích / danh mục (Pills nổi bật) ── */}
+        {/* ── Row 2: Bộ lọc kích thước/danh mục sinh động từ dữ liệu ── */}
         <Box className="flex items-center justify-between gap-4 pt-1">
           <Box className="flex items-center gap-2.5 flex-wrap">
             {sizeOptions.map((opt) => {
-              const isActive = filters.size === opt.id;
+              const isActive = filters.size === opt.value;
               return (
                 <button
-                  key={opt.id}
+                  key={opt.value}
                   type="button"
-                  onClick={() => onSizeChange(opt.id)}
+                  onClick={() => onSizeChange(opt.value)}
                   className={cn(
                     "px-4 py-2 rounded-full text-sm font-semibold transition-all select-none cursor-pointer",
                     isActive
@@ -146,17 +145,17 @@ export function PlotsFilterBarDesktop({
           </Box>
         </Box>
 
-        {/* ── Row 3: Bộ lọc phụ với nhãn TRẠNG THÁI Ô + Nút đặt lại ── */}
+        {/* ── Row 3: Lọc thêm theo Trạng thái & Tiện ích (Chuẩn UI bên trái) ── */}
         <Box className="flex items-center justify-between gap-4 pt-2 border-t border-border/40">
-          <Box className="flex items-center gap-3 flex-wrap">
-            <Text
-              variant="small"
-              className="text-xs font-bold text-muted-foreground tracking-wider uppercase select-none shrink-0"
-            >
-              Trạng thái ô:
-            </Text>
-
+          <Box className="flex items-center gap-4 flex-wrap">
+            {/* Nhóm trạng thái */}
             <Box className="flex items-center gap-2 flex-wrap">
+              <Text
+                variant="small"
+                className="text-xs font-bold text-muted-foreground tracking-wider uppercase select-none shrink-0"
+              >
+                Trạng thái:
+              </Text>
               {statusOptions.map((opt) => {
                 const isActive = filters.status === opt.id;
                 return (
@@ -179,6 +178,47 @@ export function PlotsFilterBarDesktop({
                 );
               })}
             </Box>
+
+            {/* Vách ngăn phân cách chuẩn ảnh mẫu bên trái */}
+            <Box className="h-4 w-[1px] bg-border/80 hidden lg:block" />
+
+            {/* Nhóm tiện ích lọc thêm */}
+            <Box className="flex items-center gap-2 flex-wrap">
+              <Text
+                variant="small"
+                className="text-xs font-bold text-muted-foreground tracking-wider uppercase select-none shrink-0"
+              >
+                Tiện ích:
+              </Text>
+
+              <button
+                type="button"
+                onClick={onToggleCamera}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-medium inline-flex items-center gap-1.5 transition-all cursor-pointer select-none",
+                  filters.hasCamera
+                    ? "bg-emerald-100 text-emerald-800 border border-emerald-300 font-semibold"
+                    : "bg-muted/20 hover:bg-muted/50 text-muted-foreground hover:text-foreground border border-border/60"
+                )}
+              >
+                <Video className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Camera Live</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={onToggleIot}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-medium inline-flex items-center gap-1.5 transition-all cursor-pointer select-none",
+                  filters.hasIot
+                    ? "bg-primary/10 text-primary border border-primary/30 font-semibold"
+                    : "bg-muted/20 hover:bg-muted/50 text-muted-foreground hover:text-foreground border border-border/60"
+                )}
+              >
+                <Cpu className="h-3.5 w-3.5 text-primary" />
+                <span>Cảm biến IoT</span>
+              </button>
+            </Box>
           </Box>
 
           {/* Đặt lại bộ lọc */}
@@ -190,7 +230,7 @@ export function PlotsFilterBarDesktop({
               className="h-8 px-3 text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 shrink-0 transition-colors"
             >
               <RotateCcw className="h-3.5 w-3.5" />
-              <span>Đặt lại bộ lọc</span>
+              <span>Đặt lại</span>
             </Button>
           )}
         </Box>

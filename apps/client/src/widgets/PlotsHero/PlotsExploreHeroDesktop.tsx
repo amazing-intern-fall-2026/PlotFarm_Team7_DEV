@@ -20,7 +20,7 @@ export function PlotsExploreHeroDesktop({
   return (
     <Box
       className={cn(
-        "relative w-full overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background py-8 lg:py-12 border-b border-border/60 flex flex-col justify-center select-none",
+        "relative w-full overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background pt-8 lg:pt-12 pb-16 lg:pb-24 flex flex-col justify-center select-none",
         className,
       )}
     >

@@ -3,7 +3,12 @@ import { fetchPlotsApi, type PlotUiItem, type PlotStatus } from "../api/plotsApi
 import { getErrorMessage } from "@/shared/api";
 
 export type FilterStatusOption = "ALL" | PlotStatus;
-export type FilterSizeOption = "ALL" | "15" | "20";
+
+export interface PlotFilterOption {
+  value: string;
+  label: string;
+  count?: number;
+}
 
 export interface UsePlotsOptions {
   autoFetch?: boolean;
@@ -19,8 +24,11 @@ export function usePlots(options: UsePlotsOptions = {}) {
 
   const [selectedPlotId, setSelectedPlotId] = React.useState<string | null>(null);
   const [filterStatus, setFilterStatus] = React.useState<FilterStatusOption>(initialFilterStatus);
-  const [filterSize, setFilterSize] = React.useState<FilterSizeOption>("ALL");
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [filterSize, setFilterSize] = React.useState<string>("all");
+  const [filterZone, setFilterZone] = React.useState<string>("all");
+  const [filterHasCamera, setFilterHasCamera] = React.useState<boolean>(false);
+  const [filterHasIot, setFilterHasIot] = React.useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = React.useState<string>("" );
 
   const loadPlots = React.useCallback(async () => {
     setLoading(true);
@@ -55,6 +63,33 @@ export function usePlots(options: UsePlotsOptions = {}) {
     };
   }, [plots]);
 
+  // Danh sách kích thước sinh động từ dữ liệu ô đất thực tế
+  const availableSizes: PlotFilterOption[] = React.useMemo(() => {
+    const rawSizes = Array.from(new Set(plots.map((p) => p.areaSquareMeters))).sort((a, b) => a - b);
+    return [
+      { value: "all", label: `Tất cả (${plots.length})`, count: plots.length },
+      ...rawSizes.map((size) => ({
+        value: String(size),
+        label: `Lô ${size}m² (${plots.filter((p) => p.areaSquareMeters === size).length})`,
+        count: plots.filter((p) => p.areaSquareMeters === size).length,
+      })),
+    ];
+  }, [plots]);
+
+  // Danh sách phân khu sinh động từ dữ liệu ô đất thực tế
+  const availableZones: PlotFilterOption[] = React.useMemo(() => {
+    const rawZones = plots.map((p) => p.zone).filter((z): z is string => Boolean(z));
+    const uniqueZones = Array.from(new Set(rawZones));
+    return [
+      { value: "all", label: `Tất cả khu (${plots.length})`, count: plots.length },
+      ...uniqueZones.map((zone) => ({
+        value: zone,
+        label: `${zone} (${plots.filter((p) => p.zone === zone).length})`,
+        count: plots.filter((p) => p.zone === zone).length,
+      })),
+    ];
+  }, [plots]);
+
   // Lọc danh sách ô đất theo tiêu chí
   const filteredPlots = React.useMemo(() => {
     return plots.filter((plot) => {
@@ -63,15 +98,25 @@ export function usePlots(options: UsePlotsOptions = {}) {
         return false;
       }
 
-      // 2. Lọc theo diện tích
-      if (filterSize === "15" && plot.areaSquareMeters !== 15) {
-        return false;
-      }
-      if (filterSize === "20" && plot.areaSquareMeters !== 20) {
+      // 2. Lọc theo diện tích động
+      if (filterSize !== "all" && String(plot.areaSquareMeters) !== filterSize) {
         return false;
       }
 
-      // 3. Tìm kiếm theo mã ô hoặc khu vực
+      // 3. Lọc theo phân khu
+      if (filterZone !== "all" && plot.zone !== filterZone) {
+        return false;
+      }
+
+      // 4. Lọc theo tiện ích (Camera / IoT)
+      if (filterHasCamera && !plot.cameraSupported) {
+        return false;
+      }
+      if (filterHasIot && !plot.iotSensorInstalled) {
+        return false;
+      }
+
+      // 5. Tìm kiếm theo mã ô hoặc khu vực
       if (searchQuery.trim() !== "") {
         const query = searchQuery.toLowerCase().trim().replace("#", "");
         const matchCode = plot.plotCode.toLowerCase().includes(query);
@@ -85,7 +130,7 @@ export function usePlots(options: UsePlotsOptions = {}) {
 
       return true;
     });
-  }, [plots, filterStatus, filterSize, searchQuery]);
+  }, [plots, filterStatus, filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery]);
 
   // Ô đất đang được chọn xem chi tiết
   const selectedPlot = React.useMemo(() => {
@@ -99,6 +144,8 @@ export function usePlots(options: UsePlotsOptions = {}) {
     loading,
     error,
     counts,
+    availableSizes,
+    availableZones,
     selectedPlotId,
     selectedPlot,
     setSelectedPlotId,
@@ -106,6 +153,12 @@ export function usePlots(options: UsePlotsOptions = {}) {
     setFilterStatus,
     filterSize,
     setFilterSize,
+    filterZone,
+    setFilterZone,
+    filterHasCamera,
+    setFilterHasCamera,
+    filterHasIot,
+    setFilterHasIot,
     searchQuery,
     setSearchQuery,
     refetch: loadPlots,

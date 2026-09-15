@@ -1,27 +1,38 @@
-export type PlotSizeFilter = "all" | "standard_15m" | "large_20m";
 export type PlotStatusFilter = "all" | "available" | "reserved" | "occupied" | "maintenance";
 export type PlotSortOption = "camera" | "price_asc" | "price_desc" | "area_desc" | "code_asc";
 
+export interface PlotFilterOption {
+  value: string;
+  label: string;
+  count?: number;
+}
+
 export interface PlotFilterCounts {
   total: number;
-  standard15m: number;
-  large20m: number;
   available: number;
   reserved?: number;
   occupied: number;
   maintenance: number;
+  standard15m?: number;
+  large20m?: number;
+  [key: string]: number | undefined;
 }
 
 export interface PlotFilterValues {
   search: string;
-  size: PlotSizeFilter;
+  size: string;
+  zone: string;
   status: PlotStatusFilter;
+  hasCamera?: boolean;
+  hasIot?: boolean;
   sortBy: PlotSortOption;
 }
 
 export interface PlotsFilterBarProps {
   className?: string;
   counts?: Partial<PlotFilterCounts>;
+  sizeOptions?: PlotFilterOption[];
+  zoneOptions?: PlotFilterOption[];
   initialFilters?: Partial<PlotFilterValues>;
   onFilterChange?: (filters: PlotFilterValues) => void;
   onResetFilters?: () => void;
@@ -30,10 +41,15 @@ export interface PlotsFilterBarProps {
 export interface PlotsFilterViewProps {
   filters: PlotFilterValues;
   counts: PlotFilterCounts;
+  sizeOptions: PlotFilterOption[];
+  zoneOptions: PlotFilterOption[];
   totalFilteredCount: number;
   onSearchChange: (val: string) => void;
-  onSizeChange: (size: PlotSizeFilter) => void;
+  onSizeChange: (size: string) => void;
+  onZoneChange: (zone: string) => void;
   onStatusChange: (status: PlotStatusFilter) => void;
+  onToggleCamera: () => void;
+  onToggleIot: () => void;
   onSortChange: (sort: PlotSortOption) => void;
   onReset: () => void;
   className?: string;

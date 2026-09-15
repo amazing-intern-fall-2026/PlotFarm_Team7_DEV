@@ -20,7 +20,7 @@ export function PlotsExploreHeroMobile({
   return (
     <Box
       className={cn(
-        "relative w-full overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background py-6 border-b border-border/60 select-none",
+        "relative w-full overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background pt-6 pb-14 select-none",
         className,
       )}
     >
