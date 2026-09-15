@@ -37,6 +37,25 @@ export function getMockPlots(): Plot[] {
   });
 }
 
+export interface CropDetail {
+  id: string;
+  slug: string;
+  nameI18n: unknown;
+  descriptionI18n?: unknown;
+  guideI18n?: unknown;
+  durationDays?: unknown;
+  expectedYieldKgPerSqm?: unknown;
+  coverImageUrl?: string | null;
+}
+
+export interface FarmDetail {
+  id: string;
+  slug: string;
+  nameI18n: unknown;
+  addressI18n?: unknown;
+  contactPhone?: string | null;
+}
+
 export interface PlotWithRelations {
   id: string;
   plotCode?: string | null;
@@ -47,17 +66,8 @@ export interface PlotWithRelations {
   status: PlotStatus;
   streamUrl?: string | null;
   lockedUntil?: Date | string | null;
-  defaultCrop?: {
-    id: string;
-    slug: string;
-    nameI18n: unknown;
-  } | null;
-  farm?: {
-    id: string;
-    slug: string;
-    nameI18n: unknown;
-    addressI18n: unknown;
-  } | null;
+  defaultCrop?: CropDetail | null;
+  farm?: FarmDetail | null;
 }
 
 export class PlotsService {
@@ -77,14 +87,20 @@ export class PlotsService {
   }
 
   static formatPlotListItem(plot: PlotWithRelations, now: Date = new Date()) {
+    const dynamicStatus = this.calculateDynamicStatus(
+      plot.status,
+      plot.lockedUntil,
+      now
+    );
+
     return {
       id: plot.id,
-      plotCode: plot.plotCode ?? null,
-      plotNumber: plot.plotNumber ?? null,
-      areaSqm: plot.areaSqm !== null && plot.areaSqm !== undefined ? Number(plot.areaSqm) : null,
-      soilTypeI18n: plot.soilTypeI18n ?? null,
-      pricePerMonth: plot.pricePerMonth !== null && plot.pricePerMonth !== undefined ? Number(plot.pricePerMonth) : null,
-      status: this.calculateDynamicStatus(plot.status, plot.lockedUntil, now),
+      plotCode: plot.plotCode ?? "",
+      plotNumber: plot.plotNumber ?? "",
+      areaSqm: Number(plot.areaSqm ?? 0),
+      soilTypeI18n: plot.soilTypeI18n,
+      pricePerMonth: Number(plot.pricePerMonth ?? 0),
+      status: dynamicStatus,
       streamUrl: plot.streamUrl ?? null,
       defaultCrop: plot.defaultCrop
         ? {
@@ -98,14 +114,29 @@ export class PlotsService {
 
   static formatPlotDetailItem(plot: PlotWithRelations, now: Date = new Date()) {
     const listItem = this.formatPlotListItem(plot, now);
+    const crop = plot.defaultCrop;
+    const farm = plot.farm;
     return {
       ...listItem,
-      farm: plot.farm
+      defaultCrop: crop
         ? {
-          id: plot.farm.id,
-          slug: plot.farm.slug,
-          nameI18n: plot.farm.nameI18n,
-          addressI18n: plot.farm.addressI18n,
+          id: crop.id,
+          slug: crop.slug,
+          nameI18n: crop.nameI18n,
+          descriptionI18n: crop.descriptionI18n ?? null,
+          guideI18n: crop.guideI18n ?? null,
+          durationDays: crop.durationDays ? Number(crop.durationDays) : 60,
+          expectedYieldKgPerSqm: crop.expectedYieldKgPerSqm ? Number(crop.expectedYieldKgPerSqm) : 3.5,
+          coverImageUrl: crop.coverImageUrl ?? null,
+        }
+        : null,
+      farm: farm
+        ? {
+          id: farm.id,
+          slug: farm.slug,
+          nameI18n: farm.nameI18n,
+          addressI18n: farm.addressI18n,
+          contactPhone: farm.contactPhone ?? "1900 6868",
         }
         : null,
     };
