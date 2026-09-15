@@ -413,65 +413,73 @@ async function main() {
 
   const mockStreamUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
 
+  // 5. Create 200 Plots across 8 Zones (A, B, C, D, E, F, N, P)
+  console.log("🌱 Creating 200 Plots across 8 Zones (A, B, C, D, E, F, N, P)...");
+
+  const zones = ["A", "B", "C", "D", "E", "F", "N", "P"];
+  const plotsPerZone = 25; // 8 zones x 25 plots = 200 plots total
   const validPlotCodes = new Set<string>();
   let createdPlotsCount = 0;
 
-  for (let i = 1; i <= 200; i++) {
-    const codeIndex = String(i).padStart(3, "0");
-    const plotCode = `PLOT-${codeIndex}`;
-    const plotNumber = `P-${codeIndex}`;
-    const name = `Lô Đất Hữu Cơ #${i}`;
-    validPlotCodes.add(plotCode);
+  for (let z = 0; z < zones.length; z++) {
+    const zoneName = zones[z];
+    for (let p = 1; p <= plotsPerZone; p++) {
+      const globalIndex = z * plotsPerZone + (p - 1);
+      const plotNumStr = String(p).padStart(3, "0");
+      const plotCode = `PLT-${zoneName}-${plotNumStr}`;
+      const plotNumber = `${zoneName}-${plotNumStr}`;
+      const name = `Lô Đất Hữu Cơ Khu ${zoneName} #${p}`;
+      validPlotCodes.add(plotCode);
 
-    // Select default crop sequentially
-    const crop = crops[(i - 1) % crops.length];
-    // Soil type
-    const soilType = soilTypes[i % soilTypes.length];
-    // Status
-    const status = statuses[i % statuses.length];
+      // Select default crop sequentially
+      const crop = crops[globalIndex % crops.length];
+      // Soil type
+      const soilType = soilTypes[globalIndex % soilTypes.length];
+      // Status
+      const status = statuses[globalIndex % statuses.length];
 
-    // Standard plot areas strictly set to [20, 25, 30, 35, 40] sqm
-    const allowedAreas = [20, 25, 30, 35, 40];
-    const areaVal = allowedAreas[(i - 1) % allowedAreas.length];
-    // Price per month proportional to plot area (25,000 VND / sqm)
-    const priceVal = areaVal * 25000;
+      // Standard plot areas strictly set to [20, 25, 30, 35, 40] sqm
+      const allowedAreas = [20, 25, 30, 35, 40];
+      const areaVal = allowedAreas[globalIndex % allowedAreas.length];
+      // Price per month proportional to plot area (25,000 VND / sqm)
+      const priceVal = areaVal * 25000;
 
+      await prisma.plot.upsert({
+        where: { plotCode },
+        update: {
+          farmId: primaryFarm.id,
+          defaultCropId: crop.id,
+          assignedStaffId: staff.id,
+          plotNumber,
+          name,
+          area: areaVal,
+          areaSqm: areaVal,
+          soilTypeI18n: soilType,
+          pricePerMonth: priceVal,
+          status,
+          streamUrl: mockStreamUrl,
+        },
+        create: {
+          plotCode,
+          plotNumber,
+          name,
+          farmId: primaryFarm.id,
+          defaultCropId: crop.id,
+          assignedStaffId: staff.id,
+          area: areaVal,
+          areaSqm: areaVal,
+          soilTypeI18n: soilType,
+          pricePerMonth: priceVal,
+          status,
+          streamUrl: mockStreamUrl,
+        },
+      });
 
-    await prisma.plot.upsert({
-      where: { plotCode },
-      update: {
-        farmId: primaryFarm.id,
-        defaultCropId: crop.id,
-        assignedStaffId: staff.id,
-        plotNumber,
-        name,
-        area: areaVal,
-        areaSqm: areaVal,
-        soilTypeI18n: soilType,
-        pricePerMonth: priceVal,
-        status,
-        streamUrl: mockStreamUrl,
-      },
-      create: {
-        plotCode,
-        plotNumber,
-        name,
-        farmId: primaryFarm.id,
-        defaultCropId: crop.id,
-        assignedStaffId: staff.id,
-        area: areaVal,
-        areaSqm: areaVal,
-        soilTypeI18n: soilType,
-        pricePerMonth: priceVal,
-        status,
-        streamUrl: mockStreamUrl,
-      },
-    });
-
-    createdPlotsCount++;
+      createdPlotsCount++;
+    }
   }
 
-  // Clean up any extra plots not in the PLOT-001 to PLOT-200 set if they aren't tied to active contracts
+  // Clean up any old plots (e.g. PLOT-001..200) not in the new zoned set
   const extraPlots = await prisma.plot.deleteMany({
     where: {
       plotCode: { notIn: Array.from(validPlotCodes) },
@@ -479,8 +487,9 @@ async function main() {
     },
   });
   if (extraPlots.count > 0) {
-    console.log(`🧹 Cleaned up ${extraPlots.count} extra plots.`);
+    console.log(`🧹 Cleaned up ${extraPlots.count} old non-zoned plots.`);
   }
+
 
   console.log(`🎉 Successfully seeded ${createdPlotsCount} Plots into Farm: ${primaryFarmData.nameI18n.vi}!`);
   console.log("✨ All database seeding finished successfully.");
