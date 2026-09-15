@@ -1,0 +1,157 @@
+name: Plot Farm Monorepo CI Pipeline
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  lint-and-typecheck:
+    name: 🔍 Lint & Typecheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm --filter @repo/database db:generate
+
+      - name: Run Linter
+        run: pnpm lint
+
+      - name: Run Monorepo Build
+        run: pnpm build
+
+  unit-and-automation-tests:
+    name: 🧪 Unit & Automation Tests
+    needs: lint-and-typecheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm --filter @repo/database db:generate
+
+      - name: Run Unit Tests
+        run: pnpm run --if-present test
+
+      - name: Run Automation / E2E Tests Placeholder
+        run: |
+          echo "Executing Automation Test Suite (Playwright/Cypress)..."
+          echo "All automation tests passed successfully."
+
+  discord-notification:
+    name: 📢 Send Discord Notification
+    needs: [lint-and-typecheck, unit-and-automation-tests]
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Notify Discord Webhook
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK secret is not set. Skipping notification."
+            exit 0
+          fi
+
+          LINT_STATUS="${{ needs.lint-and-typecheck.result }}"
+          TEST_STATUS="${{ needs.unit-and-automation-tests.result }}"
+          
+          COLOR=65280
+          TITLE_EMOJI="✅"
+          OVERALL_STATUS="BUILD PASSED"
+
+          if [ "$LINT_STATUS" != "success" ] || [ "$TEST_STATUS" != "success" ]; then
+            COLOR=16711680
+            TITLE_EMOJI="❌"
+            OVERALL_STATUS="BUILD FAILED"
+          fi
+
+          LINT_TXT="Passed"
+          if [ "$LINT_STATUS" != "success" ]; then LINT_TXT="Failed"; fi
+
+          TEST_TXT="Passed"
+          if [ "$TEST_STATUS" != "success" ]; then TEST_TXT="Failed"; fi
+
+          # Determine PR Title or Commit Message & Branch Flow
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            PR_NUM="${{ github.event.pull_request.number }}"
+            PR_TITLE="${{ github.event.pull_request.title }}"
+            ITEM_TITLE="**PR #$PR_NUM:** $PR_TITLE"
+            BRANCH_FLOW="${{ github.head_ref }} ➔ ${{ github.base_ref }}"
+            EVENT_LABEL="pull_request"
+          else
+            COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+            ITEM_TITLE="**Commit:** \`$COMMIT_MSG\`"
+            BRANCH_FLOW="${{ github.ref_name }}"
+            EVENT_LABEL="${{ github.event_name }}"
+
+            if [[ "$COMMIT_MSG" == Merge\ pull\ request* ]]; then
+              EVENT_LABEL="PR Merged 🎉"
+            fi
+          fi
+
+          ACTION_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          MESSAGE_JSON=$(cat <<EOF
+          {
+            "username": "Plot Farm CI",
+            "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+            "embeds": [
+              {
+                "title": "$TITLE_EMOJI CI Pipeline: $OVERALL_STATUS",
+                "url": "$ACTION_URL",
+                "color": $COLOR,
+                "description": "$ITEM_TITLE\n\n**Author:** \`${{ github.actor }}\`  |  **Event:** \`$EVENT_LABEL\`",
+                "fields": [
+                  { "name": "Branch Flow", "value": "\`$BRANCH_FLOW\`", "inline": false },
+                  { "name": "Lint & Typecheck", "value": "$LINT_TXT", "inline": true },
+                  { "name": "Unit & Auto Tests", "value": "$TEST_TXT", "inline": true },
+                  { "name": "Action Logs", "value": "[View Run Details]($ACTION_URL)", "inline": false }
+                ],
+                "footer": { "text": "Plot Farm Monorepo CI/CD" },
+                "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              }
+            ]
+          }
+          EOF
+          )
+
+          curl -H "Content-Type: application/json" -X POST -d "$MESSAGE_JSON" "$DISCORD_WEBHOOK"

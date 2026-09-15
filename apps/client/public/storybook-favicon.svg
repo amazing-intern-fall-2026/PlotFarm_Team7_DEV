@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <!-- Storybook Yellow Squircle Background -->
+  <rect width="64" height="64" rx="16" fill="#F59E0B" />
+  
+  <!-- Flower Petals (8 Radial Petals) -->
+  <g fill="#FFFFFF">
+    <circle cx="32" cy="18" r="6" />
+    <circle cx="41.9" cy="22.1" r="6" />
+    <circle cx="46" cy="32" r="6" />
+    <circle cx="41.9" cy="41.9" r="6" />
+    <circle cx="32" cy="46" r="6" />
+    <circle cx="22.1" cy="41.9" r="6" />
+    <circle cx="18" cy="32" r="6" />
+    <circle cx="22.1" cy="22.1" r="6" />
+    <!-- Center connecting disc -->
+    <circle cx="32" cy="32" r="10" />
+  </g>
+  
+  <!-- Flower Center Pollen Core -->
+  <circle cx="32" cy="32" r="5.5" fill="#B45309" />
+</svg>

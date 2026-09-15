@@ -1,0 +1,1889 @@
+openapi: 3.0.3
+
+info:
+  title: PlotFarm API
+  version: 1.0.0
+  description: |
+    API documentation for PlotFarm system, generated from docs/API_SPECIFICATION.md.
+
+    Design references:
+    - Response envelope (`code` + `message` + `meta` + `data` + `pagination` on
+      success, `code` + `message` + `meta` + `error` on failure).
+    - 100% Business Code / Slug used as public identifiers instead of raw
+      Database UUID/ID (OWASP API Top 10 - BOLA mitigation).
+    - 3 roles: CUSTOMER, STAFF, ADMIN.
+    - Localization via `Accept-Language` header.
+
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local development server
+
+tags:
+  - name: Authentication
+  - name: Users
+  - name: Farms
+  - name: Crops
+  - name: Plots
+  - name: Vouchers
+  - name: Contracts
+  - name: Payments
+  - name: Compensations
+  - name: FarmingLogs
+  - name: CareRequests
+  - name: Harvests
+  - name: Shipments
+  - name: IoT
+  - name: Notifications
+  - name: StaffWorkspace
+  - name: AdminMonitoring
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RateLimit:
+      type: object
+      properties:
+        limit: { type: integer }
+        remaining: { type: integer }
+        resetInSeconds: { type: integer }
+        isSpamWarning: { type: boolean }
+
+    Meta:
+      type: object
+      properties:
+        correlationId: { type: string, format: uuid }
+        traceId: { type: string, format: uuid }
+        userCode: { type: string }
+        timestamp: { type: string, format: date-time }
+        rateLimit: { $ref: "#/components/schemas/RateLimit" }
+
+    Pagination:
+      type: object
+      properties:
+        page: { type: integer }
+        pageSize: { type: integer }
+        totalItems: { type: integer }
+        totalPages: { type: integer }
+        hasNextPage: { type: boolean }
+        hasPreviousPage: { type: boolean }
+
+    ErrorDetail:
+      type: object
+      properties:
+        code: { type: string }
+        category: { type: string }
+        details: { type: object }
+
+    ErrorResponse:
+      type: object
+      properties:
+        code: { type: integer }
+        message: { type: string }
+        meta: { $ref: "#/components/schemas/Meta" }
+        error: { $ref: "#/components/schemas/ErrorDetail" }
+
+    # ---- Auth & Users ----
+    User:
+      type: object
+      properties:
+        userCode: { type: string }
+        email: { type: string, format: email }
+        phone: { type: string }
+        fullName: { type: string }
+        role: { type: string, enum: [CUSTOMER, STAFF, ADMIN] }
+        preferredLocale: { type: string }
+        avatarUrl: { type: string, nullable: true }
+        isVerified: { type: boolean }
+
+    RegisterRequest:
+      type: object
+      required: [email, phone, password, fullName]
+      properties:
+        email: { type: string, format: email }
+        phone: { type: string }
+        password: { type: string }
+        fullName: { type: string }
+        preferredLocale: { type: string }
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string }
+
+    AuthTokens:
+      type: object
+      properties:
+        accessToken: { type: string }
+        refreshToken: { type: string }
+
+    UserBankAccount:
+      type: object
+      properties:
+        bankAccountRef: { type: string }
+        bankCode: { type: string }
+        bankName: { type: string }
+        accountNumber: { type: string }
+        accountHolderName: { type: string }
+        isDefault: { type: boolean }
+        isVerified: { type: boolean }
+
+    # ---- Farms / Crops / Plots ----
+    FarmListItem:
+      type: object
+      properties:
+        farmCode: { type: string }
+        farmSlug: { type: string }
+        name: { type: string }
+        province: { type: string }
+        address: { type: string }
+        totalPlots: { type: integer }
+        availablePlots: { type: integer }
+        imageUrl: { type: string }
+
+    FarmDetail:
+      allOf:
+        - $ref: "#/components/schemas/FarmListItem"
+        - type: object
+          properties:
+            description: { type: string }
+            latitude: { type: number }
+            longitude: { type: number }
+            cameras:
+              type: array
+              items:
+                type: object
+                properties:
+                  cameraCode: { type: string }
+                  name: { type: string }
+                  hlsUrl: { type: string }
+
+    Crop:
+      type: object
+      properties:
+        cropCode: { type: string }
+        cropSlug: { type: string }
+        name: { type: string }
+        description: { type: string }
+        growthDurationDays: { type: integer }
+        expectedYieldKg: { type: number }
+        basePricePerPlot: { type: number }
+        carePackageFeePerMonth: { type: number }
+        thumbnailUrl: { type: string }
+        stages:
+          type: array
+          items:
+            type: object
+            properties:
+              stageOrder: { type: integer }
+              stageName: { type: string }
+              durationDays: { type: integer }
+
+    Plot:
+      type: object
+      properties:
+        plotCode: { type: string }
+        plotNumber: { type: string }
+        areaSquareMeters: { type: number }
+        status:
+          type: string
+          enum: [AVAILABLE, RESERVED, OCCUPIED, HARVESTING, MAINTENANCE, INACTIVE]
+        pricePerMonth: { type: number }
+        soilType: { type: string, nullable: true }
+        iotSensorInstalled: { type: boolean }
+        cameraSupported: { type: boolean }
+
+    Voucher:
+      type: object
+      properties:
+        voucherCode: { type: string }
+        description: { type: string }
+        discountPercent: { type: number }
+        discountAmount: { type: number }
+        expiresAt: { type: string, format: date-time }
+
+    # ---- Contracts / Payments / Compensations ----
+    Contract:
+      type: object
+      properties:
+        contractCode: { type: string }
+        plotCode: { type: string }
+        cropCode: { type: string }
+        status:
+          type: string
+          enum: [DRAFT, PENDING_PAYMENT, ACTIVE, IN_HARVEST, COMPLETED, CANCELLED, DISPUTED]
+        startDate: { type: string, format: date }
+        expectedHarvestDate: { type: string, format: date }
+        totalAmount: { type: number }
+        assignedStaff:
+          type: object
+          nullable: true
+          properties:
+            userCode: { type: string }
+            fullName: { type: string }
+
+    BookingRequest:
+      type: object
+      required: [plotCode, cropCode, rentalMonths, startDate]
+      properties:
+        plotCode: { type: string }
+        cropCode: { type: string }
+        rentalMonths: { type: integer }
+        startDate: { type: string, format: date }
+        voucherCode: { type: string }
+
+    VietQRPayment:
+      type: object
+      properties:
+        orderCode: { type: string }
+        contractCode: { type: string }
+        amountVnd: { type: number }
+        qrContent: { type: string }
+        qrImage: { type: string }
+        beneficiaryAccount: { type: string }
+        beneficiaryBank: { type: string }
+        transferContent: { type: string }
+        expiresAt: { type: string, format: date-time }
+
+    Compensation:
+      type: object
+      properties:
+        compensationCode: { type: string }
+        contractCode: { type: string }
+        reason:
+          type: string
+          enum:
+            [
+              CROP_DISEASE_OUTBREAK,
+              SEVERE_WEATHER_LOSS,
+              FARMER_CARE_NEGLECT,
+              SYSTEM_CANCELLATION,
+              QUALITY_BELOW_STANDARD,
+            ]
+        status:
+          type: string
+          enum: [REQUESTED, UNDER_REVIEW, APPROVED, PROCESSING, COMPLETED, REJECTED]
+        payoutType:
+          type: string
+          enum: [BANK_REFUND, WALLET_CREDIT, FREE_REPLANT_PLOT, VOUCHER_CODE]
+        requestedAmount: { type: number }
+
+    # ---- Diary: FarmingLogs & CareRequests ----
+    SensorSnapshot:
+      type: object
+      properties:
+        temperature: { type: number }
+        humidity: { type: number }
+        soilMoisture: { type: number }
+
+    FarmingLog:
+      type: object
+      properties:
+        logCode: { type: string }
+        contractCode: { type: string }
+        authorStaff:
+          type: object
+          properties:
+            userCode: { type: string }
+            fullName: { type: string }
+        actionType: { type: string }
+        title: { type: string }
+        description: { type: string }
+        photoUrls:
+          type: array
+          items: { type: string }
+        sensorSnapshot: { $ref: "#/components/schemas/SensorSnapshot" }
+        isAmended: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+    CareRequest:
+      type: object
+      properties:
+        requestCode: { type: string }
+        contractCode: { type: string }
+        serviceType: { type: string }
+        status:
+          type: string
+          enum: [PENDING, ASSIGNED, IN_PROGRESS, VERIFIED, REJECTED]
+        extraFee: { type: number }
+        staffResponse: { type: string, nullable: true }
+
+    # ---- Harvests / Shipments ----
+    Harvest:
+      type: object
+      properties:
+        harvestCode: { type: string }
+        contractCode: { type: string }
+        actualYieldKg: { type: number }
+        qualityGrade: { type: string }
+
+    Shipment:
+      type: object
+      properties:
+        trackingCode: { type: string }
+        carrierCode: { type: string }
+        carrierName: { type: string }
+        status:
+          type: string
+          enum:
+            [
+              PREPARING,
+              PICKED_UP,
+              IN_TRANSIT,
+              OUT_FOR_DELIVERY,
+              DELIVERED,
+              FAILED_DELIVERY,
+              RETURNED,
+            ]
+        receiverName: { type: string }
+        receiverPhone: { type: string }
+        destination: { type: string }
+        history:
+          type: array
+          items:
+            type: object
+            properties:
+              status: { type: string }
+              location: { type: string }
+              timestamp: { type: string, format: date-time }
+
+    # ---- Notifications / Audit ----
+    Notification:
+      type: object
+      properties:
+        notificationCode: { type: string }
+        title: { type: string }
+        body: { type: string }
+        type: { type: string }
+        referenceCode: { type: string }
+        isRead: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+    AuditLog:
+      type: object
+      properties:
+        auditCode: { type: string }
+        actorUserCode: { type: string }
+        action: { type: string }
+        entityTable: { type: string }
+        entityCode: { type: string }
+        oldState: { type: object }
+        newState: { type: object }
+        ipAddress: { type: string }
+        createdAt: { type: string, format: date-time }
+
+  responses:
+    BadRequest:
+      description: Validation failed
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Unauthorized:
+      description: Missing or expired access token
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Forbidden:
+      description: Role not permitted
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Conflict:
+      description: Business logic conflict (e.g. plot already reserved)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+
+security:
+  - BearerAuth: []
+
+paths:
+  # ===================== NHÓM 1: AUTHENTICATION =====================
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register a new account
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RegisterRequest" }
+      responses:
+        "201":
+          description: Account created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code: { type: integer }
+                  message: { type: string }
+                  meta: { $ref: "#/components/schemas/Meta" }
+                  data: { $ref: "#/components/schemas/User" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: Login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LoginRequest" }
+      responses:
+        "200":
+          description: Login success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code: { type: integer }
+                  message: { type: string }
+                  meta: { $ref: "#/components/schemas/Meta" }
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/AuthTokens"
+                      - type: object
+                        properties:
+                          user: { $ref: "#/components/schemas/User" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /auth/refresh-token:
+    post:
+      tags: [Authentication]
+      summary: Refresh access token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refreshToken]
+              properties:
+                refreshToken: { type: string }
+      responses:
+        "200":
+          description: New access token issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      accessToken: { type: string }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: Logout and revoke refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refreshToken]
+              properties:
+                refreshToken: { type: string }
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      loggedOut: { type: boolean }
+
+  /auth/forgot-password:
+    post:
+      tags: [Authentication]
+      summary: Request password reset OTP
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        "200":
+          description: OTP sent if email exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      emailSent: { type: boolean }
+                      expiresInMinutes: { type: integer }
+
+  /auth/reset-password:
+    post:
+      tags: [Authentication]
+      summary: Reset password with OTP
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, otpCode, newPassword]
+              properties:
+                email: { type: string, format: email }
+                otpCode: { type: string }
+                newPassword: { type: string }
+      responses:
+        "200":
+          description: Password reset
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      passwordResetSuccess: { type: boolean }
+
+  /auth/change-password:
+    patch:
+      tags: [Authentication]
+      summary: Change password (authenticated)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [currentPassword, newPassword]
+              properties:
+                currentPassword: { type: string }
+                newPassword: { type: string }
+      responses:
+        "200":
+          description: Password changed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      passwordChanged: { type: boolean }
+
+  # ===================== NHÓM 2: USERS & BANK ACCOUNTS =====================
+  /users/me:
+    get:
+      tags: [Users]
+      summary: Get my profile
+      responses:
+        "200":
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/User" }
+    patch:
+      tags: [Users]
+      summary: Update my profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName: { type: string }
+                phone: { type: string }
+                preferredLocale: { type: string }
+                avatarUrl: { type: string }
+      responses:
+        "200":
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/User" }
+
+  /users/me/bank-accounts:
+    get:
+      tags: [Users]
+      summary: List my bank accounts for refunds/compensation
+      responses:
+        "200":
+          description: Bank account list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/UserBankAccount" }
+    post:
+      tags: [Users]
+      summary: Add a bank account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bankCode, bankName, accountNumber, accountHolderName]
+              properties:
+                bankCode: { type: string }
+                bankName: { type: string }
+                accountNumber: { type: string }
+                accountHolderName: { type: string }
+                isDefault: { type: boolean }
+      responses:
+        "201":
+          description: Bank account added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/UserBankAccount" }
+
+  /users/me/bank-accounts/{bankAccountRef}:
+    delete:
+      tags: [Users]
+      summary: Remove a bank account
+      parameters:
+        - name: bankAccountRef
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Bank account removed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      bankAccountRef: { type: string }
+                      deleted: { type: boolean }
+
+  /admin/users:
+    get:
+      tags: [Users]
+      summary: Admin - list users
+      parameters:
+        - name: role
+          in: query
+          schema: { type: string, enum: [CUSTOMER, STAFF, ADMIN] }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated user list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/User" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  # ===================== NHÓM 3: FARMS =====================
+  /farms:
+    get:
+      tags: [Farms]
+      summary: List farms
+      security: []
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated farm list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/FarmListItem" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      tags: [Farms]
+      summary: Admin - create farm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [farmCode, farmSlug, name, province, address, totalPlots]
+              properties:
+                farmCode: { type: string }
+                farmSlug: { type: string }
+                name: { type: string }
+                description: { type: string }
+                province: { type: string }
+                address: { type: string }
+                totalPlots: { type: integer }
+                latitude: { type: number }
+                longitude: { type: number }
+      responses:
+        "201":
+          description: Farm created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/FarmListItem" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /farms/{farmSlug}:
+    get:
+      tags: [Farms]
+      summary: Farm detail
+      security: []
+      parameters:
+        - name: farmSlug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Farm detail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/FarmDetail" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /farms/{farmSlug}/plots:
+    get:
+      tags: [Plots]
+      summary: List plots of a farm
+      security: []
+      parameters:
+        - name: farmSlug
+          in: path
+          required: true
+          schema: { type: string }
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated plot list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Plot" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+
+  # ===================== NHÓM 4: CROPS =====================
+  /crops:
+    get:
+      tags: [Crops]
+      summary: List crops
+      security: []
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated crop list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Crop" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      tags: [Crops]
+      summary: Admin - create crop
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cropCode, cropSlug, name, description, growthDurationDays]
+              properties:
+                cropCode: { type: string }
+                cropSlug: { type: string }
+                name: { type: string }
+                description: { type: string }
+                growthDurationDays: { type: integer }
+      responses:
+        "201":
+          description: Crop created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Crop" }
+
+  /crops/{cropSlug}:
+    get:
+      tags: [Crops]
+      summary: Crop detail
+      security: []
+      parameters:
+        - name: cropSlug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Crop detail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Crop" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  # ===================== NHÓM 5: PLOTS & RESERVATION =====================
+  /plots/{plotCode}/lock:
+    post:
+      tags: [Plots]
+      summary: Temporarily lock a plot for 10 minutes
+      parameters:
+        - name: plotCode
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Plot locked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      plotCode: { type: string }
+                      status: { type: string }
+                      reservedUntil: { type: string, format: date-time }
+                      remainingSeconds: { type: integer }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /plots/{plotCode}/unlock:
+    post:
+      tags: [Plots]
+      summary: Cancel a plot lock
+      parameters:
+        - name: plotCode
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Plot unlocked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      plotCode: { type: string }
+                      status: { type: string }
+
+  /admin/plots/{plotCode}/assign-staff:
+    post:
+      tags: [Plots]
+      summary: Admin - assign staff to a plot
+      parameters:
+        - name: plotCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [staffUserCode]
+              properties:
+                staffUserCode: { type: string }
+                notes: { type: string }
+      responses:
+        "200":
+          description: Staff assigned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      plotCode: { type: string }
+                      assignedStaff:
+                        type: object
+                        properties:
+                          userCode: { type: string }
+                          fullName: { type: string }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  # ===================== NHÓM 6: VOUCHERS =====================
+  /vouchers:
+    get:
+      tags: [Vouchers]
+      summary: List available vouchers
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated voucher list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Voucher" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+
+  # ===================== NHÓM 7: CONTRACTS =====================
+  /contracts:
+    post:
+      tags: [Contracts]
+      summary: Create a rental contract (booking)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BookingRequest" }
+      responses:
+        "201":
+          description: Contract created (pending payment)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Contract" }
+        "409": { $ref: "#/components/responses/Conflict" }
+    get:
+      tags: [Contracts]
+      summary: List my contracts
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated contract list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Contract" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+
+  /contracts/{contractCode}:
+    get:
+      tags: [Contracts]
+      summary: Contract detail
+      parameters:
+        - name: contractCode
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Contract detail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Contract" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  # ===================== NHÓM 8: PAYMENTS =====================
+  /payments/create-order:
+    post:
+      tags: [Payments]
+      summary: Create a VietQR payment order for a contract
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [contractCode, paymentMethod]
+              properties:
+                contractCode: { type: string }
+                paymentMethod:
+                  type: string
+                  enum: [VIETQR, VNPAY, MOMO, BANK_TRANSFER, MANUAL_CASH]
+                returnUrl: { type: string }
+      responses:
+        "201":
+          description: Payment order created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/VietQRPayment" }
+
+  /payments/orders/{orderCode}/status:
+    get:
+      tags: [Payments]
+      summary: Check payment order status
+      parameters:
+        - name: orderCode
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Payment order status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      orderCode: { type: string }
+                      contractCode: { type: string }
+                      status: { type: string }
+                      amountPaid: { type: number }
+                      paidAt: { type: string, format: date-time, nullable: true }
+
+  /payments/webhook/vietqr:
+    post:
+      tags: [Payments]
+      summary: Bank webhook for VietQR settlement (idempotent)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [gatewayReference, orderCode, amount]
+              properties:
+                gatewayReference: { type: string }
+                orderCode: { type: string }
+                amount: { type: number }
+                transactionDate: { type: string, format: date-time }
+                content: { type: string }
+                bankSignature: { type: string }
+      responses:
+        "200":
+          description: Webhook processed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      gatewayReference: { type: string }
+                      orderCode: { type: string }
+                      contractCode: { type: string }
+                      contractStatus: { type: string }
+                      isDuplicateProcessed: { type: boolean }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /admin/payments/transactions:
+    get:
+      tags: [Payments]
+      summary: Admin - transaction ledger
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated transaction ledger
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gatewayReference: { type: string }
+                        orderCode: { type: string }
+                        contractCode: { type: string }
+                        amount: { type: number }
+                        method: { type: string }
+                        status: { type: string }
+                        createdAt: { type: string, format: date-time }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  # ===================== NHÓM 9: COMPENSATIONS =====================
+  /compensations:
+    post:
+      tags: [Compensations]
+      summary: Request compensation for an incident
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [contractCode, reason, payoutType]
+              properties:
+                contractCode: { type: string }
+                reason:
+                  type: string
+                  enum:
+                    [
+                      CROP_DISEASE_OUTBREAK,
+                      SEVERE_WEATHER_LOSS,
+                      FARMER_CARE_NEGLECT,
+                      SYSTEM_CANCELLATION,
+                      QUALITY_BELOW_STANDARD,
+                    ]
+                payoutType:
+                  type: string
+                  enum: [BANK_REFUND, WALLET_CREDIT, FREE_REPLANT_PLOT, VOUCHER_CODE]
+                bankAccountRef: { type: string }
+                requestedAmount: { type: number }
+                lossPercentage: { type: number }
+                evidenceUrls:
+                  type: array
+                  items: { type: string }
+                incidentDate: { type: string, format: date }
+                notes: { type: string }
+      responses:
+        "201":
+          description: Compensation request created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Compensation" }
+    get:
+      tags: [Compensations]
+      summary: List compensation requests
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated compensation list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Compensation" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+
+  /admin/compensations/{compensationCode}/approve:
+    patch:
+      tags: [Compensations]
+      summary: Admin - approve and pay out compensation
+      parameters:
+        - name: compensationCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [approvedAmount, payoutType]
+              properties:
+                approvedAmount: { type: number }
+                payoutType: { type: string }
+                payoutReference: { type: string }
+                adminNotes: { type: string }
+      responses:
+        "200":
+          description: Compensation approved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Compensation" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /admin/compensations/{compensationCode}/reject:
+    patch:
+      tags: [Compensations]
+      summary: Admin - reject compensation request
+      parameters:
+        - name: compensationCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rejectionReason]
+              properties:
+                rejectionReason: { type: string }
+      responses:
+        "200":
+          description: Compensation rejected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Compensation" }
+
+  # ===================== NHÓM 10: FARMING LOGS & REVIEWS =====================
+  /contracts/{contractCode}/farming-logs:
+    get:
+      tags: [FarmingLogs]
+      summary: List farming logs of a contract
+      parameters:
+        - name: contractCode
+          in: path
+          required: true
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated farming log list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/FarmingLog" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      tags: [FarmingLogs]
+      summary: Staff - write a farming log with IoT sensor snapshot
+      parameters:
+        - name: contractCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [actionType, title, description]
+              properties:
+                actionType: { type: string }
+                title: { type: string }
+                description: { type: string }
+                photoUrls:
+                  type: array
+                  items: { type: string }
+                sensorSnapshot: { $ref: "#/components/schemas/SensorSnapshot" }
+      responses:
+        "201":
+          description: Farming log created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/FarmingLog" }
+
+  /contracts/{contractCode}/farming-logs/amend:
+    post:
+      tags: [FarmingLogs]
+      summary: Staff/Admin - append an amendment log (append-only, no UPDATE)
+      parameters:
+        - name: contractCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [replacesLogCode, amendmentReason, actionType, title, description]
+              properties:
+                replacesLogCode: { type: string }
+                amendmentReason: { type: string }
+                actionType: { type: string }
+                title: { type: string }
+                description: { type: string }
+                photoUrls:
+                  type: array
+                  items: { type: string }
+      responses:
+        "201":
+          description: Amendment log created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      logCode: { type: string }
+                      replacesLogCode: { type: string }
+                      amendmentReason: { type: string }
+        "422": { $ref: "#/components/responses/BadRequest" }
+
+  /farming-logs/{logCode}/reviews:
+    post:
+      tags: [FarmingLogs]
+      summary: Customer - review a farming log / flag suspected fraud
+      parameters:
+        - name: logCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rating, comment]
+              properties:
+                rating: { type: integer, minimum: 1, maximum: 5 }
+                comment: { type: string }
+                isFraudSuspected: { type: boolean }
+                fraudReason: { type: string }
+      responses:
+        "201":
+          description: Review recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      logCode: { type: string }
+                      rating: { type: integer }
+                      isFraudSuspected: { type: boolean }
+                      auditFlagTriggered: { type: boolean }
+
+  # ===================== NHÓM 11: CARE REQUESTS =====================
+  /contracts/{contractCode}/care-requests:
+    post:
+      tags: [CareRequests]
+      summary: Customer - request an extra care service
+      parameters:
+        - name: contractCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [serviceType]
+              properties:
+                serviceType: { type: string }
+                customerNote: { type: string }
+      responses:
+        "201":
+          description: Care request created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/CareRequest" }
+
+  /staff/care-tasks/{requestCode}/status:
+    patch:
+      tags: [CareRequests]
+      summary: Staff - update care task progress
+      parameters:
+        - name: requestCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [PENDING, ASSIGNED, IN_PROGRESS, VERIFIED, REJECTED]
+                staffResponse: { type: string }
+                proofImages:
+                  type: array
+                  items: { type: string }
+      responses:
+        "200":
+          description: Care task updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      requestCode: { type: string }
+                      status: { type: string }
+                      completedAt: { type: string, format: date-time, nullable: true }
+
+  # ===================== NHÓM 12: HARVESTS & SHIPMENTS =====================
+  /contracts/{contractCode}/harvest:
+    post:
+      tags: [Harvests]
+      summary: Staff - record actual harvest yield
+      parameters:
+        - name: contractCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [harvestDate, actualYieldKg]
+              properties:
+                harvestDate: { type: string, format: date }
+                actualYieldKg: { type: number }
+                qualityGrade: { type: string }
+                proofPhotos:
+                  type: array
+                  items: { type: string }
+                notes: { type: string }
+      responses:
+        "201":
+          description: Harvest recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Harvest" }
+
+  /contracts/{contractCode}/shipment:
+    post:
+      tags: [Shipments]
+      summary: Staff/Admin - create a shipment for the harvested produce
+      parameters:
+        - name: contractCode
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [carrierCode, trackingCode, receiverName, receiverPhone, receiverAddress, totalWeightKg]
+              properties:
+                carrierCode: { type: string }
+                trackingCode: { type: string }
+                receiverName: { type: string }
+                receiverPhone: { type: string }
+                receiverAddress: { type: string }
+                totalWeightKg: { type: number }
+      responses:
+        "201":
+          description: Shipment created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      trackingCode: { type: string }
+                      carrierCode: { type: string }
+                      currentStatus: { type: string }
+
+  /shipments/{trackingCode}:
+    get:
+      tags: [Shipments]
+      summary: Track a shipment
+      parameters:
+        - name: trackingCode
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Shipment tracking detail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Shipment" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  # ===================== NHÓM 13: IOT =====================
+  /plots/{plotCode}/telemetry:
+    get:
+      tags: [IoT]
+      summary: Get latest realtime sensor metrics of a plot
+      parameters:
+        - name: plotCode
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Latest telemetry snapshot
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      plotCode: { type: string }
+                      latestMetrics:
+                        type: object
+                        properties:
+                          temperatureCelsius: { type: number }
+                          humidityPercentage: { type: number }
+                          soilMoisturePercentage: { type: number }
+                          lightIntensityLux: { type: number }
+                          soilPh: { type: number }
+                      healthStatus: { type: string }
+                      measuredAt: { type: string, format: date-time }
+
+  /iot/telemetry:
+    post:
+      tags: [IoT]
+      summary: IoT gateway pushes periodic sensor readings
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [plotCode, deviceToken, temperature, humidity, soilMoisture]
+              properties:
+                plotCode: { type: string }
+                deviceToken: { type: string }
+                temperature: { type: number }
+                humidity: { type: number }
+                soilMoisture: { type: number }
+                soilPh: { type: number }
+                lightLux: { type: number }
+                timestamp: { type: string, format: date-time }
+      responses:
+        "201":
+          description: Telemetry ingested
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      plotCode: { type: string }
+                      received: { type: boolean }
+
+  # ===================== NHÓM 14: NOTIFICATIONS =====================
+  /notifications:
+    get:
+      tags: [Notifications]
+      summary: List my notifications
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated notification list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Notification" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+
+  /notifications/{notificationCode}/read:
+    patch:
+      tags: [Notifications]
+      summary: Mark a notification as read
+      parameters:
+        - name: notificationCode
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Notification marked as read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      notificationCode: { type: string }
+                      isRead: { type: boolean }
+
+  # ===================== NHÓM 15: STAFF WORKSPACE =====================
+  /staff/assigned-plots:
+    get:
+      tags: [StaffWorkspace]
+      summary: Staff - list plots assigned to me
+      responses:
+        "200":
+          description: Assigned plots
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        plotCode: { type: string }
+                        plotNumber: { type: string }
+                        farmCode: { type: string }
+                        currentCrop:
+                          type: object
+                          properties:
+                            cropCode: { type: string }
+                            name: { type: string }
+                        contractCode: { type: string }
+                        customer:
+                          type: object
+                          properties:
+                            userCode: { type: string }
+                            fullName: { type: string }
+                        iotMetrics:
+                          type: object
+                          properties:
+                            temperature: { type: number }
+                            humidity: { type: number }
+                            soilMoisture: { type: number }
+
+  /staff/care-tasks:
+    get:
+      tags: [StaffWorkspace]
+      summary: Staff - list today's care tasks
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated care task list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/CareRequest" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+
+  # ===================== NHÓM 16: ADMIN MONITORING & AUDIT LOGS =====================
+  /admin/dashboard/metrics:
+    get:
+      tags: [AdminMonitoring]
+      summary: Admin - dashboard overview metrics
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      totalRevenueVnd: { type: number }
+                      activePlotsCount: { type: integer }
+                      totalPlotsCount: { type: integer }
+                      occupancyRatePercent: { type: number }
+                      pendingCompensationsCount: { type: integer }
+                      totalAuditEventsCount: { type: integer }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /admin/audit-logs:
+    get:
+      tags: [AdminMonitoring]
+      summary: Admin - query system audit logs
+      parameters:
+        - name: entityTable
+          in: query
+          schema: { type: string }
+        - name: entityCode
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: pageSize
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Paginated audit log list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/AuditLog" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+        "403": { $ref: "#/components/responses/Forbidden" }

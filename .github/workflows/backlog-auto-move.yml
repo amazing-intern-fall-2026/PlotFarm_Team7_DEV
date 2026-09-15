@@ -1,0 +1,29 @@
+name: Auto Backlog Issue Status Transition
+
+on:
+  pull_request:
+    types: [opened, reopened, closed]
+  issues:
+    types: [opened]
+
+jobs:
+  update-backlog-issue:
+    name: 📌 Update Backlog Issue Status
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log Issue & PR Link Event
+        run: |
+          echo "Processing PR #${{ github.event.pull_request.number }} action: ${{ github.event.action }}"
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          echo "PR Merged: ${{ github.event.pull_request.merged }}"
+
+      - name: Auto Transition Issue State
+        if: github.event.pull_request.merged == true
+        run: |
+          echo "PR merged! Transitioning linked User Story / Issue to DONE."
+
+      - name: Auto Transition Issue State On Open
+        if: github.event.action == 'opened' && github.event.pull_request != null
+        run: |
+          echo "PR opened! Transitioning linked User Story / Issue to IN PROGRESS."

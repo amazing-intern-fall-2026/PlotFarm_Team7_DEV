@@ -1,0 +1,367 @@
+CREATE TYPE "user_role" AS ENUM (
+  'CUSTOMER',
+  'STAFF',
+  'ADMIN'
+);
+
+CREATE TYPE "plot_status" AS ENUM (
+  'AVAILABLE',
+  'RESERVED',
+  'OCCUPIED',
+  'HARVESTING',
+  'MAINTENANCE',
+  'INACTIVE'
+);
+
+CREATE TYPE "contract_status" AS ENUM (
+  'DRAFT',
+  'PENDING_PAYMENT',
+  'ACTIVE',
+  'IN_HARVEST',
+  'COMPLETED',
+  'CANCELLED',
+  'DISPUTED'
+);
+
+CREATE TYPE "payment_method" AS ENUM (
+  'VIETQR',
+  'VNPAY',
+  'MOMO',
+  'BANK_TRANSFER',
+  'MANUAL_CASH'
+);
+
+CREATE TYPE "payment_type" AS ENUM (
+  'CONTRACT_INITIAL',
+  'EXTRA_SERVICE',
+  'RENEWAL'
+);
+
+CREATE TYPE "transaction_status" AS ENUM (
+  'PENDING',
+  'SUCCESS',
+  'FAILED',
+  'EXPIRED',
+  'REFUNDED',
+  'PARTIALLY_REFUNDED'
+);
+
+CREATE TYPE "compensation_reason" AS ENUM (
+  'CROP_DISEASE_OUTBREAK',
+  'SEVERE_WEATHER_LOSS',
+  'FARMER_CARE_NEGLECT',
+  'SYSTEM_CANCELLATION',
+  'QUALITY_BELOW_STANDARD'
+);
+
+CREATE TYPE "compensation_status" AS ENUM (
+  'REQUESTED',
+  'UNDER_REVIEW',
+  'APPROVED',
+  'PROCESSING',
+  'COMPLETED',
+  'REJECTED'
+);
+
+CREATE TYPE "compensation_payout_type" AS ENUM (
+  'BANK_REFUND',
+  'WALLET_CREDIT',
+  'FREE_REPLANT_PLOT',
+  'VOUCHER_CODE'
+);
+
+CREATE TYPE "care_request_status" AS ENUM (
+  'PENDING',
+  'ASSIGNED',
+  'IN_PROGRESS',
+  'VERIFIED',
+  'REJECTED'
+);
+
+CREATE TYPE "shipment_status" AS ENUM (
+  'PREPARING',
+  'PICKED_UP',
+  'IN_TRANSIT',
+  'OUT_FOR_DELIVERY',
+  'DELIVERED',
+  'FAILED_DELIVERY',
+  'RETURNED'
+);
+
+CREATE TABLE "users" (
+  "id" uuid PRIMARY KEY,
+  "email" varchar(320) NOT NULL,
+  "phone" varchar(30) NOT NULL,
+  "password_hash" varchar(255) NOT NULL,
+  "full_name" varchar(150) NOT NULL,
+  "avatar_url" text,
+  "role" user_role NOT NULL,
+  "is_verified" boolean NOT NULL,
+  "preferred_locale" varchar(10) NOT NULL,
+  "last_login_at" timestamptz,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL,
+  "deleted_at" timestamptz
+);
+
+CREATE TABLE "user_bank_accounts" (
+  "id" uuid PRIMARY KEY,
+  "user_id" uuid NOT NULL,
+  "bank_code" varchar(20) NOT NULL,
+  "bank_name" varchar(100) NOT NULL,
+  "account_number" varchar(50) NOT NULL,
+  "account_holder_name" varchar(150) NOT NULL,
+  "is_default" boolean NOT NULL,
+  "is_verified" boolean NOT NULL,
+  "created_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "crops" (
+  "id" uuid PRIMARY KEY,
+  "slug" varchar(150) NOT NULL,
+  "name_i18n" jsonb NOT NULL,
+  "description_i18n" jsonb,
+  "guide_i18n" jsonb,
+  "duration_days" integer NOT NULL,
+  "ideal_temp_min" numeric(5,2) NOT NULL,
+  "ideal_temp_max" numeric(5,2) NOT NULL,
+  "ideal_moisture_min" numeric(5,2) NOT NULL,
+  "ideal_moisture_max" numeric(5,2) NOT NULL,
+  "expected_yield_kg_per_sqm" numeric(8,2) NOT NULL,
+  "base_price" numeric(14,2) NOT NULL,
+  "icon_url" text,
+  "cover_image_url" text,
+  "is_active" boolean NOT NULL,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL,
+  "deleted_at" timestamptz
+);
+
+CREATE TABLE "farms" (
+  "id" uuid PRIMARY KEY,
+  "slug" varchar(150) NOT NULL,
+  "name_i18n" jsonb NOT NULL,
+  "address_i18n" jsonb NOT NULL,
+  "latitude" numeric(10,7),
+  "longitude" numeric(10,7),
+  "total_area_sqm" numeric(12,2) NOT NULL,
+  "contact_phone" varchar(30),
+  "manager_id" uuid NOT NULL,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "plots" (
+  "id" uuid PRIMARY KEY,
+  "farm_id" uuid NOT NULL,
+  "default_crop_id" uuid,
+  "assigned_staff_id" uuid,
+  "plot_number" varchar(50) NOT NULL,
+  "area_sqm" numeric(10,2) NOT NULL,
+  "soil_type_i18n" jsonb NOT NULL,
+  "price_per_month" numeric(14,2) NOT NULL,
+  "status" plot_status NOT NULL,
+  "stream_url" text,
+  "camera_credentials_vault_id" text,
+  "locked_by_user_id" uuid,
+  "locked_until" timestamptz,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL,
+  "deleted_at" timestamptz
+);
+
+CREATE TABLE "contracts" (
+  "id" uuid PRIMARY KEY,
+  "contract_code" varchar(50) NOT NULL,
+  "user_id" uuid NOT NULL,
+  "plot_id" uuid NOT NULL,
+  "crop_id" uuid NOT NULL,
+  "voucher_id" uuid,
+  "start_date" date NOT NULL,
+  "expected_harvest_date" date NOT NULL,
+  "actual_harvest_date" date,
+  "crop_price_snapshot" numeric(14,2) NOT NULL,
+  "plot_price_snapshot" numeric(14,2) NOT NULL,
+  "subtotal" numeric(14,2) NOT NULL,
+  "discount_amount" numeric(14,2) NOT NULL,
+  "extra_fee" numeric(14,2) NOT NULL,
+  "total_price" numeric(14,2) NOT NULL,
+  "status" contract_status NOT NULL,
+  "progress_percent" integer NOT NULL,
+  "health_score" integer,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "payment_orders" (
+  "id" uuid PRIMARY KEY,
+  "order_code" varchar(100) NOT NULL,
+  "contract_id" uuid NOT NULL,
+  "user_id" uuid NOT NULL,
+  "amount" numeric(14,2) NOT NULL,
+  "payment_method" payment_method NOT NULL,
+  "payment_type" payment_type NOT NULL,
+  "status" transaction_status NOT NULL,
+  "qr_content" text,
+  "qr_image_url" text,
+  "expires_at" timestamptz NOT NULL,
+  "paid_at" timestamptz,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "payment_transactions" (
+  "id" uuid PRIMARY KEY,
+  "payment_order_id" uuid NOT NULL,
+  "gateway_reference" varchar(150) NOT NULL,
+  "sender_bank_code" varchar(30),
+  "sender_account_no" varchar(100),
+  "sender_account_name" varchar(150),
+  "transfer_amount" numeric(14,2) NOT NULL,
+  "transfer_content" text,
+  "raw_webhook_payload" jsonb,
+  "idempotency_key" varchar(120) NOT NULL,
+  "received_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "compensations" (
+  "id" uuid PRIMARY KEY,
+  "compensation_code" varchar(60) NOT NULL,
+  "contract_id" uuid NOT NULL,
+  "payment_order_id" uuid,
+  "requested_by_user_id" uuid NOT NULL,
+  "approved_by_user_id" uuid,
+  "reason_category" compensation_reason NOT NULL,
+  "reason_detail" text,
+  "damage_evidence_urls" jsonb,
+  "payout_type" compensation_payout_type NOT NULL,
+  "amount" numeric(14,2) NOT NULL,
+  "beneficiary_bank_code" varchar(30),
+  "beneficiary_account_no" varchar(100),
+  "beneficiary_account_name" varchar(150),
+  "status" compensation_status NOT NULL,
+  "admin_notes" text,
+  "payout_reference" varchar(150),
+  "payout_completed_at" timestamptz,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "farming_logs" (
+  "id" uuid PRIMARY KEY,
+  "contract_id" uuid NOT NULL,
+  "staff_id" uuid NOT NULL,
+  "stage_name_i18n" jsonb NOT NULL,
+  "notes" text,
+  "image_urls" jsonb,
+  "temperature" numeric(5,2),
+  "humidity" numeric(5,2),
+  "soil_moisture" numeric(5,2),
+  "logged_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "care_requests" (
+  "id" uuid PRIMARY KEY,
+  "contract_id" uuid NOT NULL,
+  "staff_id" uuid,
+  "service_title_i18n" jsonb NOT NULL,
+  "customer_note" text,
+  "staff_response" text,
+  "proof_images" jsonb,
+  "extra_fee" numeric(14,2) NOT NULL,
+  "is_fee_paid" boolean NOT NULL,
+  "status" care_request_status NOT NULL,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "harvests" (
+  "id" uuid PRIMARY KEY,
+  "contract_id" uuid NOT NULL,
+  "staff_id" uuid NOT NULL,
+  "harvest_date" date NOT NULL,
+  "actual_yield_kg" numeric(14,3) NOT NULL,
+  "quality_grade" varchar(20),
+  "proof_photos" jsonb,
+  "notes" text,
+  "created_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "shipments" (
+  "id" uuid PRIMARY KEY,
+  "contract_id" uuid NOT NULL,
+  "tracking_code" varchar(80) NOT NULL,
+  "carrier_code" varchar(50) NOT NULL,
+  "sender_address" text NOT NULL,
+  "receiver_name" varchar(150) NOT NULL,
+  "receiver_phone" varchar(30) NOT NULL,
+  "receiver_address" text NOT NULL,
+  "total_weight_kg" numeric(10,3) NOT NULL,
+  "shipping_fee" numeric(14,2) NOT NULL,
+  "current_status" shipment_status NOT NULL,
+  "estimated_delivery_at" timestamptz,
+  "delivered_at" timestamptz,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "audit_logs" (
+  "id" uuid PRIMARY KEY,
+  "actor_id" uuid NOT NULL,
+  "action" varchar(100) NOT NULL,
+  "entity_table" varchar(60) NOT NULL,
+  "entity_id" uuid NOT NULL,
+  "old_state" jsonb,
+  "new_state" jsonb,
+  "ip_address" varchar(50),
+  "user_agent" text,
+  "created_at" timestamptz NOT NULL
+);
+
+ALTER TABLE "user_bank_accounts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "farms" ADD FOREIGN KEY ("manager_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "plots" ADD FOREIGN KEY ("farm_id") REFERENCES "farms" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "plots" ADD FOREIGN KEY ("default_crop_id") REFERENCES "crops" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "plots" ADD FOREIGN KEY ("assigned_staff_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "plots" ADD FOREIGN KEY ("locked_by_user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "contracts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "contracts" ADD FOREIGN KEY ("plot_id") REFERENCES "plots" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "contracts" ADD FOREIGN KEY ("crop_id") REFERENCES "crops" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "payment_orders" ADD FOREIGN KEY ("contract_id") REFERENCES "contracts" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "payment_orders" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "payment_transactions" ADD FOREIGN KEY ("payment_order_id") REFERENCES "payment_orders" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "compensations" ADD FOREIGN KEY ("contract_id") REFERENCES "contracts" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "compensations" ADD FOREIGN KEY ("payment_order_id") REFERENCES "payment_orders" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "compensations" ADD FOREIGN KEY ("requested_by_user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "compensations" ADD FOREIGN KEY ("approved_by_user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "farming_logs" ADD FOREIGN KEY ("contract_id") REFERENCES "contracts" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "farming_logs" ADD FOREIGN KEY ("staff_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "care_requests" ADD FOREIGN KEY ("contract_id") REFERENCES "contracts" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "care_requests" ADD FOREIGN KEY ("staff_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "harvests" ADD FOREIGN KEY ("contract_id") REFERENCES "contracts" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "harvests" ADD FOREIGN KEY ("staff_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "shipments" ADD FOREIGN KEY ("contract_id") REFERENCES "contracts" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "audit_logs" ADD FOREIGN KEY ("actor_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;

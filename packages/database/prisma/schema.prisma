@@ -1,0 +1,472 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum UserRole {
+  CUSTOMER
+  STAFF
+  ADMIN
+}
+
+enum PlotStatus {
+  AVAILABLE
+  RESERVED
+  OCCUPIED
+  HARVESTING
+  MAINTENANCE
+  INACTIVE
+}
+
+enum ContractStatus {
+  DRAFT
+  PENDING_PAYMENT
+  ACTIVE
+  IN_HARVEST
+  COMPLETED
+  CANCELLED
+  DISPUTED
+}
+
+enum PaymentMethod {
+  VIETQR
+  VNPAY
+  MOMO
+  BANK_TRANSFER
+  MANUAL_CASH
+}
+
+enum PaymentType {
+  CONTRACT_INITIAL
+  EXTRA_SERVICE
+  RENEWAL
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  EXPIRED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum CompensationReason {
+  CROP_DISEASE_OUTBREAK
+  SEVERE_WEATHER_LOSS
+  FARMER_CARE_NEGLECT
+  SYSTEM_CANCELLATION
+  QUALITY_BELOW_STANDARD
+}
+
+enum CompensationStatus {
+  REQUESTED
+  UNDER_REVIEW
+  APPROVED
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
+
+enum CompensationPayoutType {
+  BANK_REFUND
+  WALLET_CREDIT
+  FREE_REPLANT_PLOT
+  VOUCHER_CODE
+}
+
+enum CareRequestStatus {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  VERIFIED
+  REJECTED
+}
+
+enum ShipmentStatus {
+  PREPARING
+  PICKED_UP
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  FAILED_DELIVERY
+  RETURNED
+}
+
+// ==========================================
+// MODELS
+// ==========================================
+
+model User {
+  id              String    @id @default(uuid())
+  userCode        String?   @unique @map("user_code")
+  email           String    @unique
+  phone           String?   @unique
+  googleId        String?   @unique @map("google_id")
+  passwordHash    String    @map("password_hash")
+  fullName        String    @map("full_name")
+  avatarUrl       String?   @map("avatar_url")
+  role            UserRole  @default(CUSTOMER)
+  isVerified      Boolean   @default(false) @map("is_verified")
+  preferredLocale String    @default("vi") @map("preferred_locale")
+  lastLoginAt     DateTime? @map("last_login_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+
+  refreshTokens          RefreshToken[]
+  bankAccounts           UserBankAccount[]
+  managedFarms           Farm[]                 @relation("FarmManager")
+  assignedPlots          Plot[]                 @relation("AssignedStaffPlots")
+  lockedPlots            Plot[]                 @relation("LockedUserPlots")
+  contracts              Contract[]
+  paymentOrders          PaymentOrder[]
+  requestedCompensations Compensation[]         @relation("CompensationRequestedBy")
+  approvedCompensations  Compensation[]         @relation("CompensationApprovedBy")
+  farmingLogs            FarmingLog[]           @relation("FarmingLogStaff")
+  careRequests           CareRequest[]          @relation("CareRequestStaff")
+  harvests               Harvest[]              @relation("HarvestStaff")
+  auditLogs              AuditLog[]             @relation("AuditLogActor")
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  userId    String    @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime  @map("expires_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  revokedAt DateTime? @map("revoked_at")
+
+  @@map("refresh_tokens")
+}
+
+model VerificationCode {
+  id         String    @id @default(uuid())
+  email      String
+  codeHash   String    @map("code_hash")
+  attempts   Int       @default(0)
+  expiresAt  DateTime  @map("expires_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  consumedAt DateTime? @map("consumed_at")
+
+  @@index([email])
+  @@map("verification_codes")
+}
+
+
+model UserBankAccount {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankCode          String   @map("bank_code")
+  bankName          String   @map("bank_name")
+  accountNumber     String   @map("account_number")
+  accountHolderName String   @map("account_holder_name")
+  isDefault         Boolean  @default(false) @map("is_default")
+  isVerified        Boolean  @default(false) @map("is_verified")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@map("user_bank_accounts")
+}
+
+model Crop {
+  id                    String    @id @default(uuid())
+  slug                  String    @unique
+  nameI18n              Json      @map("name_i18n")
+  descriptionI18n       Json?     @map("description_i18n")
+  guideI18n             Json?     @map("guide_i18n")
+  durationDays          Int       @map("duration_days")
+  idealTempMin          Decimal   @map("ideal_temp_min") @db.Decimal(5, 2)
+  idealTempMax          Decimal   @map("ideal_temp_max") @db.Decimal(5, 2)
+  idealMoistureMin      Decimal   @map("ideal_moisture_min") @db.Decimal(5, 2)
+  idealMoistureMax      Decimal   @map("ideal_moisture_max") @db.Decimal(5, 2)
+  expectedYieldKgPerSqm Decimal   @map("expected_yield_kg_per_sqm") @db.Decimal(8, 2)
+  basePrice             Decimal   @map("base_price") @db.Decimal(14, 2)
+  iconUrl               String?   @map("icon_url")
+  coverImageUrl         String?   @map("cover_image_url")
+  isActive              Boolean   @default(true) @map("is_active")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  defaultPlots          Plot[]    @relation("PlotDefaultCrop")
+  contracts             Contract[]
+
+  @@map("crops")
+}
+
+model Farm {
+  id           String   @id @default(uuid())
+  slug         String   @unique
+  nameI18n     Json     @map("name_i18n")
+  addressI18n  Json     @map("address_i18n")
+  latitude     Decimal? @db.Decimal(10, 7)
+  longitude    Decimal? @db.Decimal(10, 7)
+  totalAreaSqm Decimal  @map("total_area_sqm") @db.Decimal(12, 2)
+  contactPhone String?  @map("contact_phone")
+  managerId    String   @map("manager_id")
+  manager      User     @relation("FarmManager", fields: [managerId], references: [id])
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  plots        Plot[]
+
+  @@map("farms")
+}
+
+model Plot {
+  id                       String     @id @default(uuid())
+  farmId                   String?    @map("farm_id")
+  farm                     Farm?      @relation(fields: [farmId], references: [id])
+  defaultCropId            String?    @map("default_crop_id")
+  defaultCrop              Crop?      @relation("PlotDefaultCrop", fields: [defaultCropId], references: [id])
+  assignedStaffId          String?    @map("assigned_staff_id")
+  assignedStaff            User?      @relation("AssignedStaffPlots", fields: [assignedStaffId], references: [id])
+  plotCode                 String?    @unique @map("plot_code")
+  plotNumber               String?    @map("plot_number")
+  name                     String?
+  area                     Float?
+  areaSqm                  Decimal?   @map("area_sqm") @db.Decimal(10, 2)
+  soilTypeI18n             Json?      @map("soil_type_i18n")
+  pricePerMonth            Decimal?   @map("price_per_month") @db.Decimal(14, 2)
+  status                   PlotStatus @default(AVAILABLE)
+  streamUrl                String?    @map("stream_url")
+  cameraCredentialsVaultId String?    @map("camera_credentials_vault_id")
+  lockedByUserId           String?    @map("locked_by_user_id")
+  lockedByUser             User?      @relation("LockedUserPlots", fields: [lockedByUserId], references: [id])
+  lockedUntil              DateTime?  @map("locked_until")
+  createdAt                DateTime   @default(now()) @map("created_at")
+  updatedAt                DateTime   @updatedAt @map("updated_at")
+  deletedAt                DateTime?  @map("deleted_at")
+
+  contracts                Contract[]
+
+  @@index([farmId])
+  @@index([status])
+  @@index([assignedStaffId])
+  @@map("plots")
+}
+
+model Contract {
+  id                  String         @id @default(uuid())
+  contractCode        String         @unique @map("contract_code")
+  userId              String         @map("user_id")
+  user                User           @relation(fields: [userId], references: [id])
+  plotId              String         @map("plot_id")
+  plot                Plot           @relation(fields: [plotId], references: [id])
+  cropId              String         @map("crop_id")
+  crop                Crop           @relation(fields: [cropId], references: [id])
+  voucherId           String?        @map("voucher_id")
+  startDate           DateTime       @map("start_date") @db.Date
+  expectedHarvestDate DateTime       @map("expected_harvest_date") @db.Date
+  actualHarvestDate   DateTime?      @map("actual_harvest_date") @db.Date
+  cropPriceSnapshot   Decimal        @map("crop_price_snapshot") @db.Decimal(14, 2)
+  plotPriceSnapshot   Decimal        @map("plot_price_snapshot") @db.Decimal(14, 2)
+  subtotal            Decimal        @db.Decimal(14, 2)
+  discountAmount      Decimal        @default(0) @map("discount_amount") @db.Decimal(14, 2)
+  extraFee            Decimal        @default(0) @map("extra_fee") @db.Decimal(14, 2)
+  totalPrice          Decimal        @map("total_price") @db.Decimal(14, 2)
+  status              ContractStatus @default(DRAFT)
+  progressPercent     Int            @default(0) @map("progress_percent")
+  healthScore         Int?           @map("health_score")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+
+  paymentOrders       PaymentOrder[]
+  compensations       Compensation[]
+  farmingLogs         FarmingLog[]
+  careRequests        CareRequest[]
+  harvests            Harvest[]
+  shipments           Shipment[]
+
+  @@index([userId])
+  @@index([plotId])
+  @@index([cropId])
+  @@index([status])
+  @@map("contracts")
+}
+
+model PaymentOrder {
+  id            String            @id @default(uuid())
+  orderCode     String            @unique @map("order_code")
+  contractId    String            @map("contract_id")
+  contract      Contract          @relation(fields: [contractId], references: [id])
+  userId        String            @map("user_id")
+  user          User              @relation(fields: [userId], references: [id])
+  amount        Decimal           @db.Decimal(14, 2)
+  paymentMethod PaymentMethod     @map("payment_method")
+  paymentType   PaymentType       @map("payment_type")
+  status        TransactionStatus @default(PENDING)
+  qrContent     String?           @map("qr_content")
+  qrImageUrl    String?           @map("qr_image_url")
+  expiresAt     DateTime          @map("expires_at")
+  paidAt        DateTime?         @map("paid_at")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
+
+  paymentTransactions PaymentTransaction[]
+  compensations       Compensation[]
+
+  @@index([contractId])
+  @@index([userId])
+  @@index([status])
+  @@map("payment_orders")
+}
+
+model PaymentTransaction {
+  id                String       @id @default(uuid())
+  paymentOrderId    String       @map("payment_order_id")
+  paymentOrder      PaymentOrder @relation(fields: [paymentOrderId], references: [id])
+  gatewayReference  String       @map("gateway_reference")
+  senderBankCode    String?      @map("sender_bank_code")
+  senderAccountNo   String?      @map("sender_account_no")
+  senderAccountName String?      @map("sender_account_name")
+  transferAmount    Decimal      @map("transfer_amount") @db.Decimal(14, 2)
+  transferContent   String?      @map("transfer_content")
+  rawWebhookPayload Json?        @map("raw_webhook_payload")
+  idempotencyKey    String       @unique @map("idempotency_key")
+  receivedAt        DateTime     @default(now()) @map("received_at")
+
+  @@map("payment_transactions")
+}
+
+model Compensation {
+  id                     String                 @id @default(uuid())
+  compensationCode       String                 @unique @map("compensation_code")
+  contractId             String                 @map("contract_id")
+  contract               Contract               @relation(fields: [contractId], references: [id])
+  paymentOrderId         String?                @map("payment_order_id")
+  paymentOrder           PaymentOrder?          @relation(fields: [paymentOrderId], references: [id])
+  requestedByUserId      String                 @map("requested_by_user_id")
+  requestedByUser        User                   @relation("CompensationRequestedBy", fields: [requestedByUserId], references: [id])
+  approvedByUserId       String?                @map("approved_by_user_id")
+  approvedByUser         User?                  @relation("CompensationApprovedBy", fields: [approvedByUserId], references: [id])
+  reasonCategory         CompensationReason     @map("reason_category")
+  reasonDetail           String?                @map("reason_detail")
+  damageEvidenceUrls     Json?                  @map("damage_evidence_urls")
+  payoutType             CompensationPayoutType @map("payout_type")
+  amount                 Decimal                @db.Decimal(14, 2)
+  beneficiaryBankCode    String?                @map("beneficiary_bank_code")
+  beneficiaryAccountNo   String?                @map("beneficiary_account_no")
+  beneficiaryAccountName String?                @map("beneficiary_account_name")
+  status                 CompensationStatus     @default(REQUESTED)
+  adminNotes             String?                @map("admin_notes")
+  payoutReference        String?                @map("payout_reference")
+  payoutCompletedAt      DateTime?              @map("payout_completed_at")
+  createdAt              DateTime               @default(now()) @map("created_at")
+  updatedAt              DateTime               @updatedAt @map("updated_at")
+
+  @@map("compensations")
+}
+
+model FarmingLog {
+  id            String   @id @default(uuid())
+  contractId    String   @map("contract_id")
+  contract      Contract @relation(fields: [contractId], references: [id])
+  staffId       String   @map("staff_id")
+  staff         User     @relation("FarmingLogStaff", fields: [staffId], references: [id])
+  stageNameI18n Json     @map("stage_name_i18n")
+  notes         String?
+  imageUrls     Json?    @map("image_urls")
+  temperature   Decimal? @db.Decimal(5, 2)
+  humidity      Decimal? @db.Decimal(5, 2)
+  soilMoisture  Decimal? @map("soil_moisture") @db.Decimal(5, 2)
+  loggedAt      DateTime @default(now()) @map("logged_at")
+
+  @@index([contractId])
+  @@index([staffId])
+  @@index([loggedAt])
+  @@map("farming_logs")
+}
+
+model CareRequest {
+  id               String            @id @default(uuid())
+  contractId       String            @map("contract_id")
+  contract         Contract          @relation(fields: [contractId], references: [id])
+  staffId          String?           @map("staff_id")
+  staff            User?             @relation("CareRequestStaff", fields: [staffId], references: [id])
+  serviceTitleI18n Json              @map("service_title_i18n")
+  customerNote     String?           @map("customer_note")
+  staffResponse    String?           @map("staff_response")
+  proofImages      Json?             @map("proof_images")
+  extraFee         Decimal           @default(0) @map("extra_fee") @db.Decimal(14, 2)
+  isFeePaid        Boolean           @default(false) @map("is_fee_paid")
+  status           CareRequestStatus @default(PENDING)
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+
+  @@index([contractId])
+  @@index([staffId])
+  @@index([status])
+  @@map("care_requests")
+}
+
+model Harvest {
+  id            String   @id @default(uuid())
+  contractId    String   @map("contract_id")
+  contract      Contract @relation(fields: [contractId], references: [id])
+  staffId       String   @map("staff_id")
+  staff         User     @relation("HarvestStaff", fields: [staffId], references: [id])
+  harvestDate   DateTime @map("harvest_date") @db.Date
+  actualYieldKg Decimal  @map("actual_yield_kg") @db.Decimal(14, 3)
+  qualityGrade  String?  @map("quality_grade")
+  proofPhotos   Json?    @map("proof_photos")
+  notes         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([contractId])
+  @@index([staffId])
+  @@map("harvests")
+}
+
+model Shipment {
+  id                  String         @id @default(uuid())
+  contractId          String         @map("contract_id")
+  contract            Contract       @relation(fields: [contractId], references: [id])
+  trackingCode        String         @unique @map("tracking_code")
+  carrierCode         String         @map("carrier_code")
+  senderAddress       String         @map("sender_address")
+  receiverName        String         @map("receiver_name")
+  receiverPhone       String         @map("receiver_phone")
+  receiverAddress     String         @map("receiver_address")
+  totalWeightKg       Decimal        @map("total_weight_kg") @db.Decimal(10, 3)
+  shippingFee         Decimal        @map("shipping_fee") @db.Decimal(14, 2)
+  currentStatus       ShipmentStatus @map("current_status")
+  estimatedDeliveryAt DateTime?      @map("estimated_delivery_at")
+  deliveredAt         DateTime?      @map("delivered_at")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+
+  @@index([contractId])
+  @@index([currentStatus])
+  @@map("shipments")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  actorId     String   @map("actor_id")
+  actor       User     @relation("AuditLogActor", fields: [actorId], references: [id])
+  action      String
+  entityTable String   @map("entity_table")
+  entityId    String   @map("entity_id")
+  oldState    Json?    @map("old_state")
+  newState    Json?    @map("new_state")
+  ipAddress   String?  @map("ip_address")
+  userAgent   String?  @map("user_agent")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([actorId])
+  @@index([entityTable, entityId])
+  @@map("audit_logs")
+}

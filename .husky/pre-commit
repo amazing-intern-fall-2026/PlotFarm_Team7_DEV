@@ -1,0 +1,19 @@
+echo "🔍 [Husky Pre-commit] Running lint-staged..."
+npx lint-staged || {
+  echo "❌ [Husky Error] Code formatting or staging lint failed."
+  exit 1
+}
+
+echo "🔍 [Husky Pre-commit] Running strict pnpm lint (zero warnings allowed)..."
+pnpm run lint || {
+  echo "❌ [Husky Error] pnpm lint failed or produced warnings/errors. Please fix all lint issues before committing!"
+  exit 1
+}
+
+echo "🏗️ [Husky Pre-commit] Running monorepo pnpm build..."
+pnpm run build || {
+  echo "❌ [Husky Error] pnpm build failed. Please resolve build errors before committing!"
+  exit 1
+}
+
+echo "✅ [Husky Pre-commit] All checks passed cleanly!"
