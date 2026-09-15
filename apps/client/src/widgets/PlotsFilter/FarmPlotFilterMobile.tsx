@@ -40,13 +40,13 @@ export function FarmPlotFilterMobile({
           
           {/* Hàng 1: Search Input + Toggle Filter Button */}
           <Box className="flex items-center gap-2">
-            <Box className="flex-1">
+            <Box className="flex-1 min-w-0">
               <Input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder={PLOTS_FILTER_MESSAGES.SEARCH_PLACEHOLDER}
-                leftIcon={<Search className="h-4 w-4 text-muted-foreground" />}
+                leftIcon={<Search className="h-4 w-4 text-muted-foreground shrink-0" />}
                 rightIcon={
                   searchTerm ? (
                     <Button
@@ -69,7 +69,7 @@ export function FarmPlotFilterMobile({
               type="button"
               variant="outline"
               onClick={() => setIsFilterDrawerOpen((prev) => !prev)}
-              className="flex items-center justify-center gap-1.5 h-11 bg-slate-50 dark:bg-muted/40 hover:bg-slate-100 px-3 rounded-xl border border-slate-200 text-xs font-semibold text-foreground shrink-0"
+              className="flex items-center justify-center gap-1.5 h-11 bg-slate-50 dark:bg-muted/40 hover:bg-slate-100 px-3 rounded-xl border border-slate-200 text-xs font-semibold text-foreground shrink-0 cursor-pointer"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 text-primary" />
               {PLOTS_FILTER_MESSAGES.MOBILE_FILTER_BUTTON}
@@ -79,8 +79,8 @@ export function FarmPlotFilterMobile({
             </Button>
           </Box>
 
-          {/* Cuộn ngang Status Chips nhanh trên Mobile */}
-          <Box className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
+          {/* Status Chips trên Mobile: Tự động xuống dòng flex-wrap, KHÔNG bị kéo ngang */}
+          <Box className="flex flex-wrap items-center gap-1.5 py-0.5">
             {statusChips.map((chip) => {
               const isActive = selectedStatus === chip.id;
               return (
@@ -90,7 +90,7 @@ export function FarmPlotFilterMobile({
                   variant="outline"
                   onClick={() => handleStatusChange(chip.id)}
                   className={cn(
-                    "h-auto px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap inline-flex items-center gap-1.5 border transition-all cursor-pointer select-none shrink-0",
+                    "h-8 px-2.5 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1.5 border transition-all cursor-pointer select-none",
                     isActive
                       ? chip.activeStyle
                       : "bg-slate-50 dark:bg-muted/20 hover:bg-slate-100 dark:hover:bg-muted/50 border-slate-200/80 dark:border-border/60 text-muted-foreground hover:text-foreground"
@@ -131,8 +131,8 @@ export function FarmPlotFilterMobile({
                 </Box>
               </Box>
 
-              {/* Lựa chọn diện tích */}
-              <Box className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5">
+              {/* Lựa chọn diện tích: Dùng flex-wrap không bị cuộn ngang */}
+              <Box className="flex flex-wrap items-center gap-1.5 py-0.5">
                 {sizeOptions.map((opt) => {
                   const isActive = selectedSize === opt.value;
                   return (

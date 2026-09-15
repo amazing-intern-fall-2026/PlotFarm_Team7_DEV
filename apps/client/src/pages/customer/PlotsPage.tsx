@@ -25,12 +25,12 @@ export function PlotsPage() {
   } = usePlots();
 
   return (
-    <Box className="w-full bg-gradient-to-b from-white via-slate-50/60 to-slate-50 dark:from-background dark:via-background/90 dark:to-background min-h-screen pb-20">
+    <Box className="w-full max-w-full overflow-x-hidden bg-gradient-to-b from-white via-slate-50/60 to-slate-50 dark:from-background dark:via-background/90 dark:to-background min-h-screen pb-20">
       {/* ── 1. Hero Banner Khám Phá Ô Đất Chuẩn Sinh Thái (Không còn border-b cắt đôi) ── */}
       <PlotsExploreHero />
 
       {/* ── 2. Khu Vực Chuyển Giao: Filter Card & Tiêu Đề Danh Mục Thoáng Đãng ── */}
-      <Box id="plot-grid-section" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 md:pt-6">
+      <Box id="plot-grid-section" className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 md:pt-6 overflow-x-hidden">
         <FarmPlotFilter
           counts={counts}
           totalCount={plots.length}
