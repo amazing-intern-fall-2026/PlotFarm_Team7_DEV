@@ -3,6 +3,12 @@ import { fetchPlotsApi, type PlotUiItem, type PlotStatus } from "../api/plotsApi
 import { getErrorMessage } from "@/shared/api";
 
 export type FilterStatusOption = "ALL" | PlotStatus;
+export type PlotSortOption =
+  | "camera"
+  | "price_asc"
+  | "price_desc"
+  | "area_desc"
+  | "code_asc";
 
 export interface PlotFilterOption {
   value: string;
@@ -13,10 +19,15 @@ export interface PlotFilterOption {
 export interface UsePlotsOptions {
   autoFetch?: boolean;
   initialFilterStatus?: FilterStatusOption;
+  initialSortBy?: PlotSortOption;
 }
 
 export function usePlots(options: UsePlotsOptions = {}) {
-  const { autoFetch = true, initialFilterStatus = "ALL" } = options;
+  const {
+    autoFetch = true,
+    initialFilterStatus = "ALL",
+    initialSortBy = "camera",
+  } = options;
 
   const [plots, setPlots] = React.useState<PlotUiItem[]>([]);
   const [loading, setLoading] = React.useState<boolean>(autoFetch);
@@ -28,7 +39,8 @@ export function usePlots(options: UsePlotsOptions = {}) {
   const [filterZone, setFilterZone] = React.useState<string>("all");
   const [filterHasCamera, setFilterHasCamera] = React.useState<boolean>(false);
   const [filterHasIot, setFilterHasIot] = React.useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = React.useState<string>("" );
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [sortBy, setSortBy] = React.useState<PlotSortOption>(initialSortBy);
 
   const loadPlots = React.useCallback(async () => {
     setLoading(true);
@@ -57,7 +69,16 @@ export function usePlots(options: UsePlotsOptions = {}) {
     const matchNumber = plot.plotNumber.toLowerCase().includes(q);
     const matchZone = plot.zone?.toLowerCase().includes(q) ?? false;
     const matchSoil = plot.soilType?.toLowerCase().includes(q) ?? false;
-    return matchCode || matchNumber || matchZone || matchSoil;
+    const matchCrop = plot.cropName?.toLowerCase().includes(q) ?? false;
+    const matchDesc = plot.description?.toLowerCase().includes(q) ?? false;
+    return (
+      matchCode ||
+      matchNumber ||
+      matchZone ||
+      matchSoil ||
+      matchCrop ||
+      matchDesc
+    );
   }, []);
 
   // Candidate pool cho Status Chips (lọc theo search và size)
@@ -128,9 +149,9 @@ export function usePlots(options: UsePlotsOptions = {}) {
     ];
   }, [plots]);
 
-  // Lọc danh sách ô đất theo tiêu chí
+  // Lọc và sắp xếp danh sách ô đất theo tiêu chí
   const filteredPlots = React.useMemo(() => {
-    return plots.filter((plot) => {
+    const list = plots.filter((plot) => {
       // 1. Lọc theo trạng thái
       if (filterStatus !== "ALL" && plot.status !== filterStatus) {
         return false;
@@ -157,7 +178,40 @@ export function usePlots(options: UsePlotsOptions = {}) {
       // 5. Tìm kiếm theo mã ô hoặc khu vực
       return matchesSearch(plot, searchQuery);
     });
-  }, [plots, filterStatus, filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery, matchesSearch]);
+
+    // 6. Sắp xếp danh sách theo sortBy
+    return [...list].sort((a, b) => {
+      if (sortBy === "price_asc") {
+        return a.pricePerMonth - b.pricePerMonth;
+      }
+      if (sortBy === "price_desc") {
+        return b.pricePerMonth - a.pricePerMonth;
+      }
+      if (sortBy === "area_desc") {
+        return b.areaSquareMeters - a.areaSquareMeters;
+      }
+      if (sortBy === "code_asc") {
+        return a.plotCode.localeCompare(b.plotCode);
+      }
+      if (sortBy === "camera") {
+        if (a.cameraSupported !== b.cameraSupported) {
+          return a.cameraSupported ? -1 : 1;
+        }
+        return a.plotCode.localeCompare(b.plotCode);
+      }
+      return 0;
+    });
+  }, [
+    plots,
+    filterStatus,
+    filterSize,
+    filterZone,
+    filterHasCamera,
+    filterHasIot,
+    searchQuery,
+    sortBy,
+    matchesSearch,
+  ]);
 
   // Ô đất đang được chọn xem chi tiết
   const selectedPlot = React.useMemo(() => {
@@ -188,6 +242,8 @@ export function usePlots(options: UsePlotsOptions = {}) {
     setFilterHasIot,
     searchQuery,
     setSearchQuery,
+    sortBy,
+    setSortBy,
     refetch: loadPlots,
   };
 }

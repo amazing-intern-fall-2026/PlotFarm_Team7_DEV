@@ -2,7 +2,7 @@ import { Box } from "@/shared/ui";
 import { PlotsExploreHero } from "@/widgets/PlotsHero";
 import { FarmPlotFilter } from "@/widgets/PlotsFilter";
 import { PlotGridMap, PlotDetailDrawer } from "@/widgets/PlotGridMap";
-import { usePlots } from "@/entities/plot";
+import { usePlots, type PlotSortOption } from "@/entities/plot";
 import type { PlotStatus } from "@repo/shared";
 
 export function PlotsPage() {
@@ -14,9 +14,14 @@ export function PlotsPage() {
     availableSizes,
     selectedPlot,
     setSelectedPlotId,
+    filterStatus,
     setFilterStatus,
+    filterSize,
     setFilterSize,
+    searchQuery,
     setSearchQuery,
+    sortBy,
+    setSortBy,
   } = usePlots();
 
   return (
@@ -31,15 +36,21 @@ export function PlotsPage() {
           totalCount={plots.length}
           filteredCount={filteredPlots.length}
           sizeOptions={availableSizes}
+          searchTerm={searchQuery}
+          selectedSize={filterSize}
+          selectedStatus={filterStatus === "ALL" ? "all" : filterStatus}
+          sortBy={sortBy}
           onSearchChange={(search) => setSearchQuery(search)}
           onSizeChange={(size) => setFilterSize(size)}
           onStatusChange={(status) => {
             setFilterStatus(status === "all" ? "ALL" : (status as PlotStatus));
           }}
+          onSortChange={(sort) => setSortBy(sort as PlotSortOption)}
           onReset={() => {
             setSearchQuery("");
             setFilterSize("all");
             setFilterStatus("ALL");
+            setSortBy("camera");
           }}
         />
 

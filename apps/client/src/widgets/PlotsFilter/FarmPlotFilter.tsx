@@ -33,6 +33,10 @@ export function FarmPlotFilter({
   totalCount,
   filteredCount,
   sizeOptions,
+  searchTerm: propSearchTerm,
+  selectedSize: propSelectedSize,
+  selectedStatus: propSelectedStatus,
+  sortBy: propSortBy,
   onSearchChange,
   onSizeChange,
   onStatusChange,
@@ -41,10 +45,15 @@ export function FarmPlotFilter({
   className,
 }: FarmPlotFilterProps) {
   const { isMobile } = useDevice();
-  const [searchTerm, setSearchTerm] = React.useState<string>("");
-  const [selectedSize, setSelectedSize] = React.useState<string>("all");
-  const [selectedStatus, setSelectedStatus] = React.useState<string>("all");
-  const [sortBy, setSortBy] = React.useState<string>("camera");
+  const [internalSearchTerm, setInternalSearchTerm] = React.useState<string>("");
+  const [internalSelectedSize, setInternalSelectedSize] = React.useState<string>("all");
+  const [internalSelectedStatus, setInternalSelectedStatus] = React.useState<string>("all");
+  const [internalSortBy, setInternalSortBy] = React.useState<string>("camera");
+
+  const searchTerm = propSearchTerm !== undefined ? propSearchTerm : internalSearchTerm;
+  const selectedSize = propSelectedSize !== undefined ? propSelectedSize : internalSelectedSize;
+  const selectedStatus = propSelectedStatus !== undefined ? propSelectedStatus : internalSelectedStatus;
+  const sortBy = propSortBy !== undefined ? propSortBy : internalSortBy;
 
   const resolvedTotal = totalCount ?? counts.total;
   const resolvedFiltered = filteredCount ?? counts.total;
@@ -97,31 +106,31 @@ export function FarmPlotFilter({
     sortBy !== "camera";
 
   const handleSearchChange = (value: string) => {
-    setSearchTerm(value);
+    setInternalSearchTerm(value);
     onSearchChange?.(value);
   };
 
   const handleSizeChange = (size: string) => {
-    setSelectedSize(size);
+    setInternalSelectedSize(size);
     onSizeChange?.(size);
   };
 
   const handleStatusChange = (status: string) => {
     const nextStatus = selectedStatus === status ? "all" : status;
-    setSelectedStatus(nextStatus);
+    setInternalSelectedStatus(nextStatus);
     onStatusChange?.(nextStatus);
   };
 
   const handleSortChange = (sort: string) => {
-    setSortBy(sort);
+    setInternalSortBy(sort);
     onSortChange?.(sort);
   };
 
   const handleReset = () => {
-    setSearchTerm("");
-    setSelectedSize("all");
-    setSelectedStatus("all");
-    setSortBy("camera");
+    setInternalSearchTerm("");
+    setInternalSelectedSize("all");
+    setInternalSelectedStatus("all");
+    setInternalSortBy("camera");
     onSearchChange?.("");
     onSizeChange?.("all");
     onStatusChange?.("all");

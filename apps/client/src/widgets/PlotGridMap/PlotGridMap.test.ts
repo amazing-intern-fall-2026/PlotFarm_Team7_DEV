@@ -58,6 +58,18 @@ describe("widgets/PlotGridMap & PlotCard - US-18 Unit Test Suite", () => {
       expect(match).toHaveLength(1);
       expect(match[0].plotCode).toBe("PLT-A01");
     });
+
+    it("khi sắp xếp theo giá thuê Cao -> Thấp (price_desc), ô đất có giá cao nhất nằm ở đầu", () => {
+      const sorted = [...plots].sort((a, b) => b.pricePerMonth - a.pricePerMonth);
+      expect(sorted[0].pricePerMonth).toBeGreaterThanOrEqual(sorted[sorted.length - 1].pricePerMonth);
+      expect(sorted[0].pricePerMonth).toBe(1600000);
+    });
+
+    it("khi sắp xếp theo giá thuê Thấp -> Cao (price_asc), ô đất có giá thấp nhất nằm ở đầu", () => {
+      const sorted = [...plots].sort((a, b) => a.pricePerMonth - b.pricePerMonth);
+      expect(sorted[0].pricePerMonth).toBeLessThanOrEqual(sorted[sorted.length - 1].pricePerMonth);
+      expect(sorted[0].pricePerMonth).toBe(1200000);
+    });
   });
 
   // ── Kịch bản 3 (AC3): Tương tác chọn ô đất và điều kiện kích hoạt Drawer ────

@@ -32,6 +32,10 @@ export interface FarmPlotFilterProps {
   totalCount?: number;
   filteredCount?: number;
   sizeOptions?: Array<{ value: string; label: string; count?: number }>;
+  searchTerm?: string;
+  selectedSize?: string;
+  selectedStatus?: string;
+  sortBy?: string;
   onSearchChange?: (search: string) => void;
   onSizeChange?: (size: string) => void;
   onStatusChange?: (status: string) => void;
