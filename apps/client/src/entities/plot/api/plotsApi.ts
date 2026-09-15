@@ -172,6 +172,87 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
   },
 ];
 
+export interface RawServerPlotItem {
+  id?: string;
+  plotCode?: string;
+  plotNumber?: string;
+  areaSqm?: number | string | null;
+  areaSquareMeters?: number;
+  pricePerMonth?: number | string | null;
+  soilTypeI18n?: { vi?: string; en?: string } | string | null;
+  soilType?: string | null;
+  status?: PlotStatus;
+  iotSensorInstalled?: boolean;
+  cameraSupported?: boolean;
+  streamUrl?: string | null;
+  zone?: string;
+  cropName?: string;
+  description?: string;
+  imageUrl?: string;
+  defaultCrop?: {
+    id?: string;
+    slug?: string;
+    nameI18n?: { vi?: string; en?: string } | string | null;
+  } | null;
+}
+
+function mapRawPlotToUiItem(item: RawServerPlotItem): PlotUiItem {
+  const plotCode = item.plotCode || "PLT-UNKNOWN";
+  const plotNumber = item.plotNumber || `Ô ${plotCode}`;
+  const areaSquareMeters = item.areaSqm !== null && item.areaSqm !== undefined
+    ? Number(item.areaSqm)
+    : (item.areaSquareMeters ?? 15);
+  const pricePerMonth = item.pricePerMonth !== null && item.pricePerMonth !== undefined
+    ? Number(item.pricePerMonth)
+    : 1200000;
+
+  let soilType = "Đất đỏ Bazan Lâm Đồng";
+  if (item.soilTypeI18n) {
+    if (typeof item.soilTypeI18n === "object" && item.soilTypeI18n.vi) {
+      soilType = item.soilTypeI18n.vi;
+    } else if (typeof item.soilTypeI18n === "string") {
+      soilType = item.soilTypeI18n;
+    }
+  } else if (item.soilType) {
+    soilType = item.soilType;
+  }
+
+  const zone = item.zone || (
+    plotCode.startsWith("PLT-A") ? "Khu A (Rau Ăn Lá)" :
+    plotCode.startsWith("PLT-B") ? "Khu B (Củ Quả)" :
+    plotCode.startsWith("PLT-C") ? "Khu C (Dược Liệu)" :
+    "Khu D (Nông Sản Cao Cấp)"
+  );
+
+  let cropName = item.cropName;
+  if (!cropName && item.defaultCrop?.nameI18n) {
+    cropName = typeof item.defaultCrop.nameI18n === "object"
+      ? (item.defaultCrop.nameI18n.vi || item.defaultCrop.nameI18n.en)
+      : String(item.defaultCrop.nameI18n);
+  }
+
+  const numMatches = plotCode.match(/\d+/);
+  const imgIdx = numMatches ? ((parseInt(numMatches[0], 10) - 1) % 10) + 1 : 1;
+  const imageUrl = item.imageUrl || `/images/plot-${imgIdx}.jpg`;
+
+  return {
+    id: item.id,
+    plotCode,
+    plotNumber,
+    areaSquareMeters,
+    status: item.status || "AVAILABLE",
+    pricePerMonth,
+    soilType,
+    iotSensorInstalled: item.iotSensorInstalled ?? true,
+    cameraSupported: item.cameraSupported ?? Boolean(item.streamUrl),
+    streamUrl: item.streamUrl ?? undefined,
+    zone,
+    cropName,
+    description: item.description || `Ô đất ${plotNumber} chuẩn nông nghiệp sạch sinh thái Đà Lạt.`,
+    imageUrl,
+  };
+}
+
 export async function fetchPlotsApi(query?: PlotsQuery): Promise<{
   plots: PlotUiItem[];
   total: number;
@@ -180,33 +261,47 @@ export async function fetchPlotsApi(query?: PlotsQuery): Promise<{
     const response = await axiosClient.get<{
       success: boolean;
       data: {
-        plots: PlotUiItem[];
+        items?: RawServerPlotItem[];
+        plots?: RawServerPlotItem[];
         pagination?: { total: number };
-      } | PlotUiItem[];
+      } | RawServerPlotItem[];
     }>("/plots", { params: query });
 
     const rawData = response.data?.data;
-    if (Array.isArray(rawData) && rawData.length > 0) {
-      return { plots: rawData, total: rawData.length };
+    let rawList: RawServerPlotItem[] = [];
+    let totalCount = 0;
+
+    if (Array.isArray(rawData)) {
+      rawList = rawData;
+      totalCount = rawData.length;
+    } else if (rawData && typeof rawData === "object") {
+      if ("items" in rawData && Array.isArray(rawData.items)) {
+        rawList = rawData.items;
+        totalCount = rawData.pagination?.total ?? rawList.length;
+      } else if ("plots" in rawData && Array.isArray(rawData.plots)) {
+        rawList = rawData.plots;
+        totalCount = rawData.pagination?.total ?? rawList.length;
+      }
     }
 
-    if (rawData && typeof rawData === "object" && "plots" in rawData) {
-      const plots = rawData.plots || [];
-      return { plots, total: rawData.pagination?.total ?? plots.length };
+    if (rawList.length > 0) {
+      return {
+        plots: rawList.map(mapRawPlotToUiItem),
+        total: totalCount,
+      };
     }
 
-    // Nếu API trả về mảng rỗng, sử dụng fallback mocks
+
     return { plots: filterMockPlots(query), total: MOCK_FALLBACK_PLOTS.length };
   } catch (error) {
-    // Phân tích lỗi chuẩn hóa với parseApiError
     const apiError = parseApiError(error);
-    // Log thông tin lỗi cho nhà phát triển nhưng không làm crash ứng dụng
     if (process.env.NODE_ENV !== "test") {
-      console.warn(`[fetchPlotsApi] Failed to fetch plots from server: ${apiError.message}. Using fallback mock data.`);
+      console.warn(`[fetchPlotsApi] Failed to fetch plots: ${apiError.message}. Using fallback.`);
     }
     return { plots: filterMockPlots(query), total: MOCK_FALLBACK_PLOTS.length };
   }
 }
+
 
 function filterMockPlots(query?: PlotsQuery): PlotUiItem[] {
   let result = [...MOCK_FALLBACK_PLOTS];
@@ -215,5 +310,6 @@ function filterMockPlots(query?: PlotsQuery): PlotUiItem[] {
   }
   return result;
 }
+
 
 export type { PlotStatus, PlotsQuery };

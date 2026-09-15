@@ -19,6 +19,8 @@ export interface UsePlotsOptions {
   autoFetch?: boolean;
   initialFilterStatus?: FilterStatusOption;
   initialSortBy?: PlotSortOption;
+  pageSize?: number;
+  initialPage?: number;
 }
 
 export function usePlots(options: UsePlotsOptions = {}) {
@@ -26,11 +28,15 @@ export function usePlots(options: UsePlotsOptions = {}) {
     autoFetch = true,
     initialFilterStatus = "ALL",
     initialSortBy = "code_asc",
+    pageSize = 8,
+    initialPage = 1,
   } = options;
 
   const [plots, setPlots] = React.useState<PlotUiItem[]>([]);
   const [loading, setLoading] = React.useState<boolean>(autoFetch);
   const [error, setError] = React.useState<string | null>(null);
+
+  const [currentPage, setCurrentPage] = React.useState<number>(initialPage);
 
   const [selectedPlotId, setSelectedPlotId] = React.useState<string | null>(null);
   const [filterStatus, setFilterStatus] = React.useState<FilterStatusOption>(initialFilterStatus);
@@ -41,8 +47,14 @@ export function usePlots(options: UsePlotsOptions = {}) {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [sortBy, setSortBy] = React.useState<PlotSortOption>(initialSortBy);
 
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filterStatus, filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery, sortBy]);
+
   const loadPlots = React.useCallback(async () => {
+
     setLoading(true);
+
     setError(null);
     try {
       const data = await fetchPlotsApi();
@@ -206,15 +218,29 @@ export function usePlots(options: UsePlotsOptions = {}) {
     matchesSearch,
   ]);
 
-  // Ô đất đang được chọn xem chi tiết
+  const totalPages = Math.max(1, Math.ceil(filteredPlots.length / pageSize));
+  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+  const paginatedPlots = React.useMemo(() => {
+    const startIndex = (validCurrentPage - 1) * pageSize;
+    return filteredPlots.slice(startIndex, startIndex + pageSize);
+  }, [filteredPlots, validCurrentPage, pageSize]);
+
   const selectedPlot = React.useMemo(() => {
     if (!selectedPlotId) return null;
     return plots.find((p) => p.plotCode === selectedPlotId) ?? null;
   }, [plots, selectedPlotId]);
 
+
   return {
     plots,
     filteredPlots,
+    paginatedPlots,
+    currentPage: validCurrentPage,
+    setCurrentPage,
+    pageSize,
+    totalPages,
+    totalFilteredCount: filteredPlots.length,
     loading,
     error,
     counts,
@@ -240,3 +266,4 @@ export function usePlots(options: UsePlotsOptions = {}) {
     refetch: loadPlots,
   };
 }
+
