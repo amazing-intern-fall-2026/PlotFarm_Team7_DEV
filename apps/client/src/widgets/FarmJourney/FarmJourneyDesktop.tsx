@@ -11,7 +11,7 @@ export function FarmJourneyDesktop({
   className,
 }: FarmJourneyViewProps) {
   return (
-    <section aria-labelledby="farm-journey-desktop-title" className={cn("w-full space-y-10 py-6 select-none", className)}>
+    <section aria-labelledby="farm-journey-desktop-title" className={cn("w-full space-y-7 pt-0 pb-4 select-none", className)}>
       {/* ── 1. Section Header ── */}
       <Box className="text-center space-y-3 max-w-3xl mx-auto px-4">
         <Text as="span" className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">

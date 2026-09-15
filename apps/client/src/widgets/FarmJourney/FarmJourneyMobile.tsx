@@ -11,7 +11,7 @@ export function FarmJourneyMobile({
   className,
 }: FarmJourneyViewProps) {
   return (
-    <section aria-labelledby="farm-journey-mobile-title" className={cn("w-full space-y-6 py-4 select-none px-1", className)}>
+    <section aria-labelledby="farm-journey-mobile-title" className={cn("w-full space-y-4 pt-0 pb-2 select-none px-1", className)}>
       {/* ── 1. Section Header ── */}
       <Box className="text-center space-y-2 px-2">
         <Text as="span" className="text-[11px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">

@@ -30,7 +30,7 @@ export function SeasonalCropsDesktop({
   className,
 }: SeasonalCropsViewProps) {
   return (
-    <Box className={cn("w-full seasonal-crops-splide py-4", className)}>
+    <Box className={cn("w-full seasonal-crops-splide pt-4 pb-0", className)}>
       <Splide
         hasTrack={false}
         aria-label={title}
