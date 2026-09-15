@@ -1,12 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import { Box } from "@/shared/ui";
 import { PlotsExploreHero } from "@/widgets/PlotsHero";
 import { FarmPlotFilter } from "@/widgets/PlotsFilter";
-import { PlotGridMap, PlotDetailDrawer, PlotPagination } from "@/widgets/PlotGridMap";
+import { PlotGridMap, PlotPagination } from "@/widgets/PlotGridMap";
 import { CommitmentsSection } from "@/widgets/QualityCommitments";
 import { usePlots, type PlotSortOption } from "@/entities/plot";
 import type { PlotStatus } from "@repo/shared";
 
 export function PlotsPage() {
+  const navigate = useNavigate();
   const {
     filteredPlots,
     paginatedPlots,
@@ -17,8 +19,6 @@ export function PlotsPage() {
     loading,
     counts,
     availableSizes,
-    selectedPlot,
-    setSelectedPlotId,
     filterStatus,
     setFilterStatus,
     filterSize,
@@ -61,7 +61,7 @@ export function PlotsPage() {
           <PlotGridMap
             plots={paginatedPlots}
             loading={loading}
-            onSelectPlot={(plot) => setSelectedPlotId(plot.plotCode)}
+            onSelectPlot={(plot) => navigate(`/plots/${plot.plotCode}`)}
           />
 
           <PlotPagination
@@ -76,12 +76,6 @@ export function PlotsPage() {
         <Box className="mt-12 md:mt-16">
           <CommitmentsSection />
         </Box>
-
-        <PlotDetailDrawer
-          isOpen={!!selectedPlot}
-          plot={selectedPlot}
-          onClose={() => setSelectedPlotId(null)}
-        />
       </Box>
     </Box>
   );
