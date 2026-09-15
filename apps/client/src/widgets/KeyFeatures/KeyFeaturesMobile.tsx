@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   MapPin,
-  Wifi,
   ThermometerSun,
   Droplets,
   Video,
@@ -111,15 +110,15 @@ export function KeyFeaturesMobile({
         className="relative touch-pan-y"
       >
         {activeTab === 0 && (
-          <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
+          <Card className="p-4 sm:p-5 space-y-3.5 transition-all hover:border-emerald-300 dark:hover:border-emerald-700">
             {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
-                <Box className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Box className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-700 dark:text-emerald-300 shrink-0">
                   <MapPin className="w-4 h-4" />
                 </Box>
                 <Box className="min-w-0">
-                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                  <Text className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
                     {KEY_FEATURES_MESSAGES.CARD1_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-sm sm:text-base font-bold text-foreground truncate">
@@ -130,9 +129,9 @@ export function KeyFeaturesMobile({
 
               <Badge
                 variant="outline"
-                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold"
+                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold border-emerald-200 bg-emerald-50/60 text-emerald-800 dark:border-emerald-800 dark:text-emerald-300 dark:bg-emerald-950/60"
               >
-                <Clock className="w-2.5 h-2.5 text-primary animate-pulse" />
+                <Clock className="w-2.5 h-2.5 text-emerald-600 animate-pulse" />
                 {KEY_FEATURES_MESSAGES.CARD1_TAG}
               </Badge>
             </Box>
@@ -141,15 +140,15 @@ export function KeyFeaturesMobile({
             <Box className="p-3 rounded-lg bg-muted/40 border border-border space-y-2.5">
               <Box className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-muted-foreground flex items-center gap-1.5 text-[11px]">
-                  <Layers className="w-3.5 h-3.5 text-primary" /> {KEY_FEATURES_MESSAGES.CARD1_MAP_LABEL}
+                  <Layers className="w-3.5 h-3.5 text-emerald-600" /> {KEY_FEATURES_MESSAGES.CARD1_MAP_LABEL}
                 </span>
-                <Badge variant="secondary" className="text-[10px] font-bold px-2 py-0.5">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-700 text-white">
                   {KEY_FEATURES_MESSAGES.CARD1_LOCATION}
-                </Badge>
+                </span>
               </Box>
 
               <Box className="flex items-start gap-2 p-2 rounded-md bg-card border border-border/80">
-                <Box className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Box className="w-6 h-6 rounded-md bg-emerald-50 dark:bg-emerald-950/70 flex items-center justify-center text-emerald-600 shrink-0">
                   <Sprout className="w-3.5 h-3.5" />
                 </Box>
                 <Box className="space-y-0.5 min-w-0">
@@ -166,7 +165,7 @@ export function KeyFeaturesMobile({
                 <span className="text-muted-foreground font-medium">
                   {KEY_FEATURES_MESSAGES.CARD1_PAYMENT_METHOD}
                 </span>
-                <span className="font-bold text-primary">
+                <span className="font-bold text-emerald-600">
                   {KEY_FEATURES_MESSAGES.CARD1_PAYMENT_STATUS}
                 </span>
               </Box>
@@ -189,15 +188,15 @@ export function KeyFeaturesMobile({
         )}
 
         {activeTab === 1 && (
-          <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
+          <Card className="p-4 sm:p-5 space-y-3.5 transition-all hover:border-amber-300 dark:hover:border-amber-700">
             {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
-                <Box className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+                <Box className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-700 dark:text-amber-300 shrink-0">
                   <Activity className="w-4 h-4" />
                 </Box>
                 <Box className="min-w-0">
-                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-secondary">
+                  <Text className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
                     {KEY_FEATURES_MESSAGES.CARD2_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-sm sm:text-base font-bold text-foreground truncate">
@@ -207,10 +206,8 @@ export function KeyFeaturesMobile({
               </Box>
 
               <Badge
-                variant="secondary"
-                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold"
+                className="shrink-0 flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-amber-700 text-white border-transparent hover:bg-amber-800"
               >
-                <Wifi className="w-2.5 h-2.5 text-primary animate-pulse" />
                 {KEY_FEATURES_MESSAGES.CARD2_TAG}
               </Badge>
             </Box>
@@ -218,7 +215,7 @@ export function KeyFeaturesMobile({
             {/* Core Feature: 3 Key High-Contrast IoT Metrics */}
             <Box className="grid grid-cols-3 gap-1.5 p-2.5 rounded-lg bg-muted/40 border border-border">
               <Box className="flex flex-col items-center justify-center p-2 rounded-md bg-card border border-border/70 text-center">
-                <ThermometerSun className="w-3.5 h-3.5 text-secondary mb-0.5" />
+                <ThermometerSun className="w-3.5 h-3.5 text-amber-500 mb-0.5" />
                 <span className="text-[9px] uppercase font-bold text-muted-foreground">
                   {KEY_FEATURES_MESSAGES.CARD2_TEMP_LABEL}
                 </span>
@@ -228,7 +225,7 @@ export function KeyFeaturesMobile({
               </Box>
 
               <Box className="flex flex-col items-center justify-center p-2 rounded-md bg-card border border-border/70 text-center">
-                <Droplets className="w-3.5 h-3.5 text-primary mb-0.5" />
+                <Droplets className="w-3.5 h-3.5 text-emerald-600 mb-0.5" />
                 <span className="text-[9px] uppercase font-bold text-muted-foreground">
                   {KEY_FEATURES_MESSAGES.CARD2_HUMIDITY_LABEL}
                 </span>
@@ -238,11 +235,11 @@ export function KeyFeaturesMobile({
               </Box>
 
               <Box className="flex flex-col items-center justify-center p-2 rounded-md bg-card border border-border/70 text-center">
-                <Video className="w-3.5 h-3.5 text-primary mb-0.5" />
+                <Video className="w-3.5 h-3.5 text-emerald-600 mb-0.5" />
                 <span className="text-[9px] uppercase font-bold text-muted-foreground">
                   {KEY_FEATURES_MESSAGES.CARD2_CAMERA_LABEL}
                 </span>
-                <span className="text-[11px] font-extrabold text-primary mt-0.5">
+                <span className="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">
                   {KEY_FEATURES_MESSAGES.CARD2_CAMERA_VALUE}
                 </span>
               </Box>
@@ -252,8 +249,8 @@ export function KeyFeaturesMobile({
               <span className="text-foreground font-medium">
                 {KEY_FEATURES_MESSAGES.CARD2_SERVICE_TITLE}
               </span>
-              <span className="inline-flex items-center gap-1 font-bold text-primary">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span className="inline-flex items-center gap-1 font-bold text-emerald-600">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                 {KEY_FEATURES_MESSAGES.CARD2_SERVICE_VALUE}
               </span>
             </Box>
@@ -275,15 +272,15 @@ export function KeyFeaturesMobile({
         )}
 
         {activeTab === 2 && (
-          <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
+          <Card className="p-4 sm:p-5 space-y-3.5 transition-all hover:border-amber-300 dark:hover:border-amber-700">
             {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
-                <Box className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+                <Box className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-700 dark:text-amber-300 shrink-0">
                   <ShieldCheck className="w-4 h-4" />
                 </Box>
                 <Box className="min-w-0">
-                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-secondary">
+                  <Text className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
                     {KEY_FEATURES_MESSAGES.CARD3_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-sm sm:text-base font-bold text-foreground truncate">
@@ -294,9 +291,9 @@ export function KeyFeaturesMobile({
 
               <Badge
                 variant="outline"
-                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold"
+                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold border-emerald-300 bg-emerald-50/60 text-emerald-800 dark:border-emerald-800 dark:text-emerald-300 dark:bg-emerald-950/60"
               >
-                <CheckCircle2 className="w-2.5 h-2.5 text-primary" />
+                <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
                 {KEY_FEATURES_MESSAGES.CARD3_TAG}
               </Badge>
             </Box>
@@ -304,12 +301,12 @@ export function KeyFeaturesMobile({
             {/* Core Feature: QR Tracking Code */}
             <Box className="p-3 rounded-lg bg-muted/40 border border-border space-y-2">
               <Box className="flex items-center gap-2 p-2 rounded-md bg-card border border-border/80">
-                <Box className="w-8 h-8 rounded-md bg-secondary/10 flex items-center justify-center text-secondary shrink-0 border border-secondary/20">
+                <Box className="w-8 h-8 rounded-md bg-amber-50 dark:bg-amber-950 flex items-center justify-center text-amber-700 shrink-0 border border-amber-200/70 dark:border-amber-900/70">
                   <QrCode className="w-4 h-4" />
                 </Box>
                 <Box className="space-y-0.5 min-w-0">
                   <Text className="text-xs font-bold text-foreground truncate">
-                    Mã Vận Đơn: AGRI-VN-2026-K8X29Q
+                    {KEY_FEATURES_MESSAGES.CARD3_WAYBILL_CODE}
                   </Text>
                   <Text className="text-[10px] text-muted-foreground truncate">
                     {KEY_FEATURES_MESSAGES.CARD3_WAYBILL_DESC}
@@ -319,11 +316,11 @@ export function KeyFeaturesMobile({
 
               <Box className="space-y-1 pt-0.5">
                 <Box className="flex items-center gap-1.5 text-[11px] text-foreground font-medium">
-                  <CheckCircle2 className="w-3 h-3 text-primary shrink-0" />
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
                   <span className="truncate">{KEY_FEATURES_MESSAGES.CARD3_CHECK1}</span>
                 </Box>
                 <Box className="flex items-center gap-1.5 text-[11px] text-foreground font-medium">
-                  <Truck className="w-3 h-3 text-primary shrink-0" />
+                  <Truck className="w-3 h-3 text-emerald-600 shrink-0" />
                   <span className="truncate">{KEY_FEATURES_MESSAGES.CARD3_CHECK2}</span>
                 </Box>
               </Box>
