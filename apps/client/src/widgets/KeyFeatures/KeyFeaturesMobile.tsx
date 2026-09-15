@@ -16,7 +16,7 @@ import {
   Layers,
   Sparkles,
 } from "lucide-react";
-import { Box, Button, Badge, Heading, Text } from "@/shared/ui";
+import { Box, Button, Badge, Card, Heading, Text } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 import { KEY_FEATURES_MESSAGES } from "./constants";
 import type { KeyFeaturesViewProps } from "./types";
@@ -57,14 +57,15 @@ export function KeyFeaturesMobile({
 
   return (
     <section aria-labelledby="key-features-mobile-title" className={cn("space-y-4 px-1", className)}>
-      {/* ── 1. Section Header (Gọn gàng, vừa vặn màn hình Mobile) ── */}
+      {/* ── 1. Section Header ── */}
       <Box className="text-center space-y-2 px-1">
-        <Box className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+        <Badge
+          variant="outline"
+          className="gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase text-secondary border-secondary/30"
+        >
           <Sparkles className="w-3.5 h-3.5" />
-          <span className="text-[11px] font-bold uppercase tracking-wider">
-            {badgeLabel}
-          </span>
-        </Box>
+          {badgeLabel}
+        </Badge>
 
         <Heading
           level={2}
@@ -79,8 +80,8 @@ export function KeyFeaturesMobile({
         </Text>
       </Box>
 
-      {/* ── 2. Mobile Feature Quick Switcher Tabs (Không bị tràn/cắt chữ) ── */}
-      <Box className="grid grid-cols-3 p-1 bg-muted/60 rounded-xl border border-border/80 gap-1">
+      {/* ── 2. Mobile Feature Quick Switcher Tabs ── */}
+      <Box className="grid grid-cols-3 p-1 bg-muted/60 rounded-lg border border-border/80 gap-1">
         {tabs.map((tab, idx) => {
           const Icon = tab.icon;
           const isActive = activeTab === idx;
@@ -90,9 +91,9 @@ export function KeyFeaturesMobile({
               type="button"
               onClick={() => setActiveTab(idx as 0 | 1 | 2)}
               className={cn(
-                "flex items-center justify-center gap-1.5 py-2 px-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer",
+                "flex items-center justify-center gap-1.5 py-2 px-1 rounded-md text-xs font-bold transition-all whitespace-nowrap cursor-pointer",
                 isActive
-                  ? "bg-card text-foreground shadow-xs border border-border/80 text-primary"
+                  ? "bg-card text-primary shadow-xs border border-border/80"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -110,15 +111,15 @@ export function KeyFeaturesMobile({
         className="relative touch-pan-y"
       >
         {activeTab === 0 && (
-          <Box className="flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-card border border-emerald-200/80 dark:border-emerald-900/60 shadow-xs space-y-3.5 transition-all">
+          <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
             {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
-                <Box className="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-700 dark:text-emerald-300 shrink-0">
+                <Box className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
                   <MapPin className="w-4 h-4" />
                 </Box>
                 <Box className="min-w-0">
-                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-primary">
                     {KEY_FEATURES_MESSAGES.CARD1_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-sm sm:text-base font-bold text-foreground truncate">
@@ -129,26 +130,26 @@ export function KeyFeaturesMobile({
 
               <Badge
                 variant="outline"
-                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold rounded-full border-emerald-200 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
+                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold"
               >
-                <Clock className="w-2.5 h-2.5 text-emerald-600 animate-pulse" />
+                <Clock className="w-2.5 h-2.5 text-primary animate-pulse" />
                 {KEY_FEATURES_MESSAGES.CARD1_TAG}
               </Badge>
             </Box>
 
             {/* Core Feature Insight */}
-            <Box className="p-3 rounded-xl bg-slate-50/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+            <Box className="p-3 rounded-lg bg-muted/40 border border-border space-y-2.5">
               <Box className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-muted-foreground flex items-center gap-1.5 text-[11px]">
-                  <Layers className="w-3.5 h-3.5 text-emerald-600" /> {KEY_FEATURES_MESSAGES.CARD1_MAP_LABEL}
+                  <Layers className="w-3.5 h-3.5 text-primary" /> {KEY_FEATURES_MESSAGES.CARD1_MAP_LABEL}
                 </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200">
+                <Badge variant="secondary" className="text-[10px] font-bold px-2 py-0.5">
                   {KEY_FEATURES_MESSAGES.CARD1_LOCATION}
-                </span>
+                </Badge>
               </Box>
 
-              <Box className="flex items-start gap-2 p-2 rounded-lg bg-card border border-border/80">
-                <Box className="w-6 h-6 rounded-md bg-emerald-50 dark:bg-emerald-950/70 flex items-center justify-center text-emerald-600 shrink-0">
+              <Box className="flex items-start gap-2 p-2 rounded-md bg-card border border-border/80">
+                <Box className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center text-primary shrink-0">
                   <Sprout className="w-3.5 h-3.5" />
                 </Box>
                 <Box className="space-y-0.5 min-w-0">
@@ -161,11 +162,11 @@ export function KeyFeaturesMobile({
                 </Box>
               </Box>
 
-              <Box className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-border text-[10px]">
+              <Box className="flex items-center justify-between px-2.5 py-1.5 rounded-md bg-card border border-border text-[10px]">
                 <span className="text-muted-foreground font-medium">
                   {KEY_FEATURES_MESSAGES.CARD1_PAYMENT_METHOD}
                 </span>
-                <span className="font-bold text-emerald-600">
+                <span className="font-bold text-primary">
                   {KEY_FEATURES_MESSAGES.CARD1_PAYMENT_STATUS}
                 </span>
               </Box>
@@ -178,25 +179,25 @@ export function KeyFeaturesMobile({
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[42px] rounded-xl font-bold text-xs text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full"
               onClick={onNavigatePlots}
+              rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              <span>{KEY_FEATURES_MESSAGES.CARD1_ACTION}</span>
-              <ArrowRight className="w-4 h-4" />
+              {KEY_FEATURES_MESSAGES.CARD1_ACTION}
             </Button>
-          </Box>
+          </Card>
         )}
 
         {activeTab === 1 && (
-          <Box className="flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-card border border-sky-200/80 dark:border-sky-900/60 shadow-xs space-y-3.5 transition-all">
+          <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
             {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
-                <Box className="w-8 h-8 rounded-xl bg-sky-100 dark:bg-sky-950 flex items-center justify-center text-sky-700 dark:text-sky-300 shrink-0">
+                <Box className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                   <Activity className="w-4 h-4" />
                 </Box>
                 <Box className="min-w-0">
-                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-400">
+                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-secondary">
                     {KEY_FEATURES_MESSAGES.CARD2_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-sm sm:text-base font-bold text-foreground truncate">
@@ -207,17 +208,17 @@ export function KeyFeaturesMobile({
 
               <Badge
                 variant="secondary"
-                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold rounded-full bg-slate-100 dark:bg-slate-800 text-foreground"
+                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold"
               >
-                <Wifi className="w-2.5 h-2.5 text-emerald-600 animate-pulse" />
+                <Wifi className="w-2.5 h-2.5 text-primary animate-pulse" />
                 {KEY_FEATURES_MESSAGES.CARD2_TAG}
               </Badge>
             </Box>
 
             {/* Core Feature: 3 Key High-Contrast IoT Metrics */}
-            <Box className="grid grid-cols-3 gap-1.5 p-2.5 rounded-xl bg-slate-50/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
-              <Box className="flex flex-col items-center justify-center p-2 rounded-lg bg-card border border-border/70 text-center">
-                <ThermometerSun className="w-3.5 h-3.5 text-amber-500 mb-0.5" />
+            <Box className="grid grid-cols-3 gap-1.5 p-2.5 rounded-lg bg-muted/40 border border-border">
+              <Box className="flex flex-col items-center justify-center p-2 rounded-md bg-card border border-border/70 text-center">
+                <ThermometerSun className="w-3.5 h-3.5 text-secondary mb-0.5" />
                 <span className="text-[9px] uppercase font-bold text-muted-foreground">
                   {KEY_FEATURES_MESSAGES.CARD2_TEMP_LABEL}
                 </span>
@@ -226,8 +227,8 @@ export function KeyFeaturesMobile({
                 </span>
               </Box>
 
-              <Box className="flex flex-col items-center justify-center p-2 rounded-lg bg-card border border-border/70 text-center">
-                <Droplets className="w-3.5 h-3.5 text-sky-500 mb-0.5" />
+              <Box className="flex flex-col items-center justify-center p-2 rounded-md bg-card border border-border/70 text-center">
+                <Droplets className="w-3.5 h-3.5 text-primary mb-0.5" />
                 <span className="text-[9px] uppercase font-bold text-muted-foreground">
                   {KEY_FEATURES_MESSAGES.CARD2_HUMIDITY_LABEL}
                 </span>
@@ -236,23 +237,23 @@ export function KeyFeaturesMobile({
                 </span>
               </Box>
 
-              <Box className="flex flex-col items-center justify-center p-2 rounded-lg bg-card border border-border/70 text-center">
-                <Video className="w-3.5 h-3.5 text-emerald-500 mb-0.5" />
+              <Box className="flex flex-col items-center justify-center p-2 rounded-md bg-card border border-border/70 text-center">
+                <Video className="w-3.5 h-3.5 text-primary mb-0.5" />
                 <span className="text-[9px] uppercase font-bold text-muted-foreground">
                   {KEY_FEATURES_MESSAGES.CARD2_CAMERA_LABEL}
                 </span>
-                <span className="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <span className="text-[11px] font-extrabold text-primary mt-0.5">
                   {KEY_FEATURES_MESSAGES.CARD2_CAMERA_VALUE}
                 </span>
               </Box>
             </Box>
 
-            <Box className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-900/60 text-[11px]">
-              <span className="text-emerald-900 dark:text-emerald-100 font-medium">
+            <Box className="flex items-center justify-between px-2.5 py-1.5 rounded-md bg-muted/40 border border-border text-[11px]">
+              <span className="text-foreground font-medium">
                 {KEY_FEATURES_MESSAGES.CARD2_SERVICE_TITLE}
               </span>
-              <span className="inline-flex items-center gap-1 font-bold text-emerald-700 dark:text-emerald-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span className="inline-flex items-center gap-1 font-bold text-primary">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                 {KEY_FEATURES_MESSAGES.CARD2_SERVICE_VALUE}
               </span>
             </Box>
@@ -264,25 +265,25 @@ export function KeyFeaturesMobile({
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[42px] rounded-xl font-bold text-xs text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800 hover:bg-sky-50 dark:hover:bg-sky-950/50 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full"
               onClick={onNavigatePlots}
+              rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              <span>{KEY_FEATURES_MESSAGES.CARD2_ACTION}</span>
-              <ArrowRight className="w-4 h-4" />
+              {KEY_FEATURES_MESSAGES.CARD2_ACTION}
             </Button>
-          </Box>
+          </Card>
         )}
 
         {activeTab === 2 && (
-          <Box className="flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-card border border-amber-200/80 dark:border-amber-900/60 shadow-xs space-y-3.5 transition-all">
+          <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
             {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
-                <Box className="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-700 dark:text-amber-300 shrink-0">
+                <Box className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                   <ShieldCheck className="w-4 h-4" />
                 </Box>
                 <Box className="min-w-0">
-                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                  <Text className="text-[10px] font-semibold uppercase tracking-wider text-secondary">
                     {KEY_FEATURES_MESSAGES.CARD3_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-sm sm:text-base font-bold text-foreground truncate">
@@ -293,17 +294,17 @@ export function KeyFeaturesMobile({
 
               <Badge
                 variant="outline"
-                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold rounded-full border-amber-300 bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
+                className="shrink-0 flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold"
               >
-                <CheckCircle2 className="w-2.5 h-2.5 text-amber-600" />
+                <CheckCircle2 className="w-2.5 h-2.5 text-primary" />
                 {KEY_FEATURES_MESSAGES.CARD3_TAG}
               </Badge>
             </Box>
 
             {/* Core Feature: QR Tracking Code */}
-            <Box className="p-3 rounded-xl bg-slate-50/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 space-y-2">
-              <Box className="flex items-center gap-2 p-2 rounded-lg bg-card border border-border/80">
-                <Box className="w-8 h-8 rounded-md bg-amber-50 dark:bg-amber-950 flex items-center justify-center text-amber-700 shrink-0 border border-amber-200/70 dark:border-amber-900/70">
+            <Box className="p-3 rounded-lg bg-muted/40 border border-border space-y-2">
+              <Box className="flex items-center gap-2 p-2 rounded-md bg-card border border-border/80">
+                <Box className="w-8 h-8 rounded-md bg-secondary/10 flex items-center justify-center text-secondary shrink-0 border border-secondary/20">
                   <QrCode className="w-4 h-4" />
                 </Box>
                 <Box className="space-y-0.5 min-w-0">
@@ -318,11 +319,11 @@ export function KeyFeaturesMobile({
 
               <Box className="space-y-1 pt-0.5">
                 <Box className="flex items-center gap-1.5 text-[11px] text-foreground font-medium">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-3 h-3 text-primary shrink-0" />
                   <span className="truncate">{KEY_FEATURES_MESSAGES.CARD3_CHECK1}</span>
                 </Box>
                 <Box className="flex items-center gap-1.5 text-[11px] text-foreground font-medium">
-                  <Truck className="w-3 h-3 text-emerald-600 shrink-0" />
+                  <Truck className="w-3 h-3 text-primary shrink-0" />
                   <span className="truncate">{KEY_FEATURES_MESSAGES.CARD3_CHECK2}</span>
                 </Box>
               </Box>
@@ -335,13 +336,13 @@ export function KeyFeaturesMobile({
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[42px] rounded-xl font-bold text-xs text-amber-800 dark:text-amber-200 border-amber-200 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-amber-950/50 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full"
               onClick={onNavigatePlots}
+              rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              <span>{KEY_FEATURES_MESSAGES.CARD3_ACTION}</span>
-              <ArrowRight className="w-4 h-4" />
+              {KEY_FEATURES_MESSAGES.CARD3_ACTION}
             </Button>
-          </Box>
+          </Card>
         )}
       </Box>
 

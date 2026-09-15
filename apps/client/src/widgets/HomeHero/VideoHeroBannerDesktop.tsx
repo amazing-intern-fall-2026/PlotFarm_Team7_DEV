@@ -126,9 +126,8 @@ export function VideoHeroBannerDesktop({
             <Box className="flex flex-wrap items-center gap-3.5 pt-2">
               <Link to={primaryCtaLink}>
                 <Button
-                  variant="primary"
-                  size="default"
-                  className="h-11 px-6 rounded-xl text-sm md:text-base font-bold shadow-md shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all bg-primary hover:bg-primary/90 border-none text-primary-foreground"
+                  variant="default"
+                  size="lg"
                   rightIcon={<ArrowRight className="h-4 w-4" />}
                 >
                   {primaryCtaText}
@@ -139,11 +138,11 @@ export function VideoHeroBannerDesktop({
                 <Button
                   type="button"
                   variant="outline"
-                  size="default"
+                  size="lg"
                   onClick={onSecondaryCtaClick}
-                  className="h-11 px-5 rounded-xl text-xs md:text-sm font-semibold border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md active:scale-[0.98] transition-all"
+                  className="border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md"
                   leftIcon={
-                    <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+                    <Sparkles className="h-4 w-4 text-emerald-300" />
                   }
                 >
                   {secondaryCtaText}

@@ -15,7 +15,7 @@ import {
   Layers,
   Sparkles,
 } from "lucide-react";
-import { Box, Button, Badge, Heading, Text } from "@/shared/ui";
+import { Box, Button, Badge, Card, Heading, Text } from "@/shared/ui";
 import { KEY_FEATURES_MESSAGES } from "./constants";
 import type { KeyFeaturesViewProps } from "./types";
 
@@ -30,12 +30,13 @@ export function KeyFeaturesDesktop({
     <section aria-labelledby="key-features-desktop-title" className={className}>
       {/* ── 1. Section Header & Focal Typography ── */}
       <Box className="text-center space-y-3.5 max-w-3xl mx-auto px-4 mb-10">
-        <Box className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+        <Badge
+          variant="outline"
+          className="gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase text-secondary border-secondary/30"
+        >
           <Sparkles className="w-3.5 h-3.5" />
-          <span className="text-xs font-bold uppercase tracking-wider">
-            {badgeLabel}
-          </span>
-        </Box>
+          {badgeLabel}
+        </Badge>
 
         <Heading
           level={2}
@@ -53,18 +54,16 @@ export function KeyFeaturesDesktop({
       {/* ── 2. Desktop Bento Grid: 3 Equal High-Impact Columns ── */}
       <Box className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         {/* ── CARD 1: Phân Hệ Thuê Ô Đất & Thanh Toán VietQR ── */}
-        <Box className="h-full flex flex-col justify-between p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-xs hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
-          <Box className="absolute -top-12 -right-12 w-36 h-36 bg-emerald-500/8 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
-
+        <Card className="h-full flex flex-col justify-between p-6 hover:border-primary/40 transition-all group">
           {/* Card Header */}
           <Box className="space-y-4">
             <Box className="flex items-center justify-between gap-3">
               <Box className="flex items-center gap-2.5">
-                <Box className="w-10 h-10 rounded-2xl bg-emerald-100/80 dark:bg-emerald-950 flex items-center justify-center text-emerald-700 dark:text-emerald-300 shadow-xs">
+                <Box className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary shadow-xs">
                   <MapPin className="w-5 h-5" />
                 </Box>
                 <Box>
-                  <Text className="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                  <Text className="text-xs font-semibold uppercase tracking-wider text-primary">
                     {KEY_FEATURES_MESSAGES.CARD1_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-base sm:text-lg font-bold text-foreground">
@@ -76,27 +75,27 @@ export function KeyFeaturesDesktop({
               {/* Concurrency Lock Badge */}
               <Badge
                 variant="outline"
-                className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full border-emerald-200 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:border-emerald-800 dark:text-emerald-300"
+                className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold"
               >
-                <Clock className="w-3 h-3 text-emerald-600 animate-pulse" />
+                <Clock className="w-3 h-3 text-primary animate-pulse" />
                 {KEY_FEATURES_MESSAGES.CARD1_TAG}
               </Badge>
             </Box>
 
             {/* Core Feature Insight Card */}
-            <Box className="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 space-y-3.5">
+            <Box className="p-4 rounded-xl bg-muted/40 border border-border space-y-3.5">
               <Box className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-emerald-600" /> {KEY_FEATURES_MESSAGES.CARD1_MAP_LABEL}
+                  <Layers className="w-3.5 h-3.5 text-primary" /> {KEY_FEATURES_MESSAGES.CARD1_MAP_LABEL}
                 </span>
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200">
+                <Badge variant="secondary" className="text-[11px] font-bold px-2 py-0.5">
                   {KEY_FEATURES_MESSAGES.CARD1_LOCATION}
-                </span>
+                </Badge>
               </Box>
 
               {/* Crop Seasonality Highlight */}
-              <Box className="flex items-start gap-3 p-2.5 rounded-xl bg-card border border-border/80 shadow-2xs">
-                <Box className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/70 flex items-center justify-center text-emerald-600 shrink-0">
+              <Box className="flex items-start gap-3 p-2.5 rounded-lg bg-card border border-border/80 shadow-2xs">
+                <Box className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center text-primary shrink-0">
                   <Sprout className="w-4 h-4" />
                 </Box>
                 <Box className="space-y-0.5 min-w-0">
@@ -110,11 +109,11 @@ export function KeyFeaturesDesktop({
               </Box>
 
               {/* Real VietQR payment pill */}
-              <Box className="flex items-center justify-between px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-border text-[11px]">
+              <Box className="flex items-center justify-between px-3 py-2 rounded-lg bg-card border border-border text-[11px]">
                 <span className="text-muted-foreground font-medium">
                   {KEY_FEATURES_MESSAGES.CARD1_PAYMENT_METHOD}
                 </span>
-                <span className="font-bold text-emerald-600">
+                <span className="font-bold text-primary">
                   {KEY_FEATURES_MESSAGES.CARD1_PAYMENT_STATUS}
                 </span>
               </Box>
@@ -130,28 +129,26 @@ export function KeyFeaturesDesktop({
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 flex items-center justify-center gap-2 group/btn cursor-pointer"
+              className="w-full"
               onClick={onNavigatePlots}
+              rightIcon={<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />}
             >
-              <span>{KEY_FEATURES_MESSAGES.CARD1_ACTION}</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+              {KEY_FEATURES_MESSAGES.CARD1_ACTION}
             </Button>
           </Box>
-        </Box>
+        </Card>
 
         {/* ── CARD 2: Giám Sát Camera HLS & Telemetry IoT ── */}
-        <Box className="h-full flex flex-col justify-between p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-xs hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
-          <Box className="absolute -top-12 -right-12 w-36 h-36 bg-sky-500/8 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
-
+        <Card className="h-full flex flex-col justify-between p-6 hover:border-primary/40 transition-all group">
           {/* Card Header */}
           <Box className="space-y-4">
             <Box className="flex items-center justify-between gap-3">
               <Box className="flex items-center gap-2.5">
-                <Box className="w-10 h-10 rounded-2xl bg-sky-100/80 dark:bg-sky-950 flex items-center justify-center text-sky-700 dark:text-sky-300 shadow-xs">
+                <Box className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shadow-xs">
                   <Activity className="w-5 h-5" />
                 </Box>
                 <Box>
-                  <Text className="text-xs font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-400">
+                  <Text className="text-xs font-semibold uppercase tracking-wider text-secondary">
                     {KEY_FEATURES_MESSAGES.CARD2_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-base sm:text-lg font-bold text-foreground">
@@ -163,17 +160,17 @@ export function KeyFeaturesDesktop({
               {/* Active Plot Badge */}
               <Badge
                 variant="secondary"
-                className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-slate-100 dark:bg-slate-800 text-foreground"
+                className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold"
               >
-                <Wifi className="w-3 h-3 text-emerald-600 animate-pulse" />
+                <Wifi className="w-3 h-3 text-primary animate-pulse" />
                 {KEY_FEATURES_MESSAGES.CARD2_TAG}
               </Badge>
             </Box>
 
             {/* Core Feature: 3 Key High-Contrast IoT Metrics */}
-            <Box className="grid grid-cols-3 gap-2.5 p-3.5 rounded-2xl bg-slate-50/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
-              <Box className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-card border border-border/70 text-center shadow-2xs">
-                <ThermometerSun className="w-4 h-4 text-amber-500 mb-1" />
+            <Box className="grid grid-cols-3 gap-2.5 p-3.5 rounded-xl bg-muted/40 border border-border">
+              <Box className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-card border border-border/70 text-center shadow-2xs">
+                <ThermometerSun className="w-4 h-4 text-secondary mb-1" />
                 <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
                   {KEY_FEATURES_MESSAGES.CARD2_TEMP_LABEL}
                 </span>
@@ -182,8 +179,8 @@ export function KeyFeaturesDesktop({
                 </span>
               </Box>
 
-              <Box className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-card border border-border/70 text-center shadow-2xs">
-                <Droplets className="w-4 h-4 text-sky-500 mb-1" />
+              <Box className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-card border border-border/70 text-center shadow-2xs">
+                <Droplets className="w-4 h-4 text-primary mb-1" />
                 <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
                   {KEY_FEATURES_MESSAGES.CARD2_HUMIDITY_LABEL}
                 </span>
@@ -192,24 +189,24 @@ export function KeyFeaturesDesktop({
                 </span>
               </Box>
 
-              <Box className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-card border border-border/70 text-center shadow-2xs">
-                <Video className="w-4 h-4 text-emerald-500 mb-1" />
+              <Box className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-card border border-border/70 text-center shadow-2xs">
+                <Video className="w-4 h-4 text-primary mb-1" />
                 <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
                   {KEY_FEATURES_MESSAGES.CARD2_CAMERA_LABEL}
                 </span>
-                <span className="text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight mt-1">
+                <span className="text-xs sm:text-sm font-extrabold text-primary tracking-tight mt-1">
                   {KEY_FEATURES_MESSAGES.CARD2_CAMERA_VALUE}
                 </span>
               </Box>
             </Box>
 
             {/* Care service highlight */}
-            <Box className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-900/60 text-xs">
-              <span className="text-emerald-900 dark:text-emerald-100 font-medium">
+            <Box className="flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-muted/40 border border-border text-xs">
+              <span className="text-foreground font-medium">
                 {KEY_FEATURES_MESSAGES.CARD2_SERVICE_TITLE}
               </span>
-              <span className="inline-flex items-center gap-1 font-bold text-emerald-700 dark:text-emerald-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span className="inline-flex items-center gap-1 font-bold text-primary">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                 {KEY_FEATURES_MESSAGES.CARD2_SERVICE_VALUE}
               </span>
             </Box>
@@ -224,28 +221,26 @@ export function KeyFeaturesDesktop({
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800 hover:bg-sky-50 dark:hover:bg-sky-950/50 flex items-center justify-center gap-2 group/btn cursor-pointer"
+              className="w-full"
               onClick={onNavigatePlots}
+              rightIcon={<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />}
             >
-              <span>{KEY_FEATURES_MESSAGES.CARD2_ACTION}</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+              {KEY_FEATURES_MESSAGES.CARD2_ACTION}
             </Button>
           </Box>
-        </Box>
+        </Card>
 
         {/* ── CARD 3: Thu Hoạch & Tra Cứu Vận Đơn QR A6 ── */}
-        <Box className="h-full flex flex-col justify-between p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-xs hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
-          <Box className="absolute -top-12 -right-12 w-36 h-36 bg-amber-500/8 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
-
+        <Card className="h-full flex flex-col justify-between p-6 hover:border-primary/40 transition-all group">
           {/* Card Header */}
           <Box className="space-y-4">
             <Box className="flex items-center justify-between gap-3">
               <Box className="flex items-center gap-2.5">
-                <Box className="w-10 h-10 rounded-2xl bg-amber-100/80 dark:bg-amber-950 flex items-center justify-center text-amber-700 dark:text-amber-300 shadow-xs">
+                <Box className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shadow-xs">
                   <ShieldCheck className="w-5 h-5" />
                 </Box>
                 <Box>
-                  <Text className="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                  <Text className="text-xs font-semibold uppercase tracking-wider text-secondary">
                     {KEY_FEATURES_MESSAGES.CARD3_CATEGORY}
                   </Text>
                   <Heading level={3} className="text-base sm:text-lg font-bold text-foreground">
@@ -257,17 +252,17 @@ export function KeyFeaturesDesktop({
               {/* Certification Badge */}
               <Badge
                 variant="outline"
-                className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-full border-amber-300 bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:border-amber-800 dark:text-amber-300"
+                className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold"
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                 {KEY_FEATURES_MESSAGES.CARD3_TAG}
               </Badge>
             </Box>
 
             {/* Core Feature: QR Tracking Code & Format */}
-            <Box className="p-3.5 rounded-2xl bg-slate-50/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 space-y-3">
-              <Box className="flex items-center gap-3 p-2.5 rounded-xl bg-card border border-border/80 shadow-2xs">
-                <Box className="w-11 h-11 rounded-lg bg-amber-50 dark:bg-amber-950 flex items-center justify-center text-amber-700 shrink-0 border border-amber-200/70 dark:border-amber-900/70">
+            <Box className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-3">
+              <Box className="flex items-center gap-3 p-2.5 rounded-lg bg-card border border-border/80 shadow-2xs">
+                <Box className="w-11 h-11 rounded-md bg-secondary/10 flex items-center justify-center text-secondary shrink-0 border border-secondary/20">
                   <QrCode className="w-6 h-6" />
                 </Box>
                 <Box className="space-y-0.5 min-w-0">
@@ -282,11 +277,11 @@ export function KeyFeaturesDesktop({
 
               <Box className="space-y-2 pt-1">
                 <Box className="flex items-center gap-2 text-xs text-foreground font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
                   <span>{KEY_FEATURES_MESSAGES.CARD3_CHECK1}</span>
                 </Box>
                 <Box className="flex items-center gap-2 text-xs text-foreground font-medium">
-                  <Truck className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <Truck className="w-4 h-4 text-primary shrink-0" />
                   <span>{KEY_FEATURES_MESSAGES.CARD3_CHECK2}</span>
                 </Box>
               </Box>
@@ -302,15 +297,16 @@ export function KeyFeaturesDesktop({
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-amber-800 dark:text-amber-200 border-amber-200 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-amber-950/50 flex items-center justify-center gap-2 group/btn cursor-pointer"
+              className="w-full"
               onClick={onNavigatePlots}
+              rightIcon={<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />}
             >
-              <span>{KEY_FEATURES_MESSAGES.CARD3_ACTION}</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+              {KEY_FEATURES_MESSAGES.CARD3_ACTION}
             </Button>
           </Box>
-        </Box>
+        </Card>
       </Box>
     </section>
   );
 }
+

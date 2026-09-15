@@ -75,7 +75,7 @@ export function SeasonalCropsDesktop({
               type="button"
               variant="outline"
               size="icon"
-              className="splide__arrow splide__arrow--prev !static !transform-none rounded-xl shadow-xs [&_svg]:!fill-none [&_svg]:!stroke-current [&_svg]:!transform-none cursor-pointer"
+              className="splide__arrow splide__arrow--prev !static !transform-none cursor-pointer"
               aria-label="Giống trước"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -84,7 +84,7 @@ export function SeasonalCropsDesktop({
               type="button"
               variant="default"
               size="icon"
-              className="splide__arrow splide__arrow--next !static !transform-none rounded-xl shadow-sm shadow-primary/20 [&_svg]:!fill-none [&_svg]:!stroke-current [&_svg]:!transform-none cursor-pointer"
+              className="splide__arrow splide__arrow--next !static !transform-none cursor-pointer"
               aria-label="Giống tiếp theo"
             >
               <ChevronRight className="h-4 w-4" />
@@ -96,7 +96,7 @@ export function SeasonalCropsDesktop({
         <SplideTrack>
           {items.map((crop) => (
             <SplideSlide key={crop.cropCode} className="pb-4">
-              <Card className="h-full flex flex-col justify-between overflow-hidden rounded-2xl group border-border/80 hover:border-primary/50 transition-all duration-300">
+              <Card className="h-full flex flex-col justify-between overflow-hidden group hover:border-primary/40 transition-all duration-300">
                 {/* Image & Badge */}
                 <Box className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                   <img
@@ -171,9 +171,9 @@ export function SeasonalCropsDesktop({
                   <Button
                     type="button"
                     variant="outline"
+                    className="w-full"
                     onClick={() => onSelectCrop(crop.cropSlug)}
-                    className="w-full h-10 rounded-full border-primary/30 bg-accent hover:bg-accent/80 text-accent-foreground font-semibold text-xs sm:text-sm gap-2 cursor-pointer"
-                    rightIcon={<ArrowRight className="h-3.5 w-3.5" />}
+                    rightIcon={<ArrowRight className="h-4 w-4" />}
                   >
                     Chọn gieo giống này
                   </Button>
@@ -201,9 +201,6 @@ export function SeasonalCropsDesktop({
           top: auto !important;
           left: auto !important;
           right: auto !important;
-          width: 2.5rem !important;
-          height: 2.5rem !important;
-          border-radius: 0.75rem !important;
           opacity: 1 !important;
           display: inline-flex !important;
           align-items: center !important;
@@ -213,31 +210,7 @@ export function SeasonalCropsDesktop({
         .seasonal-crops-splide .splide__arrow svg {
           fill: none !important;
           stroke: currentColor !important;
-          width: 1rem !important;
-          height: 1rem !important;
           transform: none !important;
-        }
-        .seasonal-crops-splide .splide__arrow--prev {
-          background: hsl(var(--card)) !important;
-          border: 1px solid hsl(var(--border)) !important;
-          color: hsl(var(--foreground)) !important;
-          box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
-        }
-        .seasonal-crops-splide .splide__arrow--prev:hover {
-          background: hsl(var(--accent)) !important;
-          color: hsl(var(--accent-foreground)) !important;
-          border-color: var(--color-primary-400) !important;
-        }
-        .seasonal-crops-splide .splide__arrow--next {
-          background: var(--color-primary-600) !important;
-          border: 1px solid transparent !important;
-          color: #ffffff !important;
-          box-shadow: 0 2px 6px 0 rgb(22 163 74 / 0.3) !important;
-        }
-        .seasonal-crops-splide .splide__arrow--next:hover {
-          background: var(--color-primary-700) !important;
-          color: #ffffff !important;
-          box-shadow: 0 4px 12px 0 rgb(22 163 74 / 0.4) !important;
         }
         .seasonal-crops-splide .splide__arrow:disabled {
           opacity: 0.4 !important;

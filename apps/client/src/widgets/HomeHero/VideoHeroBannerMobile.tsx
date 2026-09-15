@@ -126,9 +126,9 @@ export function VideoHeroBannerMobile({
         <Box className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-2">
           <Link to={primaryCtaLink} className="w-full sm:w-auto">
             <Button
-              variant="primary"
+              variant="default"
               size="default"
-              className="w-full h-10 px-5 rounded-xl text-sm font-bold shadow-md shadow-primary/30 active:scale-[0.98] transition-all bg-primary hover:bg-primary/90 border-none text-primary-foreground justify-center"
+              className="w-full justify-center"
               rightIcon={<ArrowRight className="h-4 w-4" />}
             >
               {primaryCtaText}
@@ -141,7 +141,7 @@ export function VideoHeroBannerMobile({
               variant="outline"
               size="default"
               onClick={onSecondaryCtaClick}
-              className="w-full sm:w-auto h-9 px-4 rounded-xl text-xs font-semibold border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md active:scale-[0.98] transition-all justify-center"
+              className="w-full sm:w-auto border-white/30 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md justify-center"
               leftIcon={<Sparkles className="h-3.5 w-3.5 text-emerald-300" />}
             >
               {secondaryCtaText}

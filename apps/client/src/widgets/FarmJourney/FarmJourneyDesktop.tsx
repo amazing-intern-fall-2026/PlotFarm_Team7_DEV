@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from "@/shared/ui";
+import { Box, Card, CardContent, Heading, Text } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 import { FARM_JOURNEY_MESSAGES } from "./constants";
 import type { FarmJourneyViewProps } from "./types";
@@ -14,9 +14,9 @@ export function FarmJourneyDesktop({
     <section aria-labelledby="farm-journey-desktop-title" className={cn("w-full space-y-7 pt-0 pb-4 select-none", className)}>
       {/* ── 1. Section Header ── */}
       <Box className="text-center space-y-3 max-w-3xl mx-auto px-4">
-        <Text as="span" className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+        <span className="text-xs font-bold uppercase tracking-wider text-secondary">
           {badge}
-        </Text>
+        </span>
 
         <Heading
           level={2}
@@ -31,26 +31,26 @@ export function FarmJourneyDesktop({
         </Text>
       </Box>
 
-      {/* ── 2. 4-Step Cards Bento Grid ── */}
+      {/* ── 2. 4-Step Cards Grid ── */}
       <Box className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
         {steps.map((step) => (
-          <Box
+          <Card
             key={step.stepNumber}
-            className="h-full flex flex-col justify-between p-7 rounded-3xl bg-card border border-slate-100 dark:border-border/80 shadow-xs hover:shadow-md hover:border-primary/40 transition-all duration-300 group"
+            className="h-full flex flex-col justify-between hover:border-primary/40 transition-colors group"
           >
-            <Box className="space-y-4">
-              {/* Top Row: Number & Icon Button */}
+            <CardContent className="p-6 flex flex-col justify-between h-full space-y-4">
+              {/* Top Row: Number & Icon */}
               <Box className="flex items-center justify-between">
                 <Text
                   as="span"
-                  className="text-3xl font-extrabold text-sky-300 dark:text-sky-500/70 font-mono tracking-tight"
+                  className="text-3xl font-extrabold text-muted-foreground/30 tracking-tight"
                 >
                   {step.stepNumber}
                 </Text>
 
                 <Box
                   className={cn(
-                    "w-11 h-11 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-2xs",
+                    "w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-2xs",
                     step.iconBgClass,
                     step.iconColorClass
                   )}
@@ -60,18 +60,19 @@ export function FarmJourneyDesktop({
               </Box>
 
               {/* Title & Description */}
-              <Box className="space-y-2 pt-2">
-                <Heading level={3} className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+              <Box className="space-y-2 pt-1">
+                <Heading level={3} className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
                   {step.title}
                 </Heading>
                 <Text className="text-sm text-muted-foreground leading-relaxed">
                   {step.description}
                 </Text>
               </Box>
-            </Box>
-          </Box>
+            </CardContent>
+          </Card>
         ))}
       </Box>
     </section>
   );
 }
+

@@ -67,7 +67,7 @@ export function SeasonalCropsMobile({
         <SplideTrack>
           {items.map((crop) => (
             <SplideSlide key={crop.cropCode} className="pb-3">
-              <Card className="h-full flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 shadow-xs">
+              <Card className="h-full flex flex-col justify-between overflow-hidden">
                 {/* Image & Badge */}
                 <Box className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                   <img
@@ -142,9 +142,9 @@ export function SeasonalCropsMobile({
                   <Button
                     type="button"
                     variant="outline"
+                    className="w-full"
                     onClick={() => onSelectCrop(crop.cropSlug)}
-                    className="w-full min-h-[44px] rounded-xl border-primary/30 bg-accent hover:bg-accent/80 text-accent-foreground font-semibold text-xs gap-2 cursor-pointer"
-                    rightIcon={<ArrowRight className="h-3.5 w-3.5" />}
+                    rightIcon={<ArrowRight className="h-4 w-4" />}
                   >
                     Chọn gieo giống này
                   </Button>
