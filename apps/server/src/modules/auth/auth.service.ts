@@ -20,6 +20,7 @@ import { TokenService } from "./token.service";
 import { EmailService } from "../../common/services/email.service";
 import { verifyGoogleIdToken } from "./googleAuth";
 
+
 const OTP_HMAC_SECRET = process.env.OTP_HMAC_SECRET || "default_otp_hmac_secret_key_2026";
 const OTP_TTL_MINUTES = 5;
 const OTP_COOLDOWN_SECONDS = 60;
