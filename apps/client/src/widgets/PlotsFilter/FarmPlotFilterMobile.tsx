@@ -70,7 +70,7 @@ export function FarmPlotFilterMobile({
               className="flex items-center justify-center gap-1.5 h-11 bg-slate-50 dark:bg-muted/40 hover:bg-slate-100 px-3 rounded-xl border border-slate-200 text-xs font-semibold text-foreground shrink-0"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 text-primary" />
-              <Text as="span">{PLOTS_FILTER_MESSAGES.MOBILE_FILTER_BUTTON}</Text>
+              {PLOTS_FILTER_MESSAGES.MOBILE_FILTER_BUTTON}
               {hasActiveFilters && (
                 <Box className="h-2 w-2 rounded-full bg-primary animate-pulse inline-block" />
               )}
@@ -95,7 +95,7 @@ export function FarmPlotFilterMobile({
                   )}
                 >
                   <Box className={cn("h-1.5 w-1.5 rounded-full shrink-0 inline-block", chip.dotColor)} />
-                  <Text as="span">{chip.label}</Text>
+                  {chip.label}
                 </Button>
               );
             })}
@@ -163,7 +163,7 @@ export function FarmPlotFilterMobile({
                     className="h-8 px-3 rounded-lg text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <RotateCcw className="h-3 w-3" />
-                    <Text as="span">{PLOTS_FILTER_MESSAGES.RESET_BUTTON}</Text>
+                    {PLOTS_FILTER_MESSAGES.RESET_BUTTON}
                   </Button>
                 </Box>
               )}

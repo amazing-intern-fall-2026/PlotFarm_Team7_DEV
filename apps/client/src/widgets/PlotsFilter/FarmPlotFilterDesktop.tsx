@@ -127,7 +127,7 @@ export function FarmPlotFilterDesktop({
                     )}
                   >
                     <Box className={cn("h-2 w-2 rounded-full shrink-0 inline-block", chip.dotColor)} />
-                    <Text as="span">{chip.label}</Text>
+                    {chip.label}
                   </Button>
                 );
               })}
@@ -141,7 +141,7 @@ export function FarmPlotFilterDesktop({
                   className="h-auto px-3 py-1.5 rounded-full text-sm font-semibold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors inline-flex items-center gap-1.5 shrink-0 ml-1 cursor-pointer"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
-                  <Text as="span">{PLOTS_FILTER_MESSAGES.RESET_BUTTON}</Text>
+                  {PLOTS_FILTER_MESSAGES.RESET_BUTTON}
                 </Button>
               )}
             </Box>

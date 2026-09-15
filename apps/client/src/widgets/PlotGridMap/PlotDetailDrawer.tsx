@@ -229,10 +229,10 @@ export function PlotDetailDrawer({
               variant="default"
               size="lg"
               onClick={handleProceedBooking}
-              className="w-full font-bold text-sm h-12 shadow-md bg-primary text-primary-foreground hover:bg-primary-hover flex items-center justify-center gap-2 cursor-pointer"
+              rightIcon={<ArrowRight className="h-4 w-4" />}
+              className="w-full font-bold text-sm h-12 shadow-md shadow-primary/20 cursor-pointer"
             >
-              <Text as="span">{PLOT_DRAWER_MESSAGES.CTA_BOOKING}</Text>
-              <ArrowRight className="h-4 w-4" />
+              {PLOT_DRAWER_MESSAGES.CTA_BOOKING}
             </Button>
             <Button
               variant="ghost"
