@@ -198,6 +198,8 @@ components:
         soilType: { type: string, nullable: true }
         iotSensorInstalled: { type: boolean }
         cameraSupported: { type: boolean }
+        streamUrl: { type: string, nullable: true }
+        imageUrl: { type: string, nullable: true }
 
     Voucher:
       type: object

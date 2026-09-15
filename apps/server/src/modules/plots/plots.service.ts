@@ -12,6 +12,8 @@ const mockPlots: Plot[] = [
     soilType: "Đất đỏ Bazan Lâm Đồng",
     iotSensorInstalled: true,
     cameraSupported: true,
+    streamUrl: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    imageUrl: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
   },
   {
     plotCode: "PLT-A02",
@@ -22,6 +24,8 @@ const mockPlots: Plot[] = [
     soilType: "Đất phù sa",
     iotSensorInstalled: true,
     cameraSupported: false,
+    streamUrl: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    imageUrl: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -46,11 +50,14 @@ export interface PlotWithRelations {
   pricePerMonth?: unknown;
   status: PlotStatus;
   streamUrl?: string | null;
+  imageUrl?: string | null;
   lockedUntil?: Date | string | null;
   defaultCrop?: {
     id: string;
     slug: string;
     nameI18n: unknown;
+    coverImageUrl?: string | null;
+    iconUrl?: string | null;
   } | null;
   farm?: {
     id: string;
@@ -61,6 +68,9 @@ export interface PlotWithRelations {
 }
 
 export class PlotsService {
+  static DEFAULT_PLOT_IMAGE_URL = "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80";
+  static DEFAULT_MOCK_STREAM_URL = process.env.MOCK_STREAM_URL || process.env.VITE_MOCK_STREAM_URL || "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+
   /**
    * Tính trạng thái động của plot dựa trên lockedUntil.
    * Business rule: lockedUntil > now => status = RESERVED
@@ -77,6 +87,13 @@ export class PlotsService {
   }
 
   static formatPlotListItem(plot: PlotWithRelations, now: Date = new Date()) {
+    const imageUrl = plot.imageUrl ?? plot.defaultCrop?.coverImageUrl ?? this.DEFAULT_PLOT_IMAGE_URL;
+
+    let streamUrl = plot.streamUrl ?? this.DEFAULT_MOCK_STREAM_URL;
+    if (!streamUrl || streamUrl.includes("plotfarm.vn") || streamUrl.includes("example.com")) {
+      streamUrl = this.DEFAULT_MOCK_STREAM_URL;
+    }
+
     return {
       id: plot.id,
       plotCode: plot.plotCode ?? null,
@@ -85,12 +102,15 @@ export class PlotsService {
       soilTypeI18n: plot.soilTypeI18n ?? null,
       pricePerMonth: plot.pricePerMonth !== null && plot.pricePerMonth !== undefined ? Number(plot.pricePerMonth) : null,
       status: this.calculateDynamicStatus(plot.status, plot.lockedUntil, now),
-      streamUrl: plot.streamUrl ?? null,
+      imageUrl,
+      streamUrl,
       defaultCrop: plot.defaultCrop
         ? {
           id: plot.defaultCrop.id,
           slug: plot.defaultCrop.slug,
           nameI18n: plot.defaultCrop.nameI18n,
+          coverImageUrl: plot.defaultCrop.coverImageUrl ?? null,
+          iconUrl: plot.defaultCrop.iconUrl ?? null,
         }
         : null,
     };

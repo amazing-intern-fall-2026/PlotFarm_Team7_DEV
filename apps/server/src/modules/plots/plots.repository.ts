@@ -41,6 +41,29 @@ export class PlotsRepository {
       }
     }
 
+    if (query.area) {
+      where.areaSqm = query.area;
+    }
+
+    if (query.search && query.search.trim() !== "") {
+      const searchPattern = query.search.trim();
+      const searchConditions: Prisma.PlotWhereInput[] = [
+        { plotCode: { contains: searchPattern, mode: "insensitive" } },
+        { plotNumber: { contains: searchPattern, mode: "insensitive" } },
+        { name: { contains: searchPattern, mode: "insensitive" } },
+      ];
+
+      if (where.OR) {
+        where.AND = [
+          { OR: where.OR },
+          { OR: searchConditions },
+        ];
+        delete where.OR;
+      } else {
+        where.OR = searchConditions;
+      }
+    }
+
     return where;
   }
 
@@ -58,6 +81,8 @@ export class PlotsRepository {
             id: true,
             slug: true,
             nameI18n: true,
+            coverImageUrl: true,
+            iconUrl: true,
           },
         },
         farm: {
@@ -89,6 +114,8 @@ export class PlotsRepository {
             id: true,
             slug: true,
             nameI18n: true,
+            coverImageUrl: true,
+            iconUrl: true,
           },
         },
         farm: {

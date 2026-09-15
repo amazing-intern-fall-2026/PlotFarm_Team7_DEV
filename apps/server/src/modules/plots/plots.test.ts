@@ -220,11 +220,14 @@ describe("US-13: Plots API Unit & Integration Tests", () => {
         soilTypeI18n: { vi: "Đất đỏ" },
         pricePerMonth: 1200000,
         status: "AVAILABLE",
-        streamUrl: null,
+        imageUrl: PlotsService.DEFAULT_PLOT_IMAGE_URL,
+        streamUrl: PlotsService.DEFAULT_MOCK_STREAM_URL,
         defaultCrop: {
           id: "crop-2",
           slug: "dap-cau",
           nameI18n: { vi: "Dưa lưới" },
+          coverImageUrl: null,
+          iconUrl: null,
         },
         farm: {
           id: farmIdMock,
