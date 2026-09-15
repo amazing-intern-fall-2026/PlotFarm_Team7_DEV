@@ -9,7 +9,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
-import { Box, Button, Heading, Text, Badge } from "@/shared/ui";
+import { Box, Button, Heading, Text, Badge, Input } from "@/shared/ui";
 import { PLOTS_FILTER_MESSAGES, PLOTS_FILTER_SORT_OPTIONS } from "./constants";
 import type { FarmPlotFilterViewProps } from "./types";
 
@@ -40,27 +40,29 @@ export function FarmPlotFilterMobile({
           
           {/* Hàng 1: Search Input + Toggle Filter Button */}
           <Box className="flex items-center gap-2">
-            <Box className="relative flex-1 flex items-center h-11 bg-slate-50/90 dark:bg-muted/40 hover:bg-slate-100/80 dark:hover:bg-muted/60 focus-within:bg-white dark:focus-within:bg-background focus-within:ring-2 focus-within:ring-primary/80 border border-slate-200/80 dark:border-border/80 transition-all rounded-xl px-3.5 gap-2.5 shadow-2xs">
-              <Search className="h-4 w-4 text-slate-400 dark:text-muted-foreground shrink-0" />
-              <input
+            <Box className="flex-1">
+              <Input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder={PLOTS_FILTER_MESSAGES.SEARCH_PLACEHOLDER}
-                className="w-full bg-transparent text-xs sm:text-sm text-slate-800 dark:text-foreground placeholder:text-muted-foreground/70 focus:outline-none font-medium"
+                leftIcon={<Search className="h-4 w-4 text-muted-foreground" />}
+                rightIcon={
+                  searchTerm ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleSearchChange("")}
+                      className="h-6 w-6 p-0 rounded-full text-muted-foreground hover:text-foreground"
+                      aria-label={PLOTS_FILTER_MESSAGES.CLEAR_SEARCH_ARIA}
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </Button>
+                  ) : undefined
+                }
+                className="h-11 rounded-xl bg-slate-50/90 dark:bg-muted/40 border-slate-200/80 dark:border-border text-xs sm:text-sm font-medium"
               />
-              {searchTerm && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleSearchChange("")}
-                  className="h-6 w-6 p-0 rounded-full text-muted-foreground hover:text-foreground hover:bg-slate-200/60 transition-colors"
-                  aria-label={PLOTS_FILTER_MESSAGES.CLEAR_SEARCH_ARIA}
-                >
-                  <X className="h-3.5 w-3.5" />
-                </Button>
-              )}
             </Box>
 
             <Button
