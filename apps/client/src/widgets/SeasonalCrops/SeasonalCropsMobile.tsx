@@ -28,7 +28,7 @@ export function SeasonalCropsMobile({
   className,
 }: SeasonalCropsViewProps) {
   return (
-    <Box className={cn("w-full seasonal-crops-mobile-splide py-2 space-y-4", className)}>
+    <Box className={cn("w-full overflow-hidden seasonal-crops-mobile-splide py-2 space-y-4", className)}>
       {/* ── 1. Mobile Header ── */}
       <Box className="space-y-1.5 text-left px-2">
         <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
