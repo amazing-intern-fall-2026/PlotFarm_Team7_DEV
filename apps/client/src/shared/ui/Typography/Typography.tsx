@@ -10,6 +10,9 @@ export type TypographyVariant =
   | "h5"
   | "h6"
   | "p"
+  | "body1"
+  | "body2"
+  | "caption"
   | "lead"
   | "large"
   | "small"
@@ -45,11 +48,15 @@ const variantStyles: Record<TypographyVariant, string> = {
   h5: "text-base font-semibold text-foreground",
   h6: "text-sm font-semibold text-foreground",
   p: "text-sm text-foreground leading-relaxed",
+  body1: "text-sm text-foreground leading-relaxed",
+  body2: "text-xs text-muted-foreground leading-relaxed",
+  caption: "text-[11px] text-muted-foreground tracking-normal",
   lead: "text-base text-muted-foreground leading-relaxed font-normal",
   large: "text-base font-semibold text-foreground",
   small: "text-xs text-muted-foreground font-medium",
   muted: "text-xs text-muted-foreground",
 };
+
 
 const TypographyRoot = React.forwardRef<HTMLElement, TypographyProps>(
   (
