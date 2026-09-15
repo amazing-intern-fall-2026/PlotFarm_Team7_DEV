@@ -4,6 +4,10 @@ import { authGuard } from "../../middlewares/authGuard";
 
 const router: Router = Router();
 
+// Endpoint công khai để đăng ký tài khoản
+router.post("/register", AuthController.register);
+router.post("/signup", AuthController.register);
+
 // Endpoint công khai để gia hạn access token
 router.post("/refresh", AuthController.refresh);
 
@@ -20,3 +24,4 @@ router.post("/auth/login", AuthController.login);
 router.get("/profile", authGuard, AuthController.getProfile);
 
 export { router as authRoutes, router as authRouter };
+

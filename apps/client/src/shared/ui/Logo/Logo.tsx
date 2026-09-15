@@ -4,11 +4,13 @@ import { cn } from "@/shared/lib/utils";
 export interface LogoProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "md" | "lg" | "xl";
   showText?: boolean;
+  brandText?: string;
 }
 
 export function Logo({
   size = "md",
   showText = false,
+  brandText = "CloudFarm",
   className,
   ...props
 }: LogoProps) {
@@ -19,11 +21,41 @@ export function Logo({
     xl: { icon: "h-20 w-20", text: "text-3xl" },
   }[size];
 
+  const renderBrandText = () => {
+    if (brandText === "CloudFarm") {
+      return (
+        <>
+          Cloud<span className="text-[#23a54f]">Farm</span>
+        </>
+      );
+    }
+    if (brandText === "PlotFarm") {
+      return (
+        <>
+          Plot<span className="text-[#23a54f]">Farm</span>
+        </>
+      );
+    }
+    if (brandText === "BioCloud" || brandText === "BioCloud Farming Admin") {
+      return (
+        <div className="flex flex-col text-left leading-none">
+          <span className="font-extrabold text-foreground text-base tracking-tight">
+            Bio<span className="text-[#23a54f]">Cloud</span>
+          </span>
+          <span className="text-[9px] font-bold tracking-widest text-slate-500 uppercase mt-0.5">
+            FARMING ADMIN
+          </span>
+        </div>
+      );
+    }
+    return brandText;
+  };
+
   return (
     <div className={cn("inline-flex items-center gap-2.5 select-none", className)} {...props}>
       <img
         src="/images/logo-1.png"
-        alt="Green Farm Logo"
+        alt="Logo"
         className={cn(
           "shrink-0 object-contain transition-transform hover:scale-105",
           sizeMap.icon
@@ -31,7 +63,7 @@ export function Logo({
       />
       {showText && (
         <span className={cn("font-bold tracking-tight text-foreground", sizeMap.text)}>
-          Green <span className="text-[#23a54f]">Farm</span>
+          {renderBrandText()}
         </span>
       )}
     </div>

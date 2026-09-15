@@ -69,12 +69,11 @@ export interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
   extraActions?: React.ReactNode;
 }
 
-/** Preset mục menu cho Customer */
 export const DEFAULT_CUSTOMER_NAV_ITEMS: HeaderNavItem[] = [
   { id: "home", label: "Trang chủ", href: "/" },
   { id: "explore", label: "Khám phá ô đất", href: "/plots" },
+  { id: "camera", label: "Camera 24/7", href: "/journal" },
   { id: "journal", label: "Nhật ký nông vụ", href: "/journal" },
-  { id: "about", label: "Về chúng tôi", href: "/about" },
 ];
 
 /** Preset mục menu cho Farmer */
@@ -135,9 +134,7 @@ export function Header({
         return DEFAULT_ADMIN_NAV_ITEMS;
       case "customer":
       default:
-        return user
-          ? DEFAULT_CUSTOMER_NAV_ITEMS
-          : DEFAULT_CUSTOMER_NAV_ITEMS.filter((i) => i.id !== "journal");
+        return DEFAULT_CUSTOMER_NAV_ITEMS;
     }
   }, [navItems, role, user]);
 
@@ -172,7 +169,13 @@ export function Header({
       <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6">
         {/* ── Logo & Role Badge (Left Column) ── */}
         <div className="flex flex-1 items-center gap-2.5 min-w-0">
-          <Logo size="sm" showText />
+          <Logo size="sm" showText brandText="CloudFarm" />
+          {role === "customer" && (
+            <div className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-slate-200/90 bg-slate-50/80 px-2.5 py-0.5 text-xs text-slate-600 font-medium shadow-2xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Đà Lạt Farm - Nhà xe</span>
+            </div>
+          )}
           {resolvedRoleBadge && (
             <Badge
               variant={role === "admin" ? "outline" : "secondary"}
@@ -236,14 +239,14 @@ export function Header({
             </div>
           )}
 
-          {/* Customer: Hotline 1900 6868 */}
+          {/* Customer: Hotline 1900 6068 */}
           {role === "customer" && (
             <a
-              href="tel:19006868"
+              href="tel:19006068"
               className="hidden sm:flex items-center gap-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-200 transition-colors shrink-0"
             >
               <Phone className="h-3.5 w-3.5 text-primary" />
-              <span>1900 6868</span>
+              <span>1900 6068</span>
             </a>
           )}
 
@@ -407,11 +410,11 @@ export function Header({
 
             {role === "customer" && (
               <a
-                href="tel:19006868"
+                href="tel:19006068"
                 className="flex items-center justify-center gap-2 rounded-xl bg-slate-100 dark:bg-slate-800 p-2.5 text-xs font-bold text-slate-800 dark:text-slate-200"
               >
                 <Phone className="h-4 w-4 text-primary" />
-                <span>Tổng đài tư vấn: 1900 6868</span>
+                <span>Tổng đài tư vấn: 1900 6068</span>
               </a>
             )}
           </div>

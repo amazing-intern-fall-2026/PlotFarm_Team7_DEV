@@ -10,7 +10,7 @@ import {
   GATEWAY_HEADER_AUTHORIZATION,
   GATEWAY_ERROR_MESSAGES,
 } from "./gateway.constants";
-import { encryptPayload } from "./jwe";
+import { encryptPayload, isJweConfigured } from "./jwe";
 
 export interface GatewayEnvelope<T = unknown> {
   action: string;
@@ -53,8 +53,22 @@ export async function dispatchAction<TReq = unknown, TRes = unknown>(
     ...(token ? { [GATEWAY_HEADER_AUTHORIZATION]: `Bearer ${token}` } : {}),
   };
 
-  // ── Mã hóa payload (JWE) trước khi gửi ──────────────────────────────────────
-  const cipher = await encryptPayload(envelope);
+  // ── Mã hóa payload (JWE) nếu có Public Key cấu hình; Fallback gửi raw envelope ──
+  let bodyPayload: string;
+  if (isJweConfigured()) {
+    try {
+      const cipher = await encryptPayload(envelope);
+      bodyPayload = JSON.stringify({ cipher });
+    } catch (encryptErr) {
+      console.warn(
+        "[Gateway] Mã hóa JWE thất bại, fallback gửi envelope dạng thô:",
+        encryptErr,
+      );
+      bodyPayload = JSON.stringify(envelope);
+    }
+  } else {
+    bodyPayload = JSON.stringify(envelope);
+  }
 
   // ── Network ───────────────────────────────────────────────────────────────
   let res: Response;
@@ -62,7 +76,7 @@ export async function dispatchAction<TReq = unknown, TRes = unknown>(
     res = await fetch(GATEWAY_ENDPOINT, {
       method: "POST",
       headers,
-      body: JSON.stringify({ cipher }),
+      body: bodyPayload,
       signal: AbortSignal.timeout(GATEWAY_TIMEOUT_MS),
     });
   } catch {

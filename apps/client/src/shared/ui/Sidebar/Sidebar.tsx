@@ -20,6 +20,7 @@ export interface SidebarProps {
   expandLabel?: string;
   /** Footer slot — ví dụ: thông tin user, logout */
   footer?: React.ReactNode;
+  brandText?: string;
   className?: string;
 }
 
@@ -40,6 +41,7 @@ export function Sidebar({
   collapseLabel = "Thu gọn",
   expandLabel = "Mở rộng",
   footer,
+  brandText,
   className,
 }: SidebarProps) {
   const [collapsed, setCollapsed] = React.useState(false);
@@ -62,7 +64,7 @@ export function Sidebar({
           collapsed ? "justify-center px-0" : "px-4",
         )}
       >
-        <Logo size="md" showText={!collapsed} />
+        <Logo size="md" showText={!collapsed} brandText={brandText} />
       </div>
 
       {/* ── Scrollable menu area ─────────────────────────────────────── */}

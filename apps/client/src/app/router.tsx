@@ -21,9 +21,19 @@ import {
   FarmerTasksPage,
   FarmerTaskExecutePage,
   FarmerPlotsPage,
+  FarmerNewLogPage,
+  FarmerHarvestPage,
+  FarmerIncidentsPage,
+  FarmerHistoryPage,
   AdminDashboardPage,
   AdminPlotsPage,
   AdminPlotConfigPage,
+  AdminCropsPage,
+  AdminContractsPage,
+  AdminCareSlipsPage,
+  AdminFarmersPage,
+  AdminHarvestPage,
+  AdminRbacPage,
 } from "@/pages";
 
 interface RouteNavRule {
@@ -82,6 +92,21 @@ const FARMER_NAV_RULES: RouteNavRule[] = [
     activeNavId: "my_plots",
   },
   {
+    pattern: /^\/farmer\/harvest/,
+    breadcrumbs: [{ label: "Nhiệm vụ hôm nay", href: "/farmer" }, { label: "Thu hoạch & Xuất kho" }],
+    activeNavId: "harvest",
+  },
+  {
+    pattern: /^\/farmer\/incidents/,
+    breadcrumbs: [{ label: "Nhiệm vụ hôm nay", href: "/farmer" }, { label: "Báo cáo sự cố" }],
+    activeNavId: "alerts",
+  },
+  {
+    pattern: /^\/farmer\/history/,
+    breadcrumbs: [{ label: "Nhiệm vụ hôm nay", href: "/farmer" }, { label: "Lịch sử công việc" }],
+    activeNavId: "task_journal",
+  },
+  {
     pattern: /.*/,
     breadcrumbs: [],
     activeNavId: "tasks_today",
@@ -90,22 +115,78 @@ const FARMER_NAV_RULES: RouteNavRule[] = [
 
 const ADMIN_NAV_RULES: RouteNavRule[] = [
   {
-    pattern: /config/,
+    pattern: /^\/admin\/plots\/.*\/config/,
     breadcrumbs: [
-      { label: "Tổng quan điều hành", href: "/admin" },
-      { label: "Danh mục ô đất", href: "/admin/plots" },
-      { label: "Cấu hình IoT & Cây trồng" },
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Quản lý Ô đất", href: "/admin/plots" },
+      { label: "Cấu hình Kỹ thuật" },
     ],
-    activeNavId: "tech_config",
+    activeNavId: "technical",
   },
   {
     pattern: /^\/admin\/plots/,
-    breadcrumbs: [{ label: "Tổng quan điều hành", href: "/admin" }, { label: "Danh sách ô đất" }],
+    breadcrumbs: [
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Quản lý Ô đất" },
+      { label: "Danh mục Ô đất Canh tác" },
+    ],
     activeNavId: "plots",
   },
   {
+    pattern: /^\/admin\/crops/,
+    breadcrumbs: [
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Danh mục Giống rau" },
+    ],
+    activeNavId: "crops",
+  },
+  {
+    pattern: /^\/admin\/contracts/,
+    breadcrumbs: [
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Hợp đồng & Thanh toán" },
+    ],
+    activeNavId: "contracts",
+  },
+  {
+    pattern: /^\/admin\/care-slips/,
+    breadcrumbs: [
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Phiếu Chăm sóc", href: "/admin/care-slips" },
+      { label: "Giám sát nghiệm thu QA" },
+    ],
+    activeNavId: "care-slips",
+  },
+  {
+    pattern: /^\/admin\/farmers/,
+    breadcrumbs: [
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Điều phối Nông dân" },
+    ],
+    activeNavId: "farmers",
+  },
+  {
+    pattern: /^\/admin\/harvest/,
+    breadcrumbs: [
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Thu hoạch & Giao hàng" },
+    ],
+    activeNavId: "harvest",
+  },
+  {
+    pattern: /^\/admin\/rbac/,
+    breadcrumbs: [
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Người dùng & RBAC" },
+    ],
+    activeNavId: "rbac",
+  },
+  {
     pattern: /.*/,
-    breadcrumbs: [],
+    breadcrumbs: [
+      { label: "Hệ thống", href: "/admin" },
+      { label: "Khu vực Quản trị" },
+    ],
     activeNavId: "overview",
   },
 ];
@@ -132,14 +213,16 @@ const NAV_TARGETS: Record<string, string> = {
   iot_camera: "/farmer/plots",
   scan_qr: "/farmer/tasks/TASK-01/execute",
   overview: "/admin",
-  work_orders: "/admin",
-  harvest: "/admin",
-  rbac: "/admin",
+  plots: "/admin/plots",
+  technical: "/admin/plots/A-104/config",
+  crops: "/admin/crops",
+  contracts: "/admin/contracts",
+  "care-slips": "/admin/care-slips",
+  farmers: "/admin/farmers",
+  harvest: "/admin/harvest",
+  rbac: "/admin/rbac",
   alerts: "/admin",
   settings: "/admin",
-  plots: "/admin/plots",
-  seeds_supply: "/admin/plots",
-  tech_config: "/admin/plots/p-01/config",
 };
 
 export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
@@ -172,12 +255,26 @@ export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
         navigate(user ? "/my-farm" : AUTH_ROUTES.LOGIN);
         return;
       }
+      if (role === "farmer") {
+        if (id === "harvest") {
+          navigate("/farmer/harvest");
+          return;
+        }
+        if (id === "task_journal") {
+          navigate("/farmer/history");
+          return;
+        }
+        if (id === "alerts") {
+          navigate("/farmer/incidents");
+          return;
+        }
+      }
       const target = NAV_TARGETS[id];
       if (target) {
         navigate(target);
       }
     },
-    [navigate, user]
+    [navigate, user, role]
   );
 
   return (
@@ -198,6 +295,8 @@ export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
 export const router = createBrowserRouter([
   { path: AUTH_ROUTES.LOGIN.slice(1), element: <LoginPage /> },
   { path: AUTH_ROUTES.REGISTER.slice(1), element: <RegisterPage /> },
+  { path: "register", element: <RegisterPage /> },
+  { path: "signup", element: <RegisterPage /> },
   { path: AUTH_ROUTES.FORGOT_PASSWORD.slice(1), element: <Navigate to={AUTH_ROUTES.LOGIN} replace /> },
 
   {
@@ -232,6 +331,14 @@ export const router = createBrowserRouter([
           { path: "/farmer/tasks/:id", element: <FarmerTaskExecutePage /> },
           { path: "/farmer/tasks/:id/execute", element: <FarmerTaskExecutePage /> },
           { path: "/farmer/plots", element: <FarmerPlotsPage /> },
+          { path: "/farmer/harvest", element: <FarmerHarvestPage /> },
+          { path: "/farmer/harvest/:id", element: <FarmerHarvestPage /> },
+          { path: "/farmer/incidents", element: <FarmerIncidentsPage /> },
+          { path: "/farmer/plots/:id/incident", element: <FarmerIncidentsPage /> },
+          { path: "/farmer/history", element: <FarmerHistoryPage /> },
+          { path: "/farmer/contracts/:id/new-log", element: <FarmerNewLogPage /> },
+          { path: "/farmer/plots/:id/new-log", element: <FarmerNewLogPage /> },
+          { path: "/farmer/new-log", element: <FarmerNewLogPage /> },
         ],
       },
     ],
@@ -247,6 +354,12 @@ export const router = createBrowserRouter([
           { path: "/admin/dashboard", element: <Navigate to="/admin" replace /> },
           { path: "/admin/plots", element: <AdminPlotsPage /> },
           { path: "/admin/plots/:id/config", element: <AdminPlotConfigPage /> },
+          { path: "/admin/crops", element: <AdminCropsPage /> },
+          { path: "/admin/contracts", element: <AdminContractsPage /> },
+          { path: "/admin/care-slips", element: <AdminCareSlipsPage /> },
+          { path: "/admin/farmers", element: <AdminFarmersPage /> },
+          { path: "/admin/harvest", element: <AdminHarvestPage /> },
+          { path: "/admin/rbac", element: <AdminRbacPage /> },
         ],
       },
     ],
