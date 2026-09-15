@@ -33,6 +33,11 @@ export function PlotsFilterBarDesktop({
       glowClass: "shadow-[0_0_8px_rgba(16,185,129,0.5)]",
     },
     {
+      id: "reserved",
+      label: `Đang giữ chỗ (${counts.reserved ?? 0} ô Reserved)`,
+      dotColor: "bg-amber-500",
+    },
+    {
       id: "occupied",
       label: `Đang canh tác (${counts.occupied} ô Occupied)`,
       dotColor: "bg-slate-400",
@@ -40,7 +45,7 @@ export function PlotsFilterBarDesktop({
     {
       id: "maintenance",
       label: `Đang làm đất / Bảo dưỡng (${counts.maintenance} ô Maintenance)`,
-      dotColor: "bg-amber-500",
+      dotColor: "bg-amber-700",
     },
   ];
 

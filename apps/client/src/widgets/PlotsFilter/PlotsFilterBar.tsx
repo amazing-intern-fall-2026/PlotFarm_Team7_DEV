@@ -21,7 +21,8 @@ const DEFAULT_COUNTS: PlotFilterCounts = {
   standard15m: 28,
   large20m: 22,
   available: 12,
-  occupied: 32,
+  reserved: 4,
+  occupied: 28,
   maintenance: 6,
 };
 
@@ -101,6 +102,8 @@ export function PlotsFilterBar({
     let count = counts.total;
     if (filters.status === "available") {
       count = counts.available;
+    } else if (filters.status === "reserved") {
+      count = counts.reserved ?? 0;
     } else if (filters.status === "occupied") {
       count = counts.occupied;
     } else if (filters.status === "maintenance") {

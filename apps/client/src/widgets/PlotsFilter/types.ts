@@ -1,5 +1,5 @@
 export type PlotSizeFilter = "all" | "standard_15m" | "large_20m";
-export type PlotStatusFilter = "all" | "available" | "occupied" | "maintenance";
+export type PlotStatusFilter = "all" | "available" | "reserved" | "occupied" | "maintenance";
 export type PlotSortOption = "camera" | "price_asc" | "price_desc" | "area_desc" | "code_asc";
 
 export interface PlotFilterCounts {
@@ -7,6 +7,7 @@ export interface PlotFilterCounts {
   standard15m: number;
   large20m: number;
   available: number;
+  reserved?: number;
   occupied: number;
   maintenance: number;
 }

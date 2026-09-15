@@ -33,6 +33,11 @@ export function PlotsFilterBarMobile({
       glowClass: "shadow-[0_0_6px_rgba(16,185,129,0.5)]",
     },
     {
+      id: "reserved",
+      label: `Giữ chỗ (${counts.reserved ?? 0})`,
+      dotColor: "bg-amber-500",
+    },
+    {
       id: "occupied",
       label: `Đang canh tác (${counts.occupied})`,
       dotColor: "bg-slate-400",
@@ -40,7 +45,7 @@ export function PlotsFilterBarMobile({
     {
       id: "maintenance",
       label: `Bảo dưỡng (${counts.maintenance})`,
-      dotColor: "bg-amber-500",
+      dotColor: "bg-amber-700",
     },
   ];
 
