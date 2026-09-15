@@ -1,59 +1,68 @@
-import type { Request, Response } from "express";
-import { CreateFarmingLogRequestSchema, type FarmingLog } from "@repo/shared";
-import { buildSuccessResponse } from "../../common/utils/envelope";
+import type { Request, Response, NextFunction } from "express";
+import { CreateFarmingLogRequestSchema } from "@repo/shared";
+import { DiaryService } from "./diary.service";
+import { AppError } from "../../errors/AppError";
 
-// In-memory store for dev / fallback
-const memoryFarmingLogs: FarmingLog[] = [];
+export class DiaryController {
+  /**
+   * Endpoint: POST /api/v1/contracts/:id/farming-logs
+   * Nhân viên nông dân đăng bài nhật ký canh tác (yêu cầu vai trò STAFF hoặc ADMIN)
+   */
+  static async createFarmingLog(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      if (req.user?.role !== "STAFF" && req.user?.role !== "ADMIN") {
+        throw AppError.forbidden(
+          "Chỉ nhân viên nông dân mới có thể đăng nhật ký",
+        );
+      }
 
-export function createFarmingLog(req: Request, res: Response): void {
-  const parsed = CreateFarmingLogRequestSchema.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({
-      code: 400,
-      message: "Dữ liệu nhật ký canh tác không hợp lệ.",
-      error: parsed.error.flatten(),
-    });
-    return;
+      const contractId = req.params.id;
+      const payload = req.body?.payload ?? req.body;
+      const data = CreateFarmingLogRequestSchema.parse(payload);
+
+      const result = await DiaryService.createFarmingLog(
+        contractId,
+        req.user.userId,
+        req.user.role,
+        data,
+      );
+
+      res.status(201).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 
-  const { contractId = req.params.id || req.params.contractCode || "CONTRACT-A104" } = req.params;
-  const newLog = {
-    logCode: `LOG-${Date.now().toString().slice(-6)}`,
-    contractCode: contractId,
-    authorStaff: {
-      userCode: "STAFF-01",
-      fullName: "Bác Bảy (Kỹ thuật viên Trồng trọt)",
-    },
-    actionType: parsed.data.actionType || "LOG_GROWTH",
-    title: parsed.data.title || "Cập nhật tiến độ sinh trưởng",
-    description: parsed.data.description,
-    growthStage: parsed.data.growthStage || "STAGE_2",
-    progressPercent: parsed.data.progressPercent || 50,
-    photoUrls: parsed.data.photoUrls,
-    sensorSnapshot: parsed.data.sensorSnapshot || {
-      temperature: 24.5,
-      humidity: 72,
-      soilMoisture: 68,
-    },
-    isAmended: false,
-    createdAt: new Date().toISOString(),
-  };
+  /**
+   * Endpoint: GET /api/v1/contracts/:id/farming-logs
+   * Khách hàng sở hữu hợp đồng, STAFF hoặc ADMIN xem danh sách nhật ký
+   */
+  static async getFarmingLogs(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const contractId = req.params.id;
 
-  memoryFarmingLogs.push(newLog);
+      const result = await DiaryService.getFarmingLogs(contractId, {
+        userId: req.user!.userId,
+        role: req.user!.role,
+      });
 
-  res.status(201).json(
-    buildSuccessResponse(newLog, "Đăng bài viết nhật ký canh tác thành công.", {
-      code: 201,
-    })
-  );
-}
-
-export function getFarmingLogs(req: Request, res: Response): void {
-  const { contractId = req.params.id || req.params.contractCode } = req.params;
-  const logs = memoryFarmingLogs.filter(
-    (log) => !contractId || log.contractCode === contractId
-  );
-  res.status(200).json(
-    buildSuccessResponse(logs, "Lấy danh sách nhật ký thành công.")
-  );
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

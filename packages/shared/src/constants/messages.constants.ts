@@ -57,4 +57,8 @@ export const ERROR_MESSAGES = {
     TRANSACTION_ALREADY_PROCESSED: "Giao dịch này đã được đối soát trước đó",
     WEBHOOK_UNAUTHORIZED: "Webhook không hợp lệ hoặc thiếu xác thực",
   },
+  DIARY: {
+    CONTRACT_NOT_ACTIVE: "Chỉ được đăng nhật ký cho hợp đồng đang hoạt động",
+    NOT_ASSIGNED_STAFF: "Bạn không được phân công phụ trách ô đất này",
+  },
 } as const;
