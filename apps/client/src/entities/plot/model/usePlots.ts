@@ -50,31 +50,69 @@ export function usePlots(options: UsePlotsOptions = {}) {
     }
   }, [autoFetch, loadPlots]);
 
-  // Bộ đếm thống kê cho thanh lọc
+  const matchesSearch = React.useCallback((plot: PlotUiItem, query: string) => {
+    if (!query.trim()) return true;
+    const q = query.toLowerCase().trim().replace("#", "");
+    const matchCode = plot.plotCode.toLowerCase().includes(q);
+    const matchNumber = plot.plotNumber.toLowerCase().includes(q);
+    const matchZone = plot.zone?.toLowerCase().includes(q) ?? false;
+    const matchSoil = plot.soilType?.toLowerCase().includes(q) ?? false;
+    return matchCode || matchNumber || matchZone || matchSoil;
+  }, []);
+
+  // Candidate pool cho Status Chips (lọc theo search và size)
+  const statusPool = React.useMemo(() => {
+    return plots.filter((plot) => {
+      if (!matchesSearch(plot, searchQuery)) return false;
+      if (filterSize !== "all" && String(plot.areaSquareMeters) !== filterSize) return false;
+      if (filterZone !== "all" && plot.zone !== filterZone) return false;
+      if (filterHasCamera && !plot.cameraSupported) return false;
+      if (filterHasIot && !plot.iotSensorInstalled) return false;
+      return true;
+    });
+  }, [plots, searchQuery, filterSize, filterZone, filterHasCamera, filterHasIot, matchesSearch]);
+
+  // Candidate pool cho Size Pills (lọc theo search và status)
+  const sizePool = React.useMemo(() => {
+    return plots.filter((plot) => {
+      if (!matchesSearch(plot, searchQuery)) return false;
+      if (filterStatus !== "ALL" && plot.status !== filterStatus) return false;
+      if (filterZone !== "all" && plot.zone !== filterZone) return false;
+      if (filterHasCamera && !plot.cameraSupported) return false;
+      if (filterHasIot && !plot.iotSensorInstalled) return false;
+      return true;
+    });
+  }, [plots, searchQuery, filterStatus, filterZone, filterHasCamera, filterHasIot, matchesSearch]);
+
+  // Bộ đếm thống kê động theo trạng thái thực tế
   const counts = React.useMemo(() => {
     return {
       total: plots.length,
-      available: plots.filter((p) => p.status === "AVAILABLE").length,
-      reserved: plots.filter((p) => p.status === "RESERVED").length,
-      occupied: plots.filter((p) => p.status === "OCCUPIED").length,
-      maintenance: plots.filter((p) => p.status === "MAINTENANCE").length,
-      standard15m: plots.filter((p) => p.areaSquareMeters === 15).length,
-      large20m: plots.filter((p) => p.areaSquareMeters === 20).length,
+      filtered: statusPool.length,
+      available: statusPool.filter((p) => p.status === "AVAILABLE").length,
+      reserved: statusPool.filter((p) => p.status === "RESERVED").length,
+      occupied: statusPool.filter((p) => p.status === "OCCUPIED").length,
+      maintenance: statusPool.filter((p) => p.status === "MAINTENANCE").length,
+      standard15m: sizePool.filter((p) => p.areaSquareMeters === 15).length,
+      large20m: sizePool.filter((p) => p.areaSquareMeters === 20).length,
     };
-  }, [plots]);
+  }, [plots.length, statusPool, sizePool]);
 
-  // Danh sách kích thước sinh động từ dữ liệu ô đất thực tế
+  // Danh sách kích thước sinh động theo trạng thái thực tế
   const availableSizes: PlotFilterOption[] = React.useMemo(() => {
     const rawSizes = Array.from(new Set(plots.map((p) => p.areaSquareMeters))).sort((a, b) => a - b);
     return [
-      { value: "all", label: `Tất cả (${plots.length})`, count: plots.length },
-      ...rawSizes.map((size) => ({
-        value: String(size),
-        label: `Lô ${size}m² (${plots.filter((p) => p.areaSquareMeters === size).length})`,
-        count: plots.filter((p) => p.areaSquareMeters === size).length,
-      })),
+      { value: "all", label: `Tất cả (${sizePool.length})`, count: sizePool.length },
+      ...rawSizes.map((size) => {
+        const count = sizePool.filter((p) => p.areaSquareMeters === size).length;
+        return {
+          value: String(size),
+          label: `Lô ${size}m² (${count})`,
+          count,
+        };
+      }),
     ];
-  }, [plots]);
+  }, [plots, sizePool]);
 
   // Danh sách phân khu sinh động từ dữ liệu ô đất thực tế
   const availableZones: PlotFilterOption[] = React.useMemo(() => {
@@ -117,20 +155,9 @@ export function usePlots(options: UsePlotsOptions = {}) {
       }
 
       // 5. Tìm kiếm theo mã ô hoặc khu vực
-      if (searchQuery.trim() !== "") {
-        const query = searchQuery.toLowerCase().trim().replace("#", "");
-        const matchCode = plot.plotCode.toLowerCase().includes(query);
-        const matchNumber = plot.plotNumber.toLowerCase().includes(query);
-        const matchZone = plot.zone?.toLowerCase().includes(query) ?? false;
-        const matchSoil = plot.soilType?.toLowerCase().includes(query) ?? false;
-        if (!matchCode && !matchNumber && !matchZone && !matchSoil) {
-          return false;
-        }
-      }
-
-      return true;
+      return matchesSearch(plot, searchQuery);
     });
-  }, [plots, filterStatus, filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery]);
+  }, [plots, filterStatus, filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery, matchesSearch]);
 
   // Ô đất đang được chọn xem chi tiết
   const selectedPlot = React.useMemo(() => {

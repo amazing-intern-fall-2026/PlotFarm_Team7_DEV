@@ -7,6 +7,7 @@ import {
   PLOTS_STATUS_CHIP_DEFINITIONS,
 } from "./constants";
 import type {
+  FarmPlotFilterCounts,
   FarmPlotFilterProps,
   FarmPlotFilterViewProps,
   StatusChipItem,
@@ -17,16 +18,18 @@ export * from "./constants";
 export * from "./FarmPlotFilterDesktop";
 export * from "./FarmPlotFilterMobile";
 
+const EMPTY_COUNTS: FarmPlotFilterCounts = {
+  total: 0,
+  available: 0,
+  reserved: 0,
+  occupied: 0,
+  maintenance: 0,
+  standard15m: 0,
+  large20m: 0,
+};
+
 export function FarmPlotFilter({
-  counts = {
-    total: 12,
-    available: 5,
-    reserved: 2,
-    occupied: 3,
-    maintenance: 2,
-    standard15m: 6,
-    large20m: 6,
-  },
+  counts = EMPTY_COUNTS,
   totalCount,
   filteredCount,
   sizeOptions,
@@ -55,18 +58,19 @@ export function FarmPlotFilter({
       },
       {
         value: "15",
-        label: `${PLOTS_FILTER_MESSAGES.SIZE_15M_LABEL} (${counts.standard15m ?? 6})`,
+        label: `${PLOTS_FILTER_MESSAGES.SIZE_15M_LABEL} (${counts.standard15m ?? 0})`,
       },
       {
         value: "20",
-        label: `${PLOTS_FILTER_MESSAGES.SIZE_20M_LABEL} (${counts.large20m ?? 6})`,
+        label: `${PLOTS_FILTER_MESSAGES.SIZE_20M_LABEL} (${counts.large20m ?? 0})`,
       },
     ];
   }, [sizeOptions, counts]);
 
   const statusChips = React.useMemo<StatusChipItem[]>(() => {
     return PLOTS_STATUS_CHIP_DEFINITIONS.filter((def) => {
-      if (def.id === "RESERVED" && (!counts.reserved || counts.reserved <= 0)) {
+      // Ẩn chip RESERVED nếu không có lô nào giữ chỗ trong hệ thống
+      if (def.id === "RESERVED" && (counts.reserved === undefined || counts.reserved < 0)) {
         return false;
       }
       return true;
