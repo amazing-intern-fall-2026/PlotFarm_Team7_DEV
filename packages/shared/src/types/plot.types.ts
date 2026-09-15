@@ -19,6 +19,8 @@ export const PlotSchema = z.object({
   soilType: z.string().nullable().optional(),
   iotSensorInstalled: z.boolean(),
   cameraSupported: z.boolean(),
+  streamUrl: z.string().nullable().optional(),
+  imageUrl: z.string().nullable().optional(),
 });
 export type Plot = z.infer<typeof PlotSchema>;
 

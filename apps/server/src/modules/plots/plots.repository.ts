@@ -58,6 +58,8 @@ export class PlotsRepository {
             id: true,
             slug: true,
             nameI18n: true,
+            coverImageUrl: true,
+            iconUrl: true,
           },
         },
         farm: {
@@ -89,6 +91,8 @@ export class PlotsRepository {
             id: true,
             slug: true,
             nameI18n: true,
+            coverImageUrl: true,
+            iconUrl: true,
           },
         },
         farm: {

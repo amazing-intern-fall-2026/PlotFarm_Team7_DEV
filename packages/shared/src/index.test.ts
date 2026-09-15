@@ -56,6 +56,7 @@ describe("plot.types - PlotSchema", () => {
       soilType: "Đất đỏ Bazan Lâm Đồng",
       iotSensorInstalled: true,
       cameraSupported: true,
+      streamUrl: "rtsp://camera.plotfarm.vn/live/PLT-A01",
     });
     expect(result.success).toBe(true);
   });
