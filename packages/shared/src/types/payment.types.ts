@@ -28,4 +28,20 @@ export const VietQRPaymentSchema = z.object({
   transferContent: z.string(),
   expiresAt: z.string(),
 });
+
 export type VietQRPayment = z.infer<typeof VietQRPaymentSchema>;
+export const WebhookRequestSchema = z.object({
+  gatewayReference: z.string().min(1),
+  transferAmount: z.number().positive(),
+  transferContent: z.string().min(1),
+  senderBankCode: z.string().optional(),
+  senderAccountNo: z.string().optional(),
+  senderAccountName: z.string().optional(),
+  idempotencyKey: z.string().min(1),
+});
+export type WebhookRequest = z.infer<typeof WebhookRequestSchema>;
+
+export const MockWebhookRequestSchema = z.object({
+  orderCode: z.string().min(1),
+});
+export type MockWebhookRequest = z.infer<typeof MockWebhookRequestSchema>;
