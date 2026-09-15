@@ -3,7 +3,8 @@
  */
 export const SUCCESS_MESSAGES = {
   AUTH: {
-    REGISTER: "Đăng ký tài khoản thành công. Mã OTP xác thực đã được gửi đến email của bạn.",
+    REGISTER:
+      "Đăng ký tài khoản thành công. Mã OTP xác thực đã được gửi đến email của bạn.",
     VERIFY_EMAIL: "Xác thực email thành công",
     RESEND_OTP: "Mã OTP mới đã được gửi thành công đến email của bạn",
     REFRESH_TOKEN: "Làm mới token thành công",
@@ -30,7 +31,8 @@ export const ERROR_MESSAGES = {
     EMAIL_NOT_VERIFIED: "Tài khoản chưa được xác thực email",
     INVALID_OTP: "Mã OTP không hợp lệ",
     OTP_EXPIRED: "Mã OTP đã hết hạn",
-    OTP_MAX_ATTEMPTS: "Nhập sai OTP quá nhiều lần. Mã đã bị hủy, vui lòng yêu cầu mã mới",
+    OTP_MAX_ATTEMPTS:
+      "Nhập sai OTP quá nhiều lần. Mã đã bị hủy, vui lòng yêu cầu mã mới",
     OTP_COOLDOWN_PREFIX: "Vui lòng chờ",
     OTP_COOLDOWN_SUFFIX: "giây trước khi yêu cầu gửi lại mã",
     INVALID_TOKEN: "Mã xác thực không hợp lệ",
@@ -45,6 +47,14 @@ export const ERROR_MESSAGES = {
     NOT_FOUND: "Không tìm thấy dữ liệu yêu cầu",
     BAD_REQUEST: "Yêu cầu không hợp lệ",
     CONFLICT: "Dữ liệu đã tồn tại",
-    NETWORK_ERROR: "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.",
+    NETWORK_ERROR:
+      "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.",
+  },
+  PAYMENT: {
+    ORDER_CODE_NOT_FOUND:
+      "Không tìm thấy đơn hàng hợp lệ trong nội dung chuyển khoản",
+    INSUFFICIENT_AMOUNT: "Số tiền chuyển khoản không đủ so với đơn hàng",
+    TRANSACTION_ALREADY_PROCESSED: "Giao dịch này đã được đối soát trước đó",
+    WEBHOOK_UNAUTHORIZED: "Webhook không hợp lệ hoặc thiếu xác thực",
   },
 } as const;
