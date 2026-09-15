@@ -2,6 +2,7 @@ import { VideoHeroBanner } from "@/widgets/HomeHero";
 import { KeyFeatures } from "@/widgets/KeyFeatures";
 import { SeasonalCropsCarousel } from "@/widgets/SeasonalCrops";
 import { FarmJourney } from "@/widgets/FarmJourney";
+import { HomeCtaBanner } from "@/widgets/HomeCtaBanner";
 import { Box, Container } from "@/shared/ui";
 
 export function HomePage() {
@@ -21,7 +22,11 @@ export function HomePage() {
 
         {/* Hành Trình Nông Trại Từ Xa Trong 4 Bước (Mô hình minh bạch) */}
         <FarmJourney />
+
+        {/* Khối Kêu Gọi Đặt Ô Đất Vụ Mùa Giới Hạn */}
+        <HomeCtaBanner />
       </Container>
     </Box>
   );
 }
+
