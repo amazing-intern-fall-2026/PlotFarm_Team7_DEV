@@ -12,6 +12,8 @@ const mockPlots: Plot[] = [
     soilType: "Đất đỏ Bazan Lâm Đồng",
     iotSensorInstalled: true,
     cameraSupported: true,
+    streamUrl: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    imageUrl: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
   },
   {
     plotCode: "PLT-A02",
@@ -22,6 +24,8 @@ const mockPlots: Plot[] = [
     soilType: "Đất phù sa",
     iotSensorInstalled: true,
     cameraSupported: false,
+    streamUrl: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    imageUrl: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
