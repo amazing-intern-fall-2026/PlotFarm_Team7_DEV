@@ -99,7 +99,7 @@ export class PlotsService {
       pricePerMonth: plot.pricePerMonth !== null && plot.pricePerMonth !== undefined ? Number(plot.pricePerMonth) : null,
       status: this.calculateDynamicStatus(plot.status, plot.lockedUntil, now),
       imageUrl,
-      streamUrl: plot.streamUrl ?? this.DEFAULT_MOCK_STREAM_URL,
+      streamUrl,
       defaultCrop: plot.defaultCrop
         ? {
           id: plot.defaultCrop.id,
