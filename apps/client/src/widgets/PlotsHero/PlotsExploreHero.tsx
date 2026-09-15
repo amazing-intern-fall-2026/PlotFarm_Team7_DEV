@@ -1,11 +1,13 @@
 import * as React from "react";
 import { useDevice } from "@/shared/lib/device";
-import { Box, Modal } from "@/shared/ui";
+import { Box, Modal, Text } from "@/shared/ui";
 import { PlotsExploreHeroDesktop } from "./PlotsExploreHeroDesktop";
 import { PlotsExploreHeroMobile } from "./PlotsExploreHeroMobile";
+import { PLOTS_HERO_MESSAGES } from "./constants";
 import type { PlotsExploreHeroProps, PlotsExploreHeroViewProps } from "./types";
 
 export * from "./types";
+export * from "./constants";
 export * from "./PlotsExploreHeroDesktop";
 export * from "./PlotsExploreHeroMobile";
 
@@ -61,8 +63,8 @@ export function PlotsExploreHero({
       <Modal
         isOpen={isVideoModalOpen}
         onClose={() => setIsVideoModalOpen(false)}
-        title="Camera Trực Tiếp – Luống Rau Hữu Cơ #A-102 Đà Lạt"
-        description="Đường truyền HLS độ trễ thấp giám sát sinh trưởng thực tế ngoài nông trại Đạ Sar."
+        title={PLOTS_HERO_MESSAGES.MODAL_TITLE}
+        description={PLOTS_HERO_MESSAGES.MODAL_DESC}
         size="lg"
       >
         <Box className="space-y-4 pt-2">
@@ -78,12 +80,12 @@ export function PlotsExploreHero({
               <track kind="captions" />
             </video>
           </Box>
-          <Box className="flex items-center justify-between text-xs text-slate-500 px-1">
-            <span>Độ phân giải: 1080p @ 30fps</span>
-            <span className="text-emerald-600 font-semibold flex items-center gap-1">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
-              Kết nối ổn định (Latency 1.2s)
-            </span>
+          <Box className="flex items-center justify-between text-xs text-muted-foreground px-1">
+            <Text as="span">{PLOTS_HERO_MESSAGES.MODAL_RESOLUTION}</Text>
+            <Text as="span" className="text-primary font-semibold flex items-center gap-1.5">
+              <Box className="inline-block w-2 h-2 rounded-full bg-primary" />
+              {PLOTS_HERO_MESSAGES.MODAL_CONNECTION_STATUS}
+            </Text>
           </Box>
         </Box>
       </Modal>

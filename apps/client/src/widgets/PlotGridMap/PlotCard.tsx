@@ -1,6 +1,7 @@
 import { Lock, Sprout, Wrench, Video, Cpu, CheckCircle2, ChevronRight, Layers } from "lucide-react";
 import { Box, Button, Badge, Text } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
+import { PLOT_STATUS_CONFIG, PLOT_CARD_MESSAGES } from "./constants";
 import type { PlotCardProps } from "./types";
 
 export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
@@ -8,6 +9,8 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
   const isReserved = plot.status === "RESERVED";
   const isOccupied = plot.status === "OCCUPIED";
   const isMaintenance = plot.status === "MAINTENANCE";
+
+  const statusConfig = PLOT_STATUS_CONFIG[plot.status] || PLOT_STATUS_CONFIG.AVAILABLE;
 
   const formattedPrice = new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -44,23 +47,17 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
       <Box className="space-y-3">
         <Box className="flex items-center justify-between gap-2">
           <Box className="flex items-center gap-1.5">
-            <span
+            <Box
               className={cn(
                 "inline-block h-2.5 w-2.5 rounded-full",
-                isAvailable && "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]",
-                isReserved && "bg-amber-500",
-                isOccupied && "bg-slate-400",
-                isMaintenance && "bg-amber-600"
+                statusConfig.dotColor
               )}
             />
             <Text
               variant="small"
               className={cn(
                 "font-bold text-xs tracking-wider uppercase font-mono",
-                isAvailable && "text-emerald-700 dark:text-emerald-400",
-                isReserved && "text-amber-700 dark:text-amber-400",
-                isOccupied && "text-muted-foreground",
-                isMaintenance && "text-amber-800 dark:text-amber-500"
+                statusConfig.textColor
               )}
             >
               #{plot.plotCode}
@@ -74,7 +71,7 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
               className="text-[11px] font-semibold bg-emerald-100/80 text-emerald-800 border-emerald-300/60"
             >
               <CheckCircle2 className="h-3 w-3 mr-1" />
-              Sẵn sàng
+              {statusConfig.badgeText}
             </Badge>
           )}
 
@@ -84,7 +81,7 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
               className="text-[11px] font-semibold bg-amber-100/90 text-amber-900 border-amber-300"
             >
               <Lock className="h-3 w-3 mr-1" />
-              Đang được giữ chỗ
+              {statusConfig.badgeText}
             </Badge>
           )}
 
@@ -94,7 +91,7 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
               className="text-[11px] font-medium bg-slate-100 text-slate-700 border-slate-200"
             >
               <Sprout className="h-3 w-3 mr-1 text-emerald-600" />
-              Đang có cây trồng
+              {statusConfig.badgeText}
             </Badge>
           )}
 
@@ -104,7 +101,7 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
               className="text-[11px] font-medium border-amber-300 text-amber-800 bg-amber-50/50"
             >
               <Wrench className="h-3 w-3 mr-1 text-amber-600" />
-              Đang cải tạo đất
+              {statusConfig.badgeText}
             </Badge>
           )}
         </Box>
@@ -125,19 +122,24 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
         <Box className="grid grid-cols-2 gap-2 pt-2 border-t border-border/50 text-xs">
           <Box className="flex items-center gap-1.5 text-muted-foreground">
             <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
-            <span>Diện tích: <strong className="text-foreground font-semibold">{plot.areaSquareMeters}m²</strong></span>
+            <Text as="span">
+              {PLOT_CARD_MESSAGES.AREA_LABEL}{" "}
+              <Text as="span" className="text-foreground font-semibold">
+                {plot.areaSquareMeters}m²
+              </Text>
+            </Text>
           </Box>
 
           <Box className="flex items-center gap-2 justify-end">
             {plot.cameraSupported && (
-              <span title="Hỗ trợ HLS Live Camera 1080p" className="inline-flex items-center text-emerald-600">
+              <Box title={PLOT_CARD_MESSAGES.TOOLTIP_CAMERA} className="inline-flex items-center text-emerald-600">
                 <Video className="h-3.5 w-3.5" />
-              </span>
+              </Box>
             )}
             {plot.iotSensorInstalled && (
-              <span title="Trang bị cảm biến IoT độ ẩm & dinh dưỡng" className="inline-flex items-center text-primary">
+              <Box title={PLOT_CARD_MESSAGES.TOOLTIP_IOT} className="inline-flex items-center text-primary">
                 <Cpu className="h-3.5 w-3.5" />
-              </span>
+              </Box>
             )}
           </Box>
         </Box>
@@ -147,11 +149,15 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
           {isOccupied && plot.cropName ? (
             <Box className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-medium">
               <Sprout className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate">Cây: {plot.cropName}</span>
+              <Text as="span" className="truncate">
+                {PLOT_CARD_MESSAGES.CROP_PREFIX}
+                {plot.cropName}
+              </Text>
             </Box>
           ) : (
             <Text variant="small" className="text-muted-foreground line-clamp-1">
-              Đất: {plot.soilType || "Đất đỏ Bazan sinh thái"}
+              {PLOT_CARD_MESSAGES.SOIL_PREFIX}
+              {plot.soilType || PLOT_CARD_MESSAGES.SOIL_DEFAULT}
             </Text>
           )}
         </Box>
@@ -161,11 +167,11 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
       <Box className="pt-4 mt-4 border-t border-border/50 space-y-3">
         <Box className="flex items-baseline justify-between">
           <Text variant="small" className="text-xs text-muted-foreground">
-            Giá thuê tháng:
+            {PLOT_CARD_MESSAGES.PRICE_LABEL}
           </Text>
-          <span className="text-base font-bold text-foreground">
+          <Text as="span" className="text-base font-bold text-foreground">
             {formattedPrice}
-          </span>
+          </Text>
         </Box>
 
         {/* Nút hành động theo trạng thái */}
@@ -177,9 +183,9 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
               e.stopPropagation();
               onSelect?.(plot);
             }}
-            className="w-full font-semibold text-xs h-9 bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs flex items-center justify-center gap-1.5"
+            className="w-full font-semibold text-xs h-9 bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <span>Xem chi tiết & Thuê</span>
+            <Text as="span">{statusConfig.buttonText}</Text>
             <ChevronRight className="h-3.5 w-3.5" />
           </Button>
         ) : isReserved ? (
@@ -190,7 +196,7 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
             className="w-full text-xs h-9 text-amber-800/80 bg-amber-50/40 border-amber-200 cursor-not-allowed flex items-center justify-center gap-1.5"
           >
             <Lock className="h-3.5 w-3.5" />
-            <span>Tạm khóa giữ chỗ</span>
+            <Text as="span">{statusConfig.buttonText}</Text>
           </Button>
         ) : isOccupied ? (
           <Button
@@ -199,7 +205,7 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
             disabled
             className="w-full text-xs h-9 text-muted-foreground bg-muted/40 cursor-not-allowed"
           >
-            <span>Đang được canh tác</span>
+            <Text as="span">{statusConfig.buttonText}</Text>
           </Button>
         ) : (
           <Button
@@ -208,7 +214,7 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
             disabled
             className="w-full text-xs h-9 text-muted-foreground bg-muted/30 border-dashed cursor-not-allowed"
           >
-            <span>Bảo dưỡng / Cải tạo</span>
+            <Text as="span">{statusConfig.buttonText}</Text>
           </Button>
         )}
       </Box>

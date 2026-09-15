@@ -7,7 +7,7 @@ export interface PlotFilterOption {
   count?: number;
 }
 
-export interface PlotFilterCounts {
+export interface FarmPlotFilterCounts {
   total: number;
   available: number;
   reserved?: number;
@@ -16,6 +16,46 @@ export interface PlotFilterCounts {
   standard15m?: number;
   large20m?: number;
   [key: string]: number | undefined;
+}
+
+export type PlotFilterCounts = FarmPlotFilterCounts;
+
+export interface StatusChipItem {
+  id: string;
+  label: string;
+  dotColor: string;
+  activeStyle: string;
+}
+
+export interface FarmPlotFilterProps {
+  counts?: FarmPlotFilterCounts;
+  totalCount?: number;
+  filteredCount?: number;
+  sizeOptions?: Array<{ value: string; label: string; count?: number }>;
+  onSearchChange?: (search: string) => void;
+  onSizeChange?: (size: string) => void;
+  onStatusChange?: (status: string) => void;
+  onSortChange?: (sort: string) => void;
+  onReset?: () => void;
+  className?: string;
+}
+
+export interface FarmPlotFilterViewProps {
+  searchTerm: string;
+  selectedSize: string;
+  selectedStatus: string;
+  sortBy: string;
+  resolvedTotal: number;
+  resolvedFiltered: number;
+  hasActiveFilters: boolean;
+  sizeOptions: Array<{ value: string; label: string; count?: number }>;
+  statusChips: StatusChipItem[];
+  handleSearchChange: (value: string) => void;
+  handleSizeChange: (size: string) => void;
+  handleStatusChange: (status: string) => void;
+  handleSortChange: (sort: string) => void;
+  handleReset: () => void;
+  className?: string;
 }
 
 export interface PlotFilterValues {

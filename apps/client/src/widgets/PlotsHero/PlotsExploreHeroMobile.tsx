@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Box, Heading, Text, Button, Avatar } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
+import { PLOTS_HERO_MESSAGES } from "./constants";
 import type { PlotsExploreHeroViewProps } from "./types";
 
 export function PlotsExploreHeroMobile({
@@ -30,11 +31,11 @@ export function PlotsExploreHeroMobile({
       <Box className="relative z-10 px-4 space-y-4">
         {/* ── 1. VALUE PROPOSITION & HEADING ── */}
         <Box className="space-y-3 text-left">
-          {/* Tagline — Đồng bộ theo chuẩn HowItWorksGuide, bỏ icon */}
+          {/* Tagline */}
           <Box className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary">
-            <span className="text-[11px] font-bold uppercase tracking-wider">
-              Nông nghiệp số tuần hoàn tại Đà Lạt
-            </span>
+            <Text as="span" className="text-[11px] font-bold uppercase tracking-wider text-primary">
+              {PLOTS_HERO_MESSAGES.TAGLINE}
+            </Text>
           </Box>
 
           {/* Heading */}
@@ -42,14 +43,15 @@ export function PlotsExploreHeroMobile({
             as="h1"
             className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground leading-tight"
           >
-            Sở hữu vườn rau hữu cơ riêng của bạn —{" "}
-            <span className="text-primary">Giám sát 24/7 từ xa</span>
+            {PLOTS_HERO_MESSAGES.TITLE_PREFIX}
+            <Text as="span" className="text-primary">
+              {PLOTS_HERO_MESSAGES.TITLE_HIGHLIGHT}
+            </Text>
           </Heading>
 
           {/* Sub-copy */}
           <Text className="text-sm text-muted-foreground leading-relaxed font-normal">
-            Trải nghiệm cảm giác làm chủ nông trại sinh thái tại Đạ Sar - Đà Lạt ngay
-            trên điện thoại.
+            {PLOTS_HERO_MESSAGES.SUBTITLE}
           </Text>
 
           {/* 2 checkmarks */}
@@ -57,13 +59,13 @@ export function PlotsExploreHeroMobile({
             <Box className="flex items-center gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
               <Text className="text-xs text-foreground font-medium">
-                Đội ngũ kỹ sư chăm sóc chuẩn VietGAP.
+                {PLOTS_HERO_MESSAGES.BULLET_1}
               </Text>
             </Box>
             <Box className="flex items-center gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
               <Text className="text-xs text-foreground font-medium">
-                Cảm biến IoT truyền độ ẩm, dinh dưỡng thời gian thực.
+                {PLOTS_HERO_MESSAGES.BULLET_2}
               </Text>
             </Box>
           </Box>
@@ -73,7 +75,7 @@ export function PlotsExploreHeroMobile({
         <Box className="relative w-full h-[220px] rounded-2xl border-4 border-card shadow-xl ring-1 ring-border/80 overflow-hidden bg-slate-950 group">
           <img
             src="https://images.unsplash.com/photo-1592417817098-8f3d69109853?auto=format&fit=crop&w=1000&q=80"
-            alt="Vườn rau hữu cơ sinh thái Luống #A-102"
+            alt={PLOTS_HERO_MESSAGES.CAMERA_IMG_ALT}
             className="w-full h-full object-cover"
           />
 
@@ -82,13 +84,17 @@ export function PlotsExploreHeroMobile({
           {/* Header trên ảnh */}
           <Box className="absolute top-0 inset-x-0 bg-black/40 backdrop-blur-md px-3 py-2 flex justify-between items-center text-white text-[11px] z-10 border-b border-white/10">
             <Box className="flex items-center gap-1.5">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-500" />
-              </span>
-              <span className="font-bold text-rose-300">LIVE</span>
-              <span className="text-white/40">•</span>
-              <span className="truncate">Cam 01 • #A-102</span>
+              <Box className="relative flex h-1.5 w-1.5">
+                <Box className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
+                <Box className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-500" />
+              </Box>
+              <Text as="span" className="font-bold text-rose-300">
+                {PLOTS_HERO_MESSAGES.LIVE_CAMERA_BADGE}
+              </Text>
+              <Text as="span" className="text-white/40">•</Text>
+              <Text as="span" className="truncate text-white/90">
+                {PLOTS_HERO_MESSAGES.CAMERA_FEED_TITLE}
+              </Text>
             </Box>
 
             <Box className="font-mono text-white/90 bg-white/10 px-1.5 py-0.5 rounded text-[10px]">
@@ -100,7 +106,7 @@ export function PlotsExploreHeroMobile({
           <Box className="absolute top-9 right-2 z-10">
             <Box className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-emerald-300 text-[10px] font-medium border border-white/20">
               <Sparkles className="h-2.5 w-2.5 text-emerald-400" />
-              <span>Phun sương lúc 07:30</span>
+              <Text as="span">{PLOTS_HERO_MESSAGES.NOTIFICATION_SPRAY}</Text>
             </Box>
           </Box>
 
@@ -113,15 +119,15 @@ export function PlotsExploreHeroMobile({
               </Box>
               <Box className="flex flex-col min-w-0 text-left">
                 <Text className="text-[10px] text-muted-foreground font-medium truncate">
-                  Độ ẩm đất
+                  {PLOTS_HERO_MESSAGES.TELEMETRY_HUMIDITY_LABEL}
                 </Text>
                 <Box className="flex items-baseline gap-1">
-                  <span className="text-sm font-extrabold text-foreground">
-                    68%
-                  </span>
-                  <span className="text-[9px] font-bold text-primary bg-primary/15 px-1 rounded">
-                    Tối ưu
-                  </span>
+                  <Text as="span" className="text-sm font-extrabold text-foreground">
+                    {PLOTS_HERO_MESSAGES.TELEMETRY_HUMIDITY_VALUE}
+                  </Text>
+                  <Text as="span" className="text-[9px] font-bold text-primary bg-primary/15 px-1 rounded">
+                    {PLOTS_HERO_MESSAGES.TELEMETRY_HUMIDITY_STATUS}
+                  </Text>
                 </Box>
               </Box>
             </Box>
@@ -133,11 +139,11 @@ export function PlotsExploreHeroMobile({
               </Box>
               <Box className="flex flex-col min-w-0 text-left">
                 <Text className="text-[10px] text-muted-foreground font-medium truncate">
-                  Nhiệt độ
+                  {PLOTS_HERO_MESSAGES.TELEMETRY_TEMP_LABEL}
                 </Text>
-                <span className="text-sm font-extrabold text-foreground">
-                  24.2°C
-                </span>
+                <Text as="span" className="text-sm font-extrabold text-foreground">
+                  {PLOTS_HERO_MESSAGES.TELEMETRY_TEMP_VALUE}
+                </Text>
               </Box>
             </Box>
           </Box>
@@ -152,7 +158,7 @@ export function PlotsExploreHeroMobile({
             rightIcon={<ArrowRight className="h-4 w-4" />}
             className="w-full h-11 rounded-xl font-semibold shadow-md shadow-primary/20"
           >
-            Khám phá ô đất trồng ngay
+            {PLOTS_HERO_MESSAGES.CTA_EXPLORE}
           </Button>
 
           <Button
@@ -162,7 +168,7 @@ export function PlotsExploreHeroMobile({
             leftIcon={<Play className="h-3.5 w-3.5 fill-current" />}
             className="w-full h-11 rounded-xl font-medium"
           >
-            Xem Video Vườn & Camera Live
+            {PLOTS_HERO_MESSAGES.CTA_VIDEO}
           </Button>
 
           {/* Social Proof */}
@@ -181,7 +187,7 @@ export function PlotsExploreHeroMobile({
                 className="w-7 h-7 ring-2 ring-background shadow-xs"
               />
               <Box className="w-7 h-7 rounded-full bg-primary/15 text-primary ring-2 ring-background flex items-center justify-center text-[10px] font-bold shadow-xs">
-                +1.2k
+                {PLOTS_HERO_MESSAGES.AVATAR_ADDITIONAL}
               </Box>
             </Box>
 
@@ -194,8 +200,11 @@ export function PlotsExploreHeroMobile({
                 <Star className="h-3.5 w-3.5 fill-amber-500" />
               </Box>
               <Text className="text-[11px] text-muted-foreground font-normal">
-                Được tin chọn bởi{" "}
-                <strong className="text-foreground font-bold">1.200+</strong> gia đình
+                {PLOTS_HERO_MESSAGES.SOCIAL_PROOF_TEXT_PREFIX}
+                <Text as="span" className="text-foreground font-bold">
+                  {PLOTS_HERO_MESSAGES.SOCIAL_PROOF_COUNT}
+                </Text>
+                {PLOTS_HERO_MESSAGES.SOCIAL_PROOF_TEXT_SUFFIX}
               </Text>
             </Box>
           </Box>
