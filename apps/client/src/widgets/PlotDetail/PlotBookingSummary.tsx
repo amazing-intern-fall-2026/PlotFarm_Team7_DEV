@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Clock,
   ShieldCheck,
   Zap,
   ChevronUp,
@@ -8,6 +7,7 @@ import {
   CheckCircle2,
   Tv,
   Users,
+  Sprout,
 } from "lucide-react";
 import {
   Box,
@@ -25,12 +25,12 @@ import {
 import { cn } from "@/shared/lib/utils";
 import {
   PLOT_DETAIL_TEXTS,
-  type CropOption,
+  type PlotCropInfo,
 } from "./plot-detail.constants";
 
 export interface PlotBookingSummaryProps {
   basePrice: number;
-  selectedCrop: CropOption;
+  crop: PlotCropInfo;
   plotCode: string;
   areaSqm?: number;
   onCheckout: () => void;
@@ -39,77 +39,45 @@ export interface PlotBookingSummaryProps {
 
 export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
   basePrice,
-  selectedCrop,
+  crop,
   plotCode,
   areaSqm = 20,
   onCheckout,
   className,
 }) => {
-  const [timeLeft, setTimeLeft] = React.useState<number>(599);
   const [isMobileReceiptOpen, setIsMobileReceiptOpen] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 599));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  const formattedTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
-  const totalPrice = basePrice + selectedCrop.seedPrice;
 
   return (
     <>
+      {/* DESKTOP STICKY BOOKING CARD */}
       <Card
         className={cn(
           "hidden lg:block sticky top-6 border border-emerald-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-emerald-950/5 rounded-2xl overflow-hidden",
           className,
         )}
       >
-        <Box className="bg-amber-50 dark:bg-amber-950/40 border-b border-amber-200 dark:border-amber-900/40 px-5 py-3">
-          <Flex justify="between" align="center">
-            <Flex align="center" gap={2}>
-              <Clock className="w-4 h-4 text-amber-700 dark:text-amber-400 animate-pulse" />
-              <Text variant="caption" className="text-amber-900 dark:text-amber-200 font-medium text-xs">
-                {PLOT_DETAIL_TEXTS.reservationBadge}
-              </Text>
-            </Flex>
-            <Badge
-              variant="outline"
-              className="bg-amber-100 dark:bg-amber-900 text-amber-900 dark:text-amber-200 border-amber-300 font-mono font-bold text-xs px-2.5 py-0.5"
-            >
-              {formattedTime}
-            </Badge>
-          </Flex>
-          <Text variant="caption" className="text-[11px] text-amber-700 dark:text-amber-400 mt-1 block">
-            {PLOT_DETAIL_TEXTS.reservationExpiredWarning}
-          </Text>
-        </Box>
-
         <CardHeader className="p-5 pb-3">
           <Flex justify="between" align="center">
             <Heading level={3} className="text-base font-bold text-slate-900 dark:text-white">
-              Hóa đơn chi phí vụ mùa
+              {PLOT_DETAIL_TEXTS.invoiceTitle}
             </Heading>
             <Badge variant="secondary" className="text-xs font-semibold">
               Ô #{plotCode}
             </Badge>
           </Flex>
           <Text variant="muted" className="text-xs">
-            Chu kỳ canh tác trọn gói 60 ngày khép kín
+            {PLOT_DETAIL_TEXTS.invoiceSubtitle}
           </Text>
         </CardHeader>
 
         <CardContent className="p-5 pt-0 space-y-4">
           <Separator />
 
+          {/* Line item 1: Phí thuê đất chuẩn */}
           <Flex justify="between" align="start" className="text-xs">
             <Box className="pr-2">
               <Text variant="body2" className="font-semibold text-slate-800 dark:text-slate-200">
-                Phí thuê đất chuẩn ({areaSqm}m²)
+                Phí thuê ô đất ({areaSqm}m²)
               </Text>
               <Text variant="caption" className="text-slate-500 block mt-0.5">
                 Điện nước, cải tạo vi sinh, trùn quế
@@ -120,21 +88,25 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
             </Text>
           </Flex>
 
+          {/* Line item 2: Giống cây quy hoạch đã bao gồm */}
           <Flex justify="between" align="start" className="text-xs">
             <Box className="pr-2">
-              <Text variant="body2" className="font-semibold text-slate-800 dark:text-slate-200">
-                Hạt giống F1: {selectedCrop.name}
-              </Text>
-              <Text variant="caption" className="text-slate-500 block mt-0.5">
-                Hạt F1 ngoại nhập kháng sâu bệnh + dinh dưỡng
+              <Flex align="center" gap={1.5}>
+                <Sprout className="w-3.5 h-3.5 text-emerald-600" />
+                <Text variant="body2" className="font-medium text-slate-700 dark:text-slate-300">
+                  Hạt giống F1: {crop.name}
+                </Text>
+              </Flex>
+              <Text variant="caption" className="text-slate-500 block ml-5 mt-0.5">
+                Hạt giống F1 bản quyền + dinh dưỡng sinh học
               </Text>
             </Box>
-            <Text variant="body2" className="font-bold text-slate-900 dark:text-white shrink-0">
-              +{selectedCrop.seedPrice.toLocaleString("vi-VN")} đ
-            </Text>
+            <Badge variant="success" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold shrink-0">
+              {PLOT_DETAIL_TEXTS.includedTag}
+            </Badge>
           </Flex>
 
-          {/* Line item 3: Chăm sóc chuyên gia */}
+          {/* Line item 3: Kỹ sư chăm sóc định kỳ */}
           <Flex justify="between" align="start" className="text-xs">
             <Box className="pr-2">
               <Flex align="center" gap={1.5}>
@@ -147,11 +119,12 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
                 {PLOT_DETAIL_TEXTS.expertCareOriginalPrice.toLocaleString("vi-VN")} đ
               </Text>
             </Box>
-            <Badge variant="success" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold">
+            <Badge variant="success" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold shrink-0">
               {PLOT_DETAIL_TEXTS.serviceFreeTag}
             </Badge>
           </Flex>
 
+          {/* Line item 4: Camera 1080P & IoT vi khí hậu */}
           <Flex justify="between" align="start" className="text-xs">
             <Box className="pr-2">
               <Flex align="center" gap={1.5}>
@@ -164,13 +137,14 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
                 {PLOT_DETAIL_TEXTS.cameraIotOriginalPrice.toLocaleString("vi-VN")} đ
               </Text>
             </Box>
-            <Badge variant="success" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold">
+            <Badge variant="success" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold shrink-0">
               {PLOT_DETAIL_TEXTS.serviceFreeTag}
             </Badge>
           </Flex>
 
           <Separator />
 
+          {/* Total Box */}
           <Box className="bg-emerald-50/70 dark:bg-emerald-950/30 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
             <Flex justify="between" align="baseline">
               <Box>
@@ -182,11 +156,12 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
                 </Text>
               </Box>
               <Text variant="h3" className="text-xl sm:text-2xl font-black text-emerald-800 dark:text-emerald-400">
-                {totalPrice.toLocaleString("vi-VN")} đ
+                {basePrice.toLocaleString("vi-VN")} đ
               </Text>
             </Flex>
           </Box>
 
+          {/* Guarantee */}
           <Flex align="start" gap={2} className="text-slate-600 dark:text-slate-400 text-xs">
             <ShieldCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
             <Text variant="caption" className="text-[11px] text-slate-600 dark:text-slate-400 leading-normal font-medium">
@@ -207,6 +182,7 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
         </CardFooter>
       </Card>
 
+      {/* MOBILE STICKY BOTTOM BAR */}
       <Box className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-4 py-3 shadow-2xl">
         <Flex justify="between" align="center" gap={3}>
           <Box className="min-w-0">
@@ -228,10 +204,10 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
               </Box>
             </Flex>
             <Text variant="h4" className="text-lg font-black text-emerald-700 dark:text-emerald-400 leading-tight">
-              {totalPrice.toLocaleString("vi-VN")} đ
+              {basePrice.toLocaleString("vi-VN")} đ
             </Text>
             <Text variant="caption" className="text-[10px] text-slate-500 truncate block">
-              Ô #{plotCode} • {selectedCrop.name}
+              Ô #{plotCode} • {crop.name}
             </Text>
           </Box>
 
@@ -245,20 +221,19 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
           </Button>
         </Flex>
 
-        {/* Expandable Receipt for Mobile */}
         {isMobileReceiptOpen && (
           <Box className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2 text-xs animate-in slide-in-from-bottom-2 duration-200">
             <Flex justify="between">
-              <Text variant="muted">Thuê đất 60 ngày ({areaSqm}m²):</Text>
+              <Text variant="muted">Thuê ô đất ({areaSqm}m²):</Text>
               <Text variant="body2" className="font-semibold">{basePrice.toLocaleString("vi-VN")} đ</Text>
             </Flex>
             <Flex justify="between">
-              <Text variant="muted">Hạt giống ({selectedCrop.name}):</Text>
-              <Text variant="body2" className="font-semibold">+{selectedCrop.seedPrice.toLocaleString("vi-VN")} đ</Text>
+              <Text variant="muted">Giống cây ({crop.name}):</Text>
+              <Badge variant="success" className="text-[10px] py-0">{PLOT_DETAIL_TEXTS.includedTag}</Badge>
             </Flex>
             <Flex justify="between">
               <Text variant="muted">Kỹ sư & Camera IoT 24/7:</Text>
-              <Badge variant="success" className="text-[10px] py-0">MIỄN PHÍ</Badge>
+              <Badge variant="success" className="text-[10px] py-0">{PLOT_DETAIL_TEXTS.serviceFreeTag}</Badge>
             </Flex>
             <Flex align="center" gap={1.5} className="pt-1 text-[11px] text-emerald-700">
               <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />

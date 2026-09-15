@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   Camera,
   Maximize2,
-  Star,
   Activity,
   Droplets,
   Award,
@@ -19,18 +18,17 @@ import {
   Badge,
   Button,
   Image,
-  Avatar,
   Breadcrumb,
   type BreadcrumbItemData,
 } from "@/shared/ui";
 import {
-  CROP_OPTIONS,
-  ENGINEER_INFO,
+  DEFAULT_PLOT_CROP,
   PLOT_DETAIL_TEXTS,
-  type CropOption,
+  type PlotCropInfo,
 } from "@/widgets/PlotDetail/plot-detail.constants";
-import { CropSelector } from "@/widgets/PlotDetail/CropSelector";
+import { PlotCropCard } from "@/widgets/PlotDetail/PlotCropCard";
 import { CropTimeline } from "@/widgets/PlotDetail/CropTimeline";
+import { FarmerProfileCard } from "@/widgets/PlotDetail/FarmerProfileCard";
 import { PlotBookingSummary } from "@/widgets/PlotDetail/PlotBookingSummary";
 import { fetchPlotsApi, type PlotUiItem } from "@/entities/plot/api/plotsApi";
 
@@ -39,13 +37,9 @@ export function PlotDetailPage() {
   const currentPlotId = id || plotId || "A-104";
   const navigate = useNavigate();
 
-  const [selectedCrop, setSelectedCrop] = React.useState<CropOption>(
-    CROP_OPTIONS[0],
-  );
   const [plotData, setPlotData] = React.useState<PlotUiItem | null>(null);
   const [isZoomCamera, setIsZoomCamera] = React.useState<boolean>(false);
 
-  // Fetch plot data matching the URL param
   React.useEffect(() => {
     let isMounted = true;
     async function loadPlot() {
@@ -56,8 +50,7 @@ export function PlotDetailPage() {
             (p) =>
               p.plotCode.toLowerCase() === currentPlotId.toLowerCase() ||
               p.id === currentPlotId ||
-              p.plotCode.replace("PLT-", "").toLowerCase() ===
-                currentPlotId.toLowerCase(),
+              p.plotCode.replace("PLT-", "").toLowerCase() === currentPlotId.toLowerCase(),
           );
           if (found) {
             setPlotData(found);
@@ -76,64 +69,28 @@ export function PlotDetailPage() {
   }, [currentPlotId]);
 
   const displayPlotCode =
-    plotData?.plotCode ||
-    (currentPlotId.startsWith("PLT-") ? currentPlotId : `PLT-${currentPlotId}`);
+    plotData?.plotCode || (currentPlotId.startsWith("PLT-") ? currentPlotId : `PLT-${currentPlotId}`);
   const displayZone = plotData?.zone || PLOT_DETAIL_TEXTS.defaultZoneName;
-  const displayArea = plotData?.areaSquareMeters || 20;
-  const displayBasePrice =
-    plotData?.pricePerMonth || PLOT_DETAIL_TEXTS.defaultBaseRentalPrice;
+  const displayArea = plotData?.areaSquareMeters || PLOT_DETAIL_TEXTS.defaultArea;
+  const displayBasePrice = plotData?.pricePerMonth || PLOT_DETAIL_TEXTS.defaultBaseRentalPrice;
   const displayImageUrl = plotData?.imageUrl || "/images/plot-1.jpg";
 
+  const currentCrop: PlotCropInfo = {
+    ...DEFAULT_PLOT_CROP,
+    name: plotData?.cropName || DEFAULT_PLOT_CROP.name,
+  };
+
   const breadcrumbItems: BreadcrumbItemData[] = [
-    { label: "Trang chủ", href: "/" },
     { label: "Khám phá ô đất", href: "/plots" },
-    { label: displayZone, href: "/plots" },
     { label: `Ô đất #${displayPlotCode.replace("PLT-", "")}`, isActive: true },
   ];
 
   const handleCheckout = () => {
-    navigate(`/checkout/${displayPlotCode}?crop=${selectedCrop.id}`);
+    navigate(`/checkout/${displayPlotCode}`);
   };
 
   return (
     <Box className="min-h-screen pb-24 lg:pb-12 bg-slate-50/50 dark:bg-slate-950 font-sans">
-      <Box className="w-full bg-amber-50 dark:bg-amber-950/60 border-b border-amber-200/80 dark:border-amber-900/50 py-2.5 px-4">
-        <Flex
-          justify="between"
-          align="center"
-          className="max-w-7xl mx-auto text-xs"
-        >
-          <Flex
-            align="center"
-            gap={2}
-            className="text-amber-900 dark:text-amber-200"
-          >
-            <Activity className="w-4 h-4 text-amber-600 animate-pulse shrink-0" />
-            <Text variant="caption" className="font-semibold">
-              {PLOT_DETAIL_TEXTS.reservationBadge}
-            </Text>
-            <Badge
-              variant="outline"
-              className="bg-amber-100 text-amber-900 border-amber-300 font-mono text-[11px] font-bold px-2 py-0"
-            >
-              09:59
-            </Badge>
-            <Text
-              variant="caption"
-              className="text-slate-600 dark:text-slate-400 hidden sm:inline"
-            >
-              • {PLOT_DETAIL_TEXTS.reservationExpiredWarning}
-            </Text>
-          </Flex>
-          <Badge
-            variant="secondary"
-            className="hidden md:inline-flex bg-amber-200/70 text-amber-950 text-[10px] font-bold"
-          >
-            {PLOT_DETAIL_TEXTS.exclusiveReserve}
-          </Badge>
-        </Flex>
-      </Box>
-
       <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         <Flex
           justify="between"
@@ -162,7 +119,6 @@ export function PlotDetailPage() {
                   className="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
                 />
 
-                {/* Top Camera Controls */}
                 <Box className="absolute top-3 left-3 right-3 flex items-center justify-between">
                   <Flex
                     align="center"
@@ -192,8 +148,7 @@ export function PlotDetailPage() {
 
                 <Box className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] text-white/90 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 rounded-lg">
                   <Text variant="caption" className="font-mono">
-                    CAM-#{displayPlotCode.replace("PLT-", "")} • Góc bao quát
-                    phân khu
+                    CAM-#{displayPlotCode.replace("PLT-", "")} • Góc bao quát phân khu
                   </Text>
                   <Text variant="caption" className="font-mono">
                     FPS: 30 • Bitrate: 4.2 Mbps
@@ -320,82 +275,17 @@ export function PlotDetailPage() {
               </CardContent>
             </Card>
 
-            <CropSelector
-              selectedCropId={selectedCrop.id}
-              onSelectCrop={setSelectedCrop}
-            />
+            <PlotCropCard crop={currentCrop} />
 
             <CropTimeline />
 
-            <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
-              <CardContent className="p-4 sm:p-5">
-                <Flex
-                  justify="between"
-                  align="center"
-                  className="flex-col sm:flex-row gap-3"
-                >
-                  <Flex align="center" gap={3}>
-                    <Avatar
-                      src={ENGINEER_INFO.avatarUrl}
-                      name={ENGINEER_INFO.name}
-                      size="lg"
-                      className="ring-2 ring-emerald-500/20"
-                    />
-
-                    <Box>
-                      <Text
-                        variant="caption"
-                        className="text-slate-400 uppercase tracking-wider text-[10px] font-semibold block"
-                      >
-                        {ENGINEER_INFO.role}
-                      </Text>
-                      <Heading
-                        level={4}
-                        className="text-sm sm:text-base font-bold text-slate-900 dark:text-white"
-                      >
-                        {ENGINEER_INFO.name}
-                      </Heading>
-                      <Text variant="muted" className="text-xs">
-                        {ENGINEER_INFO.experienceYears} năm kinh nghiệm chuẩn
-                        hữu cơ Đà Lạt
-                      </Text>
-                    </Box>
-                  </Flex>
-
-                  <Flex
-                    align="center"
-                    gap={3}
-                    className="w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 pt-2 sm:pt-0"
-                  >
-                    <Flex
-                      align="center"
-                      gap={1}
-                      className="bg-amber-50 dark:bg-amber-950/40 px-2.5 py-1 rounded-lg border border-amber-200 dark:border-amber-900"
-                    >
-                      <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-                      <Text
-                        variant="caption"
-                        className="font-bold text-amber-800 dark:text-amber-300 text-xs"
-                      >
-                        ★ {ENGINEER_INFO.rating}/5
-                      </Text>
-                    </Flex>
-                    <Badge
-                      variant="outline"
-                      className="text-xs text-slate-600 dark:text-slate-400"
-                    >
-                      {ENGINEER_INFO.successfulCrops} vụ mùa thành công
-                    </Badge>
-                  </Flex>
-                </Flex>
-              </CardContent>
-            </Card>
+            <FarmerProfileCard />
           </Box>
 
           <Box className="lg:col-span-4">
             <PlotBookingSummary
               basePrice={displayBasePrice}
-              selectedCrop={selectedCrop}
+              crop={currentCrop}
               plotCode={displayPlotCode.replace("PLT-", "")}
               areaSqm={displayArea}
               onCheckout={handleCheckout}
@@ -419,8 +309,7 @@ export function PlotDetailPage() {
               <Flex align="center" gap={2}>
                 <Camera className="w-5 h-5 text-emerald-400" />
                 <Heading level={4} className="text-sm font-bold text-white">
-                  Camera 1080P Trực tiếp • Ô #
-                  {displayPlotCode.replace("PLT-", "")}
+                  Camera 1080P Trực tiếp • Ô #{displayPlotCode.replace("PLT-", "")}
                 </Heading>
               </Flex>
               <Button
