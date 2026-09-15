@@ -1,13 +1,13 @@
-export interface CropOption {
+export interface PlotCropInfo {
   id: string;
   name: string;
-  highlightTag: string;
-  tagVariant: "success" | "warning" | "default";
+  variety: string;
   cycleDays: number;
   expectedYield: string;
-  seedPrice: number;
   imageUrl: string;
   description: string;
+  standard: string;
+  plantingDensity: string;
 }
 
 export interface GrowthMilestone {
@@ -19,50 +19,31 @@ export interface GrowthMilestone {
   details: string;
 }
 
-export interface EngineerInfo {
+export interface FarmerProfile {
   name: string;
-  role: string;
+  badgeTitle: string;
   experienceYears: number;
   rating: number;
+  reviewsCount: number;
   successfulCrops: number;
+  responseRate: string;
+  location: string;
+  isVerified: boolean;
   avatarUrl: string;
+  bio: string;
 }
 
-export const CROP_OPTIONS: CropOption[] = [
-  {
-    id: "rainbow-chard",
-    name: "Cải Cầu Vồng Thụy Sĩ",
-    highlightTag: "Khuyên trồng mùa này",
-    tagVariant: "success",
-    cycleDays: 60,
-    expectedYield: "18 – 22 kg",
-    seedPrice: 350000,
-    imageUrl: "/images/plot-1.jpg",
-    description: "Giàu chất chống oxy hóa, cuống ngũ sắc rực rỡ, vị ngọt thanh mát.",
-  },
-  {
-    id: "spinach-jp",
-    name: "Cải Bó Xôi Nhật",
-    highlightTag: "Dinh dưỡng cao",
-    tagVariant: "warning",
-    cycleDays: 50,
-    expectedYield: "15 – 20 kg",
-    seedPrice: 300000,
-    imageUrl: "/images/plot-2.jpg",
-    description: "Giàu sắt và folate, vị ngọt thanh tự nhiên, hợp món xào hoặc nấu canh gia đình.",
-  },
-  {
-    id: "butterhead-lettuce",
-    name: "Xà Lách Búp Mỡ",
-    highlightTag: "Thu hoạch nhanh",
-    tagVariant: "default",
-    cycleDays: 45,
-    expectedYield: "12 – 16 kg",
-    seedPrice: 250000,
-    imageUrl: "/images/plot-3.jpg",
-    description: "Lá giòn, thơm mát, rất hợp làm các món salad gia đình thanh mát bổ dưỡng.",
-  },
-];
+export const DEFAULT_PLOT_CROP: PlotCropInfo = {
+  id: "rainbow-chard",
+  name: "Cải Cầu Vồng Thụy Sĩ",
+  variety: "Hạt giống F1 Thụy Sĩ bản quyền",
+  cycleDays: 60,
+  expectedYield: "18 – 22 kg / vụ",
+  imageUrl: "/images/plot-1.jpg",
+  description: "Cây sinh trưởng mạnh, giàu chất chống oxy hóa Betalain, thân cuống ngũ sắc rực rỡ và có vị ngọt bùi tự nhiên.",
+  standard: "Chuẩn Hữu Cơ VietGAP 100%",
+  plantingDensity: "12 cây / m² (Khoảng cách hàng 25cm)",
+};
 
 export const GROWTH_MILESTONES: GrowthMilestone[] = [
   {
@@ -99,19 +80,21 @@ export const GROWTH_MILESTONES: GrowthMilestone[] = [
   },
 ];
 
-export const ENGINEER_INFO: EngineerInfo = {
+export const FARMER_PROFILE: FarmerProfile = {
   name: "Chú Bảy Nông Lạc",
-  role: "Kỹ thuật viên phụ trách",
+  badgeTitle: "Đối tác Kỹ sư Nông vụ Xuất sắc",
   experienceYears: 12,
   rating: 4.9,
+  reviewsCount: 128,
   successfulCrops: 38,
+  responseRate: "99.2%",
+  location: "Thung lũng Cam Ly, TP. Đà Lạt",
+  isVerified: true,
   avatarUrl: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80",
+  bio: "Chuyên gia canh tác rau củ quả ôn đới công nghệ cao. Hơn 10 năm gắn bó với mô hình nông nghiệp hữu cơ vi sinh không hóa chất.",
 };
 
 export const PLOT_DETAIL_TEXTS = {
-  reservationBadge: "Ô đất đang được tạm giữ cho bạn:",
-  reservationExpiredWarning: "Hết thời gian này, ô đất sẽ tự động mở lại cho khách khác",
-  exclusiveReserve: "GIỮ CHỖ ĐỘC QUYỀN",
   organicStandardBadge: "Thổ nhưỡng chuẩn Organic Bio 100%",
   soilMetrics: {
     phLabel: "Độ pH đất",
@@ -125,26 +108,25 @@ export const PLOT_DETAIL_TEXTS = {
     soilTreatment: "Xử lý đất vi sinh sạch mầm bệnh với Trichoderma và phân hữu cơ trùn quế hoai mục.",
     irrigation: "Hệ thống tưới tự động: Tưới nhỏ giọt Israel + Phun sương bù ẩm vi khí hậu điều khiển qua Cloud.",
   },
-  cropSelectorTitle: "Chọn giống cây gieo trồng",
-  cropSelectorSubtitle: "Giống F1 bản quyền, phù hợp vi khí hậu Thung lũng Cam Ly",
-  cropSelectorCommitment: "Cam kết tỉ lệ nảy mầm 98%",
-  cropSeedPriceLabel: "Giá gói giống",
-  cropCycleLabel: "Chu kỳ:",
-  cropYieldLabel: "Năng suất:",
+  cropCardTitle: "Giống cây trồng được quy hoạch cho ô đất",
+  cropCardSubtitle: "Quy hoạch phân khu chuyên canh phù hợp thổ nhưỡng và vi khí hậu",
+  cropCycleLabel: "Chu kỳ sinh trưởng:",
+  cropYieldLabel: "Năng suất dự kiến:",
+  cropDensityLabel: "Mật độ gieo trồng:",
+  cropStandardLabel: "Quy chuẩn:",
   timelineTitle: "Lộ trình sinh trưởng vụ mùa (60 Ngày)",
   timelineSubtitle: "Quy trình 4 giai đoạn tự động cập nhật nhật ký canh tác số",
   timelineStartDate: "Bắt đầu: 01/11/2026",
-  invoiceTitle: "Chi tiết chi phí và cam kết dịch vụ",
-  invoiceSubtitle: "Minh bạch 100%, không phát sinh phụ phí suốt mùa vụ",
+  invoiceTitle: "Hóa đơn chi phí vụ mùa",
+  invoiceSubtitle: "Gói thuê đất trọn gói 60 ngày khép kín",
   serviceFreeTag: "MIỄN PHÍ",
-  guaranteeText: "Bảo hiểm 100% sản lượng: Hoàn tiền hoặc bù sản lượng tương đương nếu gặp thiên tai, sâu bệnh dịch hại.",
-  ctaButtonText: "Khóa ô đất & Chuyển sang thanh toán VietQR",
+  includedTag: "ĐÃ BAO GỒM",
+  guaranteeText: "Bảo hiểm 100% sản lượng hữu cơ VietGAP (hoàn tiền hoặc bù sản lượng nếu thiên tai).",
+  ctaButtonText: "Xác nhận & Thanh toán VietQR",
   mobileCtaButtonText: "Thuê ngay",
-  viewReceiptDetail: "Xem chi tiết",
-  hideReceiptDetail: "Thu gọn",
   defaultPlotName: "Ô đất #A-104 - Phân khu Dược Liệu",
   defaultZoneName: "Khu A – Thung lũng Cam Ly, P.5, TP. Đà Lạt",
-  defaultArea: "20 m²",
+  defaultArea: 20,
   defaultDimensions: "Khổ chuẩn: 4m x 5m",
   defaultBaseRentalPrice: 1500000,
   expertCareOriginalPrice: 400000,
