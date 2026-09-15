@@ -10,8 +10,8 @@ export const KEY_FEATURES_MESSAGES = {
   CARD1_LOCATION: "Lạc Dương, Đạ Sar",
   CARD1_CROP_TITLE: "Quy hoạch sẵn giống cây theo vụ",
   CARD1_CROP_DESC: "Cải bó xôi, Cà chua bi, Xà lách • Chu kỳ 30 - 60 ngày",
-  CARD1_PAYMENT_METHOD: "Chuyển khoản VietQR Napas 24/7",
-  CARD1_PAYMENT_STATUS: "Kích hoạt hợp đồng tự động",
+  CARD1_PAYMENT_METHOD: "Chuyển khoản VietQR Napas",
+  CARD1_PAYMENT_STATUS: "Kích hoạt tự động 24/7",
   CARD1_DESC:
     "Cơ chế Hold Lock 5 phút độc quyền chống xung đột đặt trùng. Khi thanh toán hoàn tất, hệ thống tự động kích hoạt hợp đồng vụ mùa với snapshot giá minh bạch.",
   CARD1_ACTION: "Khám phá bản đồ ô đất",
