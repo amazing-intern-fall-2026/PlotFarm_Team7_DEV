@@ -430,10 +430,12 @@ async function main() {
     // Status
     const status = statuses[i % statuses.length];
 
-    // Area between 15.0 and 50.0 sqm
-    const areaVal = 15 + (i % 35);
-    // Price per month between 350,000 and 850,000 VND
-    const priceVal = 350000 + (i % 11) * 50000;
+    // Standard plot areas strictly set to [20, 25, 30, 35, 40] sqm
+    const allowedAreas = [20, 25, 30, 35, 40];
+    const areaVal = allowedAreas[(i - 1) % allowedAreas.length];
+    // Price per month proportional to plot area (25,000 VND / sqm)
+    const priceVal = areaVal * 25000;
+
 
     await prisma.plot.upsert({
       where: { plotCode },
