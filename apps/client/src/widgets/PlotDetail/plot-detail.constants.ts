@@ -3,7 +3,11 @@ export interface PlotCropInfo {
   name: string;
   variety: string;
   cycleDays: number;
+  /** Alias for cycleDays – used in PlotDetailPage */
+  harvestCycleDays?: number;
   expectedYield: string;
+  /** Alias for expectedYield – used in PlotDetailPage */
+  expectedYieldKg?: string;
   imageUrl: string;
   description: string;
   standard: string;
@@ -38,7 +42,9 @@ export const DEFAULT_PLOT_CROP: PlotCropInfo = {
   name: "Cải Cầu Vồng Thụy Sĩ",
   variety: "Hạt giống F1 Thụy Sĩ bản quyền",
   cycleDays: 60,
+  harvestCycleDays: 60,
   expectedYield: "18 – 22 kg / vụ",
+  expectedYieldKg: "18 – 22 kg / vụ",
   imageUrl: "/images/plot-1.jpg",
   description: "Cây sinh trưởng mạnh, giàu chất chống oxy hóa Betalain, thân cuống ngũ sắc rực rỡ và có vị ngọt bùi tự nhiên.",
   standard: "Chuẩn Hữu Cơ VietGAP 100%",
@@ -107,6 +113,7 @@ export const PLOT_DETAIL_TEXTS = {
   systemSpecs: {
     soilTreatment: "Xử lý đất vi sinh sạch mầm bệnh với Trichoderma và phân hữu cơ trùn quế hoai mục.",
     irrigation: "Hệ thống tưới tự động: Tưới nhỏ giọt Israel + Phun sương bù ẩm vi khí hậu điều khiển qua Cloud.",
+    standard: "Canh tác 100% hữu cơ VietGAP, không thuốc trừ sâu hóa học.",
   },
   cropCardTitle: "Giống cây trồng được quy hoạch cho ô đất",
   cropCardSubtitle: "Quy hoạch phân khu chuyên canh phù hợp thổ nhưỡng và vi khí hậu",

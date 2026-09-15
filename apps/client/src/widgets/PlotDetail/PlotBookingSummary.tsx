@@ -83,8 +83,8 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
                 Điện nước, cải tạo vi sinh, trùn quế
               </Text>
             </Box>
-            <Text variant="body2" className="font-bold text-slate-900 dark:text-white shrink-0">
-              {basePrice.toLocaleString("vi-VN")} đ
+            <Text variant="body2" className="font-bold text-slate-900 dark:text-white shrink-0 whitespace-nowrap">
+              {basePrice.toLocaleString("vi-VN")}&nbsp;đ
             </Text>
           </Flex>
 
@@ -146,17 +146,17 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
 
           {/* Total Box */}
           <Box className="bg-emerald-50/70 dark:bg-emerald-950/30 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
-            <Flex justify="between" align="baseline">
-              <Box>
-                <Text variant="caption" className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px]">
+            <Flex justify="between" align="center" gap={2}>
+              <Box className="min-w-0">
+                <Text variant="caption" className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px] block">
                   Tổng chi phí vụ mùa
                 </Text>
                 <Text variant="caption" className="text-[11px] text-emerald-700 dark:text-emerald-400 block mt-0.5">
                   Đã bao gồm thuế & cam kết bảo hiểm
                 </Text>
               </Box>
-              <Text variant="h3" className="text-xl sm:text-2xl font-black text-emerald-800 dark:text-emerald-400">
-                {basePrice.toLocaleString("vi-VN")} đ
+              <Text variant="h3" className="text-xl sm:text-2xl font-black text-emerald-800 dark:text-emerald-400 whitespace-nowrap shrink-0 text-right">
+                {basePrice.toLocaleString("vi-VN")}&nbsp;đ
               </Text>
             </Flex>
           </Box>
@@ -203,8 +203,8 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
                 )}
               </Box>
             </Flex>
-            <Text variant="h4" className="text-lg font-black text-emerald-700 dark:text-emerald-400 leading-tight">
-              {basePrice.toLocaleString("vi-VN")} đ
+            <Text variant="h4" className="text-lg font-black text-emerald-700 dark:text-emerald-400 leading-tight whitespace-nowrap">
+              {basePrice.toLocaleString("vi-VN")}&nbsp;đ
             </Text>
             <Text variant="caption" className="text-[10px] text-slate-500 truncate block">
               Ô #{plotCode} • {crop.name}
