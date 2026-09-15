@@ -90,3 +90,16 @@ export const SEASONAL_CROPS_DATA: SeasonalCropItem[] = [
     basePricePerPlot: 1250000,
   },
 ];
+
+export interface SeasonalCropsCarouselProps {
+  items?: SeasonalCropItem[];
+  title?: string;
+  seasonBadge?: string;
+  subtitle?: string;
+  className?: string;
+}
+
+export interface SeasonalCropsViewProps extends SeasonalCropsCarouselProps {
+  onSelectCrop: (cropSlug: string) => void;
+}
+
