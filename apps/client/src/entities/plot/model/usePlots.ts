@@ -4,11 +4,10 @@ import { getErrorMessage } from "@/shared/api";
 
 export type FilterStatusOption = "ALL" | PlotStatus;
 export type PlotSortOption =
-  | "camera"
+  | "code_asc"
   | "price_asc"
   | "price_desc"
-  | "area_desc"
-  | "code_asc";
+  | "area_desc";
 
 export interface PlotFilterOption {
   value: string;
@@ -26,7 +25,7 @@ export function usePlots(options: UsePlotsOptions = {}) {
   const {
     autoFetch = true,
     initialFilterStatus = "ALL",
-    initialSortBy = "camera",
+    initialSortBy = "code_asc",
   } = options;
 
   const [plots, setPlots] = React.useState<PlotUiItem[]>([]);
@@ -191,12 +190,6 @@ export function usePlots(options: UsePlotsOptions = {}) {
         return b.areaSquareMeters - a.areaSquareMeters;
       }
       if (sortBy === "code_asc") {
-        return a.plotCode.localeCompare(b.plotCode);
-      }
-      if (sortBy === "camera") {
-        if (a.cameraSupported !== b.cameraSupported) {
-          return a.cameraSupported ? -1 : 1;
-        }
         return a.plotCode.localeCompare(b.plotCode);
       }
       return 0;

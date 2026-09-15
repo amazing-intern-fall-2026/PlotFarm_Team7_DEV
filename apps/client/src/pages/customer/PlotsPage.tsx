@@ -50,7 +50,7 @@ export function PlotsPage() {
             setSearchQuery("");
             setFilterSize("all");
             setFilterStatus("ALL");
-            setSortBy("camera");
+            setSortBy("code_asc");
           }}
         />
 

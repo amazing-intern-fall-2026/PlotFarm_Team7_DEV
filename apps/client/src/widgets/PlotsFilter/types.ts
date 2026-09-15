@@ -1,5 +1,5 @@
 export type PlotStatusFilter = "all" | "available" | "reserved" | "occupied" | "maintenance";
-export type PlotSortOption = "camera" | "price_asc" | "price_desc" | "area_desc" | "code_asc";
+export type PlotSortOption = "code_asc" | "price_asc" | "price_desc" | "area_desc";
 
 export interface PlotFilterOption {
   value: string;

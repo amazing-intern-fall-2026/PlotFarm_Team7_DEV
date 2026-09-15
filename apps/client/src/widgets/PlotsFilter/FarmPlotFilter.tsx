@@ -48,7 +48,7 @@ export function FarmPlotFilter({
   const [internalSearchTerm, setInternalSearchTerm] = React.useState<string>("");
   const [internalSelectedSize, setInternalSelectedSize] = React.useState<string>("all");
   const [internalSelectedStatus, setInternalSelectedStatus] = React.useState<string>("all");
-  const [internalSortBy, setInternalSortBy] = React.useState<string>("camera");
+  const [internalSortBy, setInternalSortBy] = React.useState<string>("code_asc");
 
   const searchTerm = propSearchTerm !== undefined ? propSearchTerm : internalSearchTerm;
   const selectedSize = propSelectedSize !== undefined ? propSelectedSize : internalSelectedSize;
@@ -103,7 +103,7 @@ export function FarmPlotFilter({
     searchTerm.trim() !== "" ||
     selectedSize !== "all" ||
     selectedStatus !== "all" ||
-    sortBy !== "camera";
+    sortBy !== "code_asc";
 
   const handleSearchChange = (value: string) => {
     setInternalSearchTerm(value);
@@ -130,11 +130,11 @@ export function FarmPlotFilter({
     setInternalSearchTerm("");
     setInternalSelectedSize("all");
     setInternalSelectedStatus("all");
-    setInternalSortBy("camera");
+    setInternalSortBy("code_asc");
     onSearchChange?.("");
     onSizeChange?.("all");
     onStatusChange?.("all");
-    onSortChange?.("camera");
+    onSortChange?.("code_asc");
     onReset?.();
   };
 

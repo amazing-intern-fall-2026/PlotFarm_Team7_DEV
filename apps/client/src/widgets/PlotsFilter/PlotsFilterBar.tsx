@@ -31,7 +31,7 @@ const DEFAULT_FILTERS: PlotFilterValues = {
   status: "all",
   hasCamera: false,
   hasIot: false,
-  sortBy: "camera",
+  sortBy: "code_asc",
 };
 
 export function PlotsFilterBar({

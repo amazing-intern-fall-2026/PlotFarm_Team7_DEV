@@ -47,11 +47,10 @@ export function PlotsFilterBarMobile({
   ];
 
   const sortOptions: Array<{ id: PlotSortOption; label: string }> = [
-    { id: "camera", label: "Góc camera đẹp nhất" },
+    { id: "code_asc", label: "Mã ô: A → Z" },
     { id: "price_asc", label: "Giá: Thấp → Cao" },
     { id: "price_desc", label: "Giá: Cao → Thấp" },
     { id: "area_desc", label: "Diện tích: Lớn nhất" },
-    { id: "code_asc", label: "Mã ô: A → Z" },
   ];
 
   const hasActiveFilters =
@@ -60,7 +59,7 @@ export function PlotsFilterBarMobile({
     filters.status !== "all" ||
     filters.hasCamera ||
     filters.hasIot ||
-    filters.sortBy !== "camera";
+    filters.sortBy !== "code_asc";
 
   return (
     <Box className={cn("w-full space-y-4", className)}>

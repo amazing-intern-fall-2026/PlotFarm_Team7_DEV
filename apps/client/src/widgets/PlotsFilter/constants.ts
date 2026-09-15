@@ -15,11 +15,10 @@ export const PLOTS_FILTER_MESSAGES = {
 } as const;
 
 export const PLOTS_FILTER_SORT_OPTIONS = [
-  { value: "camera", label: "Góc camera đẹp nhất" },
+  { value: "code_asc", label: "Mã ô: A → Z" },
   { value: "price_asc", label: "Giá thuê: Thấp → Cao" },
   { value: "price_desc", label: "Giá thuê: Cao → Thấp" },
   { value: "area_desc", label: "Diện tích: Lớn nhất" },
-  { value: "code_asc", label: "Mã ô: A → Z" },
 ] as const;
 
 export const PLOTS_STATUS_CHIP_DEFINITIONS = [
