@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { VideoHeroBanner } from "@/widgets/HomeHero";
 import { KeyFeatures } from "@/widgets/KeyFeatures";
 import { SeasonalCropsCarousel } from "@/widgets/SeasonalCrops";
+import { FarmJourney } from "@/widgets/FarmJourney";
 import {
   Card,
   CardHeader,
@@ -31,6 +32,9 @@ export function HomePage() {
 
         {/* Seasonal Crops Splide Carousel */}
         <SeasonalCropsCarousel />
+
+        {/* Hành Trình Nông Trại Từ Xa Trong 4 Bước (Mô hình minh bạch) */}
+        <FarmJourney />
 
         <Card className="w-full">
           <CardHeader>
