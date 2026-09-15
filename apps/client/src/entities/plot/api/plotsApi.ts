@@ -62,7 +62,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     zone: "Khu A (Rau Ăn Lá)",
     cropName: "Cải cầu vồng Thụy Sĩ",
     description: "Đang canh tác tuần thứ 3, phát triển xanh tốt.",
-    imageUrl: "/images/plot-1.jpg",
+    imageUrl: "/images/plot-4.jpg",
   },
   {
     plotCode: "PLT-B01",
@@ -75,7 +75,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     cameraSupported: true,
     zone: "Khu B (Củ Quả)",
     description: "Vị trí đón nắng sớm tốt, thích hợp trồng cà chua Cherry hoặc ớt chuông.",
-    imageUrl: "/images/plot-2.jpg",
+    imageUrl: "/images/plot-5.jpg",
   },
   {
     plotCode: "PLT-B02",
@@ -89,7 +89,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     zone: "Khu B (Củ Quả)",
     cropName: "Cà chua bi hữu cơ",
     description: "Đang trong giai đoạn đơm hoa kết trái.",
-    imageUrl: "/images/plot-3.jpg",
+    imageUrl: "/images/plot-6.jpg",
   },
   {
     plotCode: "PLT-B03",
@@ -102,7 +102,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     cameraSupported: true,
     zone: "Khu B (Củ Quả)",
     description: "Đang thực hiện khử khuẩn đất và bổ sung trùn quế định kỳ.",
-    imageUrl: "/images/plot-1.jpg",
+    imageUrl: "/images/plot-7.jpg",
   },
   {
     plotCode: "PLT-B04",
@@ -115,7 +115,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     cameraSupported: true,
     zone: "Khu B (Củ Quả)",
     description: "Lô diện tích lớn, sẵn sàng gieo hạt theo yêu cầu của gia chủ.",
-    imageUrl: "/images/plot-2.jpg",
+    imageUrl: "/images/plot-8.jpg",
   },
   {
     plotCode: "PLT-C01",
@@ -128,7 +128,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     cameraSupported: true,
     zone: "Khu C (Dược Liệu)",
     description: "Khách hàng đang hoàn tất thanh toán hợp đồng 6 tháng.",
-    imageUrl: "/images/plot-3.jpg",
+    imageUrl: "/images/plot-9.jpg",
   },
   {
     plotCode: "PLT-C02",
@@ -141,7 +141,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     cameraSupported: true,
     zone: "Khu C (Dược Liệu)",
     description: "Khu vực chuyên canh rau gia vị và cây hương thảo sinh thái.",
-    imageUrl: "/images/plot-1.jpg",
+    imageUrl: "/images/plot-10.jpg",
   },
   {
     plotCode: "PLT-C03",
@@ -155,7 +155,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     zone: "Khu C (Dược Liệu)",
     cropName: "Xà lách Lô Lô Xanh",
     description: "Dự kiến thu hoạch đợt 1 trong 5 ngày tới.",
-    imageUrl: "/images/plot-2.jpg",
+    imageUrl: "/images/plot-3.jpg",
   },
   {
     plotCode: "PLT-C04",
@@ -168,7 +168,7 @@ export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
     cameraSupported: false,
     zone: "Khu C (Dược Liệu)",
     description: "Hệ thống tưới đang được nâng cấp van điều khiển thông minh.",
-    imageUrl: "/images/plot-3.jpg",
+    imageUrl: "/images/plot-4.jpg",
   },
 ];
 

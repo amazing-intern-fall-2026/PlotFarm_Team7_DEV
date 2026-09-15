@@ -13,7 +13,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { Box, Button, Badge, Heading, Text } from "@/shared/ui";
-import { PLOT_DRAWER_MESSAGES, PLOT_STATUS_CONFIG } from "./constants";
+import { PLOT_DRAWER_MESSAGES, PLOT_STATUS_CONFIG, getPlotImageUrl } from "./constants";
 import type { PlotUiItem } from "@/entities/plot";
 
 export interface PlotDetailDrawerProps {
@@ -125,8 +125,9 @@ export function PlotDetailDrawer({
                   loop
                   muted
                   playsInline
+                  poster={plot.imageUrl || getPlotImageUrl(plot)}
                   className="w-full h-full object-cover"
-                  src="/video/video1.mp4"
+                  src="/video/plot-farming.mp4"
                 >
                   <track kind="captions" />
                 </video>

@@ -75,7 +75,7 @@ export function PlotsExploreHero({
               loop
               playsInline
               className="w-full h-full object-cover"
-              src="/video/video1.mp4"
+              src="/video/plot-farming.mp4"
             >
               <track kind="captions" />
             </video>
