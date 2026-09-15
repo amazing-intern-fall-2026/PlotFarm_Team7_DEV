@@ -167,19 +167,17 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
               </Text>
             </Box>
 
-            {/* Cây trồng hiện tại (nếu Occupied) hoặc Loại đất */}
-            {isOccupied && plot.cropName ? (
-              <Box className="flex items-center gap-1 text-primary font-medium">
-                <Sprout className="h-3.5 w-3.5 shrink-0" />
-                <Text variant="small" className="text-primary font-medium truncate max-w-[130px]">
-                  {PLOT_CARD_MESSAGES.CROP_PREFIX}{plot.cropName}
-                </Text>
-              </Box>
-            ) : (
-              <Text variant="small" className="text-muted-foreground truncate max-w-[130px]">
-                {PLOT_CARD_MESSAGES.SOIL_PREFIX}{plot.soilType || PLOT_CARD_MESSAGES.SOIL_DEFAULT}
+            {/* Thống nhất hiển thị cây trồng quy hoạch / đang canh tác */}
+            <Box className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-medium min-w-0">
+              <Sprout className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
+              <Text
+                variant="small"
+                className="text-emerald-700 dark:text-emerald-400 font-medium truncate max-w-[135px]"
+                title={plot.cropName || "Rau sạch Đà Lạt"}
+              >
+                {PLOT_CARD_MESSAGES.CROP_PREFIX}{plot.cropName || "Rau sạch Đà Lạt"}
               </Text>
-            )}
+            </Box>
           </Box>
         </Box>
 

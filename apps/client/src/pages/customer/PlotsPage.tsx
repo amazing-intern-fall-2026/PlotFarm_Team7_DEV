@@ -16,6 +16,7 @@ export function PlotsPage() {
     setCurrentPage,
     pageSize,
     totalPages,
+    totalFilteredCount,
     loading,
     counts,
     availableSizes,
@@ -67,7 +68,7 @@ export function PlotsPage() {
           <PlotPagination
             currentPage={currentPage}
             totalPages={totalPages}
-            totalItems={filteredPlots.length}
+            totalItems={totalFilteredCount}
             pageSize={pageSize}
             onPageChange={setCurrentPage}
           />

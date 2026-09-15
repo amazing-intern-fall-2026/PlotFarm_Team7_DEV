@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { Box, Flex, Button, Text } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 
@@ -36,10 +36,43 @@ export function PlotPagination({
   const startItem = (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
-  const pageNumbers: number[] = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
+  /** Tính danh sách page items với ellipsis smart logic */
+  function getPageItems(): (number | "ellipsis-start" | "ellipsis-end")[] {
+    const delta = 2; // số trang hiển thị xung quanh trang hiện tại
+    const rangeStart = Math.max(2, currentPage - delta);
+    const rangeEnd = Math.min(totalPages - 1, currentPage + delta);
+
+    const range: number[] = [];
+    for (let i = rangeStart; i <= rangeEnd; i++) {
+      range.push(i);
+    }
+
+    const items: (number | "ellipsis-start" | "ellipsis-end")[] = [];
+
+    // Trang đầu luôn hiển thị
+    items.push(1);
+
+    // Ellipsis trái
+    if (rangeStart > 2) {
+      items.push("ellipsis-start");
+    }
+
+    items.push(...range);
+
+    // Ellipsis phải
+    if (rangeEnd < totalPages - 1) {
+      items.push("ellipsis-end");
+    }
+
+    // Trang cuối luôn hiển thị
+    if (totalPages > 1) {
+      items.push(totalPages);
+    }
+
+    return items;
   }
+
+  const pageItems = getPageItems();
 
   return (
     <Box
@@ -48,10 +81,11 @@ export function PlotPagination({
         className,
       )}
     >
+      {/* Summary text */}
       <Text variant="body2" className="text-xs sm:text-sm text-muted-foreground order-2 sm:order-1">
         Hiển thị{" "}
         <Text as="span" className="font-semibold text-foreground">
-          {startItem} - {endItem}
+          {startItem} – {endItem}
         </Text>{" "}
         trên tổng số{" "}
         <Text as="span" className="font-bold text-primary">
@@ -60,9 +94,10 @@ export function PlotPagination({
         ô đất
       </Text>
 
-      <Flex align="center" className="gap-1.5 order-1 sm:order-2">
+      {/* Page buttons */}
+      <Flex align="center" className="gap-1 order-1 sm:order-2 flex-wrap justify-center">
+        {/* Nút Trước */}
         <Button
-
           variant="outline"
           size="sm"
           disabled={currentPage <= 1}
@@ -76,15 +111,26 @@ export function PlotPagination({
           </Text>
         </Button>
 
-        {/* Các nút số trang */}
-        {pageNumbers.map((pageNum) => {
-          const isActive = pageNum === currentPage;
+        {/* Số trang + ellipsis */}
+        {pageItems.map((item, idx) => {
+          if (item === "ellipsis-start" || item === "ellipsis-end") {
+            return (
+              <Box
+                key={`${item}-${idx}`}
+                className="h-9 w-9 flex items-center justify-center text-muted-foreground select-none"
+              >
+                <MoreHorizontal className="w-4 h-4" />
+              </Box>
+            );
+          }
+
+          const isActive = item === currentPage;
           return (
             <Button
-              key={pageNum}
+              key={item}
               variant={isActive ? "default" : "outline"}
               size="sm"
-              onClick={() => handlePageSelect(pageNum)}
+              onClick={() => handlePageSelect(item)}
               className={cn(
                 "h-9 w-9 p-0 rounded-lg text-xs font-bold transition-all",
                 isActive
@@ -93,12 +139,12 @@ export function PlotPagination({
               )}
               aria-current={isActive ? "page" : undefined}
             >
-              {pageNum}
+              {item}
             </Button>
           );
         })}
 
-        {/* Nút sang trang */}
+        {/* Nút Sau */}
         <Button
           variant="outline"
           size="sm"

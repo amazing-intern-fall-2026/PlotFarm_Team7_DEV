@@ -1,6 +1,7 @@
-import { axiosClient, parseApiError } from "@/shared/api";
+﻿import { axiosClient, parseApiError } from "@/shared/api";
 import type { Plot, PlotStatus, PlotsQuery } from "@repo/shared";
 
+// Domain UI Types
 export interface PlotUiItem extends Plot {
   id?: string;
   zone?: string;
@@ -10,168 +11,7 @@ export interface PlotUiItem extends Plot {
   imageUrl?: string;
 }
 
-export const MOCK_FALLBACK_PLOTS: PlotUiItem[] = [
-  {
-    plotCode: "PLT-A01",
-    plotNumber: "Khu A - Ô 01",
-    areaSquareMeters: 15,
-    status: "AVAILABLE",
-    pricePerMonth: 1200000,
-    soilType: "Đất đỏ Bazan tơi xốp",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu A (Rau Ăn Lá)",
-    description: "Ô đất gần nguồn tưới nhỏ giọt tự động, đã cải tạo vi sinh chuẩn VietGAP.",
-    imageUrl: "/images/plot-1.jpg",
-  },
-  {
-    plotCode: "PLT-A02",
-    plotNumber: "Khu A - Ô 02",
-    areaSquareMeters: 15,
-    status: "AVAILABLE",
-    pricePerMonth: 1200000,
-    soilType: "Đất phù sa giàu mùn",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu A (Rau Ăn Lá)",
-    description: "Đầy đủ cảm biến độ ẩm, pH đất và góc camera HLS độ nét cao.",
-    imageUrl: "/images/plot-2.jpg",
-  },
-  {
-    plotCode: "PLT-A03",
-    plotNumber: "Khu A - Ô 03",
-    areaSquareMeters: 20,
-    status: "RESERVED",
-    pricePerMonth: 1500000,
-    soilType: "Đất đỏ Bazan hữu cơ",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu A (Rau Ăn Lá)",
-    description: "Đang có khách hàng giữ chỗ tạm thời trong 15 phút.",
-    imageUrl: "/images/plot-3.jpg",
-  },
-  {
-    plotCode: "PLT-A04",
-    plotNumber: "Khu A - Ô 04",
-    areaSquareMeters: 20,
-    status: "OCCUPIED",
-    pricePerMonth: 1500000,
-    soilType: "Đất đỏ Bazan Lâm Đồng",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu A (Rau Ăn Lá)",
-    cropName: "Cải cầu vồng Thụy Sĩ",
-    description: "Đang canh tác tuần thứ 3, phát triển xanh tốt.",
-    imageUrl: "/images/plot-4.jpg",
-  },
-  {
-    plotCode: "PLT-B01",
-    plotNumber: "Khu B - Ô 01",
-    areaSquareMeters: 15,
-    status: "AVAILABLE",
-    pricePerMonth: 1250000,
-    soilType: "Đất đỏ Bazan chọn lọc",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu B (Củ Quả)",
-    description: "Vị trí đón nắng sớm tốt, thích hợp trồng cà chua Cherry hoặc ớt chuông.",
-    imageUrl: "/images/plot-5.jpg",
-  },
-  {
-    plotCode: "PLT-B02",
-    plotNumber: "Khu B - Ô 02",
-    areaSquareMeters: 20,
-    status: "OCCUPIED",
-    pricePerMonth: 1600000,
-    soilType: "Đất trộn xơ dừa vi sinh",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu B (Củ Quả)",
-    cropName: "Cà chua bi hữu cơ",
-    description: "Đang trong giai đoạn đơm hoa kết trái.",
-    imageUrl: "/images/plot-6.jpg",
-  },
-  {
-    plotCode: "PLT-B03",
-    plotNumber: "Khu B - Ô 03",
-    areaSquareMeters: 15,
-    status: "MAINTENANCE",
-    pricePerMonth: 1200000,
-    soilType: "Đất đang bón phân hữu cơ",
-    iotSensorInstalled: false,
-    cameraSupported: true,
-    zone: "Khu B (Củ Quả)",
-    description: "Đang thực hiện khử khuẩn đất và bổ sung trùn quế định kỳ.",
-    imageUrl: "/images/plot-7.jpg",
-  },
-  {
-    plotCode: "PLT-B04",
-    plotNumber: "Khu B - Ô 04",
-    areaSquareMeters: 20,
-    status: "AVAILABLE",
-    pricePerMonth: 1500000,
-    soilType: "Đất đỏ Bazan Lâm Đồng",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu B (Củ Quả)",
-    description: "Lô diện tích lớn, sẵn sàng gieo hạt theo yêu cầu của gia chủ.",
-    imageUrl: "/images/plot-8.jpg",
-  },
-  {
-    plotCode: "PLT-C01",
-    plotNumber: "Khu C - Ô 01",
-    areaSquareMeters: 15,
-    status: "RESERVED",
-    pricePerMonth: 1200000,
-    soilType: "Đất thịt nhẹ tơi xốp",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu C (Dược Liệu)",
-    description: "Khách hàng đang hoàn tất thanh toán hợp đồng 6 tháng.",
-    imageUrl: "/images/plot-9.jpg",
-  },
-  {
-    plotCode: "PLT-C02",
-    plotNumber: "Khu C - Ô 02",
-    areaSquareMeters: 20,
-    status: "AVAILABLE",
-    pricePerMonth: 1600000,
-    soilType: "Đất đỏ Bazan tơi xốp",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu C (Dược Liệu)",
-    description: "Khu vực chuyên canh rau gia vị và cây hương thảo sinh thái.",
-    imageUrl: "/images/plot-10.jpg",
-  },
-  {
-    plotCode: "PLT-C03",
-    plotNumber: "Khu C - Ô 03",
-    areaSquareMeters: 15,
-    status: "OCCUPIED",
-    pricePerMonth: 1200000,
-    soilType: "Đất phù sa hữu cơ",
-    iotSensorInstalled: true,
-    cameraSupported: true,
-    zone: "Khu C (Dược Liệu)",
-    cropName: "Xà lách Lô Lô Xanh",
-    description: "Dự kiến thu hoạch đợt 1 trong 5 ngày tới.",
-    imageUrl: "/images/plot-3.jpg",
-  },
-  {
-    plotCode: "PLT-C04",
-    plotNumber: "Khu C - Ô 04",
-    areaSquareMeters: 20,
-    status: "MAINTENANCE",
-    pricePerMonth: 1500000,
-    soilType: "Đất luân canh",
-    iotSensorInstalled: false,
-    cameraSupported: false,
-    zone: "Khu C (Dược Liệu)",
-    description: "Hệ thống tưới đang được nâng cấp van điều khiển thông minh.",
-    imageUrl: "/images/plot-4.jpg",
-  },
-];
-
+// Raw server shapes
 export interface RawServerPlotItem {
   id?: string;
   plotCode?: string;
@@ -196,39 +36,84 @@ export interface RawServerPlotItem {
   } | null;
 }
 
+export interface ServerPlotDetailData extends RawServerPlotItem {
+  defaultCrop?: {
+    id?: string;
+    slug?: string;
+    nameI18n?: { vi?: string; en?: string } | string | null;
+    descriptionI18n?: { vi?: string; en?: string } | string | null;
+    guideI18n?: { vi?: string; en?: string } | string | null;
+    durationDays?: number;
+    expectedYieldKgPerSqm?: number;
+    coverImageUrl?: string | null;
+  } | null;
+  farm?: {
+    id?: string;
+    slug?: string;
+    nameI18n?: { vi?: string; en?: string } | string | null;
+    addressI18n?: { vi?: string; en?: string } | string | null;
+    contactPhone?: string;
+  } | null;
+}
+
+export interface PlotDetailUiItem extends PlotUiItem {
+  farmName?: string;
+  farmAddress?: string;
+  farmPhone?: string;
+  cropDetails?: {
+    slug?: string;
+    name?: string;
+    description?: string;
+    durationDays?: number;
+    expectedYieldKgPerSqm?: number;
+    coverImageUrl?: string;
+  };
+}
+
+// Helper: resolve i18n object or plain string
+function resolveI18n(
+  value: { vi?: string; en?: string } | string | null | undefined,
+): string | undefined {
+  if (!value) return undefined;
+  if (typeof value === "string") return value || undefined;
+  return value.vi || value.en || undefined;
+}
+
+// Mapper: raw server item -> UI item
 function mapRawPlotToUiItem(item: RawServerPlotItem): PlotUiItem {
   const plotCode = item.plotCode || "PLT-UNKNOWN";
-  const plotNumber = item.plotNumber || `Ô ${plotCode}`;
-  const areaSquareMeters = item.areaSqm !== null && item.areaSqm !== undefined
-    ? Number(item.areaSqm)
-    : (item.areaSquareMeters ?? 15);
-  const pricePerMonth = item.pricePerMonth !== null && item.pricePerMonth !== undefined
-    ? Number(item.pricePerMonth)
-    : 1200000;
+  const plotNumber = item.plotNumber || `O ${plotCode}`;
+
+  const areaSquareMeters =
+    item.areaSqm !== null && item.areaSqm !== undefined
+      ? Number(item.areaSqm)
+      : (item.areaSquareMeters ?? 15);
+
+  const pricePerMonth =
+    item.pricePerMonth !== null && item.pricePerMonth !== undefined
+      ? Number(item.pricePerMonth)
+      : 1200000;
 
   let soilType = "Đất đỏ Bazan Lâm Đồng";
   if (item.soilTypeI18n) {
-    if (typeof item.soilTypeI18n === "object" && item.soilTypeI18n.vi) {
-      soilType = item.soilTypeI18n.vi;
-    } else if (typeof item.soilTypeI18n === "string") {
-      soilType = item.soilTypeI18n;
-    }
+    soilType = resolveI18n(item.soilTypeI18n) ?? soilType;
   } else if (item.soilType) {
     soilType = item.soilType;
   }
 
-  const zone = item.zone || (
-    plotCode.startsWith("PLT-A") ? "Khu A (Rau Ăn Lá)" :
-    plotCode.startsWith("PLT-B") ? "Khu B (Củ Quả)" :
-    plotCode.startsWith("PLT-C") ? "Khu C (Dược Liệu)" :
-    "Khu D (Nông Sản Cao Cấp)"
-  );
+  const zone =
+    item.zone ||
+    (plotCode.startsWith("PLT-A")
+      ? "Khu A (Rau Ăn Lá)"
+      : plotCode.startsWith("PLT-B")
+        ? "Khu B (Củ Quả)"
+        : plotCode.startsWith("PLT-C")
+          ? "Khu C (Dược Liệu)"
+          : "Khu D (Nông Sản Cao Cấp)");
 
   let cropName = item.cropName;
   if (!cropName && item.defaultCrop?.nameI18n) {
-    cropName = typeof item.defaultCrop.nameI18n === "object"
-      ? (item.defaultCrop.nameI18n.vi || item.defaultCrop.nameI18n.en)
-      : String(item.defaultCrop.nameI18n);
+    cropName = resolveI18n(item.defaultCrop.nameI18n);
   }
 
   const numMatches = plotCode.match(/\d+/);
@@ -243,73 +128,162 @@ function mapRawPlotToUiItem(item: RawServerPlotItem): PlotUiItem {
     status: item.status || "AVAILABLE",
     pricePerMonth,
     soilType,
-    iotSensorInstalled: item.iotSensorInstalled ?? true,
+    iotSensorInstalled: item.iotSensorInstalled ?? false,
     cameraSupported: item.cameraSupported ?? Boolean(item.streamUrl),
     streamUrl: item.streamUrl ?? undefined,
     zone,
     cropName,
-    description: item.description || `Ô đất ${plotNumber} chuẩn nông nghiệp sạch sinh thái Đà Lạt.`,
+    description:
+      item.description ||
+      `Ô đất ${plotNumber} chuẩn nông nghiệp sạch sinh thái Đà Lạt.`,
     imageUrl,
   };
 }
 
+// Response parser
+interface PlotsListResponseData {
+  success: boolean;
+  data:
+    | {
+        items?: RawServerPlotItem[];
+        plots?: RawServerPlotItem[];
+        pagination?: {
+          total: number;
+          totalPages?: number;
+          page?: number;
+          limit?: number;
+        };
+      }
+    | RawServerPlotItem[];
+}
+
+function parsePlotsResponse(
+  responseData: PlotsListResponseData,
+  page: number,
+  limit: number,
+): { plots: PlotUiItem[]; total: number; totalPages: number; page: number } {
+  const rawData = responseData?.data;
+  let rawList: RawServerPlotItem[] = [];
+  let total = 0;
+  let totalPages = 0;
+
+  if (Array.isArray(rawData)) {
+    rawList = rawData;
+    total = rawData.length;
+    totalPages = Math.max(1, Math.ceil(total / limit));
+  } else if (rawData && typeof rawData === "object") {
+    if ("items" in rawData && Array.isArray(rawData.items)) {
+      rawList = rawData.items;
+      total = rawData.pagination?.total ?? rawList.length;
+      totalPages =
+        rawData.pagination?.totalPages ??
+        Math.max(1, Math.ceil(total / limit));
+    } else if ("plots" in rawData && Array.isArray(rawData.plots)) {
+      rawList = rawData.plots;
+      total = rawData.pagination?.total ?? rawList.length;
+      totalPages =
+        rawData.pagination?.totalPages ??
+        Math.max(1, Math.ceil(total / limit));
+    }
+  }
+
+  return {
+    plots: rawList.map(mapRawPlotToUiItem),
+    total,
+    totalPages,
+    page,
+  };
+}
+
+/**
+ * Fetch danh sách ô đất từ server.
+ * Ném lỗi nếu request thất bại — không có mock fallback.
+ */
 export async function fetchPlotsApi(query?: PlotsQuery): Promise<{
   plots: PlotUiItem[];
   total: number;
+  totalPages: number;
+  page: number;
 }> {
-  try {
-    const response = await axiosClient.get<{
-      success: boolean;
-      data: {
-        items?: RawServerPlotItem[];
-        plots?: RawServerPlotItem[];
-        pagination?: { total: number };
-      } | RawServerPlotItem[];
-    }>("/plots", { params: query });
+  const params: Record<string, unknown> = {
+    limit: query?.limit ?? 100,
+    page: query?.page ?? 1,
+  };
+  if (query?.status) params.status = query.status;
+  if (query?.farmId) params.farmId = query.farmId;
 
-    const rawData = response.data?.data;
-    let rawList: RawServerPlotItem[] = [];
-    let totalCount = 0;
+  let lastError: unknown;
 
-    if (Array.isArray(rawData)) {
-      rawList = rawData;
-      totalCount = rawData.length;
-    } else if (rawData && typeof rawData === "object") {
-      if ("items" in rawData && Array.isArray(rawData.items)) {
-        rawList = rawData.items;
-        totalCount = rawData.pagination?.total ?? rawList.length;
-      } else if ("plots" in rawData && Array.isArray(rawData.plots)) {
-        rawList = rawData.plots;
-        totalCount = rawData.pagination?.total ?? rawList.length;
-      }
+  for (const prefix of ["/plots", "/v1/plots"]) {
+    try {
+      const response =
+        await axiosClient.get<PlotsListResponseData>(prefix, { params });
+      return parsePlotsResponse(
+        response.data,
+        (query?.page ?? 1),
+        (query?.limit ?? 100),
+      );
+    } catch (err) {
+      lastError = err;
     }
+  }
 
-    if (rawList.length > 0) {
+  throw parseApiError(lastError);
+}
+
+/**
+ * Fetch chi tiết 1 ô đất theo ID hoặc plotCode.
+ * Ném lỗi nếu không tìm thấy hoặc server lỗi.
+ */
+export async function fetchPlotDetailApi(
+  idOrCode: string,
+): Promise<PlotDetailUiItem> {
+  interface PlotDetailResponse {
+    success: boolean;
+    data: ServerPlotDetailData;
+  }
+
+  let lastError: unknown;
+
+  for (const prefix of ["/plots", "/v1/plots"]) {
+    try {
+      const response = await axiosClient.get<PlotDetailResponse>(
+        `${prefix}/${idOrCode}`,
+      );
+      const raw = response.data?.data;
+      if (!raw) throw new Error("Không nhận được dữ liệu ô đất từ máy chủ");
+
+      const baseUi = mapRawPlotToUiItem(raw);
+      const cropName =
+        resolveI18n(raw.defaultCrop?.nameI18n) || baseUi.cropName;
+      const cropDesc = resolveI18n(raw.defaultCrop?.descriptionI18n);
+      const farmName = resolveI18n(raw.farm?.nameI18n);
+      const farmAddress = resolveI18n(raw.farm?.addressI18n);
+
       return {
-        plots: rawList.map(mapRawPlotToUiItem),
-        total: totalCount,
+        ...baseUi,
+        cropName,
+        imageUrl: raw.defaultCrop?.coverImageUrl || baseUi.imageUrl,
+        farmName,
+        farmAddress,
+        farmPhone: raw.farm?.contactPhone,
+        cropDetails: raw.defaultCrop
+          ? {
+              slug: raw.defaultCrop.slug,
+              name: cropName,
+              description: cropDesc,
+              durationDays: raw.defaultCrop.durationDays,
+              expectedYieldKgPerSqm: raw.defaultCrop.expectedYieldKgPerSqm,
+              coverImageUrl: raw.defaultCrop.coverImageUrl || undefined,
+            }
+          : undefined,
       };
+    } catch (err) {
+      lastError = err;
     }
-
-
-    return { plots: filterMockPlots(query), total: MOCK_FALLBACK_PLOTS.length };
-  } catch (error) {
-    const apiError = parseApiError(error);
-    if (process.env.NODE_ENV !== "test") {
-      console.warn(`[fetchPlotsApi] Failed to fetch plots: ${apiError.message}. Using fallback.`);
-    }
-    return { plots: filterMockPlots(query), total: MOCK_FALLBACK_PLOTS.length };
   }
+
+  throw parseApiError(lastError);
 }
-
-
-function filterMockPlots(query?: PlotsQuery): PlotUiItem[] {
-  let result = [...MOCK_FALLBACK_PLOTS];
-  if (query?.status) {
-    result = result.filter((p) => p.status === query.status);
-  }
-  return result;
-}
-
 
 export type { PlotStatus, PlotsQuery };

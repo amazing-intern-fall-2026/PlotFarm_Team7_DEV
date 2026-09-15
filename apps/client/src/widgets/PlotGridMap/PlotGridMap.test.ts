@@ -1,8 +1,85 @@
 import { describe, it, expect } from "vitest";
-import { MOCK_FALLBACK_PLOTS, type PlotUiItem } from "@/entities/plot";
+import type { PlotUiItem } from "@/entities/plot";
+
+/** Local test fixtures — mirror real DB data shape, not used in production */
+const TEST_PLOTS: PlotUiItem[] = [
+  {
+    plotCode: "PLT-A01",
+    plotNumber: "Khu A - Ô 01",
+    areaSquareMeters: 15,
+    status: "AVAILABLE",
+    pricePerMonth: 1200000,
+    soilType: "Đất đỏ Bazan tơi xốp",
+    iotSensorInstalled: true,
+    cameraSupported: true,
+    zone: "Khu A (Rau Ăn Lá)",
+    imageUrl: "/images/plot-1.jpg",
+  },
+  {
+    plotCode: "PLT-A02",
+    plotNumber: "Khu A - Ô 02",
+    areaSquareMeters: 15,
+    status: "AVAILABLE",
+    pricePerMonth: 1200000,
+    soilType: "Đất phù sa giàu mùn",
+    iotSensorInstalled: true,
+    cameraSupported: true,
+    zone: "Khu A (Rau Ăn Lá)",
+    imageUrl: "/images/plot-2.jpg",
+  },
+  {
+    plotCode: "PLT-A03",
+    plotNumber: "Khu A - Ô 03",
+    areaSquareMeters: 20,
+    status: "RESERVED",
+    pricePerMonth: 1500000,
+    soilType: "Đất đỏ Bazan hữu cơ",
+    iotSensorInstalled: true,
+    cameraSupported: true,
+    zone: "Khu A (Rau Ăn Lá)",
+    imageUrl: "/images/plot-3.jpg",
+  },
+  {
+    plotCode: "PLT-A04",
+    plotNumber: "Khu A - Ô 04",
+    areaSquareMeters: 20,
+    status: "OCCUPIED",
+    pricePerMonth: 1500000,
+    soilType: "Đất đỏ Bazan Lâm Đồng",
+    iotSensorInstalled: true,
+    cameraSupported: true,
+    zone: "Khu A (Rau Ăn Lá)",
+    cropName: "Cải cầu vồng Thụy Sĩ",
+    imageUrl: "/images/plot-4.jpg",
+  },
+  {
+    plotCode: "PLT-B01",
+    plotNumber: "Khu B - Ô 01",
+    areaSquareMeters: 15,
+    status: "MAINTENANCE",
+    pricePerMonth: 1250000,
+    soilType: "Đất đỏ Bazan chọn lọc",
+    iotSensorInstalled: false,
+    cameraSupported: true,
+    zone: "Khu B (Củ Quả)",
+    imageUrl: "/images/plot-5.jpg",
+  },
+  {
+    plotCode: "PLT-B02",
+    plotNumber: "Khu B - Ô 02",
+    areaSquareMeters: 20,
+    status: "AVAILABLE",
+    pricePerMonth: 1600000,
+    soilType: "Đất trộn xơ dừa vi sinh",
+    iotSensorInstalled: true,
+    cameraSupported: true,
+    zone: "Khu B (Củ Quả)",
+    imageUrl: "/images/plot-6.jpg",
+  },
+];
 
 describe("widgets/PlotGridMap & PlotCard - US-18 Unit Test Suite", () => {
-  const plots: PlotUiItem[] = MOCK_FALLBACK_PLOTS;
+  const plots: PlotUiItem[] = TEST_PLOTS;
 
   // ── Kịch bản 1 (AC1): Hiển thị đúng màu sắc và trạng thái của các ô đất ────
   describe("Kịch bản 1 (AC1): Xác thực cấu trúc dữ liệu và trạng thái ô đất", () => {

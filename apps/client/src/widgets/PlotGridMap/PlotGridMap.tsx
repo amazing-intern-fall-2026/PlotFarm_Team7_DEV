@@ -7,7 +7,6 @@ export * from "./types";
 export * from "./constants";
 export * from "./PlotCard";
 export * from "./PlotGridSkeleton";
-export * from "./PlotDetailDrawer";
 export * from "./PlotGridMapDesktop";
 export * from "./PlotGridMapMobile";
 

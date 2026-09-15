@@ -63,41 +63,34 @@ export function FarmPlotFilter({
     return [
       {
         value: "all",
-        label: `${PLOTS_FILTER_MESSAGES.ALL_SIZES_LABEL} (${counts.total})`,
+        label: PLOTS_FILTER_MESSAGES.ALL_SIZES_LABEL,
       },
       {
         value: "15",
-        label: `${PLOTS_FILTER_MESSAGES.SIZE_15M_LABEL} (${counts.standard15m ?? 0})`,
+        label: PLOTS_FILTER_MESSAGES.SIZE_15M_LABEL,
       },
       {
         value: "20",
-        label: `${PLOTS_FILTER_MESSAGES.SIZE_20M_LABEL} (${counts.large20m ?? 0})`,
+        label: PLOTS_FILTER_MESSAGES.SIZE_20M_LABEL,
       },
     ];
-  }, [sizeOptions, counts]);
+  }, [sizeOptions]);
 
   const statusChips = React.useMemo<StatusChipItem[]>(() => {
     return PLOTS_STATUS_CHIP_DEFINITIONS.filter((def) => {
-      // Ẩn chip RESERVED nếu không có lô nào giữ chỗ trong hệ thống
       if (def.id === "RESERVED" && (counts.reserved === undefined || counts.reserved < 0)) {
         return false;
       }
       return true;
     }).map((def) => {
-      let count = 0;
-      if (def.id === "AVAILABLE") count = counts.available;
-      if (def.id === "OCCUPIED") count = counts.occupied;
-      if (def.id === "MAINTENANCE") count = counts.maintenance;
-      if (def.id === "RESERVED") count = counts.reserved ?? 0;
-
       return {
         id: def.id,
-        label: `${def.label} (${count})`,
+        label: def.label,
         dotColor: def.dotColor,
         activeStyle: def.activeStyle,
       };
     });
-  }, [counts]);
+  }, [counts.reserved]);
 
   const hasActiveFilters =
     searchTerm.trim() !== "" ||

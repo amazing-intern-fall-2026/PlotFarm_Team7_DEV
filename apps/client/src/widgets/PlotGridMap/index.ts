@@ -5,5 +5,4 @@ export * from "./PlotGridSkeleton";
 export * from "./PlotGridMapDesktop";
 export * from "./PlotGridMapMobile";
 export * from "./PlotGridMap";
-export * from "./PlotDetailDrawer";
 export * from "./PlotPagination";

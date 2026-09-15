@@ -32,12 +32,18 @@ export function usePlots(options: UsePlotsOptions = {}) {
     initialPage = 1,
   } = options;
 
+  // ── Server state ───────────────────────────────────────────────────────────
   const [plots, setPlots] = React.useState<PlotUiItem[]>([]);
+  const [serverTotal, setServerTotal] = React.useState<number>(0);
+  const [serverTotalPages, setServerTotalPages] = React.useState<number>(1);
   const [loading, setLoading] = React.useState<boolean>(autoFetch);
   const [error, setError] = React.useState<string | null>(null);
 
+  // ── Pagination (server-driven) ─────────────────────────────────────────────
   const [currentPage, setCurrentPage] = React.useState<number>(initialPage);
 
+  // ── Filters ────────────────────────────────────────────────────────────────
+  // filterStatus → sent to server; others → client-side on current batch
   const [selectedPlotId, setSelectedPlotId] = React.useState<string | null>(null);
   const [filterStatus, setFilterStatus] = React.useState<FilterStatusOption>(initialFilterStatus);
   const [filterSize, setFilterSize] = React.useState<string>("all");
@@ -47,52 +53,103 @@ export function usePlots(options: UsePlotsOptions = {}) {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [sortBy, setSortBy] = React.useState<PlotSortOption>(initialSortBy);
 
+  // Reset page when client-side filters change
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [filterStatus, filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery, sortBy]);
+  }, [filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery, sortBy]);
 
-  const loadPlots = React.useCallback(async () => {
+  // Reset page when server-level status filter changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filterStatus]);
 
-    setLoading(true);
+  /**
+   * Fetch từ server với status filter + pagination.
+   * - status → server query param (nếu không phải ALL)
+   * - page, limit → server query params
+   * - Các filter còn lại (size, zone, search, sort) → client-side sau khi nhận data
+   */
+  const loadPlots = React.useCallback(
+    async (page: number, status: FilterStatusOption) => {
+      setLoading(true);
+      setError(null);
+      try {
+        // PlotsQuery chỉ hỗ trợ 4 status chính; các status còn lại (HARVESTING, INACTIVE)
+        // không được server filter, fetch tất cả rồi lọc client-side
+        const queryStatusValues = ["AVAILABLE", "RESERVED", "OCCUPIED", "MAINTENANCE"] as const;
+        type QueryStatus = (typeof queryStatusValues)[number];
+        const isQueryStatus = (s: string): s is QueryStatus =>
+          (queryStatusValues as readonly string[]).includes(s);
 
-    setError(null);
-    try {
-      const data = await fetchPlotsApi();
-      setPlots(data.plots);
-    } catch (err) {
-      const message = getErrorMessage(err, "Không thể tải danh sách ô đất");
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+        const query: { page: number; limit: number; status?: QueryStatus } = {
+          page,
+          limit: pageSize,
+        };
+        if (status !== "ALL" && isQueryStatus(status)) {
+          query.status = status;
+        }
 
+        const data = await fetchPlotsApi(query);
+        setPlots(data.plots);
+        setServerTotal(data.total);
+        setServerTotalPages(data.totalPages);
+      } catch (err) {
+        const message = getErrorMessage(err, "Không thể tải danh sách ô đất");
+        setError(message);
+        setPlots([]);
+        setServerTotal(0);
+        setServerTotalPages(1);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [pageSize],
+  );
+
+  // Trigger fetch khi page hoặc status filter thay đổi
   React.useEffect(() => {
     if (autoFetch) {
-      loadPlots();
+      loadPlots(currentPage, filterStatus);
     }
-  }, [autoFetch, loadPlots]);
+  }, [autoFetch, currentPage, filterStatus, loadPlots]);
+
+  // ── Client-side helpers ────────────────────────────────────────────────────
 
   const matchesSearch = React.useCallback((plot: PlotUiItem, query: string) => {
     if (!query.trim()) return true;
     const q = query.toLowerCase().trim().replace("#", "");
-    const matchCode = plot.plotCode.toLowerCase().includes(q);
-    const matchNumber = plot.plotNumber.toLowerCase().includes(q);
-    const matchZone = plot.zone?.toLowerCase().includes(q) ?? false;
-    const matchSoil = plot.soilType?.toLowerCase().includes(q) ?? false;
-    const matchCrop = plot.cropName?.toLowerCase().includes(q) ?? false;
-    const matchDesc = plot.description?.toLowerCase().includes(q) ?? false;
     return (
-      matchCode ||
-      matchNumber ||
-      matchZone ||
-      matchSoil ||
-      matchCrop ||
-      matchDesc
+      plot.plotCode.toLowerCase().includes(q) ||
+      plot.plotNumber.toLowerCase().includes(q) ||
+      (plot.zone?.toLowerCase().includes(q) ?? false) ||
+      (plot.soilType?.toLowerCase().includes(q) ?? false) ||
+      (plot.cropName?.toLowerCase().includes(q) ?? false) ||
+      (plot.description?.toLowerCase().includes(q) ?? false)
     );
   }, []);
 
-  // Candidate pool cho Status Chips (lọc theo search và size)
+  /** Lọc + sort client-side trên batch hiện tại từ server */
+  const filteredPlots = React.useMemo(() => {
+    const list = plots.filter((plot) => {
+      if (filterSize !== "all" && String(plot.areaSquareMeters) !== filterSize) return false;
+      if (filterZone !== "all" && plot.zone !== filterZone) return false;
+      if (filterHasCamera && !plot.cameraSupported) return false;
+      if (filterHasIot && !plot.iotSensorInstalled) return false;
+      return matchesSearch(plot, searchQuery);
+    });
+
+    return [...list].sort((a, b) => {
+      if (sortBy === "price_asc") return a.pricePerMonth - b.pricePerMonth;
+      if (sortBy === "price_desc") return b.pricePerMonth - a.pricePerMonth;
+      if (sortBy === "area_desc") return b.areaSquareMeters - a.areaSquareMeters;
+      if (sortBy === "code_asc") return a.plotCode.localeCompare(b.plotCode);
+      return 0;
+    });
+  }, [plots, filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery, sortBy, matchesSearch]);
+
+  // ── Counts ─────────────────────────────────────────────────────────────────
+
+  /** statusPool: lọc bỏ size/zone/cam/iot để đếm đúng status counts */
   const statusPool = React.useMemo(() => {
     return plots.filter((plot) => {
       if (!matchesSearch(plot, searchQuery)) return false;
@@ -104,143 +161,75 @@ export function usePlots(options: UsePlotsOptions = {}) {
     });
   }, [plots, searchQuery, filterSize, filterZone, filterHasCamera, filterHasIot, matchesSearch]);
 
-  // Candidate pool cho Size Pills (lọc theo search và status)
-  const sizePool = React.useMemo(() => {
-    return plots.filter((plot) => {
-      if (!matchesSearch(plot, searchQuery)) return false;
-      if (filterStatus !== "ALL" && plot.status !== filterStatus) return false;
-      if (filterZone !== "all" && plot.zone !== filterZone) return false;
-      if (filterHasCamera && !plot.cameraSupported) return false;
-      if (filterHasIot && !plot.iotSensorInstalled) return false;
-      return true;
-    });
-  }, [plots, searchQuery, filterStatus, filterZone, filterHasCamera, filterHasIot, matchesSearch]);
-
-  // Bộ đếm thống kê động theo trạng thái thực tế
   const counts = React.useMemo(() => {
     return {
-      total: plots.length,
-      filtered: statusPool.length,
+      total: serverTotal,
+      filtered: filteredPlots.length,
       available: statusPool.filter((p) => p.status === "AVAILABLE").length,
       reserved: statusPool.filter((p) => p.status === "RESERVED").length,
       occupied: statusPool.filter((p) => p.status === "OCCUPIED").length,
       maintenance: statusPool.filter((p) => p.status === "MAINTENANCE").length,
-      standard15m: sizePool.filter((p) => p.areaSquareMeters === 15).length,
-      large20m: sizePool.filter((p) => p.areaSquareMeters === 20).length,
+      standard15m: plots.filter((p) => p.areaSquareMeters === 15).length,
+      large20m: plots.filter((p) => p.areaSquareMeters === 20).length,
     };
-  }, [plots.length, statusPool, sizePool]);
+  }, [serverTotal, filteredPlots.length, statusPool, plots]);
 
-  // Danh sách kích thước sinh động theo trạng thái thực tế
+  // ── Filter options ─────────────────────────────────────────────────────────
+
   const availableSizes: PlotFilterOption[] = React.useMemo(() => {
-    const rawSizes = Array.from(new Set(plots.map((p) => p.areaSquareMeters))).sort((a, b) => a - b);
+    const rawSizes = Array.from(new Set(plots.map((p) => p.areaSquareMeters))).sort(
+      (a, b) => a - b,
+    );
     return [
-      { value: "all", label: `Tất cả (${sizePool.length})`, count: sizePool.length },
-      ...rawSizes.map((size) => {
-        const count = sizePool.filter((p) => p.areaSquareMeters === size).length;
-        return {
-          value: String(size),
-          label: `Lô ${size}m² (${count})`,
-          count,
-        };
-      }),
+      { value: "all", label: "Tất cả", count: plots.length },
+      ...rawSizes.map((size) => ({
+        value: String(size),
+        label: `Lô ${size}m²`,
+        count: plots.filter((p) => p.areaSquareMeters === size).length,
+      })),
     ];
-  }, [plots, sizePool]);
+  }, [plots]);
 
-  // Danh sách phân khu sinh động từ dữ liệu ô đất thực tế
   const availableZones: PlotFilterOption[] = React.useMemo(() => {
     const rawZones = plots.map((p) => p.zone).filter((z): z is string => Boolean(z));
     const uniqueZones = Array.from(new Set(rawZones));
     return [
-      { value: "all", label: `Tất cả khu (${plots.length})`, count: plots.length },
+      { value: "all", label: "Tất cả khu", count: plots.length },
       ...uniqueZones.map((zone) => ({
         value: zone,
-        label: `${zone} (${plots.filter((p) => p.zone === zone).length})`,
+        label: zone,
         count: plots.filter((p) => p.zone === zone).length,
       })),
     ];
   }, [plots]);
 
-  // Lọc và sắp xếp danh sách ô đất theo tiêu chí
-  const filteredPlots = React.useMemo(() => {
-    const list = plots.filter((plot) => {
-      // 1. Lọc theo trạng thái
-      if (filterStatus !== "ALL" && plot.status !== filterStatus) {
-        return false;
-      }
+  // ── Pagination ─────────────────────────────────────────────────────────────
 
-      // 2. Lọc theo diện tích động
-      if (filterSize !== "all" && String(plot.areaSquareMeters) !== filterSize) {
-        return false;
-      }
+  /** Total pages từ server (pagination thật) */
+  const totalPages = serverTotalPages;
 
-      // 3. Lọc theo phân khu
-      if (filterZone !== "all" && plot.zone !== filterZone) {
-        return false;
-      }
+  /**
+   * Server đã paginate — paginatedPlots là kết quả client-side filter
+   * trên batch page hiện tại từ server.
+   */
+  const paginatedPlots = filteredPlots;
 
-      // 4. Lọc theo tiện ích (Camera / IoT)
-      if (filterHasCamera && !plot.cameraSupported) {
-        return false;
-      }
-      if (filterHasIot && !plot.iotSensorInstalled) {
-        return false;
-      }
-
-      // 5. Tìm kiếm theo mã ô hoặc khu vực
-      return matchesSearch(plot, searchQuery);
-    });
-
-    // 6. Sắp xếp danh sách theo sortBy
-    return [...list].sort((a, b) => {
-      if (sortBy === "price_asc") {
-        return a.pricePerMonth - b.pricePerMonth;
-      }
-      if (sortBy === "price_desc") {
-        return b.pricePerMonth - a.pricePerMonth;
-      }
-      if (sortBy === "area_desc") {
-        return b.areaSquareMeters - a.areaSquareMeters;
-      }
-      if (sortBy === "code_asc") {
-        return a.plotCode.localeCompare(b.plotCode);
-      }
-      return 0;
-    });
-  }, [
-    plots,
-    filterStatus,
-    filterSize,
-    filterZone,
-    filterHasCamera,
-    filterHasIot,
-    searchQuery,
-    sortBy,
-    matchesSearch,
-  ]);
-
-  const totalPages = Math.max(1, Math.ceil(filteredPlots.length / pageSize));
-  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
-
-  const paginatedPlots = React.useMemo(() => {
-    const startIndex = (validCurrentPage - 1) * pageSize;
-    return filteredPlots.slice(startIndex, startIndex + pageSize);
-  }, [filteredPlots, validCurrentPage, pageSize]);
+  // ── Selected plot ──────────────────────────────────────────────────────────
 
   const selectedPlot = React.useMemo(() => {
     if (!selectedPlotId) return null;
     return plots.find((p) => p.plotCode === selectedPlotId) ?? null;
   }, [plots, selectedPlotId]);
 
-
   return {
     plots,
     filteredPlots,
     paginatedPlots,
-    currentPage: validCurrentPage,
+    currentPage,
     setCurrentPage,
     pageSize,
     totalPages,
-    totalFilteredCount: filteredPlots.length,
+    totalFilteredCount: serverTotal,
     loading,
     error,
     counts,
@@ -263,7 +252,6 @@ export function usePlots(options: UsePlotsOptions = {}) {
     setSearchQuery,
     sortBy,
     setSortBy,
-    refetch: loadPlots,
+    refetch: () => loadPlots(currentPage, filterStatus),
   };
 }
-
