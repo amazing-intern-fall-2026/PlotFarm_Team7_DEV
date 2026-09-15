@@ -27,6 +27,8 @@ export function VideoHeroBannerDesktop({
   secondaryCtaText,
   onSecondaryCtaClick,
   className,
+  telemetry,
+  telemetryLoading,
 }: VideoHeroBannerViewProps) {
   const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -194,38 +196,59 @@ export function VideoHeroBannerDesktop({
               </Box>
 
               {/* Thông số của phân khu hiện tại */}
-              <Box className="space-y-2 text-xs">
-                <Box className="flex justify-between items-center">
-                  <span className="text-white/70">Phân cảnh đang chiếu:</span>
-                  <span className="font-semibold text-white truncate max-w-[140px]">
-                    {currentSlide.shortTitle}
-                  </span>
+              {telemetryLoading ? (
+                <Box className="space-y-2.5 text-xs animate-pulse py-1">
+                  <Box className="flex justify-between items-center">
+                    <Box className="h-3 w-28 bg-white/20 rounded" />
+                    <Box className="h-3 w-20 bg-white/30 rounded" />
+                  </Box>
+                  <Box className="flex justify-between items-center">
+                    <Box className="h-3 w-24 bg-white/20 rounded" />
+                    <Box className="h-3 w-16 bg-white/30 rounded" />
+                  </Box>
+                  <Box className="flex justify-between items-center">
+                    <Box className="h-3 w-24 bg-white/20 rounded" />
+                    <Box className="h-3 w-28 bg-white/30 rounded" />
+                  </Box>
+                  <Box className="flex justify-between items-center">
+                    <Box className="h-3 w-28 bg-white/20 rounded" />
+                    <Box className="h-3 w-20 bg-white/30 rounded" />
+                  </Box>
                 </Box>
+              ) : (
+                <Box className="space-y-2 text-xs">
+                  <Box className="flex justify-between items-center">
+                    <span className="text-white/70">Phân cảnh đang chiếu:</span>
+                    <span className="font-semibold text-white truncate max-w-[140px]">
+                      {telemetry?.location || currentSlide.shortTitle}
+                    </span>
+                  </Box>
 
-                <Box className="flex justify-between items-center">
-                  <span className="text-white/70">
-                    {currentSlide.stats.label}:
-                  </span>
-                  <span className="font-bold text-emerald-300">
-                    {currentSlide.stats.value}
-                  </span>
-                </Box>
+                  <Box className="flex justify-between items-center">
+                    <span className="text-white/70">
+                      {currentSlide.stats.label}:
+                    </span>
+                    <span className="font-bold text-emerald-300">
+                      {currentSlide.stats.value}
+                    </span>
+                  </Box>
 
-                <Box className="flex justify-between items-center">
-                  <span className="text-white/70">Độ ẩm & Nhiệt độ:</span>
-                  <span className="font-semibold text-white">
-                    78% • 19.4°C (Đà Lạt)
-                  </span>
-                </Box>
+                  <Box className="flex justify-between items-center">
+                    <span className="text-white/70">Độ ẩm & Nhiệt độ:</span>
+                    <span className="font-semibold text-white">
+                      {telemetry ? `${telemetry.humidity}% • ${telemetry.temperature}°C (Đà Lạt)` : "78% • 19.4°C (Đà Lạt)"}
+                    </span>
+                  </Box>
 
-                <Box className="flex justify-between items-center">
-                  <span className="text-white/70">Tình trạng cảm biến:</span>
-                  <span className="inline-flex items-center gap-1.5 font-medium text-emerald-400">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Hoạt động tối ưu
-                  </span>
+                  <Box className="flex justify-between items-center">
+                    <span className="text-white/70">Tình trạng cảm biến:</span>
+                    <span className="inline-flex items-center gap-1.5 font-medium text-emerald-400">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      {telemetry?.sensorStatus || "Hoạt động tối ưu"}
+                    </span>
+                  </Box>
                 </Box>
-              </Box>
+              )}
 
               {/* Danh sách 4 scene nhanh để click đổi video */}
               <Box className="pt-2 border-t border-white/10 space-y-1.5">

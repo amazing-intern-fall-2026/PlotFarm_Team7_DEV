@@ -116,15 +116,7 @@ function CommitmentCard({ item }: { item: CommitmentItem }) {
 }
 
 function SupportActionBar({ onConsultClick }: { onConsultClick?: () => void }) {
-  const handleAction = () => {
-    if (onConsultClick) {
-      onConsultClick();
-    } else {
-      window.open(
-        `tel:${COMMITMENTS_SUPPORT_BAR.PHONE_HOTLINE.replace(/\s+/g, "")}`,
-      );
-    }
-  };
+
 
   return (
     <Box className="rounded-xl bg-muted/40 dark:bg-muted/20 border border-border/70 p-3.5 sm:p-4 transition-colors">
@@ -155,17 +147,27 @@ function SupportActionBar({ onConsultClick }: { onConsultClick?: () => void }) {
         </Flex>
 
         <Button
+          asChild
           variant="secondary"
           size="sm"
-          onClick={handleAction}
           className={cn(
-            "w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-xs",
+            "w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-xs inline-flex items-center justify-center",
             "bg-secondary hover:bg-secondary-hover text-secondary-foreground",
             "shadow-xs hover:shadow-sm transition-all active:scale-[0.98] shrink-0",
           )}
-          leftIcon={<Headphones className="w-3.5 h-3.5" />}
         >
-          {COMMITMENTS_SUPPORT_BAR.CTA_TEXT}
+          <a
+            href={`tel:${COMMITMENTS_SUPPORT_BAR.PHONE_HOTLINE.replace(/[^0-9]/g, "") || "19006868"}`}
+            onClick={(e) => {
+              if (onConsultClick) {
+                e.preventDefault();
+                onConsultClick();
+              }
+            }}
+          >
+            <Headphones className="w-3.5 h-3.5 mr-1.5" />
+            {COMMITMENTS_SUPPORT_BAR.CTA_TEXT}
+          </a>
         </Button>
       </Flex>
     </Box>
