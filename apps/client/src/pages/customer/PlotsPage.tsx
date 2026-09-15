@@ -73,7 +73,7 @@ export function PlotsPage() {
           />
         </Box>
 
-        <Box className="mt-12 md:mt-16">
+        <Box className="mt-8 md:mt-10">
           <CommitmentsSection />
         </Box>
       </Box>
