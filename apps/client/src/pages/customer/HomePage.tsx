@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { VideoHeroBanner } from "@/widgets/HomeHero";
-import { HowItWorksGuide } from "@/widgets/HowItWorks";
+import { KeyFeatures } from "@/widgets/KeyFeatures";
 import { SeasonalCropsCarousel } from "@/widgets/SeasonalCrops";
 import {
   Card,
@@ -26,8 +26,8 @@ export function HomePage() {
 
       {/* Marketplace Showcase & Seasonal Crops Carousel */}
       <Container className="py-12 space-y-12">
-        {/* Hướng Dẫn / Chuỗi Quy Trình Các Bước Sử Dụng */}
-        <HowItWorksGuide />
+        {/* Các Tính Năng Nổi Bật Nền Tảng (Key Features Bento Grid) */}
+        <KeyFeatures />
 
         {/* Seasonal Crops Splide Carousel */}
         <SeasonalCropsCarousel />

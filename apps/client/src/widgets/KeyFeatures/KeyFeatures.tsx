@@ -14,32 +14,34 @@ import {
   Activity,
   Truck,
   Layers,
+  Sparkles,
 } from "lucide-react";
 import { Box, Button, Badge, Text } from "@/shared/ui";
 
-export function HowItWorksGuide() {
+export function KeyFeatures() {
   const navigate = useNavigate();
 
   return (
-    <section aria-labelledby="how-it-works-title" className="w-full space-y-10 select-none">
+    <section aria-labelledby="key-features-title" className="w-full space-y-10 select-none">
       {/* ── 1. Section Header & Focal Typography ── */}
       <Box className="text-center space-y-3 max-w-3xl mx-auto px-4">
-        <Box className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+        <Box className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+          <Sparkles className="w-3.5 h-3.5" />
           <span className="text-xs font-bold uppercase tracking-wider">
-            Hệ sinh thái nông nghiệp thông minh 4.0 • Cloud Farming
+            Tính Năng Nổi Bật • Key Features
           </span>
         </Box>
 
         <Text
           as="h2"
-          id="how-it-works-title"
+          id="key-features-title"
           className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground leading-tight"
         >
-          Số Hóa Toàn Diện Mô Hình Thuê Đất <br className="hidden sm:inline" /> & Canh Tác
+          Số Hóa Toàn Diện Mô Hình Thuê Đất <br className="hidden sm:inline" /> & Canh Tác Thông Minh
         </Text>
 
         <Text className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-          Kết nối trực tiếp cư dân với nông trại Đạ Sar (Lạc Dương) qua 4 phân hệ khép kín:
+          Kết nối trực tiếp cư dân với nông trại Đạ Sar (Lạc Dương) qua các phân hệ công nghệ cao:
           từ đặt giữ chỗ 5 phút, giám sát Camera HLS & cảm biến IoT 24/7, đến thu hoạch và tra cứu vận đơn QR.
         </Text>
       </Box>
@@ -47,7 +49,7 @@ export function HowItWorksGuide() {
       {/* ── 2. Bento Grid: 3 Independent High-Impact Cards ── */}
       <Box className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* ── CARD 1: Phân Hệ Thuê Ô Đất & Thanh Toán VietQR ── */}
-        <Box className="h-full flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
+        <Box className="h-full flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-xs hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
           <Box className="absolute -top-12 -right-12 w-36 h-36 bg-emerald-500/8 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
 
           {/* Card Header */}
@@ -125,7 +127,7 @@ export function HowItWorksGuide() {
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 flex items-center justify-center gap-2 group/btn"
+              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 flex items-center justify-center gap-2 group/btn cursor-pointer"
               onClick={() => navigate("/plots")}
             >
               <span>Khám phá bản đồ ô đất</span>
@@ -135,7 +137,7 @@ export function HowItWorksGuide() {
         </Box>
 
         {/* ── CARD 2: Giám Sát Camera HLS & Telemetry IoT ── */}
-        <Box className="h-full flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
+        <Box className="h-full flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-xs hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
           <Box className="absolute -top-12 -right-12 w-36 h-36 bg-sky-500/8 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
 
           {/* Card Header */}
@@ -223,7 +225,7 @@ export function HowItWorksGuide() {
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800 hover:bg-sky-50 dark:hover:bg-sky-950/50 flex items-center justify-center gap-2 group/btn"
+              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800 hover:bg-sky-50 dark:hover:bg-sky-950/50 flex items-center justify-center gap-2 group/btn cursor-pointer"
               onClick={() => navigate("/plots")}
             >
               <span>Xem camera & nhật ký ô đất</span>
@@ -233,7 +235,7 @@ export function HowItWorksGuide() {
         </Box>
 
         {/* ── CARD 3: Thu Hoạch & Tra Cứu Vận Đơn QR A6 ── */}
-        <Box className="h-full flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
+        <Box className="h-full flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-card border border-emerald-100/80 dark:border-emerald-950/60 shadow-xs hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 relative overflow-hidden group">
           <Box className="absolute -top-12 -right-12 w-36 h-36 bg-amber-500/8 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
 
           {/* Card Header */}
@@ -304,7 +306,7 @@ export function HowItWorksGuide() {
             <Button
               type="button"
               variant="outline"
-              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-amber-800 dark:text-amber-200 border-amber-200 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-amber-950/50 flex items-center justify-center gap-2 group/btn"
+              className="w-full min-h-[44px] rounded-xl font-bold text-xs sm:text-sm text-amber-800 dark:text-amber-200 border-amber-200 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-amber-950/50 flex items-center justify-center gap-2 group/btn cursor-pointer"
               onClick={() => navigate("/plots")}
             >
               <span>Tra cứu vận đơn nông sản</span>
