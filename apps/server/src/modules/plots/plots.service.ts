@@ -85,6 +85,11 @@ export class PlotsService {
   static formatPlotListItem(plot: PlotWithRelations, now: Date = new Date()) {
     const imageUrl = plot.imageUrl ?? plot.defaultCrop?.coverImageUrl ?? this.DEFAULT_PLOT_IMAGE_URL;
 
+    let streamUrl = plot.streamUrl ?? this.DEFAULT_MOCK_STREAM_URL;
+    if (!streamUrl || streamUrl.includes("plotfarm.vn") || streamUrl.includes("example.com")) {
+      streamUrl = this.DEFAULT_MOCK_STREAM_URL;
+    }
+
     return {
       id: plot.id,
       plotCode: plot.plotCode ?? null,
