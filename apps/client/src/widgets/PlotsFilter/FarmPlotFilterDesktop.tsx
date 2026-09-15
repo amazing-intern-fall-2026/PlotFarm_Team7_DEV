@@ -29,7 +29,7 @@ export function FarmPlotFilterDesktop({
   className,
 }: FarmPlotFilterViewProps) {
   return (
-    <Box className={cn("w-full max-w-6xl mx-auto transition-all", className)}>
+    <Box className={cn("w-full transition-all", className)}>
       {/* ── Khối tìm kiếm & bộ lọc Desktop ── */}
       <Box className="pt-2 sm:pt-4 relative z-20 w-full">
         <Box className="bg-white/95 dark:bg-card/95 backdrop-blur-md rounded-2xl shadow-lg shadow-emerald-950/5 border border-slate-200/80 dark:border-border/80 p-5 sm:p-6 transition-all space-y-4">
