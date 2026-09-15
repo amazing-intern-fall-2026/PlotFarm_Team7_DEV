@@ -20,7 +20,7 @@ export function HomePage() {
         <SeasonalCropsCarousel />
 
         {/* Hành Trình Nông Trại Từ Xa Trong 4 Bước (Mô hình minh bạch) */}
-        <FarmJourney className="!-mt-4 sm:!-mt-6" />
+        <FarmJourney />
       </Container>
     </Box>
   );
