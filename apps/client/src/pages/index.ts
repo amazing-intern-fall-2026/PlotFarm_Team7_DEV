@@ -20,4 +20,10 @@ export * from "./farmer/FarmerHistoryPage";
 export * from "./admin/AdminDashboardPage";
 export * from "./admin/AdminPlotsPage";
 export * from "./admin/AdminPlotConfigPage";
+export * from "./admin/AdminCropsPage";
+export * from "./admin/AdminContractsPage";
+export * from "./admin/AdminCareSlipsPage";
+export * from "./admin/AdminFarmersPage";
+export * from "./admin/AdminHarvestPage";
+export * from "./admin/AdminRbacPage";
 

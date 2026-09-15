@@ -20,6 +20,9 @@ import {
   Settings,
   LogOut,
   Truck,
+  LayoutGrid,
+  Radio,
+  Users,
 } from "lucide-react";
 
 import { useT } from "@/shared/lib/i18n";
@@ -124,44 +127,61 @@ function useAdminSections(
 ): SidebarSection[] {
   return [
     {
-      title: "TỔNG QUAN",
+      title: "PHÂN HỆ ĐIỀU HÀNH",
       items: [
         {
           id: "overview",
           icon: <LayoutDashboard className="h-5 w-5" />,
-          label: "Bảng điều khiển",
+          label: "Tổng quan",
           onClick: () => onNavChange?.("overview"),
         },
         {
           id: "plots",
-          icon: <Sprout className="h-5 w-5" />,
-          label: "Bản đồ nông trại",
+          icon: <LayoutGrid className="h-5 w-5" />,
+          label: "Quản lý Ô đất",
           onClick: () => onNavChange?.("plots"),
         },
-      ],
-    },
-    {
-      title: "QUẢN TRỊ",
-      items: [
+        {
+          id: "technical",
+          icon: <Radio className="h-5 w-5" />,
+          label: "Cấu hình Kỹ thuật",
+          onClick: () => onNavChange?.("technical"),
+        },
+        {
+          id: "crops",
+          icon: <Sprout className="h-5 w-5" />,
+          label: "Danh mục Giống rau",
+          onClick: () => onNavChange?.("crops"),
+        },
         {
           id: "contracts",
           icon: <FileText className="h-5 w-5" />,
-          label: "Hợp đồng thuê đất",
-          badge: "12",
+          label: "Hợp đồng & Thanh toán",
           onClick: () => onNavChange?.("contracts"),
         },
         {
-          id: "alerts",
-          icon: <AlertTriangle className="h-5 w-5" />,
-          label: "Cảnh báo hệ thống",
-          badge: "5",
-          onClick: () => onNavChange?.("alerts"),
+          id: "care-slips",
+          icon: <CheckSquare className="h-5 w-5" />,
+          label: "Phiếu Chăm sóc",
+          onClick: () => onNavChange?.("care-slips"),
         },
         {
-          id: "settings",
-          icon: <Settings className="h-5 w-5" />,
-          label: "Cấu hình nông trại",
-          onClick: () => onNavChange?.("settings"),
+          id: "farmers",
+          icon: <Users className="h-5 w-5" />,
+          label: "Điều phối Nông dân",
+          onClick: () => onNavChange?.("farmers"),
+        },
+        {
+          id: "harvest",
+          icon: <Truck className="h-5 w-5" />,
+          label: "Thu hoạch & Giao hàng",
+          onClick: () => onNavChange?.("harvest"),
+        },
+        {
+          id: "rbac",
+          icon: <ShieldCheck className="h-5 w-5" />,
+          label: "Người dùng & RBAC",
+          onClick: () => onNavChange?.("rbac"),
         },
       ],
     },
@@ -394,21 +414,27 @@ export function RootLayout({
     breadcrumbs ?? [{ label: t("shell.breadcrumb_home") }];
 
   const sidebarFooter = isAdmin ? (
-    <div className="flex items-center gap-3 w-full">
-      <Avatar name={user?.name || "Ban Trị"} size="md" status="online" />
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-foreground truncate">{user?.name || "Admin Green Farm"}</p>
-        <p className="text-xs text-muted-foreground truncate">Toàn quyền hệ thống</p>
+    <div className="flex flex-col gap-2.5 w-full">
+      <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-emerald-50/90 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/40 text-[11px] font-medium text-emerald-800 dark:text-emerald-300">
+        <span className="h-2 w-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+        <span className="truncate">Phiên bản v2.0 • Hệ thống ổn định</span>
       </div>
-      <button
-        type="button"
-        title="Đăng xuất"
-        aria-label="Đăng xuất"
-        onClick={onLogoutClick}
-        className="text-slate-400 hover:text-foreground transition-colors p-1 rounded-lg hover:bg-accent shrink-0 ml-auto"
-      >
-        <LogOut className="h-5 w-5" />
-      </button>
+      <div className="flex items-center gap-3 w-full pt-1">
+        <Avatar name={user?.name || "Quản trị viên"} size="md" status="online" src={user?.avatarSrc} />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold text-foreground truncate">{user?.name || "Quản trị viên"}</p>
+          <p className="text-xs text-muted-foreground truncate">Super Admin</p>
+        </div>
+        <button
+          type="button"
+          title="Đăng xuất"
+          aria-label="Đăng xuất"
+          onClick={onLogoutClick}
+          className="text-slate-400 hover:text-foreground transition-colors p-1 rounded-lg hover:bg-accent shrink-0 ml-auto"
+        >
+          <LogOut className="h-5 w-5" />
+        </button>
+      </div>
     </div>
   ) : (
     <div className="flex items-center gap-3 w-full">
@@ -436,6 +462,7 @@ export function RootLayout({
         activeItemId={activeId}
         collapseLabel={t("shell.collapse")}
         expandLabel={t("shell.expand")}
+        brandText={isAdmin ? "BioCloud" : "CloudFarm"}
         footer={sidebarFooter}
       />
 

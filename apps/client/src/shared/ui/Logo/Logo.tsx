@@ -36,11 +36,16 @@ export function Logo({
         </>
       );
     }
-    if (brandText === "GreenFarm" || brandText === "Green Farm") {
+    if (brandText === "BioCloud" || brandText === "BioCloud Farming Admin") {
       return (
-        <>
-          Green <span className="text-[#23a54f]">Farm</span>
-        </>
+        <div className="flex flex-col text-left leading-none">
+          <span className="font-extrabold text-foreground text-base tracking-tight">
+            Bio<span className="text-[#23a54f]">Cloud</span>
+          </span>
+          <span className="text-[9px] font-bold tracking-widest text-slate-500 uppercase mt-0.5">
+            FARMING ADMIN
+          </span>
+        </div>
       );
     }
     return brandText;
