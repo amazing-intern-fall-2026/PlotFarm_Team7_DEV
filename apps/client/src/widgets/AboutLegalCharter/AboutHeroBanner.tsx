@@ -6,7 +6,7 @@ interface AboutHeroBannerProps {
 
 export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
   return (
-    <Box className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl shadow-sm bg-[#071309] text-white py-14 sm:py-16 lg:py-20 flex items-center justify-center select-none">
+    <Box className="relative w-full overflow-hidden shadow-sm bg-[#071309] text-white py-14 sm:py-16 lg:py-20 flex items-center justify-center select-none">
       <img
         src="/images/background.jpg"
         alt="Nông trại số Green Farm"
