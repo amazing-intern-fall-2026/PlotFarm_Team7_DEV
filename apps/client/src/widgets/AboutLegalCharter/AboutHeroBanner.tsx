@@ -6,22 +6,24 @@ interface AboutHeroBannerProps {
 
 export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
   return (
-    <Box className="relative w-full overflow-hidden bg-[#071309] text-white py-24 sm:py-28 lg:py-36 flex items-center justify-center select-none">
-      {/* 1. Background Photo từ thư mục /images/ của dự án */}
+    <Box className="relative w-full min-h-[390px] md:min-h-[500px] lg:min-h-[520px] flex items-center justify-center overflow-hidden select-none bg-emerald-950">
+      {/* 1. Background Photo từ thư mục /images/ của dự án (Hiển thị sáng rõ nét) */}
       <img
         src="/images/background.jpg"
         alt="Nông trại số Green Farm"
-        className="absolute inset-0 w-full h-full object-cover object-center transform scale-105"
+        className="absolute inset-0 w-full h-full object-cover object-center"
       />
 
-      {/* 2. Dark Green & Vignette Gradients (Agrivi Dark Forest Green aesthetic) */}
-      <Box className="absolute inset-0 bg-[#081a0e]/80 mix-blend-multiply" />
-      <Box className="absolute inset-0 bg-gradient-to-r from-[#051108]/95 via-[#07180c]/75 to-[#051108]/95" />
-      <Box className="absolute inset-0 bg-gradient-to-t from-[#051108] via-transparent to-[#051108]/85" />
+      {/* 2. Lớp phủ gradient vừa phải, không quá tối để thấy rõ cảnh nông trại thật */}
+      <Box className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/50" />
+      <Box className="absolute inset-0 bg-gradient-to-r from-emerald-950/40 via-transparent to-emerald-950/40" />
 
-      {/* 3. Digital Agriculture Constellation Network SVG Overlay */}
+      {/* 3. Hiệu ứng ánh sáng nhẹ ở góc */}
+      <Box className="absolute -top-32 -left-32 w-[400px] h-[400px] rounded-full bg-emerald-400/20 blur-3xl pointer-events-none" />
+
+      {/* 4. Digital Agriculture Constellation Network SVG Overlay */}
       <svg
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-40 md:opacity-50"
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-30 md:opacity-40"
         viewBox="0 0 1440 450"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
@@ -118,15 +120,15 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
         </g>
       </svg>
 
-      {/* 4. Centered Hero Content (Thuần Tiếng Việt) */}
-      <Box className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center space-y-6">
+      {/* 5. Centered Hero Content */}
+      <Box className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center space-y-5 md:space-y-6 py-12">
         {/* Main Title */}
-        <Typography.H1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-wider uppercase text-white font-sans drop-shadow-md">
+        <Typography.H1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-wider uppercase text-white font-sans drop-shadow-lg">
           VỀ CHÚNG TÔI
         </Typography.H1>
 
         {/* Subtitle / Tagline */}
-        <Typography.P className="text-base sm:text-xl lg:text-2xl font-light text-slate-100 max-w-3xl mx-auto leading-relaxed tracking-wide drop-shadow-sm">
+        <Typography.P className="text-base sm:text-xl lg:text-2xl font-normal text-white/95 max-w-3xl mx-auto leading-relaxed tracking-wide drop-shadow-md">
           Số Hóa Nông Nghiệp — Mang Vườn Rau Hữu Cơ Minh Bạch Đến Từng Bữa Cơm Gia Đình.
         </Typography.P>
 
@@ -134,7 +136,7 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
         <Box className="pt-2">
           <a
             href="tel:19006868"
-            className="inline-flex items-center justify-center px-9 py-3 border border-white text-white text-xs sm:text-sm font-bold tracking-widest uppercase transition-all duration-200 hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white text-xs sm:text-sm font-bold tracking-widest uppercase transition-all duration-200 hover:bg-white hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-xs bg-black/25 shadow-md"
           >
             LIÊN HỆ VỚI CHÚNG TÔI
           </a>
@@ -143,5 +145,6 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
     </Box>
   );
 }
+
 
 
