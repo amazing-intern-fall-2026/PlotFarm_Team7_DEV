@@ -14,7 +14,8 @@ export function CustomerContractsPage() {
         <Breadcrumb
           items={[
             { label: "Trang chủ", href: "/" },
-            { label: "Hợp đồng thuê đất số", isCurrent: true },
+            { label: "Tài khoản & Pháp lý", href: "/account/profile" },
+            { label: "Hợp đồng số", isCurrent: true },
           ]}
         />
 
