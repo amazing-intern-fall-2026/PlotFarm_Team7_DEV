@@ -7,13 +7,28 @@ import {
   ResendOtpRequestSchema,
   SUCCESS_MESSAGES,
 } from "@repo/shared";
-import { TokenService } from "./token.service";
 import { AuthService } from "./auth.service";
+import { TokenService } from "./token.service";
+import { db } from "@repo/database";
+import { ERROR_CODES } from "@repo/shared";
+import { AppError } from "../../errors/AppError";
 import { buildSuccessResponse } from "../../common/utils/envelope";
 
 const RefreshSchema = z.object({
   refreshToken: z.string().min(1, "Refresh token là bắt buộc"),
 });
+
+interface UserProfileDetail {
+  userId: string;
+  userCode: string;
+  email: string;
+  phone: string;
+  fullName: string;
+  avatarUrl: string | null;
+  role: string;
+  isVerified: boolean;
+  createdAt: string;
+}
 
 export class AuthController {
   /**
@@ -103,8 +118,8 @@ export class AuthController {
   }
 
   /**
-   * Endpoint: GET /api/auth/profile
-   * Route được bảo vệ bởi authGuard
+   * Endpoint: GET /api/auth/profile hoặc GET /api/v1/profile
+   * Route được bảo vệ bởi authGuard — Lấy thông tin người dùng thực tế từ Database
    */
   static async getProfile(
     req: Request,
@@ -112,11 +127,113 @@ export class AuthController {
     next: NextFunction,
   ): Promise<void> {
     try {
+      const targetUserId = req.userId || req.user?.userId;
+      let userData: unknown = req.user;
+      let userCode = req.user?.userId;
+
+      if (targetUserId) {
+        const dbUser = await db.user.findUnique({
+          where: { id: targetUserId },
+          select: {
+            id: true,
+            userCode: true,
+            email: true,
+            phone: true,
+            fullName: true,
+            avatarUrl: true,
+            role: true,
+            isVerified: true,
+            createdAt: true,
+          },
+        });
+        if (dbUser) {
+          const detail: UserProfileDetail = {
+            userId: dbUser.id,
+            userCode: dbUser.userCode || dbUser.id,
+            email: dbUser.email,
+            phone: dbUser.phone || "",
+            fullName: dbUser.fullName,
+            avatarUrl: dbUser.avatarUrl,
+            role: dbUser.role,
+            isVerified: dbUser.isVerified,
+            createdAt: dbUser.createdAt.toISOString(),
+          };
+          userData = detail;
+          userCode = detail.userCode;
+        }
+      }
+
       res.status(200).json(
         buildSuccessResponse(
-          { user: req.user },
+          { user: userData },
           SUCCESS_MESSAGES.AUTH.GET_PROFILE,
-          { userCode: req.user?.userId }
+          { userCode }
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Endpoint: PUT /api/auth/profile hoặc PUT /api/v1/profile
+   * Cập nhật thông tin profile người dùng thực tế vào Database
+   */
+  static async updateProfile(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const targetUserId = req.userId || req.user?.userId;
+      if (!targetUserId) {
+        throw new AppError("Yêu cầu đăng nhập", 401, ERROR_CODES.AUTH_REQUIRED);
+      }
+
+      const body = req.body as { fullName?: unknown; phone?: unknown; avatarUrl?: unknown };
+      const updateData: { fullName?: string; phone?: string; avatarUrl?: string } = {};
+      if (typeof body.fullName === "string" && body.fullName.trim()) {
+        updateData.fullName = body.fullName.trim();
+      }
+      if (typeof body.phone === "string") {
+        updateData.phone = body.phone.trim();
+      }
+      if (typeof body.avatarUrl === "string") {
+        updateData.avatarUrl = body.avatarUrl.trim();
+      }
+
+      const updatedUser = await db.user.update({
+        where: { id: targetUserId },
+        data: updateData,
+        select: {
+          id: true,
+          userCode: true,
+          email: true,
+          phone: true,
+          fullName: true,
+          avatarUrl: true,
+          role: true,
+          isVerified: true,
+          createdAt: true,
+        },
+      });
+
+      res.status(200).json(
+        buildSuccessResponse(
+          {
+            user: {
+              userId: updatedUser.id,
+              userCode: updatedUser.userCode || updatedUser.id,
+              email: updatedUser.email,
+              phone: updatedUser.phone || "",
+              fullName: updatedUser.fullName,
+              avatarUrl: updatedUser.avatarUrl,
+              role: updatedUser.role,
+              isVerified: updatedUser.isVerified,
+              createdAt: updatedUser.createdAt.toISOString(),
+            },
+          },
+          "Cập nhật thông tin hồ sơ thành công"
         )
       );
     } catch (error) {

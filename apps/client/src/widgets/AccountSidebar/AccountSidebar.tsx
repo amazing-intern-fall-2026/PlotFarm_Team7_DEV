@@ -4,8 +4,6 @@ import {
   User,
   FileText,
   Sprout,
-  ShieldCheck,
-  ShieldAlert,
   ChevronRight,
   Sparkles,
 } from "lucide-react";
@@ -19,6 +17,8 @@ import {
 } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 import { ACCOUNT_NAV_ITEMS, DEFAULT_USER_PROFILE } from "@/widgets/AccountProfile/profile.constants";
+import { getStoredUser } from "@/features/auth/model/authCookie";
+import { axiosClient } from "@/shared/api/axiosClient";
 
 export interface AccountSidebarProps {
   className?: string;
@@ -28,6 +28,50 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
   const location = useLocation();
   const currentPath = location.pathname;
 
+  const [currentUser, setCurrentUser] = React.useState(() => {
+    const stored = getStoredUser();
+    return {
+      fullName: stored?.fullName || DEFAULT_USER_PROFILE.fullName,
+      email: stored?.email || DEFAULT_USER_PROFILE.email,
+      avatarUrl: stored?.avatarUrl || DEFAULT_USER_PROFILE.avatarUrl,
+    };
+  });
+
+  React.useEffect(() => {
+    const fetchRealProfile = async () => {
+      try {
+        const res = await axiosClient.get("/profile");
+        const userData = res.data?.data?.user;
+        if (userData) {
+          setCurrentUser({
+            fullName: userData.fullName || DEFAULT_USER_PROFILE.fullName,
+            email: userData.email || DEFAULT_USER_PROFILE.email,
+            avatarUrl: userData.avatarUrl || DEFAULT_USER_PROFILE.avatarUrl,
+          });
+        }
+      } catch {
+        /* Swallow offline or unauthenticated fallback */
+      }
+    };
+
+    fetchRealProfile();
+
+    const handleProfileUpdate = (e: CustomEvent) => {
+      if (e.detail) {
+        setCurrentUser((prev) => ({
+          ...prev,
+          fullName: e.detail.fullName || prev.fullName,
+          avatarUrl: e.detail.avatarUrl || prev.avatarUrl,
+        }));
+      }
+    };
+
+    window.addEventListener("auth:profile-updated", handleProfileUpdate as EventListener);
+    return () => {
+      window.removeEventListener("auth:profile-updated", handleProfileUpdate as EventListener);
+    };
+  }, []);
+
   const getNavIcon = (id: string) => {
     switch (id) {
       case "profile":
@@ -36,10 +80,6 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
         return <FileText className="w-4 h-4 shrink-0" />;
       case "my-farm":
         return <Sprout className="w-4 h-4 shrink-0" />;
-      case "organic-standards":
-        return <ShieldCheck className="w-4 h-4 shrink-0" />;
-      case "crop-insurance":
-        return <ShieldAlert className="w-4 h-4 shrink-0" />;
       default:
         return <Sparkles className="w-4 h-4 shrink-0" />;
     }
@@ -47,32 +87,30 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
 
   return (
     <Box className={cn("w-full lg:w-72 shrink-0 space-y-4", className)}>
-      {/* Mini Profile Card */}
       <Card className="border-border/80 bg-white dark:bg-slate-900 shadow-xs rounded-2xl overflow-hidden">
         <CardContent className="p-5 flex items-center gap-3.5">
           <Avatar
-            src={DEFAULT_USER_PROFILE.avatarUrl}
-            name={DEFAULT_USER_PROFILE.fullName}
+            src={currentUser.avatarUrl}
+            name={currentUser.fullName}
             size="lg"
             className="ring-2 ring-emerald-500/20 shadow-xs"
           />
           <Box className="min-w-0 flex-1 space-y-1">
             <Box className="flex items-center gap-1.5 flex-wrap">
               <Typography.H4 className="text-sm font-bold text-foreground truncate">
-                {DEFAULT_USER_PROFILE.fullName}
+                {currentUser.fullName}
               </Typography.H4>
               <Badge variant="outline" className="bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 text-[10px] font-bold px-1.5 py-0">
                 Đã xác thực
               </Badge>
             </Box>
             <Typography.Muted className="text-xs truncate text-muted-foreground block">
-              {DEFAULT_USER_PROFILE.email}
+              {currentUser.email}
             </Typography.Muted>
           </Box>
         </CardContent>
       </Card>
 
-      {/* Navigation List */}
       <Card className="border-border/80 bg-white dark:bg-slate-900 shadow-xs rounded-2xl overflow-hidden">
         <Box className="p-2 space-y-1">
           {ACCOUNT_NAV_ITEMS.map((item) => {
@@ -119,7 +157,6 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
         </Box>
       </Card>
 
-      {/* Hotline Support Quick Banner */}
       <Box className="p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-800/50 space-y-2 hidden lg:block">
         <Typography.Small className="font-bold text-emerald-900 dark:text-emerald-300 block">
           Cần hỗ trợ hợp đồng & pháp lý?

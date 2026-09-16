@@ -22,6 +22,7 @@ router.post("/auth/login", AuthController.login);
 
 // Endpoint được bảo vệ bằng authGuard
 router.get("/profile", authGuard, AuthController.getProfile);
+router.put("/profile", authGuard, AuthController.updateProfile);
 
 export { router as authRoutes, router as authRouter };
 

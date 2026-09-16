@@ -134,19 +134,5 @@ export const ACCOUNT_NAV_ITEMS = [
     href: "/my-farm",
     badge: undefined,
   },
-  {
-    id: "organic-standards",
-    title: "Cam kết chuẩn hữu cơ",
-    description: "Quy chuẩn kỹ thuật & an toàn sinh học",
-    href: "/about#organic-standards",
-    badge: undefined,
-  },
-  {
-    id: "crop-insurance",
-    title: "Bảo hiểm rủi ro mùa vụ",
-    description: "Chính sách bồi hoàn 100% khi có sự cố",
-    href: "/about#crop-insurance",
-    badge: undefined,
-  },
 ];
 

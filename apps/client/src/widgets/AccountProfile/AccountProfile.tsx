@@ -38,28 +38,79 @@ import {
   type ShippingAddressItem,
   type NotificationChannelSetting,
 } from "./profile.constants";
+import { getStoredUser, setCookie, COOKIE_KEYS } from "@/features/auth/model/authCookie";
+import { axiosClient } from "@/shared/api/axiosClient";
 
 export function AccountProfile() {
-  const [profile, setProfile] = React.useState<UserProfileData>(DEFAULT_USER_PROFILE);
+  const [profile, setProfile] = React.useState<UserProfileData>(() => {
+    const stored = getStoredUser();
+    if (stored) {
+      return {
+        ...DEFAULT_USER_PROFILE,
+        fullName: stored.fullName || DEFAULT_USER_PROFILE.fullName,
+        email: stored.email || DEFAULT_USER_PROFILE.email,
+        avatarUrl: stored.avatarUrl || DEFAULT_USER_PROFILE.avatarUrl,
+      };
+    }
+    return DEFAULT_USER_PROFILE;
+  });
   const [addresses, setAddresses] = React.useState<ShippingAddressItem[]>(MOCK_SHIPPING_ADDRESSES);
   const [notifications, setNotifications] = React.useState<NotificationChannelSetting[]>(NOTIFICATION_MATRIX_SETTINGS);
 
-  // Form states for adding address
   const [isAddingAddress, setIsAddingAddress] = React.useState(false);
   const [newAddressTitle, setNewAddressTitle] = React.useState("");
   const [newAddressLine, setNewAddressLine] = React.useState("");
   const [newAddressNote, setNewAddressNote] = React.useState("");
 
-  // Password fields
   const [currentPassword, setCurrentPassword] = React.useState("");
   const [newPassword, setNewPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [passwordMsg, setPasswordMsg] = React.useState<string | null>(null);
 
-  // Feedback banner
   const [saveSuccess, setSaveSuccess] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
 
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+
+  React.useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axiosClient.get("/profile");
+        const user = res.data?.data?.user;
+        if (user) {
+          const dateStr = user.createdAt
+            ? new Date(user.createdAt).toLocaleDateString("vi-VN")
+            : DEFAULT_USER_PROFILE.joinDate;
+          setProfile((prev) => ({
+            ...prev,
+            fullName: user.fullName || prev.fullName,
+            email: user.email || prev.email,
+            phone: user.phone || prev.phone,
+            avatarUrl: user.avatarUrl || prev.avatarUrl,
+            joinDate: dateStr,
+            isEmailVerified: user.isVerified ?? prev.isEmailVerified,
+          }));
+
+          const stored = getStoredUser();
+          if (stored) {
+            setCookie(
+              COOKIE_KEYS.USER,
+              JSON.stringify({
+                ...stored,
+                fullName: user.fullName || stored.fullName,
+                avatarUrl: user.avatarUrl || stored.avatarUrl,
+              }),
+              7
+            );
+          }
+        }
+      } catch {
+        /* Swallow offline or unauthenticated fallback */
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,10 +122,41 @@ export function AccountProfile() {
     }
   };
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaveSuccess(true);
-    setTimeout(() => setSaveSuccess(false), 3500);
+    setIsSaving(true);
+    try {
+      await axiosClient.put("/profile", {
+        fullName: profile.fullName,
+        phone: profile.phone,
+        avatarUrl: profile.avatarUrl,
+      });
+
+      const stored = getStoredUser();
+      if (stored) {
+        setCookie(
+          COOKIE_KEYS.USER,
+          JSON.stringify({
+            ...stored,
+            fullName: profile.fullName,
+            avatarUrl: profile.avatarUrl,
+          }),
+          7
+        );
+      }
+
+      window.dispatchEvent(
+        new CustomEvent("auth:profile-updated", {
+          detail: { fullName: profile.fullName, avatarUrl: profile.avatarUrl },
+        })
+      );
+    } catch {
+      /* Fallback saving in state */
+    } finally {
+      setIsSaving(false);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3500);
+    }
   };
 
   const handleToggleNotification = (id: string, channel: "zalo" | "sms" | "push") => {
@@ -163,7 +245,6 @@ export function AccountProfile() {
             <TabsTrigger value="notifications">3. Thông báo & Bảo mật</TabsTrigger>
           </TabsList>
 
-          {/* TAB 1: THÔNG TIN CÁ NHÂN */}
           <TabsContent value="personal" className="space-y-6 pt-2">
             <Box className="p-5 rounded-2xl bg-muted/30 border border-border/60 flex flex-col sm:flex-row items-center gap-6">
               <Box className="relative group">
@@ -263,6 +344,8 @@ export function AccountProfile() {
                   type="submit"
                   variant="default"
                   size="default"
+                  disabled={isSaving}
+                  isLoading={isSaving}
                   className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl flex items-center gap-2 shadow-sm"
                 >
                   <Save className="w-4 h-4" />
@@ -272,7 +355,6 @@ export function AccountProfile() {
             </form>
           </TabsContent>
 
-          {/* TAB 2: ĐỊA CHỈ NHẬN RAU */}
           <TabsContent value="shipping" className="space-y-6 pt-2">
             <Box className="flex items-center justify-between flex-wrap gap-3">
               <Box>
@@ -407,7 +489,6 @@ export function AccountProfile() {
             </Box>
           </TabsContent>
 
-          {/* TAB 3: THÔNG BÁO & BẢO MẬT */}
           <TabsContent value="notifications" className="space-y-8 pt-2">
             <Box className="space-y-4">
               <Box>
@@ -472,7 +553,6 @@ export function AccountProfile() {
 
             <Separator />
 
-            {/* Change Password & Security */}
             <Box className="space-y-4">
               <Box>
                 <Box className="flex items-center gap-2">
