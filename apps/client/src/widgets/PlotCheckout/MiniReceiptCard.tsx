@@ -83,10 +83,10 @@ export const MiniReceiptCard: React.FC<MiniReceiptCardProps> = ({
             />
           </Box>
           <Box className="min-w-0 flex-1">
-            <Heading level={4} className="text-base font-bold text-slate-900 dark:text-white truncate">
+            <Heading level={4} className="text-base font-bold text-slate-900 dark:text-white leading-snug break-words">
               Ô #{order.plotNumber} • {order.cropName}
             </Heading>
-            <Text variant="caption" className="text-slate-500 truncate block mt-0.5">
+            <Text variant="caption" className="text-slate-500 block mt-0.5 leading-relaxed break-words">
               {order.plotZone}
             </Text>
             <Flex align="center" gap={1.5} className="mt-1">
@@ -100,62 +100,65 @@ export const MiniReceiptCard: React.FC<MiniReceiptCardProps> = ({
       </CardHeader>
 
       <CardContent className="p-5 space-y-4">
-        <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
-          <Flex justify="between" align="center" className="text-xs">
-            <Flex align="center" gap={2} className="text-slate-600 dark:text-slate-400">
-              <Calendar className="w-4 h-4 text-emerald-600 shrink-0" />
-              <Text variant="body2" className="text-xs font-medium">
-                Thời hạn canh tác:
+        <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80 space-y-2.5">
+          <Box className="space-y-1">
+            <Flex align="center" justify="between" className="flex-wrap gap-x-2 gap-y-1 text-xs">
+              <Flex align="center" gap={1.5} className="text-slate-600 dark:text-slate-400 shrink-0">
+                <Calendar className="w-4 h-4 text-emerald-600 shrink-0" />
+                <Text variant="body2" className="text-xs font-medium">
+                  Thời hạn canh tác:
+                </Text>
+              </Flex>
+              <Text variant="body2" className="text-xs font-bold text-slate-900 dark:text-slate-100 text-right">
+                {order.durationDays} ngày ({order.startDateFormatted} – {order.endDateFormatted})
               </Text>
             </Flex>
-            <Text variant="body2" className="text-xs font-bold text-slate-900 dark:text-slate-100">
-              {order.durationDays} ngày ({order.startDateFormatted} - {order.endDateFormatted})
-            </Text>
-          </Flex>
-          <Flex justify="between" align="center" className="text-xs pt-2 mt-2 border-t border-slate-200/60 dark:border-slate-700/60">
-            <Flex align="center" gap={2} className="text-slate-600 dark:text-slate-400">
+          </Box>
+
+          <Box className="pt-2 border-t border-slate-200/60 dark:border-slate-700/60 space-y-1">
+            <Flex align="center" gap={1.5} className="text-slate-600 dark:text-slate-400">
               <Users className="w-4 h-4 text-emerald-600 shrink-0" />
               <Text variant="body2" className="text-xs font-medium">
                 Nông dân bảo trợ:
               </Text>
             </Flex>
-            <Text variant="body2" className="text-xs font-bold text-slate-900 dark:text-slate-100">
+            <Text variant="body2" className="text-xs font-bold text-slate-900 dark:text-slate-100 pl-5.5 leading-relaxed break-words">
               {order.farmerName} • {order.farmerTeam}
             </Text>
-          </Flex>
+          </Box>
         </Box>
 
         <Box className="space-y-2.5 pt-1">
-          <Flex justify="between" align="center" className="text-xs">
-            <Text variant="body2" className="text-slate-600 dark:text-slate-400">
+          <Flex justify="between" align="start" gap={3} className="text-xs">
+            <Text variant="body2" className="text-slate-600 dark:text-slate-400 leading-relaxed">
               Tiền thuê ô đất ({order.plotAreaSqm}m² / {order.durationDays} ngày)
             </Text>
-            <Text variant="body2" className="font-semibold text-slate-900 dark:text-white">
+            <Text variant="body2" className="font-semibold text-slate-900 dark:text-white shrink-0 whitespace-nowrap">
               {formattedLandFee}&nbsp;đ
             </Text>
           </Flex>
 
-          <Flex justify="between" align="center" className="text-xs">
-            <Text variant="body2" className="text-slate-600 dark:text-slate-400">
+          <Flex justify="between" align="start" gap={3} className="text-xs">
+            <Text variant="body2" className="text-slate-600 dark:text-slate-400 leading-relaxed">
               Giống rau F1 &amp; vật tư vi sinh ({order.cropName})
             </Text>
-            <Text variant="body2" className="font-semibold text-slate-900 dark:text-white">
+            <Text variant="body2" className="font-semibold text-slate-900 dark:text-white shrink-0 whitespace-nowrap">
               {formattedSeedFee}&nbsp;đ
             </Text>
           </Flex>
 
           <Separator className="my-2" />
 
-          <Flex justify="between" align="end" className="pt-1">
-            <Box>
+          <Flex justify="between" align="end" gap={3} className="pt-1">
+            <Box className="min-w-0">
               <Text variant="caption" className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px] block">
                 {CHECKOUT_TEXTS.miniReceipt.totalPayableLabel}
               </Text>
-              <Text variant="caption" className="text-[11px] text-slate-500 block mt-0.5">
+              <Text variant="caption" className="text-[11px] text-slate-500 block mt-0.5 leading-relaxed">
                 {CHECKOUT_TEXTS.miniReceipt.allInclusiveNote}
               </Text>
             </Box>
-            <Text variant="h3" className="text-2xl font-black text-emerald-800 dark:text-emerald-400 whitespace-nowrap">
+            <Text variant="h3" className="text-2xl font-black text-emerald-800 dark:text-emerald-400 shrink-0 whitespace-nowrap">
               {formattedTotal}&nbsp;VNĐ
             </Text>
           </Flex>

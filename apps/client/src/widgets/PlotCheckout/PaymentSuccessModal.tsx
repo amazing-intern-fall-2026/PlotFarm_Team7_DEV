@@ -59,13 +59,13 @@ export const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
               #{order.orderCode}
             </Text>
           </Flex>
-          <Flex justify="between" align="center" className="text-xs">
-            <Text variant="caption" className="text-slate-500 font-medium">
+          <Flex justify="between" align="start" gap={2} className="text-xs">
+            <Text variant="caption" className="text-slate-500 font-medium shrink-0">
               Gói kích hoạt:
             </Text>
-            <Flex align="center" gap={1}>
-              <Sprout className="w-3.5 h-3.5 text-emerald-600" />
-              <Text variant="body2" className="font-bold text-slate-900 dark:text-white">
+            <Flex align="start" gap={1} className="min-w-0 justify-end flex-1">
+              <Sprout className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+              <Text variant="body2" className="font-bold text-slate-900 dark:text-white text-right leading-snug break-words">
                 Ô #{order.plotNumber} • {order.cropName}
               </Text>
             </Flex>

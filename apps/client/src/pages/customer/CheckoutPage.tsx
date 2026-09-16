@@ -305,7 +305,7 @@ export function CheckoutPage() {
           >
             <Flex align="center" gap={2} className="min-w-0">
               <Layers className="w-4 h-4 text-emerald-600 shrink-0" />
-              <Text variant="caption" className="font-bold text-xs text-slate-800 dark:text-slate-200 truncate">
+              <Text variant="caption" className="font-bold text-xs text-slate-800 dark:text-slate-200 leading-snug break-words">
                 Đơn hàng: Ô #{cleanPlotNumber} ({order.totalAmount.toLocaleString("vi-VN")}&nbsp;đ)
               </Text>
             </Flex>

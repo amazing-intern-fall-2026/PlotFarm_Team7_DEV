@@ -209,10 +209,10 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
               <Text variant="caption" className="text-[11px] text-slate-500 font-medium block mb-1">
                 {CHECKOUT_TEXTS.paymentHub.bankNameLabel}
               </Text>
-              <Flex justify="between" align="center" gap={2}>
-                <Flex align="center" gap={1.5} className="min-w-0">
-                  <Building2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <Text variant="body2" className="font-bold text-slate-900 dark:text-white truncate text-sm">
+              <Flex justify="between" align="start" gap={2}>
+                <Flex align="start" gap={1.5} className="min-w-0 flex-1">
+                  <Building2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <Text variant="body2" className="font-bold text-slate-900 dark:text-white text-sm leading-snug break-words">
                     {bankInfo.bankName}
                   </Text>
                 </Flex>
@@ -220,7 +220,7 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
                   {bankInfo.bankShortName}
                 </Badge>
               </Flex>
-              <Text variant="caption" className="text-[11px] text-slate-500 mt-1.5 block uppercase truncate">
+              <Text variant="caption" className="text-[11px] text-slate-500 mt-1.5 block uppercase leading-relaxed break-words">
                 Chủ TK: {bankInfo.accountName}
               </Text>
             </Box>

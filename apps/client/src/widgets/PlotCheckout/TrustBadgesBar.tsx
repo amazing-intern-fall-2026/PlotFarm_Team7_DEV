@@ -33,11 +33,11 @@ export const TrustBadgesBar: React.FC = () => {
             <Box className="w-10 h-10 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/50 flex items-center justify-center shrink-0">
               {getBadgeIcon(badge.id)}
             </Box>
-            <Box className="min-w-0">
-              <Heading level={5} className="text-xs font-bold text-slate-900 dark:text-white truncate">
+            <Box className="min-w-0 flex-1">
+              <Heading level={5} className="text-xs font-bold text-slate-900 dark:text-white leading-snug break-words">
                 {badge.title}
               </Heading>
-              <Text variant="caption" className="text-[11px] text-slate-500 truncate block mt-0.5">
+              <Text variant="caption" className="text-[11px] text-slate-500 block mt-0.5 leading-relaxed break-words">
                 {badge.subtitle}
               </Text>
             </Box>
