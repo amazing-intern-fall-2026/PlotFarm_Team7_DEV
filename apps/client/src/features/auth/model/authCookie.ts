@@ -38,15 +38,12 @@ export function removeCookie(name: string): void {
  * Lưu phiên đăng nhập CHỈ DÙNG COOKIE (Cookie-based Auth SSOT).
  */
 export function setAuthSession(data: LoginResponseData): void {
-  // 1. Lưu access token vào Cookie
   setCookie(COOKIE_KEYS.ACCESS_TOKEN, data.accessToken, 7);
 
-  // 2. Lưu refresh token vào Cookie nếu có
   if (data.refreshToken) {
     setCookie(COOKIE_KEYS.REFRESH_TOKEN, data.refreshToken, 30);
   }
 
-  // 3. Lưu thông tin user profile vào Cookie
   setCookie(COOKIE_KEYS.USER, JSON.stringify(data.user), 7);
 }
 
@@ -97,7 +94,6 @@ export function hasRole(allowedRoles: UserRole[]): boolean {
  * Xóa sạch toàn bộ Cookie xác thực khi đăng xuất.
  */
 export function clearAuthSession(): void {
-  // Xóa các Cookie của ứng dụng
   removeCookie(COOKIE_KEYS.ACCESS_TOKEN);
   removeCookie(COOKIE_KEYS.REFRESH_TOKEN);
   removeCookie(COOKIE_KEYS.USER);

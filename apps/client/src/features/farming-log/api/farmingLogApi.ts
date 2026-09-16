@@ -62,7 +62,6 @@ export const farmingLogApi = {
         publicId: `mock_${Date.now()}`,
       };
     } catch {
-      // Dev resilience fallback: return object URL or static proof image
       onProgress?.(100);
       return {
         url: URL.createObjectURL(file),

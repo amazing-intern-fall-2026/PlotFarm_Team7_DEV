@@ -14,7 +14,6 @@ export function PlotCheckoutSkeleton({ className }: PlotCheckoutSkeletonProps) {
       )}
       aria-hidden="true"
     >
-      {/* Checkout Header Bar Skeleton */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/50">
         <div className="flex items-center gap-3">
           <Skeleton className="h-10 w-10 rounded-xl bg-muted/70" />
@@ -26,20 +25,16 @@ export function PlotCheckoutSkeleton({ className }: PlotCheckoutSkeletonProps) {
         <Skeleton className="h-9 w-40 rounded-full bg-amber-500/20" />
       </div>
 
-      {/* Main 2-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: VietQR Payment Hub Skeleton (Col 7) */}
         <div className="lg:col-span-7 rounded-3xl border border-border/60 bg-card p-6 sm:p-8 space-y-6 shadow-xs flex flex-col items-center">
           <Skeleton className="h-10 w-72 rounded-full bg-amber-500/20" />
 
-          {/* Centered QR Code Box */}
           <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 w-64 h-64 flex items-center justify-center">
             <Skeleton className="w-56 h-56 rounded-xl bg-muted/80" />
           </div>
 
           <Skeleton className="h-4 w-52 rounded bg-muted/50" />
 
-          {/* Bank Info Table Placeholder */}
           <div className="w-full space-y-3 pt-4 border-t border-border/40">
             {[1, 2, 3, 4].map((row) => (
               <div key={row} className="flex justify-between items-center py-1">
@@ -52,7 +47,6 @@ export function PlotCheckoutSkeleton({ className }: PlotCheckoutSkeletonProps) {
           <Skeleton className="h-12 w-full rounded-2xl bg-emerald-600/30" />
         </div>
 
-        {/* Right Column: Mini Receipt Card Skeleton (Col 5) */}
         <div className="lg:col-span-5 rounded-3xl border border-border/60 bg-card p-6 sm:p-8 space-y-6 shadow-xs">
           <Skeleton className="h-6 w-40 rounded-lg bg-muted/80" />
 
@@ -88,7 +82,6 @@ export function PlotCheckoutSkeleton({ className }: PlotCheckoutSkeletonProps) {
         </div>
       </div>
 
-      {/* Trust Badges Bar Skeleton */}
       <div className="pt-6 border-t border-border/40 flex flex-wrap justify-around gap-4">
         {[1, 2, 3, 4].map((badge) => (
           <div key={badge} className="flex items-center gap-2">

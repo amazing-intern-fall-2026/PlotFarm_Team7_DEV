@@ -209,7 +209,6 @@ export function Footer({
           </Box>
         </Box>
 
-        {/* Thanh bản quyền & pháp lý dưới đáy */}
         <Box className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <Typography.P className="text-center sm:text-left text-xs text-muted-foreground">
             {t("footer.copyright")}

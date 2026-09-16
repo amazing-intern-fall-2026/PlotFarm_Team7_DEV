@@ -58,9 +58,6 @@ export function FarmerHarvestPage() {
 
   return (
     <Box className="w-full space-y-6 pb-12">
-      {/* ─────────────────────────────────────────────────────────────
-          1. TOP NAVIGATION & HEADER
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden border-border shadow-xs">
         <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 bg-gradient-to-r from-emerald-50/40 via-background to-background dark:from-emerald-950/20">
           <Box className="flex items-center gap-3.5">
@@ -116,9 +113,6 @@ export function FarmerHarvestPage() {
         </Card>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. MAIN CONTENT (2 COLUMNS ON DESKTOP OR EMPTY QUEUE)
-      ───────────────────────────────────────────────────────────── */}
       {!id ? (
         <Card className="p-12 text-center border-dashed border-2 border-border shadow-none space-y-4">
           <Box className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-50 dark:bg-orange-950/50 text-orange-600 mx-auto">
@@ -367,9 +361,6 @@ export function FarmerHarvestPage() {
       </Box>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL: A6 PRINT PREVIEW
-      ───────────────────────────────────────────────────────────── */}
       {isPrintModalOpen && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
           <Card className="w-full max-w-lg p-6 rounded-3xl bg-background border border-border shadow-2xl space-y-4">
@@ -434,9 +425,6 @@ export function FarmerHarvestPage() {
         </Box>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL: SUCCESS DISPATCH (AC1)
-      ───────────────────────────────────────────────────────────── */}
       {isSuccessModalOpen && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
           <Card className="w-full max-w-md p-6 text-center shadow-2xl border border-border space-y-4 rounded-3xl">

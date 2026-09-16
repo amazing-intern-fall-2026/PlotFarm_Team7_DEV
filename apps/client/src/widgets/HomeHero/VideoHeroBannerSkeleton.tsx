@@ -14,27 +14,23 @@ export function VideoHeroBannerSkeleton({ className }: VideoHeroBannerSkeletonPr
       )}
       aria-hidden="true"
     >
-      {/* Top Tag & Live Indicator */}
       <div className="flex items-center gap-3">
         <Skeleton className="h-7 w-28 rounded-full bg-muted/70" />
         <Skeleton className="h-7 w-36 rounded-full bg-muted/50 hidden sm:block" />
       </div>
 
-      {/* Main Headline & Description */}
       <div className="max-w-2xl space-y-4">
         <Skeleton className="h-10 sm:h-14 w-4/5 rounded-xl bg-muted/80" />
         <Skeleton className="h-10 sm:h-14 w-3/5 rounded-xl bg-muted/80" />
         <Skeleton className="h-4 sm:h-5 w-full max-w-lg rounded-md bg-muted/60" />
         <Skeleton className="h-4 sm:h-5 w-3/4 max-w-md rounded-md bg-muted/50" />
 
-        {/* CTA Buttons */}
         <div className="flex flex-wrap items-center gap-3 pt-4">
           <Skeleton className="h-12 w-44 rounded-xl bg-emerald-600/30" />
           <Skeleton className="h-12 w-36 rounded-xl bg-muted/70" />
         </div>
       </div>
 
-      {/* Bottom Floating Stats & Carousel Indicators */}
       <div className="flex items-end justify-between gap-4 pt-4">
         <div className="flex gap-2">
           <Skeleton className="h-2 w-10 rounded-full bg-muted/80" />

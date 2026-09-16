@@ -322,7 +322,6 @@ export function Header({
                 <div
                   className="absolute right-0 top-full mt-2.5 w-72 rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-200/80 dark:border-slate-800 p-2 z-50 animate-in fade-in-50 zoom-in-95"
                 >
-                  {/* User info card */}
                   <div className="flex items-center gap-3 p-3 bg-emerald-50/60 dark:bg-emerald-950/30 rounded-xl mb-1.5 border border-emerald-100 dark:border-emerald-900/40">
                     <Avatar name={user.name} src={user.avatarSrc} size="md" />
                     <div className="min-w-0 flex-1">
@@ -335,7 +334,6 @@ export function Header({
                     </div>
                   </div>
 
-                  {/* Primary account links */}
                   <div className="space-y-0.5">
                     <a
                       href="/account/profile"
@@ -367,8 +365,6 @@ export function Header({
 
                   <div className="my-1.5 border-t border-slate-100 dark:border-slate-800" />
 
-
-                  {/* Logout action */}
                   <button
                     type="button"
                     onClick={() => {

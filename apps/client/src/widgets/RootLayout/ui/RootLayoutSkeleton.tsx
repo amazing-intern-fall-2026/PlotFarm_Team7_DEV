@@ -13,7 +13,6 @@ export function RootLayoutSkeleton({ className }: RootLayoutSkeletonProps) {
       )}
       aria-hidden="true"
     >
-      {/* Top Header/Topbar skeleton */}
       <div className="h-16 w-full border-b border-border/40 bg-muted/30 px-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="h-8 w-28 rounded-md bg-muted" />
@@ -29,7 +28,6 @@ export function RootLayoutSkeleton({ className }: RootLayoutSkeletonProps) {
         </div>
       </div>
 
-      {/* Main Content Area */}
       <div className="flex-1 p-6 space-y-4">
         <div className="h-8 w-1/3 rounded-lg bg-muted" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
@@ -39,7 +37,6 @@ export function RootLayoutSkeleton({ className }: RootLayoutSkeletonProps) {
         </div>
       </div>
 
-      {/* Mobile Bottom Navigation Bar Skeleton */}
       <div className="h-16 w-full border-t border-border/40 bg-muted/30 lg:hidden flex items-center justify-around px-4">
         <div className="h-6 w-6 rounded bg-muted" />
         <div className="h-6 w-6 rounded bg-muted" />

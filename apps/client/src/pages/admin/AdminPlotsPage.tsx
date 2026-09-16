@@ -65,7 +65,7 @@ export function AdminPlotsPage() {
         }
       }
     } catch {
-      // Ignore storage read error
+      /* Ignore exception intentionally */
     }
     localStorage.setItem(STORAGE_KEY_ADMIN_PLOTS, JSON.stringify([]));
     return [];
@@ -136,7 +136,7 @@ export function AdminPlotsPage() {
     try {
       localStorage.setItem(STORAGE_KEY_ADMIN_PLOTS, JSON.stringify(updated));
     } catch {
-      // Ignore storage write error
+      /* Ignore exception intentionally */
     }
     setIsModalOpen(false);
   };
@@ -527,7 +527,6 @@ export function AdminPlotsPage() {
                 alt="Greenhouse Live Camera"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 onError={(e) => {
-                  // Fallback to high quality farm image
                   (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=600&auto=format&fit=crop&q=80";
                 }}
               />

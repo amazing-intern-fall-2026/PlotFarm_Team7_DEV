@@ -59,7 +59,7 @@ export function AdminCropsPage() {
         }
       }
     } catch {
-      // Ignore storage read error
+      /* Ignore exception intentionally */
     }
     localStorage.setItem(STORAGE_KEY_ADMIN_CROPS, JSON.stringify([]));
     return [];
@@ -86,8 +86,8 @@ export function AdminCropsPage() {
       try {
         localStorage.setItem(STORAGE_KEY_ADMIN_CROPS, JSON.stringify(updated));
       } catch {
-        // Ignore storage write error
-      }
+      /* Ignore exception intentionally */
+    }
       return updated;
     });
   };
@@ -128,7 +128,7 @@ export function AdminCropsPage() {
     try {
       localStorage.setItem(STORAGE_KEY_ADMIN_CROPS, JSON.stringify(updated));
     } catch {
-      // Ignore storage write error
+      /* Ignore exception intentionally */
     }
 
     setNewCropName("");

@@ -59,7 +59,7 @@ export function AdminFarmersPage() {
         }
       }
     } catch {
-      // Ignore storage read error
+      /* Ignore exception intentionally */
     }
     localStorage.setItem(STORAGE_KEY_ADMIN_FARMERS, JSON.stringify([]));
     return [];
@@ -111,8 +111,8 @@ export function AdminFarmersPage() {
       try {
         localStorage.setItem(STORAGE_KEY_ADMIN_FARMERS, JSON.stringify(sampleRebalanced));
       } catch {
-        // Ignore storage write error
-      }
+      /* Ignore exception intentionally */
+    }
       setToastMessage("⚡ AI Cân Bằng Tải Thành Công: Đã gán ô #A-107 cho Chú Năm và ô #B-211 cho Cô Sáu!");
       setTimeout(() => setToastMessage(null), 4000);
       return;
@@ -144,7 +144,7 @@ export function AdminFarmersPage() {
     try {
       localStorage.setItem(STORAGE_KEY_ADMIN_FARMERS, JSON.stringify(updated));
     } catch {
-      // Ignore storage write error
+      /* Ignore exception intentionally */
     }
 
     setToastMessage("⚡ AI Cân Bằng Tải Thành Công: Đã gán ô #A-107 cho Chú Năm và ô #B-211 cho Cô Sáu! Định mức toàn hệ thống đạt tối ưu.");

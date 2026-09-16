@@ -14,7 +14,6 @@ export function PlotsFilterSkeleton({ className }: PlotsFilterSkeletonProps) {
       )}
       aria-hidden="true"
     >
-      {/* Top row: Search input & Sort dropdown */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <Skeleton className="h-10 w-full sm:max-w-md rounded-xl bg-muted/70" />
 
@@ -24,7 +23,6 @@ export function PlotsFilterSkeleton({ className }: PlotsFilterSkeletonProps) {
         </div>
       </div>
 
-      {/* Bottom row: Filter Chips & Toggles */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border/40">
         <div className="flex flex-wrap items-center gap-2">
           <Skeleton className="h-8 w-24 rounded-full bg-muted/70" />

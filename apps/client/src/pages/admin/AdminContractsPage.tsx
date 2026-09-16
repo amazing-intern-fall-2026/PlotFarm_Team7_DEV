@@ -57,7 +57,7 @@ export function AdminContractsPage() {
         }
       }
     } catch {
-      // Ignore storage read error
+      /* Ignore exception intentionally */
     }
     localStorage.setItem(STORAGE_KEY_ADMIN_CONTRACTS, JSON.stringify([]));
     return [];
@@ -96,8 +96,8 @@ export function AdminContractsPage() {
       try {
         localStorage.setItem(STORAGE_KEY_ADMIN_CONTRACTS, JSON.stringify(updated));
       } catch {
-        // Ignore storage write error
-      }
+      /* Ignore exception intentionally */
+    }
       return updated;
     });
 

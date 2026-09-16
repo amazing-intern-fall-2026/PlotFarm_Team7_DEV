@@ -76,9 +76,6 @@ export function FarmerHistoryPage() {
 
   return (
     <Box className="w-full space-y-6 pb-12">
-      {/* ─────────────────────────────────────────────────────────────
-          1. HEADER & MONTH PICKER
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden border-border shadow-xs">
         <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 bg-gradient-to-r from-emerald-50/40 via-background to-background dark:from-emerald-950/20">
           <Box className="flex items-center gap-3.5">
@@ -121,9 +118,6 @@ export function FarmerHistoryPage() {
         </CardHeader>
       </Card>
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. KPI METRICS CARDS (3 Cards)
-      ───────────────────────────────────────────────────────────── */}
       <Box className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="p-5 rounded-3xl border-border shadow-xs bg-card flex items-center gap-4">
           <Box className="h-12 w-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 flex items-center justify-center shrink-0">
@@ -168,9 +162,6 @@ export function FarmerHistoryPage() {
         </Card>
       </Box>
 
-      {/* ─────────────────────────────────────────────────────────────
-          3. CATEGORY FILTER TABS
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-3.5 border-border shadow-xs rounded-2xl">
         <Box className="flex flex-wrap items-center gap-2">
           <Text variant="muted" className="text-xs font-medium flex items-center gap-1 mr-1">
@@ -219,9 +210,6 @@ export function FarmerHistoryPage() {
         </Box>
       </Card>
 
-      {/* ─────────────────────────────────────────────────────────────
-          4. WORK HISTORY CARDS LIST
-      ───────────────────────────────────────────────────────────── */}
       <Box className="space-y-4">
         {filteredTasks.length === 0 ? (
           <Card className="p-12 text-center border-dashed border-2 border-border shadow-none space-y-4">
@@ -352,9 +340,6 @@ export function FarmerHistoryPage() {
         )}
       </Box>
 
-      {/* ─────────────────────────────────────────────────────────────
-          5. COMPLETION ACHIEVEMENT BANNER
-      ───────────────────────────────────────────────────────────── */}
       {HISTORY_TASKS.length > 0 && (
         <Card className="p-5 rounded-3xl border-emerald-200 dark:border-emerald-800 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-100 dark:from-emerald-950/40 dark:to-teal-950/20 shadow-xs">
           <CardContent className="p-0 flex items-center gap-4 text-emerald-950 dark:text-emerald-200">

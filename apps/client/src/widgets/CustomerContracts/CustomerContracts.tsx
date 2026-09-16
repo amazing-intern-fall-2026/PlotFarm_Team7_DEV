@@ -90,7 +90,6 @@ export function CustomerContracts() {
 
   return (
     <Box className="space-y-6">
-      {/* Metrics Row */}
       <Box className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="border-border/80 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-xs">
           <Box className="flex items-center justify-between">
@@ -141,9 +140,7 @@ export function CustomerContracts() {
         </Card>
       </Box>
 
-      {/* Main Content Area */}
       <Card className="border-border/80 bg-white dark:bg-slate-900 shadow-xs rounded-2xl overflow-hidden">
-        {/* Status Filter Tabs / Chips */}
         <Box className="p-4 sm:p-5 border-b border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <Box className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto">
             {CONTRACT_STATUS_FILTERS.map((f) => {
@@ -171,7 +168,6 @@ export function CustomerContracts() {
           </Typography.Muted>
         </Box>
 
-        {/* ── DESKTOP VIEW: Bảng phân lớp tinh giản ── */}
         <Box className="hidden lg:block overflow-x-auto">
           <Table>
             <TableHeader className="bg-slate-50 dark:bg-slate-800/40">
@@ -294,7 +290,6 @@ export function CustomerContracts() {
           </Table>
         </Box>
 
-        {/* ── MOBILE VIEW: Dạng danh sách thẻ (Card view) ── */}
         <Box className="block lg:hidden p-4 space-y-4">
           {filteredContracts.map((c) => (
             <Card
@@ -384,7 +379,6 @@ export function CustomerContracts() {
         </Box>
       </Card>
 
-      {/* MODAL KÝ SỐ ĐIỆN TỬ OTP */}
       <Modal
         isOpen={!!activeModalContract}
         onClose={() => {

@@ -31,9 +31,6 @@ export function PlotsExploreHeroDesktop({
 
       <Box className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
         <Box className="grid grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* ═══════════════════════════════════════════════════════════
-              CỘT TRÁI: VALUE PROPOSITION & CTA (COL-SPAN-7)
-             ═══════════════════════════════════════════════════════════ */}
           <Box className="col-span-7 flex flex-col items-start text-left space-y-4">
             <Box className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary">
               <Text as="span" className="text-xs font-bold uppercase tracking-wider text-primary">
@@ -138,9 +135,6 @@ export function PlotsExploreHeroDesktop({
             </Box>
           </Box>
 
-          {/* ═══════════════════════════════════════════════════════════
-              CỘT PHẢI: INTERACTIVE LIVE FARM MOCKUP (COL-SPAN-5)
-             ═══════════════════════════════════════════════════════════ */}
           <Box className="col-span-5 w-full relative">
             <Box className="absolute -inset-2 rounded-[28px] bg-primary/10 blur-xl opacity-80 pointer-events-none" />
 

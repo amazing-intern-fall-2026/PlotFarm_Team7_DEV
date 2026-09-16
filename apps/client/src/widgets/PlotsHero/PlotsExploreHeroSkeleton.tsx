@@ -16,7 +16,6 @@ export function PlotsExploreHeroSkeleton({ className }: PlotsExploreHeroSkeleton
     >
       <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column Skeleton */}
           <div className="lg:col-span-7 flex flex-col items-start space-y-4">
             <Skeleton className="h-7 w-36 rounded-full bg-emerald-600/20" />
             <Skeleton className="h-10 sm:h-14 w-full rounded-xl bg-muted/80" />
@@ -39,7 +38,6 @@ export function PlotsExploreHeroSkeleton({ className }: PlotsExploreHeroSkeleton
             </div>
           </div>
 
-          {/* Right Column Camera Card Skeleton */}
           <div className="lg:col-span-5 w-full">
             <div className="rounded-3xl border border-border/60 bg-muted/40 p-4 space-y-4 shadow-xl">
               <Skeleton className="w-full aspect-video rounded-2xl bg-muted/70" />

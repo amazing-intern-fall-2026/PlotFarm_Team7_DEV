@@ -59,8 +59,8 @@ export function CheckoutPage() {
       try {
         await axiosClient.post(`/plots/${order.plotId}/release-hold`);
       } catch {
-        // ignore release error on expired
-      }
+      /* Ignore exception intentionally */
+    }
     }
   }, [order.plotId]);
 
@@ -73,7 +73,6 @@ export function CheckoutPage() {
     onExpire: handleTimerExpired,
   });
 
-  // 2. Tải thông tin ô đất và khởi tạo hợp đồng / VietQR từ backend nếu có phiên đăng nhập
   const initPayment = React.useCallback(async () => {
     setIsLoadingPlot(true);
     try {
@@ -121,8 +120,8 @@ export function CheckoutPage() {
             setServerLockedUntil(holdRes.data.data.lockedUntil);
           }
         } catch {
-          // Bỏ qua lỗi nếu khách chưa đăng nhập hoặc ô đất đã được hold trước đó
-        }
+      /* Ignore exception intentionally */
+    }
 
         try {
           const todayStr = new Date().toISOString().split("T")[0];
@@ -183,7 +182,6 @@ export function CheckoutPage() {
             }
           }
         } catch {
-          // Nếu không gọi được API contract (ví dụ khách vãng lai hoặc token hết hạn), dùng mock fallback
           const fallbackOrderCode = `ORD-${cleanPlotNumber}-${Math.floor(1000 + Math.random() * 9000)}`;
           setOrder((prev) => ({ ...prev, orderCode: fallbackOrderCode }));
           setRealTransferContent(`CF${fallbackOrderCode}`);
@@ -214,8 +212,8 @@ export function CheckoutPage() {
           window.clearInterval(intervalId);
         }
       } catch {
-        // Polling im lặng không làm gián đoạn UI người dùng
-      }
+      /* Ignore exception intentionally */
+    }
     }, 2500);
 
     return () => {
@@ -231,8 +229,8 @@ export function CheckoutPage() {
           orderCode: order.orderCode,
         });
       } catch {
-        // Mock fallback nếu server mock endpoint trả lỗi (ví dụ demo offline)
-      }
+      /* Ignore exception intentionally */
+    }
 
       window.setTimeout(() => {
         setIsSimulating(false);
@@ -260,8 +258,8 @@ export function CheckoutPage() {
       try {
         await axiosClient.post(`/plots/${order.plotId}/release-hold`);
       } catch {
-        // ignore
-      }
+      /* Ignore exception intentionally */
+    }
     }
     navigate("/plots");
   };
@@ -351,13 +349,11 @@ export function CheckoutPage() {
             </Box>
           </Grid>
         ) : (
-          /* BỐ CỤC CHÍNH 2 CỘT (DESKTOP: 38% CỘT TRÁI, 62% CỘT PHẢI) */
           <Grid cols={1} colsLg={12} gap={8} className="items-start">
             <Box className="hidden lg:block lg:col-span-5">
               <MiniReceiptCard order={order} />
             </Box>
 
-            {/* CỘT PHẢI: VIETQR PAYMENT HUB (TRUNG TÂM THANH TOÁN FINTECH) */}
             <Box className="lg:col-span-7">
               <VietQRPaymentHub
                 order={order}

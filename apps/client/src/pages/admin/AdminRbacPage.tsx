@@ -64,7 +64,7 @@ export function AdminRbacPage() {
         }
       }
     } catch {
-      // Ignore storage read error
+      /* Ignore exception intentionally */
     }
     localStorage.setItem(STORAGE_KEY_ADMIN_RBAC, JSON.stringify([]));
     return [];
@@ -116,7 +116,7 @@ export function AdminRbacPage() {
     try {
       localStorage.setItem(STORAGE_KEY_ADMIN_RBAC, JSON.stringify(updated));
     } catch {
-      // Ignore storage write error
+      /* Ignore exception intentionally */
     }
     showToast(
       newStatus === "locked"
@@ -150,7 +150,7 @@ export function AdminRbacPage() {
     try {
       localStorage.setItem(STORAGE_KEY_ADMIN_RBAC, JSON.stringify(updated));
     } catch {
-      // Ignore storage write error
+      /* Ignore exception intentionally */
     }
     setShowCreateModal(false);
     setNewUserName("");
@@ -165,7 +165,7 @@ export function AdminRbacPage() {
     try {
       localStorage.setItem(STORAGE_KEY_ADMIN_RBAC, JSON.stringify(updated));
     } catch {
-      // Ignore storage write error
+      /* Ignore exception intentionally */
     }
     setEditingUserRole(null);
     showToast(`🛡 Đã cập nhật quyền truy cập thành ${newRole}`);

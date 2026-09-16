@@ -65,7 +65,7 @@ export function AdminHarvestPage() {
         }
       }
     } catch {
-      // Ignore storage read error
+      /* Ignore exception intentionally */
     }
     localStorage.setItem(STORAGE_KEY_ADMIN_HARVEST, JSON.stringify([]));
     return [];
@@ -136,7 +136,7 @@ export function AdminHarvestPage() {
     try {
       localStorage.setItem(STORAGE_KEY_ADMIN_HARVEST, JSON.stringify(updated));
     } catch {
-      // Ignore storage write error
+      /* Ignore exception intentionally */
     }
     showToast("⚡ Đã xác nhận giao thành công tất cả đơn hàng!");
   };
@@ -146,7 +146,7 @@ export function AdminHarvestPage() {
     try {
       localStorage.setItem(STORAGE_KEY_ADMIN_HARVEST, JSON.stringify([]));
     } catch {
-      // Ignore storage write error
+      /* Ignore exception intentionally */
     }
     showToast("↺ Đã làm trống danh mục vận đơn");
   };

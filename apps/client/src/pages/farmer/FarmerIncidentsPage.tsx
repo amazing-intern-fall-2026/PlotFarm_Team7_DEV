@@ -100,9 +100,6 @@ export function FarmerIncidentsPage() {
 
   return (
     <Box className="w-full max-w-3xl mx-auto space-y-6 pb-12">
-      {/* ─────────────────────────────────────────────────────────────
-          1. HEADER
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden border-border shadow-xs">
         <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 bg-gradient-to-r from-orange-50/40 via-background to-background dark:from-orange-950/20">
           <Box className="flex items-center gap-3">
@@ -136,9 +133,6 @@ export function FarmerIncidentsPage() {
         </CardHeader>
       </Card>
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. MAIN REPORT FORM
-      ───────────────────────────────────────────────────────────── */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card className="p-5 sm:p-7 shadow-xs border-border space-y-6">
           <Box className="space-y-2">
@@ -298,9 +292,6 @@ export function FarmerIncidentsPage() {
           </Box>
         </Card>
 
-        {/* ─────────────────────────────────────────────────────────────
-            3. SUBMIT BUTTON
-        ───────────────────────────────────────────────────────────── */}
         <Card className="p-4 sm:p-5 shadow-xs border-border flex flex-col-reverse sm:flex-row items-center justify-between gap-3 bg-muted/20">
           <Button
             type="button"
@@ -324,9 +315,6 @@ export function FarmerIncidentsPage() {
         </Card>
       </form>
 
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL: SUCCESS DISPATCH
-      ───────────────────────────────────────────────────────────── */}
       {isSuccessModalOpen && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
           <Card className="w-full max-w-md p-6 text-center shadow-2xl border border-border space-y-4 rounded-3xl">

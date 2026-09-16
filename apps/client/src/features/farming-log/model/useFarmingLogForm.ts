@@ -75,7 +75,6 @@ export function useFarmingLogForm({
   const airHumidity = watch("airHumidity");
   const soilMoisture = watch("soilMoisture");
 
-  // Monitor online / offline state
   React.useEffect(() => {
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
@@ -110,7 +109,7 @@ export function useFarmingLogForm({
         }
       }
     } catch {
-      // Ignore JSON parse errors in localStorage
+      // Empty catch
     }
   }, [draftKey, initialTemperature, initialAirHumidity, initialSoilMoisture, reset]);
 
@@ -133,7 +132,7 @@ export function useFarmingLogForm({
         };
         localStorage.setItem(draftKey, JSON.stringify(draft));
       } catch {
-        // Ignore localStorage quota errors
+        // Quota exceeded
       }
     }, 500);
 
@@ -242,7 +241,6 @@ export function useFarmingLogForm({
       return;
     }
 
-    // Offline check: allow local saving
     if (isOffline) {
       setSubmitError("Đang ngoại tuyến (Offline). Bản nháp đã được lưu vào thiết bị. Vui lòng kết nối Internet để gửi bài viết lên hệ thống.");
       return;

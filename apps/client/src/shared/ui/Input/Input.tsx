@@ -39,7 +39,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       ? (passwordVisible ? "text" : "password")
       : type;
 
-    // Tự động sinh rightIcon ẩn/hiện mật khẩu nếu bật showPasswordToggle và không truyền rightIcon thủ công
     const resolvedRightIcon = rightIcon ?? (
       isPasswordType && showPasswordToggle ? (
         <button

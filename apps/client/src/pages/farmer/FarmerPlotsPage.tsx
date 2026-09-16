@@ -81,7 +81,7 @@ export function FarmerPlotsPage() {
         }
       }
     } catch {
-      // fallback
+      /* Ignore exception intentionally */
     }
     localStorage.setItem(STORAGE_KEY_PLOTS, JSON.stringify([]));
     return INITIAL_PLOTS;
@@ -147,8 +147,8 @@ export function FarmerPlotsPage() {
         try {
           localStorage.setItem(STORAGE_KEY_PLOTS, JSON.stringify(updated));
         } catch {
-          // ignore quota
-        }
+      /* Ignore exception intentionally */
+    }
 
         return updated;
       });
@@ -201,9 +201,6 @@ export function FarmerPlotsPage() {
 
   return (
     <Box className="w-full space-y-6 pb-12">
-      {/* ─────────────────────────────────────────────────────────────
-          1. HEADER & ACTIONS (Card with @/shared/ui)
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden shadow-xs border-border">
         <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6">
           <Box>
@@ -272,9 +269,6 @@ export function FarmerPlotsPage() {
         </Card>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. FILTER TOOLBAR (Card with @/shared/ui)
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-4 shadow-xs border-border space-y-3">
         <CardContent className="p-0 space-y-3">
           <Box className="flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -371,9 +365,6 @@ export function FarmerPlotsPage() {
         </CardContent>
       </Card>
 
-      {/* ─────────────────────────────────────────────────────────────
-          3. PARCEL CARDS GRID (3 Columns on Desktop with @/shared/ui)
-      ───────────────────────────────────────────────────────────── */}
       {filteredPlots.length === 0 ? (
         <Card className="p-12 text-center border-dashed border-2 border-border shadow-none space-y-4">
           <Box className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 mx-auto">
@@ -560,9 +551,6 @@ export function FarmerPlotsPage() {
       </Box>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL 1: LIVE CAMERA VIEW (Card with @/shared/ui)
-      ───────────────────────────────────────────────────────────── */}
       {selectedLiveCamPlot && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <Card className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-slate-950 text-white shadow-2xl border border-white/20 p-0">
@@ -636,9 +624,6 @@ export function FarmerPlotsPage() {
         </Box>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL 2: PARCEL DETAIL & CROP TELEMETRY (Card with @/shared/ui)
-      ───────────────────────────────────────────────────────────── */}
       {selectedPlotForDetail && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto animate-in fade-in">
           <Card className="relative w-full max-w-4xl rounded-3xl bg-background shadow-2xl border border-border overflow-hidden my-auto max-h-[92vh] flex flex-col p-0">
@@ -841,9 +826,6 @@ export function FarmerPlotsPage() {
           </Card>
         </Box>
       )}
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL 3: CREATE FARMING LOG MODAL (US-23, US-24)
-      ───────────────────────────────────────────────────────────── */}
       <CreateFarmingLogModal
         isOpen={Boolean(createLogPlot)}
         onClose={() => setCreateLogPlot(null)}

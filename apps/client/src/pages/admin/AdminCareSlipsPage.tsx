@@ -63,7 +63,7 @@ export function AdminCareSlipsPage() {
         }
       }
     } catch {
-      // Ignore storage read error
+      /* Ignore exception intentionally */
     }
     localStorage.setItem(STORAGE_KEY_ADMIN_CARE_SLIPS, JSON.stringify([]));
     return [];
@@ -98,8 +98,8 @@ export function AdminCareSlipsPage() {
       try {
         localStorage.setItem(STORAGE_KEY_ADMIN_CARE_SLIPS, JSON.stringify(updated));
       } catch {
-        // Ignore storage write error
-      }
+      /* Ignore exception intentionally */
+    }
       return updated;
     });
     setSelectedSlip((prev) => (prev ? { ...prev, status: "verified" } : null));

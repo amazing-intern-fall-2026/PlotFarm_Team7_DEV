@@ -52,9 +52,7 @@ export const CheckoutHeaderBar: React.FC<CheckoutHeaderBarProps> = ({
         </Button>
       </Flex>
 
-      {/* Stepper Container: Tuyệt đối không tràn ngang (overflow-hidden) */}
       <Card className="w-full max-w-full p-3.5 sm:py-4.5 sm:px-8 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
-        {/* Mobile View (<640px): Stepper gọn gàng 100% width, không scroll ngang */}
         <div className="block sm:hidden w-full space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 min-w-0">
@@ -70,7 +68,6 @@ export const CheckoutHeaderBar: React.FC<CheckoutHeaderBarProps> = ({
             </span>
           </div>
 
-          {/* 4 Segmented Progress Bars (100% width) */}
           <div className="grid grid-cols-4 gap-1.5 w-full">
             <div className="h-1.5 rounded-full bg-emerald-600" title="1. Ô đất (Hoàn tất)" />
             <div className="h-1.5 rounded-full bg-emerald-600" title="2. Vụ mùa (Hoàn tất)" />
@@ -78,7 +75,6 @@ export const CheckoutHeaderBar: React.FC<CheckoutHeaderBarProps> = ({
             <div className="h-1.5 rounded-full bg-slate-200 dark:bg-slate-700" title="4. Hoàn tất" />
           </div>
 
-          {/* Compact Chip Indicators */}
           <div className="flex items-center justify-between text-[10px] font-semibold text-slate-500 pt-0.5">
             <span className="flex items-center gap-0.5 text-emerald-700 dark:text-emerald-400">
               <Check className="w-3 h-3 stroke-[3]" /> Ô đất
@@ -95,7 +91,6 @@ export const CheckoutHeaderBar: React.FC<CheckoutHeaderBarProps> = ({
           </div>
         </div>
 
-        {/* Desktop View (>=640px): Inline Stepper đầy đủ */}
         <div className="hidden sm:block w-full">
           <Steps
             variant="inline"

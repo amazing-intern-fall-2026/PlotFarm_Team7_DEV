@@ -83,8 +83,8 @@ const loadManagedPlots = (): ManagedPlot[] => {
       }
     }
   } catch {
-    // fallback
-  }
+      /* Ignore exception intentionally */
+    }
   return FALLBACK_PLOTS;
 };
 
@@ -144,7 +144,7 @@ export function FarmerTasksPage() {
         if (found) return found;
       }
     } catch {
-      // ignore
+      /* Ignore exception intentionally */
     }
     return null;
   }, [managedPlots]);
@@ -168,9 +168,6 @@ export function FarmerTasksPage() {
 
   return (
     <Box className="w-full space-y-6 pb-10">
-      {/* ─────────────────────────────────────────────────────────────
-          1. TOP STAFF HEADER & KPI METRICS (Card with @/shared/ui)
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden">
         <CardHeader className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5">
           <Box className="flex items-center gap-3.5">
@@ -226,9 +223,6 @@ export function FarmerTasksPage() {
         </CardHeader>
       </Card>
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. ALERT NOTIFICATION BANNER
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden border-border bg-gradient-to-r from-emerald-50/60 via-background to-background dark:from-emerald-950/20">
         <CardContent className="flex items-center justify-between p-4 text-xs sm:text-sm text-foreground">
           <Box className="flex items-center gap-2.5 font-medium">
@@ -265,9 +259,6 @@ export function FarmerTasksPage() {
         </Card>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          3. MAIN 2-COLUMN DESKTOP WORKSPACE
-      ───────────────────────────────────────────────────────────── */}
       <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <Box className="lg:col-span-7 space-y-5">
           {activeTaskData ? (
@@ -547,9 +538,6 @@ export function FarmerTasksPage() {
         </Box>
       </Box>
 
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL: LIVE CAMERA PREVIEW OF PLOT
-      ───────────────────────────────────────────────────────────── */}
       {selectedLiveCamPlot && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <Card className="relative w-full max-w-2xl rounded-3xl overflow-hidden bg-slate-950 text-white shadow-2xl border border-white/20 p-0">

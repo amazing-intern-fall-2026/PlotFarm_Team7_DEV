@@ -144,7 +144,6 @@ export function PlotDetailPage() {
   const displayBasePrice = plotData.pricePerMonth || 1200000;
   const displayImageUrl = plotData.imageUrl || "/images/plot-1.jpg";
 
-  // Stream URL: ưu tiên từ DB, fallback về VITE_MOCK_STREAM_URL nếu ô đất có camera
   const MOCK_STREAM_URL = import.meta.env.VITE_MOCK_STREAM_URL as string | undefined;
   const displayStreamUrl =
     plotData.streamUrl ||
@@ -223,7 +222,6 @@ export function PlotDetailPage() {
           <Box className="lg:col-span-8 space-y-6 sm:space-y-8">
             <Card className="border border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
               <Box className="relative w-full aspect-video sm:h-[340px] bg-slate-950 overflow-hidden group">
-                {/* HLS stream nếu có, fallback về ảnh tĩnh */}
                 <HlsVideoPlayer
                   streamUrl={displayStreamUrl}
                   fallbackImageUrl={displayImageUrl}

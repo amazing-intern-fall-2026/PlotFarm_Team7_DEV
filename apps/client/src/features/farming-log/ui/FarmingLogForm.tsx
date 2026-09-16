@@ -104,9 +104,6 @@ export function FarmingLogForm({
 
   return (
     <Box className="w-full max-w-4xl mx-auto space-y-6 pb-12">
-      {/* ─────────────────────────────────────────────────────────────
-          1. HEADER SUMMARY CARD
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden shadow-xs border-border">
         <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 bg-gradient-to-r from-emerald-50/40 via-background to-background dark:from-emerald-950/20">
           <Box className="flex items-center gap-3">
@@ -174,7 +171,6 @@ export function FarmingLogForm({
         </Card>
       )}
 
-      {/* Offline Alert Banner (Rule 5) */}
       {isOffline && (
         <Card className="p-3.5 bg-yellow-500/10 border-yellow-500/40 text-yellow-800 dark:text-yellow-200 flex items-center justify-between gap-3 rounded-2xl animate-in fade-in">
           <Box className="flex items-center gap-2.5">
@@ -219,9 +215,6 @@ export function FarmingLogForm({
         </Card>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. MAIN FORM FIELDS
-      ───────────────────────────────────────────────────────────── */}
       <form onSubmit={handleSubmitForm} className="space-y-6">
         <Card className="p-0 shadow-xs border-border overflow-hidden">
           <CardContent className="p-5 sm:p-7 space-y-6">
@@ -327,9 +320,6 @@ export function FarmingLogForm({
         </Card>
       </form>
 
-      {/* ─────────────────────────────────────────────────────────────
-          4. SUCCESS MODAL (AC1)
-      ───────────────────────────────────────────────────────────── */}
       {isSuccessModalOpen && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
           <Card className="w-full max-w-md p-6 text-center shadow-2xl border border-border space-y-4">

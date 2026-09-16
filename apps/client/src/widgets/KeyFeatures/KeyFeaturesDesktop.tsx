@@ -51,7 +51,6 @@ export function KeyFeaturesDesktop({
       </Box>
 
       <Box className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-        {/* ── CARD 1: Phân Hệ Thuê Ô Đất & Thanh Toán VietQR ── */}
         <Card className="h-full flex flex-col justify-between p-6 hover:border-primary/40 transition-all group">
           <Box className="space-y-4">
             <Box className="flex items-center justify-between gap-3">
@@ -102,7 +101,6 @@ export function KeyFeaturesDesktop({
                 </Box>
               </Box>
 
-              {/* Real VietQR payment pill */}
               <Box className="flex items-center justify-between px-3 py-2 rounded-lg bg-card border border-border text-[11px] gap-2">
                 <span className="text-muted-foreground font-medium truncate">
                   {KEY_FEATURES_MESSAGES.CARD1_PAYMENT_METHOD}

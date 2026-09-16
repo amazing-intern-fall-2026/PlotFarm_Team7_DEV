@@ -4,7 +4,6 @@ import { useRootLayout } from "../model/useRootLayout";
 import { RootLayoutSkeleton } from "./RootLayoutSkeleton";
 import type { RootLayoutProps } from "../model/types";
 
-// Dynamic Code Splitting for Desktop & Mobile views
 const RootLayoutDesktop = React.lazy(() => import("./RootLayoutDesktop"));
 const RootLayoutMobile = React.lazy(() => import("./RootLayoutMobile"));
 

@@ -40,7 +40,6 @@ export function usePlots(options: UsePlotsOptions = {}) {
 
   const [currentPage, setCurrentPage] = React.useState<number>(initialPage);
 
-  // filterStatus → sent to server; others → client-side on current batch
   const [selectedPlotId, setSelectedPlotId] = React.useState<string | null>(null);
   const [filterStatus, setFilterStatus] = React.useState<FilterStatusOption>(initialFilterStatus);
   const [filterSize, setFilterSize] = React.useState<string>("all");

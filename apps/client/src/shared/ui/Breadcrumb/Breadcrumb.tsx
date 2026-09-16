@@ -44,7 +44,6 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
     },
     ref,
   ) => {
-    // Nếu truyền items dạng mảng, tự động render theo chuẩn
     if (items && items.length > 0) {
       return (
         <nav

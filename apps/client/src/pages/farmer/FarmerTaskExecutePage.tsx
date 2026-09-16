@@ -72,9 +72,6 @@ export function FarmerTaskExecutePage() {
 
   return (
     <Box className="w-full space-y-6 pb-12">
-      {/* ─────────────────────────────────────────────────────────────
-          1. HEADER WITH BREADCRUMB & COUNTDOWN
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden">
         <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6">
           <Box className="flex items-center gap-3.5">
@@ -112,9 +109,6 @@ export function FarmerTaskExecutePage() {
         </CardHeader>
       </Card>
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. STEPPER PROGRESS BAR (Horizontal Web Stepper)
-      ───────────────────────────────────────────────────────────── */}
       <Card className="p-4 sm:p-5">
         <Box className="grid grid-cols-3 gap-2 sm:gap-4 text-xs sm:text-sm">
           <Box className="flex items-center gap-2 sm:gap-3 text-emerald-700 font-bold">
@@ -171,12 +165,8 @@ export function FarmerTaskExecutePage() {
         </Box>
       </Card>
 
-      {/* ─────────────────────────────────────────────────────────────
-          3. MAIN 2-COLUMN DESKTOP WORKSPACE
-      ───────────────────────────────────────────────────────────── */}
       <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <Box className="lg:col-span-7 space-y-6">
-          {/* Card: Minh chứng hiện trường bắt buộc */}
           <Card className="p-0 overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between p-5 pb-3">
               <Box>
@@ -432,9 +422,6 @@ export function FarmerTaskExecutePage() {
         </Box>
       </Box>
 
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL: SUCCESS REPORT & CLOSE
-      ───────────────────────────────────────────────────────────── */}
       {isSuccessModalOpen && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
           <Card className="w-full max-w-md p-6 text-center shadow-2xl border border-border space-y-4">
@@ -462,9 +449,6 @@ export function FarmerTaskExecutePage() {
         </Box>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          MODAL: REPORT INCIDENT
-      ───────────────────────────────────────────────────────────── */}
       {isIncidentModalOpen && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
           <Card className="w-full max-w-md p-6 shadow-2xl border border-border space-y-4">

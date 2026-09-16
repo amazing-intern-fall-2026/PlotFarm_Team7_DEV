@@ -58,7 +58,7 @@ export function AdminDashboardPage() {
         }
       }
     } catch {
-      // Ignore storage read error
+      /* Ignore exception intentionally */
     }
     return [];
   });
@@ -102,7 +102,7 @@ export function AdminDashboardPage() {
         }
       }
     } catch {
-      // Ignore storage parsing error
+      /* Ignore exception intentionally */
     }
 
     const occupancyPercent = totalPlots > 0 ? Math.round((cultivatingPlots / totalPlots) * 100) : 0;
@@ -147,8 +147,8 @@ export function AdminDashboardPage() {
       try {
         localStorage.setItem(STORAGE_KEY_ADMIN_EVENTS, JSON.stringify(updated));
       } catch {
-        // Ignore storage write error
-      }
+      /* Ignore exception intentionally */
+    }
     }, 600);
   };
 

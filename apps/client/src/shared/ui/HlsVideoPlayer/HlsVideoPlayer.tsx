@@ -79,7 +79,6 @@ export function HlsVideoPlayer({
     };
   }, [streamUrl, streamFailed, onStreamError]);
 
-  // Không có stream hoặc stream lỗi → fallback về ảnh
   if (!streamUrl || streamFailed) {
     if (!fallbackImageUrl) return null;
     return <img src={fallbackImageUrl} alt={alt} className={className} />;

@@ -15,9 +15,7 @@ export function PlotDetailSkeleton({ className }: PlotDetailSkeletonProps) {
       aria-hidden="true"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left / Main Column (Col 8) */}
         <div className="lg:col-span-8 space-y-6">
-          {/* PlotCropCard Skeleton */}
           <div className="rounded-3xl border border-border/60 bg-card overflow-hidden shadow-xs space-y-6">
             <Skeleton className="w-full h-64 sm:h-80 rounded-none bg-muted/60" />
             <div className="p-6 sm:p-8 space-y-4">
@@ -29,7 +27,6 @@ export function PlotDetailSkeleton({ className }: PlotDetailSkeletonProps) {
               <Skeleton className="h-4 w-full rounded-md bg-muted/50" />
               <Skeleton className="h-4 w-4/5 rounded-md bg-muted/40" />
 
-              {/* Sensor stats grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-border/40">
                 {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="p-3 rounded-xl bg-muted/30 space-y-2">
@@ -41,7 +38,6 @@ export function PlotDetailSkeleton({ className }: PlotDetailSkeletonProps) {
             </div>
           </div>
 
-          {/* CropTimeline Skeleton */}
           <div className="rounded-3xl border border-border/60 bg-card p-6 sm:p-8 space-y-6 shadow-xs">
             <Skeleton className="h-7 w-48 rounded-lg bg-muted/80" />
             <div className="space-y-4 pl-4 border-l-2 border-border/50">
@@ -55,7 +51,6 @@ export function PlotDetailSkeleton({ className }: PlotDetailSkeletonProps) {
             </div>
           </div>
 
-          {/* FarmerProfileCard Skeleton */}
           <div className="rounded-3xl border border-border/60 bg-card p-6 sm:p-8 shadow-xs">
             <div className="flex items-center gap-4">
               <Skeleton className="h-16 w-16 rounded-full bg-muted/70" />
@@ -68,7 +63,6 @@ export function PlotDetailSkeleton({ className }: PlotDetailSkeletonProps) {
           </div>
         </div>
 
-        {/* Right / Sticky Booking Summary Column (Col 4) */}
         <div className="lg:col-span-4 lg:sticky lg:top-24">
           <div className="rounded-3xl border border-border/60 bg-card p-6 sm:p-8 space-y-6 shadow-md">
             <div className="flex items-center justify-between">
