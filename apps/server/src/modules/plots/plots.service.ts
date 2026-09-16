@@ -80,17 +80,8 @@ export interface PlotWithRelations {
   streamUrl?: string | null;
   lockedUntil?: Date | string | null;
   lockedByUserId?: string | null;
-  defaultCrop?: {
-    id: string;
-    slug: string;
-    nameI18n: unknown;
-  } | null;
-  farm?: {
-    id: string;
-    slug: string;
-    nameI18n: unknown;
-    addressI18n: unknown;
-  } | null;
+  defaultCrop?: CropDetail | null;
+  farm?: FarmDetail | null;
 }
 
 export class PlotsService {
