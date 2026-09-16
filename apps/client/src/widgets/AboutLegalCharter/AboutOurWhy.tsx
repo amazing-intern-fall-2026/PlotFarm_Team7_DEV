@@ -7,10 +7,10 @@ export function AboutOurWhy() {
       {/* Section Header */}
       <Box className="text-center space-y-3">
         <Typography.H2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight font-sans">
-          Our Why
+          Sứ Mệnh Của Chúng Tôi
         </Typography.H2>
         <Typography.P className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Sứ mệnh kết nối luống đất Đà Lạt với từng bữa ăn gia đình thông qua nền tảng nông nghiệp số minh bạch.
+          Kết nối luống đất canh tác tại Đà Lạt với bữa ăn an toàn của từng gia đình đô thị thông qua nông nghiệp số.
         </Typography.P>
       </Box>
 

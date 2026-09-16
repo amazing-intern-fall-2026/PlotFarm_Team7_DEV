@@ -14,8 +14,7 @@ interface TestimonialStory {
 const STORIES: TestimonialStory[] = [
   {
     id: "story-1",
-    imageSrc:
-      "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+    imageSrc: "/images/review_dinner.jpg",
     imageAlt: "Gia đình thưởng thức bữa ăn nông sản hữu cơ tươi ngon",
     quote:
       "Từ ngày thuê ô đất tại Green Farm, gia đình tôi hoàn toàn trút bỏ nỗi lo thực phẩm bẩn. Mỗi ngày mở app xem camera thấy cây lớn dần theo từng giai đoạn, cuối vụ thùng rau cải bó xôi được thu hoạch đóng thùng gửi về tận nhà tươi rói.",
@@ -25,8 +24,7 @@ const STORIES: TestimonialStory[] = [
   },
   {
     id: "story-2",
-    imageSrc:
-      "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80",
+    imageSrc: "/images/review_produce.jpg",
     imageAlt: "Bác nông dân chăm sóc luống rau tại nhà kính công nghệ cao Lạc Dương",
     quote:
       "Làm nông theo chuẩn hữu cơ TCVN 11041:2017 tuy khắt khe nhưng có hệ sinh thái đồng hành. Nhận phiếu chăm sóc là chúng tôi ra luống bắt sâu, bón phân vi sinh rồi chụp ảnh đối chứng gửi khách. Thu nhập ổn định và tự hào với nghề.",
@@ -36,8 +34,7 @@ const STORIES: TestimonialStory[] = [
   },
   {
     id: "story-3",
-    imageSrc:
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80",
+    imageSrc: "/images/review_delivery.jpg",
     imageAlt: "Đóng gói vận chuyển nông sản kèm tem mã QR Code128 chuẩn A6",
     quote:
       "Trải nghiệm công nghệ cực kỳ chuyên nghiệp: giữ chỗ 5 phút chuẩn xác, quét VietQR kích hoạt hợp đồng tức thì. Đặc biệt là phiếu gửi hàng A6 dán trên thùng rau, chỉ cần quét mã QR là tra cứu được tường tận lịch sử gieo trồng và vận chuyển.",
