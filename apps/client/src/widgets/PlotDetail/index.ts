@@ -3,3 +3,4 @@ export * from "./PlotCropCard";
 export * from "./CropTimeline";
 export * from "./FarmerProfileCard";
 export * from "./PlotBookingSummary";
+export * from "./PlotDetailSkeleton";

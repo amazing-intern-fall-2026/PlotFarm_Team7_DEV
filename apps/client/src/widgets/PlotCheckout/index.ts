@@ -6,3 +6,4 @@ export * from "./PaymentSuccessModal";
 export * from "./HoldExpiredModal";
 export * from "./TrustBadgesBar";
 export * from "./CheckoutHeaderBar";
+export * from "./PlotCheckoutSkeleton";

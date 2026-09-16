@@ -6,3 +6,4 @@ export * from "./PlotsFilterBar";
 export * from "./FarmPlotFilterDesktop";
 export * from "./FarmPlotFilterMobile";
 export * from "./FarmPlotFilter";
+export * from "./PlotsFilterSkeleton";
