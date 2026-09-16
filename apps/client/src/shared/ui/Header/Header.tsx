@@ -16,7 +16,6 @@ import {
   User,
   Sprout,
   LogOut,
-  ShieldAlert,
   ChevronDown,
 } from "lucide-react";
 import { Button } from "@/shared/ui/Button";
@@ -368,28 +367,6 @@ export function Header({
 
                   <div className="my-1.5 border-t border-slate-100 dark:border-slate-800" />
 
-                  {/* Secondary legal & policy links */}
-                  <div className="space-y-0.5">
-                    <a
-                      href="/legal/organic-standards"
-                      onClick={() => setUserDropdownOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5 text-slate-500" />
-                      <span>Cam kết tiêu chuẩn hữu cơ</span>
-                    </a>
-
-                    <a
-                      href="/legal/crop-insurance"
-                      onClick={() => setUserDropdownOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-                    >
-                      <ShieldAlert className="w-3.5 h-3.5 text-slate-500" />
-                      <span>Bảo hiểm rủi ro mùa vụ</span>
-                    </a>
-                  </div>
-
-                  <div className="my-1.5 border-t border-slate-100 dark:border-slate-800" />
 
                   {/* Logout action */}
                   <button
