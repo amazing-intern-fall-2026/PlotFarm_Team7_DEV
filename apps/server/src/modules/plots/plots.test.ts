@@ -226,12 +226,18 @@ describe("US-13: Plots API Unit & Integration Tests", () => {
           id: "crop-2",
           slug: "dap-cau",
           nameI18n: { vi: "Dưa lưới" },
+          descriptionI18n: null,
+          guideI18n: null,
+          durationDays: 60,
+          expectedYieldKgPerSqm: 3.5,
+          coverImageUrl: null,
         },
         farm: {
           id: farmIdMock,
           slug: "nong-trai-da-lat",
           nameI18n: { vi: "Nông trại Đà Lạt" },
           addressI18n: { vi: "Đà Lạt, Lâm Đồng" },
+          contactPhone: "1900 6868",
         },
       });
 

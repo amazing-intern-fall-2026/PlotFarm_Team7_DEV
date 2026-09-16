@@ -45,7 +45,7 @@ export const PlotsQuerySchema = z.object({
 export type PlotsQuery = z.infer<typeof PlotsQuerySchema>;
 
 export const PlotDetailParamsSchema = z.object({
-  id: z.string().uuid("ID ô đất không hợp lệ"),
+  id: z.string().min(1, "ID hoặc mã ô đất không hợp lệ"),
 });
 export type PlotDetailParams = z.infer<typeof PlotDetailParamsSchema>;
 

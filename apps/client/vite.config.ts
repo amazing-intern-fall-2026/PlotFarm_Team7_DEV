@@ -22,4 +22,16 @@ export default defineConfig({
       },
     },
   },
+  optimizeDeps: {
+    include: ["hls.js"],
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-hls": ["hls.js"],
+        },
+      },
+    },
+  },
 });

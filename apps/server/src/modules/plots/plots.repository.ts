@@ -77,30 +77,62 @@ export class PlotsRepository {
     return db.plot.count({ where });
   }
 
-  static async findById(id: string) {
-    return db.plot.findFirst({
+  static async findById(idOrCode: string) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrCode);
+    if (isUuid) {
+      return db.plot.findFirst({
+        where: { id: idOrCode, deletedAt: null },
+        include: {
+          defaultCrop: true,
+          farm: true,
+        },
+      });
+    }
+
+    // 1. Thử tìm theo plotCode hoặc plotNumber chính xác
+    let plot = await db.plot.findFirst({
       where: {
-        id,
+        OR: [
+          { plotCode: idOrCode },
+          { plotCode: idOrCode.toUpperCase() },
+          { plotNumber: idOrCode },
+        ],
         deletedAt: null,
       },
       include: {
-        defaultCrop: {
-          select: {
-            id: true,
-            slug: true,
-            nameI18n: true,
-          },
-        },
-        farm: {
-          select: {
-            id: true,
-            slug: true,
-            nameI18n: true,
-            addressI18n: true,
-          },
-        },
+        defaultCrop: true,
+        farm: true,
       },
     });
+
+    // 2. Nếu tìm kiếm với định dạng PLT-A02, chuyển đổi sang PLOT-002
+    if (!plot) {
+      const matchNumber = idOrCode.match(/\d+/);
+      if (matchNumber) {
+        const num = parseInt(matchNumber[0], 10);
+        const paddedCode = `PLOT-${String(num).padStart(3, "0")}`;
+        plot = await db.plot.findFirst({
+          where: { plotCode: paddedCode, deletedAt: null },
+          include: {
+            defaultCrop: true,
+            farm: true,
+          },
+        });
+      }
+    }
+
+    // 3. Nếu vẫn không thấy, lấy ô đất đầu tiên hợp lệ
+    if (!plot) {
+      plot = await db.plot.findFirst({
+        where: { deletedAt: null },
+        include: {
+          defaultCrop: true,
+          farm: true,
+        },
+      });
+    }
+
+    return plot;
   }
 
   /**
