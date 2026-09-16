@@ -18,4 +18,6 @@ export * from "./PlotsHero";
 export * from "./PlotsFilter";
 export * from "./PlotGridMap";
 export * from "./QualityCommitments";
+export * from "./PlotDetail";
+export * from "./PlotCheckout";
 

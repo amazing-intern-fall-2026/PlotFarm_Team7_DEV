@@ -75,6 +75,34 @@ export class PaymentsService {
       expiresAt: expiresAt.toISOString(),
     };
   }
+
+  static async checkStatus(orderCode: string) {
+    const paymentOrder = await db.paymentOrder.findUnique({
+      where: { orderCode },
+      include: {
+        contract: {
+          select: {
+            id: true,
+            status: true,
+            plotId: true,
+          },
+        },
+      },
+    });
+
+    if (!paymentOrder) {
+      throw AppError.notFound("Không tìm thấy đơn thanh toán");
+    }
+
+    return {
+      orderCode: paymentOrder.orderCode,
+      status: paymentOrder.status,
+      amount: Number(paymentOrder.amount),
+      contractId: paymentOrder.contractId,
+      contractStatus: paymentOrder.contract?.status ?? null,
+      paidAt: paymentOrder.paidAt?.toISOString() ?? null,
+    };
+  }
 }
 
 let orderSeq = Math.floor(Math.random() * 46656);

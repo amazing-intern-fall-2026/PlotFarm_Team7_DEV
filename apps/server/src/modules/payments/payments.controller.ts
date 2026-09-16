@@ -26,4 +26,24 @@ export class PaymentsController {
       next(error);
     }
   }
+
+  /**
+   * Endpoint: GET /api/v1/payments/check-status/:orderCode
+   * Tra cứu trạng thái đơn thanh toán VietQR phục vụ polling US-21
+   */
+  static async checkStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { orderCode } = req.params;
+      if (!orderCode) {
+        throw AppError.badRequest("Mã đơn thanh toán không hợp lệ");
+      }
+      const result = await PaymentsService.checkStatus(orderCode);
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

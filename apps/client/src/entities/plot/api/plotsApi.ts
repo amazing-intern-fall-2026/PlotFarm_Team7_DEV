@@ -1,4 +1,4 @@
-﻿import { axiosClient, parseApiError } from "@/shared/api";
+import { axiosClient, parseApiError } from "@/shared/api";
 import type { Plot, PlotStatus, PlotsQuery } from "@repo/shared";
 
 // Domain UI Types
@@ -57,10 +57,12 @@ export interface ServerPlotDetailData extends RawServerPlotItem {
 }
 
 export interface PlotDetailUiItem extends PlotUiItem {
+  defaultCropId?: string;
   farmName?: string;
   farmAddress?: string;
   farmPhone?: string;
   cropDetails?: {
+    id?: string;
     slug?: string;
     name?: string;
     description?: string;
@@ -262,6 +264,7 @@ export async function fetchPlotDetailApi(
 
       return {
         ...baseUi,
+        defaultCropId: raw.defaultCrop?.id,
         cropName,
         imageUrl: raw.defaultCrop?.coverImageUrl || baseUi.imageUrl,
         farmName,
@@ -269,6 +272,7 @@ export async function fetchPlotDetailApi(
         farmPhone: raw.farm?.contactPhone,
         cropDetails: raw.defaultCrop
           ? {
+              id: raw.defaultCrop.id,
               slug: raw.defaultCrop.slug,
               name: cropName,
               description: cropDesc,

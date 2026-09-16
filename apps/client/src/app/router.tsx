@@ -305,14 +305,14 @@ export const router = createBrowserRouter([
       { path: "/", element: <HomePage /> },
       { path: "/plots", element: <PlotsPage /> },
       { path: "/plots/:id", element: <PlotDetailPage /> },
+      { path: "/checkout", element: <CheckoutPage /> },
+      { path: "/checkout/:id", element: <CheckoutPage /> },
       { path: "/about", element: <AboutPage /> },
 
       {
         element: <ProtectedRoute />,
         children: [
           { path: "/journal", element: <JournalPage /> },
-          { path: "/checkout", element: <CheckoutPage /> },
-          { path: "/checkout/:id", element: <CheckoutPage /> },
           { path: "/my-farm", element: <MyFarmPage /> },
           { path: "/my-farm/:id", element: <MyFarmPage /> },
         ],
