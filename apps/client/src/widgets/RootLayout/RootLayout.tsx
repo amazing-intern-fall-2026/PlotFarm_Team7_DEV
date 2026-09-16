@@ -62,37 +62,43 @@ export interface RootLayoutProps {
 export type AppShellProps = RootLayoutProps;
 
 function useCustomerNavItems(
-  _t: (key: string) => string,
+  t: (key: string) => string,
   activeNavId: string,
   onNavChange: (id: string) => void,
-  _isLoggedIn: boolean,
+  isLoggedIn: boolean,
 ): HeaderNavItem[] {
-  return [
+  const items: HeaderNavItem[] = [
     {
       id: "home",
-      label: "Trang chủ",
+      label: t("nav.home"),
       isActive: activeNavId === "home",
       onClick: () => onNavChange("home"),
     },
     {
       id: "explore",
-      label: "Khám phá ô đất",
+      label: t("nav.explore"),
       isActive: activeNavId === "explore",
       onClick: () => onNavChange("explore"),
     },
-    {
-      id: "camera",
-      label: "Camera 24/7",
-      isActive: activeNavId === "camera",
-      onClick: () => onNavChange("camera"),
-    },
-    {
+  ];
+
+  if (isLoggedIn) {
+    items.push({
       id: "journal",
-      label: "Nhật ký nông vụ",
+      label: t("nav.journal"),
       isActive: activeNavId === "journal",
       onClick: () => onNavChange("journal"),
-    },
-  ];
+    });
+  }
+
+  items.push({
+    id: "about",
+    label: t("nav.about"),
+    isActive: activeNavId === "about",
+    onClick: () => onNavChange("about"),
+  });
+
+  return items;
 }
 
 function useCustomerBottomItems(t: (key: string) => string) {
@@ -462,7 +468,7 @@ export function RootLayout({
         activeItemId={activeId}
         collapseLabel={t("shell.collapse")}
         expandLabel={t("shell.expand")}
-        brandText={isAdmin ? "BioCloud" : "CloudFarm"}
+        brandText={isAdmin ? "BioCloud" : "Green Farm"}
         footer={sidebarFooter}
       />
 

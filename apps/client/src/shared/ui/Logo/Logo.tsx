@@ -10,7 +10,7 @@ export interface LogoProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Logo({
   size = "md",
   showText = false,
-  brandText = "CloudFarm",
+  brandText = "Green Farm",
   className,
   ...props
 }: LogoProps) {
@@ -22,6 +22,13 @@ export function Logo({
   }[size];
 
   const renderBrandText = () => {
+    if (brandText === "Green Farm") {
+      return (
+        <>
+          Green <span className="text-[#23a54f]">Farm</span>
+        </>
+      );
+    }
     if (brandText === "CloudFarm") {
       return (
         <>
