@@ -81,7 +81,6 @@ const TEST_PLOTS: PlotUiItem[] = [
 describe("widgets/PlotGridMap & PlotCard - US-18 Unit Test Suite", () => {
   const plots: PlotUiItem[] = TEST_PLOTS;
 
-  // ── Kịch bản 1 (AC1): Hiển thị đúng màu sắc và trạng thái của các ô đất ────
   describe("Kịch bản 1 (AC1): Xác thực cấu trúc dữ liệu và trạng thái ô đất", () => {
     it("phải bao gồm đầy đủ 4 trạng thái cốt lõi: AVAILABLE, RESERVED, OCCUPIED, MAINTENANCE", () => {
       const availablePlots = plots.filter((p) => p.status === "AVAILABLE");
@@ -113,7 +112,6 @@ describe("widgets/PlotGridMap & PlotCard - US-18 Unit Test Suite", () => {
     });
   });
 
-  // ── Kịch bản 2 (AC2): Lọc danh sách ô đất theo trạng thái và tìm kiếm ──────
   describe("Kịch bản 2 (AC2): Lọc danh sách ô đất theo trạng thái & tìm kiếm", () => {
     it("khi lọc theo trạng thái AVAILABLE, danh sách chỉ chứa các ô đất còn trống", () => {
       const filtered = plots.filter((p) => p.status === "AVAILABLE");
@@ -149,7 +147,6 @@ describe("widgets/PlotGridMap & PlotCard - US-18 Unit Test Suite", () => {
     });
   });
 
-  // ── Kịch bản 3 (AC3): Tương tác chọn ô đất và điều kiện kích hoạt Drawer ────
   describe("Kịch bản 3 (AC3): Tương tác chọn ô đất mở Drawer chi tiết", () => {
     it("chỉ các ô đất AVAILABLE mới cho phép người dùng bấm đặt thuê", () => {
       const availablePlot = plots.find((p) => p.status === "AVAILABLE");

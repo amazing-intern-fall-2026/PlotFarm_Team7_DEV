@@ -76,7 +76,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
       noValidate
       className={cn("w-full space-y-3.5 xl:space-y-4 text-left", className)}
     >
-      {/* ── Tiêu đề chính ── */}
       <Box className="space-y-1.5 text-left">
         <Heading
           level={1}
@@ -92,7 +91,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         </Text>
       </Box>
 
-      {/* ── Thông báo lỗi chung nếu có ── */}
       {errors.general && (
         <Box className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 shrink-0 text-destructive" />
@@ -100,7 +98,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         </Box>
       )}
 
-      {/* ── Field 1: Họ và tên ── */}
       <Input
         id="register-fullname"
         type="text"
@@ -113,7 +110,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         {...registerFullName}
       />
 
-      {/* ── Field 2: Địa chỉ Email ── */}
       <Input
         id="register-email"
         type="email"
@@ -126,7 +122,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         {...registerEmail}
       />
 
-      {/* ── Field 3: Mật khẩu ── */}
       <Input
         id="register-password"
         type="password"
@@ -140,7 +135,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         {...registerPassword}
       />
 
-      {/* ── Field 4: Xác nhận mật khẩu ── */}
       <Input
         id="register-confirm-password"
         type="password"
@@ -154,7 +148,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         {...registerConfirmPassword}
       />
 
-      {/* ── Checkbox: Đồng ý điều khoản dịch vụ ── */}
       <Box className="space-y-1 pt-1">
         <label className="flex cursor-pointer items-start gap-2.5 text-sm text-foreground select-none">
           <input
@@ -184,7 +177,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         </Text>
       </Box>
 
-      {/* ── Nút Tạo tài khoản mới → (Primary Design System Button) ── */}
       <Button
         type="submit"
         variant="primary"
@@ -196,7 +188,6 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         Tạo tài khoản mới
       </Button>
 
-      {/* ── Link Đăng nhập ── */}
       <Box className="text-center text-sm sm:text-base text-muted-foreground pt-1">
         <span>Bạn đã có tài khoản? </span>
         <button
@@ -208,10 +199,8 @@ export function RegisterForm({ onSwitchToLogin, className }: RegisterFormProps) 
         </button>
       </Box>
 
-      {/* ── Divider ── */}
       <AuthDivider label="HOẶC ĐĂNG KÝ NHANH VỚI" />
 
-      {/* ── Google SSO Button (Consistent with LoginForm) ── */}
       <GoogleSignInButton
         isLoading={isLoading || isGoogleLoading}
         onCredentialResponse={(credential) => {

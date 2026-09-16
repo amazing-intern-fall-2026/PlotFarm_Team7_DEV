@@ -26,10 +26,8 @@ const meta: Meta<typeof Footer> = {
 \`\`\`tsx
 import { Footer } from "@/shared/ui/Footer";
 
-// Hiển thị bình thường
 <Footer brandName="Green Farm" />
 
-// Hiển thị trạng thái Skeleton Loading (tái sử dụng qua State)
 <Footer isLoading />
 \`\`\`
         `,

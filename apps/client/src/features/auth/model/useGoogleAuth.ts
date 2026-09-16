@@ -24,7 +24,6 @@ export function useGoogleAuth(options?: UseGoogleAuthOptions) {
 
   const completeLogin = useCallback(
     (data: LoginResponseData) => {
-      // Đồng bộ cả SSOT LocalStorage lẫn SessionStorage
       setAuthSession(data);
       options?.onSuccess?.(data);
 

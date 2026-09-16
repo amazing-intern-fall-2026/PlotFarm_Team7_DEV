@@ -30,13 +30,10 @@ export function FarmPlotFilterDesktop({
 }: FarmPlotFilterViewProps) {
   return (
     <Box className={cn("w-full transition-all", className)}>
-      {/* ── Khối tìm kiếm & bộ lọc Desktop ── */}
       <Box className="pt-2 sm:pt-4 relative z-20 w-full">
         <Box className="bg-white/95 dark:bg-card/95 backdrop-blur-md rounded-2xl shadow-lg shadow-emerald-950/5 border border-slate-200/80 dark:border-border/80 p-5 sm:p-6 transition-all space-y-4">
           
-          {/* ── TẦNG 1: Quick Search Bar & Sắp Xếp Nhanh (Chuẩn h-12 / 48px) ── */}
           <Box className="flex items-center gap-3">
-            {/* Ô Input từ Design System (@/shared/ui) */}
             <Box className="flex-1">
               <Input
                 type="text"
@@ -62,7 +59,6 @@ export function FarmPlotFilterDesktop({
               />
             </Box>
 
-            {/* Nút Dropdown Sắp xếp chuẩn h-12 */}
             <Box className="relative shrink-0">
               <Box className="flex items-center gap-2 h-12 bg-slate-50/90 dark:bg-muted/40 hover:bg-slate-100 dark:hover:bg-muted px-4 rounded-xl border border-slate-200/80 dark:border-border/80 text-sm font-medium text-foreground transition-all shadow-2xs">
                 <ArrowUpDown className="h-4 w-4 text-primary shrink-0" />
@@ -86,9 +82,7 @@ export function FarmPlotFilterDesktop({
             </Box>
           </Box>
 
-          {/* ── TẦNG 2: Nhóm Filter Pills & Status Chips Chuẩn Đẹp ── */}
           <Box className="flex items-center justify-between gap-3.5 pt-3.5 border-t border-slate-100 dark:border-border/40">
-            {/* Nhóm phân loại diện tích dạng Segmented Pills */}
             <Box className="flex items-center gap-1 p-1 bg-slate-100/90 dark:bg-muted/50 rounded-xl overflow-x-auto scrollbar-none shrink-0">
               {sizeOptions.map((opt) => {
                 const isActive = selectedSize === opt.value;
@@ -111,7 +105,6 @@ export function FarmPlotFilterDesktop({
               })}
             </Box>
 
-            {/* Nhóm chip trạng thái trực quan với Status Dot */}
             <Box className="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5 flex-wrap">
               {statusChips.map((chip) => {
                 const isActive = selectedStatus === chip.id;
@@ -134,7 +127,6 @@ export function FarmPlotFilterDesktop({
                 );
               })}
 
-              {/* Nút Đặt lại bộ lọc */}
               {hasActiveFilters && (
                 <Button
                   type="button"
@@ -151,7 +143,6 @@ export function FarmPlotFilterDesktop({
         </Box>
       </Box>
 
-      {/* ── 3. TIÊU ĐỀ DANH MỤC CÂN ĐỐI (MT-7 MB-4) ── */}
       <Box className="mt-7 mb-4 flex flex-row items-end justify-between gap-3">
         <Box className="space-y-1.5">
           <Badge
@@ -169,7 +160,6 @@ export function FarmPlotFilterDesktop({
           </Heading>
         </Box>
 
-        {/* Cột phải: Bộ đếm kết quả trực quan dạng Badge / Box */}
         <Box className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-border shadow-2xs text-sm font-medium text-muted-foreground shrink-0 self-end">
           <Text as="span">{PLOTS_FILTER_MESSAGES.DISPLAY_LABEL}</Text>
           <Text as="span" className="text-primary font-bold">

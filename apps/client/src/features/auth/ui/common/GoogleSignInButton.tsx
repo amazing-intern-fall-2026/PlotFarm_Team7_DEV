@@ -47,7 +47,6 @@ export function GoogleSignInButton({
         <span>{isLoading ? loadingText : text}</span>
       </button>
 
-      {/* Overlay nút Google chính thức để kích hoạt popup chuẩn khi click */}
       <div
         ref={googleBtnRef}
         className={cn(

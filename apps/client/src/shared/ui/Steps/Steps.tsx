@@ -27,7 +27,6 @@ export const Steps: React.FC<StepsProps> = ({
   className,
   onStepClick,
 }) => {
-  // Determine state of each step if not explicitly provided
   const resolvedSteps = steps.map((s, idx) => {
     let resolvedState: StepState = s.state || "upcoming";
     if (!s.state) {
@@ -38,7 +37,6 @@ export const Steps: React.FC<StepsProps> = ({
     return { ...s, state: resolvedState };
   });
 
-  // ── VARIANT: INLINE / COMPACT (HEADER PROCESS BAR) ────────
   if (variant === "compact" || variant === "inline") {
     return (
       <nav
@@ -104,7 +102,6 @@ export const Steps: React.FC<StepsProps> = ({
     );
   }
 
-  // ── VARIANT 1: PILLS NAVIGATION ───────────────────────────
   if (variant === "pills") {
     return (
       <nav
@@ -148,7 +145,6 @@ export const Steps: React.FC<StepsProps> = ({
     );
   }
 
-  // ── VARIANT 2: VERTICAL NARRATIVE ─────────────────────────
   if (variant === "vertical") {
     return (
       <div className={cn("relative space-y-6 font-sans select-none", className)}>
@@ -160,9 +156,7 @@ export const Steps: React.FC<StepsProps> = ({
 
           return (
             <div key={step.id || idx} className="relative flex items-start gap-4">
-              {/* Left Column: Node & Connecting Line */}
               <div className="flex flex-col items-center shrink-0">
-                {/* Step Circle Node */}
                 <div
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all z-10",
@@ -183,7 +177,6 @@ export const Steps: React.FC<StepsProps> = ({
                   )}
                 </div>
 
-                {/* Vertical Line */}
                 {!isLast && (
                   <div
                     className={cn(
@@ -194,7 +187,6 @@ export const Steps: React.FC<StepsProps> = ({
                 )}
               </div>
 
-              {/* Right Column: Content & SubCard */}
               <div className="flex-1 pt-1 pb-4 min-w-0">
                 <div
                   className={cn(
@@ -210,7 +202,6 @@ export const Steps: React.FC<StepsProps> = ({
                   </p>
                 )}
 
-                {/* Sub-card quote / detail card */}
                 {step.subCard && (
                   <div className="mt-3 p-3.5 rounded-2xl bg-muted/40 border border-border/80 text-xs text-muted-foreground italic">
                     {step.subCard}
@@ -224,7 +215,6 @@ export const Steps: React.FC<StepsProps> = ({
     );
   }
 
-  // ── VARIANT 3: HORIZONTAL TRACKER (DEFAULT) ───────────────
   return (
     <div className={cn("w-full font-sans select-none", className)}>
       <div className="flex items-center justify-between">
@@ -236,7 +226,6 @@ export const Steps: React.FC<StepsProps> = ({
 
           return (
             <React.Fragment key={step.id || idx}>
-              {/* Step Node */}
               <div
                 className="flex flex-col items-center cursor-pointer group"
                 onClick={() => onStepClick?.(idx)}
@@ -261,7 +250,6 @@ export const Steps: React.FC<StepsProps> = ({
                   )}
                 </div>
 
-                {/* Label Below Node */}
                 <div className="mt-2 text-center">
                   <div
                     className={cn(
@@ -282,7 +270,6 @@ export const Steps: React.FC<StepsProps> = ({
                 </div>
               </div>
 
-              {/* Connecting Line */}
               {!isLast && (
                 <div
                   className={cn(

@@ -29,7 +29,6 @@ export function SeasonalCropsMobile({
 }: SeasonalCropsViewProps) {
   return (
     <Box className={cn("w-full overflow-hidden seasonal-crops-mobile-splide py-2 space-y-4", className)}>
-      {/* ── 1. Mobile Header ── */}
       <Box className="space-y-1.5 text-left px-2">
         <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
           {seasonBadge}
@@ -45,7 +44,6 @@ export function SeasonalCropsMobile({
         </Text>
       </Box>
 
-      {/* ── 2. Touch-Optimized Mobile Carousel (with Peek) ── */}
       <Splide
         hasTrack={false}
         aria-label={title}
@@ -68,7 +66,6 @@ export function SeasonalCropsMobile({
           {items.map((crop) => (
             <SplideSlide key={crop.cropCode} className="pb-3">
               <Card className="h-full flex flex-col justify-between overflow-hidden">
-                {/* Image & Badge */}
                 <Box className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                   <img
                     src={crop.imageUrl}
@@ -89,7 +86,6 @@ export function SeasonalCropsMobile({
                   )}
                 </Box>
 
-                {/* Card Content */}
                 <CardContent className="p-4 flex-1 flex flex-col justify-between space-y-3 text-left">
                   <Box className="space-y-1">
                     <Typography
@@ -103,7 +99,6 @@ export function SeasonalCropsMobile({
                     </Text>
                   </Box>
 
-                  {/* 3 Metric Specs */}
                   <Box className="space-y-1.5 pt-2 border-t border-border/70 text-xs">
                     <Box className="flex items-center justify-between">
                       <span className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
@@ -137,7 +132,6 @@ export function SeasonalCropsMobile({
                   </Box>
                 </CardContent>
 
-                {/* Card Footer Button */}
                 <CardFooter className="px-4 pb-4 pt-0">
                   <Button
                     type="button"
@@ -155,7 +149,6 @@ export function SeasonalCropsMobile({
         </SplideTrack>
       </Splide>
 
-      {/* ── 3. Custom Mobile Pagination Styles ── */}
       <style>{`
         .seasonal-crops-mobile-splide .splide__pagination {
           position: static;

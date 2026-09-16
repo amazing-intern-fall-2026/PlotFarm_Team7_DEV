@@ -30,7 +30,6 @@ export const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
       size="md"
     >
       <Box className="text-center py-4 space-y-5">
-        {/* Animated Celebration Icon */}
         <Box className="relative w-20 h-20 mx-auto">
           <Box className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center animate-in zoom-in-75 duration-300">
             <CheckCircle2 className="w-12 h-12 stroke-[2.5]" />
@@ -51,7 +50,6 @@ export const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
           </Text>
         </Box>
 
-        {/* Thông tin xác nhận ngắn gọn */}
         <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left space-y-2">
           <Flex justify="between" align="center" className="text-xs">
             <Text variant="caption" className="text-slate-500 font-medium">

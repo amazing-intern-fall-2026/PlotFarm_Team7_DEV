@@ -60,7 +60,6 @@ const HISTORY_TASKS: HistoryTaskItem[] = [];
 export function FarmerHistoryPage() {
   const navigate = useNavigate();
 
-  // State
   const [selectedMonth, setSelectedMonth] = React.useState<string>("10/2026");
   const [activeFilter, setActiveFilter] = React.useState<"ALL" | "care" | "harvest" | "feedback">("ALL");
 
@@ -244,7 +243,6 @@ export function FarmerHistoryPage() {
               key={task.id}
               className="p-5 sm:p-6 rounded-3xl border-border shadow-xs hover:shadow-md transition-all space-y-4 bg-card"
             >
-              {/* Top row: Icon, Title, Status badge */}
               <Box className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-3">
                 <Box className="flex items-center gap-2.5">
                   {task.category === "harvest" ? (
@@ -283,9 +281,7 @@ export function FarmerHistoryPage() {
                 </Badge>
               </Box>
 
-              {/* Sub-card: Detailed Proof & Feedback */}
               <Box className="flex flex-col md:flex-row items-start md:items-center gap-4 p-3.5 rounded-2xl bg-muted/30 border border-border">
-                {/* Proof thumbnail */}
                 <Box className="relative h-20 w-24 rounded-xl overflow-hidden bg-black shrink-0 border border-border">
                   <img
                     src={task.image}
@@ -294,9 +290,7 @@ export function FarmerHistoryPage() {
                   />
                 </Box>
 
-                {/* Contextual content based on task type */}
                 <Box className="flex-1 space-y-1.5">
-                  {/* 1. Customer Feedback Review */}
                   {task.feedback && (
                     <Box className="space-y-1">
                       <Box className="flex items-center gap-2">
@@ -313,7 +307,6 @@ export function FarmerHistoryPage() {
                     </Box>
                   )}
 
-                  {/* 2. Cold Chain Courier Info */}
                   {task.deliveryInfo && (
                     <Box className="space-y-1">
                       <Text as="p" className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
@@ -326,7 +319,6 @@ export function FarmerHistoryPage() {
                     </Box>
                   )}
 
-                  {/* 3. Irrigation Sensor Outcome */}
                   {task.sensorOutcome && (
                     <Box className="space-y-1.5">
                       <Box className="flex items-center justify-between text-xs">
@@ -347,7 +339,6 @@ export function FarmerHistoryPage() {
                     </Box>
                   )}
 
-                  {/* 4. Biosecurity Protection */}
                   {task.protectionInfo && (
                     <Text as="p" className="text-xs text-foreground/90 flex items-start gap-1.5">
                       <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />

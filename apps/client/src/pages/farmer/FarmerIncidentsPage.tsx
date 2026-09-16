@@ -59,7 +59,6 @@ export function FarmerIncidentsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // States
   const [selectedPlot, setSelectedPlot] = React.useState<string>(id || "");
   const [selectedType, setSelectedType] = React.useState<string>("pest_fungus");
   const [evidencePhoto, setEvidencePhoto] = React.useState<string | null>(null);
@@ -142,7 +141,6 @@ export function FarmerIncidentsPage() {
       ───────────────────────────────────────────────────────────── */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card className="p-5 sm:p-7 shadow-xs border-border space-y-6">
-          {/* SECTION 1: Select Plot Location */}
           <Box className="space-y-2">
             <Text as="label" className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
               <MapPin className="h-4 w-4 text-emerald-600" />
@@ -166,7 +164,6 @@ export function FarmerIncidentsPage() {
             </select>
           </Box>
 
-          {/* SECTION 2: 4 Incident Type Options */}
           <Box className="space-y-2.5">
             <Text as="label" className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
               <AlertTriangle className="h-4 w-4 text-amber-600" />
@@ -209,7 +206,6 @@ export function FarmerIncidentsPage() {
             </Box>
           </Box>
 
-          {/* SECTION 3: Photo Evidence Dropzone */}
           <Box className="space-y-2.5">
             <input
               ref={fileInputRef}
@@ -265,7 +261,6 @@ export function FarmerIncidentsPage() {
             )}
           </Box>
 
-          {/* SECTION 4: Quick Proposal Chips */}
           <Box className="space-y-2.5">
             <Text as="label" className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
               <span>Đề xuất phương án xử lý nhanh</span>
@@ -293,7 +288,6 @@ export function FarmerIncidentsPage() {
               })}
             </Box>
 
-            {/* Custom Notes */}
             <textarea
               rows={3}
               value={customNotes}

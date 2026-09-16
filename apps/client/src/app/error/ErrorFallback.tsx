@@ -25,12 +25,10 @@ export function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps)
   return (
     <Box className="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 bg-background">
       <Box className="w-full max-w-lg rounded-3xl border border-border/80 bg-card p-6 sm:p-8 shadow-xl text-center space-y-5 animate-in fade-in-50 duration-300">
-        {/* Warning Icon Badge */}
         <Box className="h-16 w-16 mx-auto rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center shadow-inner">
           <AlertTriangle className="h-8 w-8" />
         </Box>
 
-        {/* Heading & Notice */}
         <Box className="space-y-2">
           <Heading level={2} className="text-2xl font-extrabold text-foreground tracking-tight">
             Đã xảy ra sự cố không mong muốn
@@ -40,7 +38,6 @@ export function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps)
           </Text>
         </Box>
 
-        {/* Action Buttons */}
         <Box className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <Button
             type="button"
@@ -65,7 +62,6 @@ export function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps)
           </Button>
         </Box>
 
-        {/* Developer Diagnostics / Expandable Technical Details */}
         {error && (
           <Box className="pt-3 border-t border-border/60 text-left">
             <button

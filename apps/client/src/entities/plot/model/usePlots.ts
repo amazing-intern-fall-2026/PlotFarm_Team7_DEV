@@ -32,17 +32,14 @@ export function usePlots(options: UsePlotsOptions = {}) {
     initialPage = 1,
   } = options;
 
-  // ── Server state ───────────────────────────────────────────────────────────
   const [plots, setPlots] = React.useState<PlotUiItem[]>([]);
   const [serverTotal, setServerTotal] = React.useState<number>(0);
   const [serverTotalPages, setServerTotalPages] = React.useState<number>(1);
   const [loading, setLoading] = React.useState<boolean>(autoFetch);
   const [error, setError] = React.useState<string | null>(null);
 
-  // ── Pagination (server-driven) ─────────────────────────────────────────────
   const [currentPage, setCurrentPage] = React.useState<number>(initialPage);
 
-  // ── Filters ────────────────────────────────────────────────────────────────
   // filterStatus → sent to server; others → client-side on current batch
   const [selectedPlotId, setSelectedPlotId] = React.useState<string | null>(null);
   const [filterStatus, setFilterStatus] = React.useState<FilterStatusOption>(initialFilterStatus);
@@ -53,12 +50,10 @@ export function usePlots(options: UsePlotsOptions = {}) {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [sortBy, setSortBy] = React.useState<PlotSortOption>(initialSortBy);
 
-  // Reset page when client-side filters change
   React.useEffect(() => {
     setCurrentPage(1);
   }, [filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery, sortBy]);
 
-  // Reset page when server-level status filter changes
   React.useEffect(() => {
     setCurrentPage(1);
   }, [filterStatus]);
@@ -106,14 +101,12 @@ export function usePlots(options: UsePlotsOptions = {}) {
     [pageSize],
   );
 
-  // Trigger fetch khi page hoặc status filter thay đổi
   React.useEffect(() => {
     if (autoFetch) {
       loadPlots(currentPage, filterStatus);
     }
   }, [autoFetch, currentPage, filterStatus, loadPlots]);
 
-  // ── Client-side helpers ────────────────────────────────────────────────────
 
   const matchesSearch = React.useCallback((plot: PlotUiItem, query: string) => {
     if (!query.trim()) return true;
@@ -147,7 +140,6 @@ export function usePlots(options: UsePlotsOptions = {}) {
     });
   }, [plots, filterSize, filterZone, filterHasCamera, filterHasIot, searchQuery, sortBy, matchesSearch]);
 
-  // ── Counts ─────────────────────────────────────────────────────────────────
 
   /** statusPool: lọc bỏ size/zone/cam/iot để đếm đúng status counts */
   const statusPool = React.useMemo(() => {
@@ -174,7 +166,6 @@ export function usePlots(options: UsePlotsOptions = {}) {
     };
   }, [serverTotal, filteredPlots.length, statusPool, plots]);
 
-  // ── Filter options ─────────────────────────────────────────────────────────
 
   const availableSizes: PlotFilterOption[] = React.useMemo(() => {
     const rawSizes = Array.from(new Set(plots.map((p) => p.areaSquareMeters))).sort(
@@ -203,7 +194,6 @@ export function usePlots(options: UsePlotsOptions = {}) {
     ];
   }, [plots]);
 
-  // ── Pagination ─────────────────────────────────────────────────────────────
 
   /** Total pages từ server (pagination thật) */
   const totalPages = serverTotalPages;
@@ -214,7 +204,6 @@ export function usePlots(options: UsePlotsOptions = {}) {
    */
   const paginatedPlots = filteredPlots;
 
-  // ── Selected plot ──────────────────────────────────────────────────────────
 
   const selectedPlot = React.useMemo(() => {
     if (!selectedPlotId) return null;

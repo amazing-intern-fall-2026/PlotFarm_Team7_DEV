@@ -30,7 +30,6 @@ type Story = StoryObj<typeof Steps>;
 export const HorizontalTrackers: Story = {
   render: () => (
     <div className="w-[680px] p-8 rounded-3xl bg-muted/30 border border-border/70 space-y-10">
-      {/* State: Completed */}
       <div className="space-y-2">
         <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
           STATE: COMPLETED
@@ -45,7 +44,6 @@ export const HorizontalTrackers: Story = {
         />
       </div>
 
-      {/* State: In Progress */}
       <div className="space-y-2">
         <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
           STATE: IN PROGRESS
@@ -60,7 +58,6 @@ export const HorizontalTrackers: Story = {
         />
       </div>
 
-      {/* State: Error / Attention Required */}
       <div className="space-y-2">
         <span className="text-[10px] font-extrabold uppercase tracking-wider text-destructive">
           STATE: ERROR / ATTENTION REQUIRED
@@ -119,7 +116,6 @@ export const VerticalNarrativeDemo: Story = {
 export const StatusTagIndicatorsDemo: Story = {
   render: () => (
     <div className="w-[620px] p-8 rounded-3xl bg-card border border-border/70 shadow-xs space-y-8">
-      {/* Linear Path Navigation */}
       <div className="space-y-3">
         <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
           LINEAR PATH NAVIGATION
@@ -135,7 +131,6 @@ export const StatusTagIndicatorsDemo: Story = {
         />
       </div>
 
-      {/* Editorial Asymmetric Grid */}
       <div className="space-y-3 pt-4 border-t border-border">
         <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
           EDITORIAL ASYMMETRIC GRID

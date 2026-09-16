@@ -31,7 +31,6 @@ export function useHoldTimer({
 }: UseHoldTimerOptions): UseHoldTimerReturn {
   const storageKey = `${CHECKOUT_TIMER_CONFIG.storageKeyPrefix}${plotId}`;
 
-  // 1. Tính toán timestamp kết thúc từ server hoặc local storage
   const calculateTargetTime = React.useCallback((): number => {
     const now = Date.now();
 
@@ -66,7 +65,6 @@ export function useHoldTimer({
     onExpireRef.current = onExpire;
   }, [onExpire]);
 
-  // Sync khi serverLockedUntil hoặc initialExpiresInSeconds thay đổi
   React.useEffect(() => {
     const nextTarget = calculateTargetTime();
     setTargetTimestamp(nextTarget);

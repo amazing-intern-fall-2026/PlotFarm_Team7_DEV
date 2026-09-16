@@ -21,7 +21,6 @@ const mockLocalStorage = {
   },
 };
 
-// Polyfill global localStorage for Vitest node environment
 if (typeof globalThis.localStorage === "undefined") {
   globalThis.localStorage = mockLocalStorage as unknown as Storage;
 }

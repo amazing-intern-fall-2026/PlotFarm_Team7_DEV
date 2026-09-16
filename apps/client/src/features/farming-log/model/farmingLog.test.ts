@@ -137,7 +137,6 @@ describe("Farming Progress Log Test Suite (US-23 & US-24)", () => {
 
       expect(initialImages).toHaveLength(2);
 
-      // Farmer clicks (X) on img_02_blurry
       const targetIdToRemove = "img_02_blurry";
       const updatedImages = initialImages.filter((img) => img.id !== targetIdToRemove);
 

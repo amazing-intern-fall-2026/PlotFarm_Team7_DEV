@@ -65,7 +65,6 @@ export const Modal: React.FC<ModalProps> = ({
       )}
       {...props}
     >
-      {/* Header */}
       {(title || showCloseButton) && (
         <div className="flex items-start justify-between pb-4 border-b border-border/60">
           <div>
@@ -87,10 +86,8 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
       )}
 
-      {/* Content */}
       <div className="py-4 text-sm text-foreground">{children}</div>
 
-      {/* Footer */}
       {footer && (
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/60">
           {footer}
@@ -109,13 +106,11 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in"
         onClick={onClose}
       />
 
-      {/* Modal Dialog Box */}
       {dialogContent}
     </div>
   );

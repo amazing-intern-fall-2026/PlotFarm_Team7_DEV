@@ -38,10 +38,8 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
   return (
     <Card className={cn("border border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden", className)}>
       <CardContent className="p-5 sm:p-6 space-y-4">
-        {/* Top Header: Account Info like Facebook / Shopee / Grab */}
         <Flex justify="between" align="start" className="flex-col sm:flex-row gap-4">
           <Flex align="start" gap={3.5} className="min-w-0">
-            {/* Avatar with Verified Badge Overlay */}
             <Box className="relative shrink-0">
               <Avatar
                 src={farmer.avatarUrl}
@@ -59,7 +57,6 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
               )}
             </Box>
 
-            {/* Name, Badge, Role */}
             <Box className="min-w-0 space-y-1">
               <Flex align="center" gap={2} className="flex-wrap">
                 <Heading level={3} className="text-base sm:text-lg font-bold text-slate-900 dark:text-white break-words">
@@ -94,7 +91,6 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
             </Box>
           </Flex>
 
-          {/* Quick Action Button */}
           <Flex align="center" gap={2} className="w-full sm:w-auto shrink-0">
             <Button
               variant="outline"
@@ -107,7 +103,6 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
           </Flex>
         </Flex>
 
-        {/* Stats Grid */}
         <Box className="grid grid-cols-3 gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800 text-center">
           <Box className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
             <Flex align="center" justify="center" gap={1} className="text-amber-500 mb-0.5">
@@ -146,7 +141,6 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
           </Box>
         </Box>
 
-        {/* Commitment line */}
         <Flex align="center" gap={1.5} className="pt-1 text-xs text-slate-500 dark:text-slate-400">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
           <Text variant="caption" className="text-[11px] leading-tight">

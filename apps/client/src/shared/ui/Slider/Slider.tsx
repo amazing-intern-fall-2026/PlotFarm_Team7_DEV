@@ -78,7 +78,6 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
 
     return (
       <div className={cn("w-full font-sans select-none", className)}>
-        {/* Top Header: Label & Optional Value Display */}
         {label && (
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
@@ -88,12 +87,9 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
         )}
 
         <div className="flex items-center gap-4">
-          {/* Slider Track Wrapper */}
           <div className="relative flex-1 flex items-center h-8">
-            {/* Background Track */}
             <div className="absolute w-full h-2 rounded-full bg-muted border border-border/80" />
 
-            {/* Filled Progress Bar */}
             <div
               className={cn(
                 "absolute h-2 rounded-full transition-all duration-75",
@@ -102,7 +98,6 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
               style={{ width: `${percentage}%` }}
             />
 
-            {/* Tooltip on Thumb (if enabled) */}
             {showTooltip && (
               <div
                 className="absolute -top-7 -translate-x-1/2 px-2 py-0.5 rounded-md bg-foreground text-background text-[11px] font-bold shadow-xs transition-all pointer-events-none"
@@ -113,7 +108,6 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
               </div>
             )}
 
-            {/* Native Hidden-Range Input for Full Accessibility */}
             <input
               ref={ref}
               type="range"
@@ -134,7 +128,6 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
               {...props}
             />
 
-            {/* Custom Interactive Thumb */}
             <div
               className={cn(
                 "absolute h-5 w-5 rounded-full border-2 border-background shadow-md transition-all duration-75 -translate-x-1/2 pointer-events-none",
@@ -146,7 +139,6 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
             />
           </div>
 
-          {/* Right Input Box */}
           {showInput && (
             <div className="shrink-0 flex items-center justify-center">
               <input
@@ -166,7 +158,6 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
           )}
         </div>
 
-        {/* Stepped Marks / Labels along the Track */}
         {marks && marks.length > 0 && (
           <div className="relative w-full flex justify-between mt-3 px-1 text-[11px] font-bold uppercase text-muted-foreground">
             {marks.map((mark) => {
@@ -198,7 +189,6 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
           </div>
         )}
 
-        {/* Helper text or Error message */}
         {error ? (
           <p className="mt-1.5 text-xs text-destructive font-medium">{error}</p>
         ) : helperText ? (

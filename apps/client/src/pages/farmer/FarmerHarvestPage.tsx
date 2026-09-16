@@ -30,7 +30,6 @@ export function FarmerHarvestPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // State
   const [weightKg, setWeightKg] = React.useState<number>(18.5);
   const [isMaintenanceChecked, setIsMaintenanceChecked] = React.useState<boolean>(true);
   const [boxPhoto, setBoxPhoto] = React.useState<string>("/images/review_produce.jpg");
@@ -38,7 +37,6 @@ export function FarmerHarvestPage() {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = React.useState<boolean>(false);
   const [toastMessage, setToastMessage] = React.useState<string | null>(null);
 
-  // Stepper handlers
   const handleDecrease = () => {
     setWeightKg((prev) => Math.max(1.0, parseFloat((prev - 0.5).toFixed(1))));
   };
@@ -103,7 +101,6 @@ export function FarmerHarvestPage() {
         </CardHeader>
       </Card>
 
-      {/* Toast message */}
       {toastMessage && (
         <Card className="rounded-2xl bg-foreground text-background px-5 py-3 text-sm font-semibold flex items-center justify-between shadow-xl animate-in fade-in">
           <Text as="span" className="text-xs font-medium">{toastMessage}</Text>
@@ -146,9 +143,7 @@ export function FarmerHarvestPage() {
         </Card>
       ) : (
         <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* LEFT COLUMN: Plot Info, Weighing Stepper, Packaging */}
         <Box className="lg:col-span-7 space-y-6">
-          {/* Card: Plot Overview Banner */}
           <Card className="p-5 border-border shadow-xs space-y-2">
             <Box className="flex items-center justify-between">
               <Box className="flex items-center gap-2.5">
@@ -172,7 +167,6 @@ export function FarmerHarvestPage() {
             </CardDescription>
           </Card>
 
-          {/* Card: Weight Input with Stepper */}
           <Card className="p-5 sm:p-6 border-border shadow-xs space-y-5">
             <CardHeader className="p-0 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-bold uppercase tracking-wider text-foreground">
@@ -184,7 +178,6 @@ export function FarmerHarvestPage() {
             </CardHeader>
 
             <CardContent className="p-0 space-y-5">
-              {/* Stepper Display */}
               <Box className="flex items-center justify-center gap-4 sm:gap-6 p-4 rounded-3xl bg-muted/30 border border-border">
                 <Button
                   type="button"
@@ -221,7 +214,6 @@ export function FarmerHarvestPage() {
                 </Button>
               </Box>
 
-              {/* Packaging Eco-box Item */}
               <Card className="p-4 rounded-2xl bg-card border-border flex flex-col sm:flex-row items-center justify-between gap-4 shadow-none">
                 <Box className="flex items-center gap-3.5 w-full sm:w-auto">
                   <Box className="relative h-16 w-16 rounded-2xl overflow-hidden bg-black shrink-0 border border-border">
@@ -264,7 +256,6 @@ export function FarmerHarvestPage() {
                 </Button>
               </Card>
 
-              {/* Maintenance Checkbox */}
               <label className="flex items-center gap-3 p-3.5 rounded-2xl bg-muted/20 border border-border cursor-pointer select-none">
                 <input
                   type="checkbox"
@@ -285,11 +276,8 @@ export function FarmerHarvestPage() {
           </Card>
         </Box>
 
-        {/* RIGHT COLUMN: AgriExpress Shipping Label & Dispatch Action */}
         <Box className="lg:col-span-5 space-y-6">
-          {/* Card: Shipping Waybill */}
           <Card className="p-5 sm:p-6 border-border shadow-md rounded-3xl space-y-5 bg-card">
-            {/* Header: Courier brand & Cold Chain badge */}
             <Box className="flex items-center justify-between pb-3 border-b border-border">
               <Box className="flex items-center gap-2">
                 <Truck className="h-5 w-5 text-emerald-600" />
@@ -307,10 +295,8 @@ export function FarmerHarvestPage() {
               </Box>
             </Box>
 
-            {/* Barcode Graphic & QR code representation */}
             <Box className="p-4 rounded-2xl bg-muted/40 border border-border flex items-center justify-between gap-4">
               <Box className="space-y-1.5 flex-1">
-                {/* SVG Barcode lines simulation */}
                 <Box className="flex items-center gap-1 h-12 w-full justify-between overflow-hidden">
                   {[3, 1, 4, 1, 2, 4, 1, 3, 2, 1, 4, 2, 1, 3, 1, 4, 2, 1, 3, 2, 1, 4].map((w, idx) => (
                     <Box
@@ -330,7 +316,6 @@ export function FarmerHarvestPage() {
               </Box>
             </Box>
 
-            {/* Logistics Address Info */}
             <Box className="space-y-3 text-xs text-muted-foreground divide-y divide-border">
               <Box className="pt-2">
                 <Text variant="muted" className="text-[11px] block">Đơn vị gửi:</Text>
@@ -357,7 +342,6 @@ export function FarmerHarvestPage() {
               </Box>
             </Box>
 
-            {/* Primary CTA Button: In phiếu A6 & Giao Shipper */}
             <CardFooter className="p-0 pt-2 flex flex-col gap-2">
               <Button
                 type="button"

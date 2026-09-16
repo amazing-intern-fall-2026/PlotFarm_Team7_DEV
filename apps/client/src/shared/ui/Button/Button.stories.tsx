@@ -23,12 +23,10 @@ const meta: Meta<typeof Button> = {
 import { Button } from "@/shared/ui";
 import { Sprout } from "lucide-react";
 
-// Nút chính kèm icon
 <Button variant="primary" leftIcon={<Sprout className="h-4 w-4" />}>
   Thuê Mảnh Đất
 </Button>
 
-// Nút submit kèm trạng thái đang tải
 <Button type="submit" isLoading={isSubmitting}>
   Đăng Nhập
 </Button>

@@ -124,7 +124,6 @@ export function Header({
 }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  // 1. Xác định danh sách menu theo role
   const resolvedNavItems = React.useMemo(() => {
     if (navItems && navItems.length > 0) return navItems;
     switch (role) {
@@ -138,7 +137,6 @@ export function Header({
     }
   }, [navItems, role, user]);
 
-  // 2. Xác định nhãn badge theo role
   const resolvedRoleBadge = React.useMemo(() => {
     if (roleBadgeLabel) return roleBadgeLabel;
     switch (role) {
@@ -167,7 +165,6 @@ export function Header({
       {...props}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6">
-        {/* ── Logo & Role Badge (Left Column) ── */}
         <div className="flex flex-1 items-center gap-2.5 min-w-0">
           <Logo size="sm" showText />
           {resolvedRoleBadge && (
@@ -184,7 +181,6 @@ export function Header({
           )}
         </div>
 
-        {/* ── Desktop Navigation Links (Center Column - Căn giữa hoàn hảo) ── */}
         <nav
           aria-label="Điều hướng thanh trên"
           className="hidden lg:flex shrink-0 items-center justify-center gap-1"
@@ -218,9 +214,7 @@ export function Header({
           })}
         </nav>
 
-        {/* ── Right Actions (Right Column) ── */}
         <div className="flex flex-1 items-center justify-end gap-3 min-w-0">
-          {/* Search bar (Dành cho Admin hoặc bật tuỳ chọn) */}
           {(showSearch || role === "admin") && (
             <div className="hidden md:flex max-w-xs w-full items-center relative">
               <Search className="h-4 w-4 absolute left-3 text-muted-foreground pointer-events-none" />
@@ -233,7 +227,6 @@ export function Header({
             </div>
           )}
 
-          {/* Customer: Hotline 1900 6868 */}
           {role === "customer" && (
             <a
               href="tel:19006868"
@@ -244,7 +237,6 @@ export function Header({
             </a>
           )}
 
-          {/* Farmer: Nút quét mã QR nhanh */}
           {role === "farmer" && (
             <Button
               size="sm"
@@ -257,12 +249,9 @@ export function Header({
             </Button>
           )}
 
-          {/* Extra slot actions */}
           {extraActions}
 
-          {/* Action icons: Notifications & User Avatar */}
           <div className="flex items-center gap-1 shrink-0">
-          {/* Bell Notifications */}
           <div className="relative">
             <Button
               variant="ghost"
@@ -281,7 +270,6 @@ export function Header({
             )}
           </div>
 
-          {/* User Profile or Login */}
           {user ? (
             <button
               type="button"
@@ -308,7 +296,6 @@ export function Header({
             </Button>
           )}
 
-          {/* Hamburger Mobile Toggle */}
           <Button
             variant="ghost"
             size="icon"
@@ -324,7 +311,6 @@ export function Header({
       </div>
     </div>
 
-      {/* ── Slide-Down Mobile Drawer Menu ── */}
       {mobileOpen && (
         <div
           id="header-mobile-drawer"

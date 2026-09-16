@@ -21,10 +21,8 @@ const meta: Meta<typeof Separator> = {
 \`\`\`tsx
 import { Separator } from "@/shared/ui";
 
-// Đường kẻ ngang phân cách
 <Separator orientation="horizontal" className="my-4" />
 
-// Đường kẻ dọc giữa 2 liên kết
 <div className="flex h-5 items-center space-x-4">
   <span>Trang chủ</span>
   <Separator orientation="vertical" />

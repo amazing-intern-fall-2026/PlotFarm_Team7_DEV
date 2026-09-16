@@ -70,7 +70,6 @@ export function AdminCropsPage() {
   const [editingCrop, setEditingCrop] = React.useState<CropItem | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
 
-  // New crop form inputs
   const [newCropName, setNewCropName] = React.useState("");
   const [newCropCat, setNewCropCat] = React.useState<"leafy" | "tuber" | "herb">("leafy");
   const [newCropYield, setNewCropYield] = React.useState("15 – 20 kg/lô (20m²)");
@@ -151,7 +150,6 @@ export function AdminCropsPage() {
 
   return (
     <Box className="w-full space-y-6 pb-12">
-      {/* ── Sub-breadcrumbs & Page Header ── */}
       <Box className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <Box className="space-y-1">
           <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
@@ -167,7 +165,6 @@ export function AdminCropsPage() {
           </p>
         </Box>
 
-        {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-3">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -185,10 +182,8 @@ export function AdminCropsPage() {
         </div>
       </Box>
 
-      {/* ── Filters & Search ── */}
       <Card className="border-border bg-white dark:bg-slate-900 p-4 shadow-xs">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          {/* Category Tabs */}
           <div className="flex flex-wrap items-center gap-1.5">
             <button
               type="button"
@@ -236,7 +231,6 @@ export function AdminCropsPage() {
             </button>
           </div>
 
-          {/* Search box */}
           <div className="relative w-full sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
             <input
@@ -250,7 +244,6 @@ export function AdminCropsPage() {
         </div>
       </Card>
 
-      {/* ── Vegetable Grid ── */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredCrops.length === 0 ? (
           <div className="col-span-full rounded-2xl border border-dashed border-border/80 p-12 text-center bg-slate-50/50 dark:bg-slate-900/40">
@@ -279,7 +272,6 @@ export function AdminCropsPage() {
               }`}
             >
               <div>
-                {/* Header card with Avatar and Toggle Switch */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <img
@@ -293,7 +285,6 @@ export function AdminCropsPage() {
                     </div>
                   </div>
 
-                  {/* Toggle Switch */}
                   <button
                     type="button"
                     role="switch"
@@ -311,7 +302,6 @@ export function AdminCropsPage() {
                   </button>
                 </div>
 
-                {/* Cycle and yield badges */}
                 <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
                     🌱 {crop.cycleDays}
@@ -321,7 +311,6 @@ export function AdminCropsPage() {
                   </span>
                 </div>
 
-                {/* Climate range indicators */}
                 <div className="mt-4 space-y-3 text-xs">
                   <div>
                     <div className="flex justify-between text-muted-foreground mb-1 font-medium">
@@ -344,13 +333,11 @@ export function AdminCropsPage() {
                   </div>
                 </div>
 
-                {/* In-crop current metrics */}
                 <p className="mt-4 text-xs text-muted-foreground">
                   Đang gieo trồng tại <strong>{crop.activePlotsCount} ô đất</strong> • {crop.customerCount} khách hàng chọn
                 </p>
               </div>
 
-              {/* Bottom Actions */}
               <div className="mt-5 pt-3 border-t border-border flex items-center justify-between text-xs">
                 <span className={`rounded-md px-2 py-0.5 text-[11px] font-bold ${crop.tagColor}`}>
                   {crop.tag}
@@ -370,7 +357,6 @@ export function AdminCropsPage() {
         )}
       </div>
 
-      {/* ── 3 Summary Automation Cards ── */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs flex items-start gap-3.5">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600">
@@ -409,7 +395,6 @@ export function AdminCropsPage() {
         </Card>
       </div>
 
-      {/* Edit Config Modal */}
       {editingCrop && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl border border-border space-y-4">
@@ -469,7 +454,6 @@ export function AdminCropsPage() {
         </div>
       )}
 
-      {/* Add Crop Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl border border-border space-y-4">

@@ -21,10 +21,8 @@ const meta: Meta<typeof Logo> = {
 \`\`\`tsx
 import { Logo } from "@/shared/ui";
 
-// Icon mầm cây xanh kèm chữ thương hiệu
 <Logo size="md" showText />
 
-// Chỉ hiển thị icon mầm cây
 <Logo size="sm" />
 \`\`\`
         `

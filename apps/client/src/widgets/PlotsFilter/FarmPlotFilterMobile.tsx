@@ -34,11 +34,9 @@ export function FarmPlotFilterMobile({
 
   return (
     <Box className={cn("w-full transition-all", className)}>
-      {/* ── Khối tìm kiếm Mobile ── */}
       <Box className="pt-2 relative z-20 w-full">
         <Box className="bg-white/95 dark:bg-card/95 backdrop-blur-md rounded-2xl shadow-md border border-slate-200/80 dark:border-border/80 p-4 transition-all space-y-3">
           
-          {/* Hàng 1: Search Input + Toggle Filter Button */}
           <Box className="flex items-center gap-2">
             <Box className="flex-1 min-w-0">
               <Input
@@ -79,7 +77,6 @@ export function FarmPlotFilterMobile({
             </Button>
           </Box>
 
-          {/* Status Chips trên Mobile: Tự động xuống dòng flex-wrap, KHÔNG bị kéo ngang */}
           <Box className="flex flex-wrap items-center gap-1.5 py-0.5">
             {statusChips.map((chip) => {
               const isActive = selectedStatus === chip.id;
@@ -103,10 +100,8 @@ export function FarmPlotFilterMobile({
             })}
           </Box>
 
-          {/* Khu vực mở rộng khi bấm 'Lọc chi tiết' */}
           {isFilterDrawerOpen && (
             <Box className="pt-3 border-t border-slate-100 dark:border-border/40 space-y-3 animate-in fade-in-50 duration-200">
-              {/* Sắp xếp trên Mobile */}
               <Box className="flex items-center justify-between gap-2">
                 <Text as="span" className="text-xs font-semibold text-muted-foreground">
                   {PLOTS_FILTER_MESSAGES.SORT_LABEL}
@@ -131,7 +126,6 @@ export function FarmPlotFilterMobile({
                 </Box>
               </Box>
 
-              {/* Lựa chọn diện tích: Dùng flex-wrap không bị cuộn ngang */}
               <Box className="flex flex-wrap items-center gap-1.5 py-0.5">
                 {sizeOptions.map((opt) => {
                   const isActive = selectedSize === opt.value;
@@ -154,7 +148,6 @@ export function FarmPlotFilterMobile({
                 })}
               </Box>
 
-              {/* Nút đặt lại */}
               {hasActiveFilters && (
                 <Box className="flex justify-end pt-1">
                   <Button
@@ -174,7 +167,6 @@ export function FarmPlotFilterMobile({
         </Box>
       </Box>
 
-      {/* ── 3. TIÊU ĐỀ DANH MỤC MOBILE ── */}
       <Box className="mt-5 mb-3 space-y-2">
         <Box className="flex items-center justify-between gap-2">
           <Badge
@@ -185,7 +177,6 @@ export function FarmPlotFilterMobile({
             {PLOTS_FILTER_MESSAGES.SECTION_BADGE}
           </Badge>
 
-          {/* Bộ đếm kết quả mobile */}
           <Box className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-card border border-border shadow-2xs text-xs font-medium text-muted-foreground">
             <Text as="span">{PLOTS_FILTER_MESSAGES.DISPLAY_LABEL}</Text>
             <Text as="span" className="text-primary font-bold">

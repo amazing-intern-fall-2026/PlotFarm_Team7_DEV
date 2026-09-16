@@ -49,22 +49,18 @@ export function PlotPagination({
 
     const items: (number | "ellipsis-start" | "ellipsis-end")[] = [];
 
-    // Trang đầu luôn hiển thị
     items.push(1);
 
-    // Ellipsis trái
     if (rangeStart > 2) {
       items.push("ellipsis-start");
     }
 
     items.push(...range);
 
-    // Ellipsis phải
     if (rangeEnd < totalPages - 1) {
       items.push("ellipsis-end");
     }
 
-    // Trang cuối luôn hiển thị
     if (totalPages > 1) {
       items.push(totalPages);
     }
@@ -81,7 +77,6 @@ export function PlotPagination({
         className,
       )}
     >
-      {/* Summary text */}
       <Text variant="body2" className="text-xs sm:text-sm text-muted-foreground order-2 sm:order-1">
         Hiển thị{" "}
         <Text as="span" className="font-semibold text-foreground">
@@ -94,9 +89,7 @@ export function PlotPagination({
         ô đất
       </Text>
 
-      {/* Page buttons */}
       <Flex align="center" className="gap-1 order-1 sm:order-2 flex-wrap justify-center">
-        {/* Nút Trước */}
         <Button
           variant="outline"
           size="sm"
@@ -111,7 +104,6 @@ export function PlotPagination({
           </Text>
         </Button>
 
-        {/* Số trang + ellipsis */}
         {pageItems.map((item, idx) => {
           if (item === "ellipsis-start" || item === "ellipsis-end") {
             return (
@@ -144,7 +136,6 @@ export function PlotPagination({
           );
         })}
 
-        {/* Nút Sau */}
         <Button
           variant="outline"
           size="sm"

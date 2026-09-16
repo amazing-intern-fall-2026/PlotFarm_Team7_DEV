@@ -57,7 +57,6 @@ export function Sidebar({
         className,
       )}
     >
-      {/* ── Logo header ────────────────────────────────────────────── */}
       <div
         className={cn(
           "flex h-16 items-center border-b border-border shrink-0",
@@ -67,11 +66,9 @@ export function Sidebar({
         <Logo size="md" showText={!collapsed} brandText={brandText} />
       </div>
 
-      {/* ── Scrollable menu area ─────────────────────────────────────── */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 space-y-5">
         {sections.map((section, sIdx) => (
           <div key={sIdx} className="space-y-1">
-            {/* Section title */}
             {section.title && !collapsed && (
               <p
                 className={cn(
@@ -94,14 +91,12 @@ export function Sidebar({
         ))}
       </div>
 
-      {/* ── Footer slot (Thông tin user & Đăng xuất) ─────────────────── */}
       {footer && (
         <div className={cn("border-t border-border px-3 py-3 shrink-0", collapsed && "px-2 py-2 flex justify-center")}>
           {footer}
         </div>
       )}
 
-      {/* ── Collapse toggle ──────────────────────────────────────────── */}
       <button
         type="button"
         onClick={() => setCollapsed((c) => !c)}

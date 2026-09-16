@@ -26,7 +26,6 @@ export function VideoHeroBannerMobile({
         className,
       )}
     >
-      {/* ── 1. Video Element Background ── */}
       <video
         ref={videoRef}
         autoPlay
@@ -49,13 +48,10 @@ export function VideoHeroBannerMobile({
         />
       </video>
 
-      {/* ── 2. Cinematic Gradient Overlays (Tối ưu độ tương phản trên màn hình điện thoại) ── */}
       <Box className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/50 to-black/90" />
       <Box className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-emerald-500/15 blur-2xl pointer-events-none" />
 
-      {/* ── 3. Top Row: Live Badge & Floating 5s Mobile Scene Pill ── */}
       <Box className="relative z-10 w-full flex items-center justify-between gap-2">
-        {/* Live Badge */}
         <Box className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-400/30 text-emerald-300 text-[10px] font-semibold backdrop-blur-md shadow-sm">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -66,7 +62,6 @@ export function VideoHeroBannerMobile({
           </span>
         </Box>
 
-        {/* Floating 5s Mobile Scene Pill (Hiện 5s khi đổi video rồi biến mất) */}
         <Box
           className={cn(
             "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 border border-white/20 text-[10px] text-white/90 backdrop-blur-md transition-all duration-500 shadow-md",
@@ -83,9 +78,7 @@ export function VideoHeroBannerMobile({
         </Box>
       </Box>
 
-      {/* ── 4. Main Mobile Content (Typography & CTA) ── */}
       <Box className="relative z-10 w-full space-y-3 text-left my-auto pt-4 pb-2">
-        {/* Tiêu đề chính trên mobile */}
         <Typography
           as="h1"
           className={cn(
@@ -98,7 +91,6 @@ export function VideoHeroBannerMobile({
           {currentSlide.headline}
         </Typography>
 
-        {/* Phụ đề vắn tắt 2 dòng */}
         <Text
           className={cn(
             "text-xs text-white/85 leading-relaxed line-clamp-2 font-normal drop-shadow-sm transition-all duration-500 delay-75",
@@ -110,7 +102,6 @@ export function VideoHeroBannerMobile({
           {currentSlide.subheadline}
         </Text>
 
-        {/* Cam kết nông nghiệp */}
         <Box className="flex items-center gap-2 pt-0.5 text-[11px] text-white/90">
           <Box className="inline-flex items-center gap-1 bg-black/40 px-2 py-1 rounded-md border border-white/10 backdrop-blur-sm">
             <CheckCircle2 className="h-3 w-3 text-emerald-400 shrink-0" />
@@ -122,7 +113,6 @@ export function VideoHeroBannerMobile({
           </Box>
         </Box>
 
-        {/* CTA Buttons */}
         <Box className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-2">
           <Link to={primaryCtaLink} className="w-full sm:w-auto">
             <Button
@@ -150,7 +140,6 @@ export function VideoHeroBannerMobile({
         </Box>
       </Box>
 
-      {/* ── 5. Bottom Mobile Indicators (4 Chấm chuyển video thông minh) ── */}
       <Box className="relative z-10 w-full flex items-center justify-center gap-2 pt-2">
         {slides.map((s, idx) => {
           const isActive = idx === currentIndex;

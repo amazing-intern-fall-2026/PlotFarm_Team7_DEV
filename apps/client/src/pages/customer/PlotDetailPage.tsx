@@ -67,7 +67,6 @@ export function PlotDetailPage() {
     loadPlot();
   }, [loadPlot]);
 
-  // Loading State UI (Skeleton)
   if (loading) {
     return (
       <Box className="min-h-screen pb-24 lg:pb-12 bg-slate-50/50 dark:bg-slate-950 font-sans">
@@ -97,7 +96,6 @@ export function PlotDetailPage() {
     );
   }
 
-  // Error State UI (Edge Case: Not found or API down)
   if (error || !plotData) {
     return (
       <Box className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-slate-50/50 dark:bg-slate-950">
@@ -195,7 +193,6 @@ export function PlotDetailPage() {
           </Button>
         </Flex>
 
-        {/* Cảnh báo trạng thái nếu ô đất không còn sẵn sàng */}
         {!isAvailable && (
           <Box className="mb-6 p-4 rounded-xl border border-amber-200 bg-amber-50/90 dark:bg-amber-950/40 dark:border-amber-800 text-amber-900 dark:text-amber-200 flex items-center justify-between flex-wrap gap-3">
             <Flex align="center" gap={3}>
@@ -217,11 +214,8 @@ export function PlotDetailPage() {
           </Box>
         )}
 
-        {/* ── BỐ CỤC CHUẨN FINTECH & AGRO-TECH: CÁC KHỐI NẰM NGANG (8 COLS) vs CARD DỌC STICKY (4 COLS) ── */}
         <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-          {/* CỘT TRÁI (8 COLS): CÁC KHỐI NỘI DUNG NẰM NGANG (HORIZONTAL STACK) */}
           <Box className="lg:col-span-8 space-y-6 sm:space-y-8">
-            {/* 1. Khối nằm ngang: Camera trực tiếp 1080P & Thông số ô đất */}
             <Card className="border border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
               <Box className="relative w-full aspect-video sm:h-[340px] bg-slate-950 overflow-hidden group">
                 {/* HLS stream nếu có, fallback về ảnh tĩnh */}
@@ -280,7 +274,6 @@ export function PlotDetailPage() {
                 </Box>
               </Box>
 
-              {/* Thông số ô đất */}
               <CardContent className="p-4 sm:p-6 space-y-4">
                 <Flex
                   justify="between"
@@ -377,19 +370,14 @@ export function PlotDetailPage() {
               </CardContent>
             </Card>
 
-            {/* 2. Khối nằm ngang: Giống Cây Trồng Quy Hoạch Của Ô Đất */}
             <PlotCropCard crop={currentCrop} />
 
-            {/* 3. Khối nằm ngang: Lộ Trình Sinh Trưởng Vụ Mùa (4 Giai đoạn) */}
             <CropTimeline />
 
-            {/* 4. Khối nằm ngang: Kỹ Sư Nông Nghiệp Phụ Trách */}
             <FarmerProfileCard />
           </Box>
 
-          {/* CỘT PHẢI (4 COLS): CARD DỌC HÓA ĐƠN & CAM KẾT (STICKY) */}
           <Box className="lg:col-span-4 space-y-6 lg:sticky lg:top-6">
-            {/* Hóa đơn & Đặt thuê (Card dọc) */}
             <PlotBookingSummary
               basePrice={displayBasePrice}
               crop={currentCrop}
@@ -398,7 +386,6 @@ export function PlotDetailPage() {
               onCheckout={handleCheckout}
             />
 
-            {/* Cam kết chất lượng & Bảo hiểm an tâm */}
             <Card className="hidden lg:block border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm p-5 rounded-2xl space-y-4">
               <Heading
                 level={4}
@@ -450,7 +437,6 @@ export function PlotDetailPage() {
         </Box>
       </Box>
 
-      {/* Fullscreen Video Zoom Modal */}
       {isZoomCamera && (
         <Box
           role="dialog"

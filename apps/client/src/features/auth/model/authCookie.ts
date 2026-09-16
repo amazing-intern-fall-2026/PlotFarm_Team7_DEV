@@ -105,7 +105,6 @@ export function clearAuthSession(): void {
   // Xóa cookie g_state do Google Identity Services tự sinh trên domain
   removeCookie("g_state");
 
-  // Phát event đồng bộ qua các tabs
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent("auth:logout"));
     if (window.google?.accounts?.id?.disableAutoSelect) {

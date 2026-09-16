@@ -25,7 +25,6 @@ export function isApiErrorResponse(data: unknown): data is ApiErrorResponse {
  * thành cấu trúc ApiErrorPayload chuẩn hóa để Client hiển thị UI an toàn.
  */
 export function parseApiError(error: unknown): ApiErrorPayload {
-  // 1. Nếu là AxiosError và có response data chuẩn từ backend
   if (axios.isAxiosError(error)) {
     const axiosError = error as AxiosError<unknown>;
     const responseData = axiosError.response?.data;
@@ -34,7 +33,6 @@ export function parseApiError(error: unknown): ApiErrorPayload {
       return responseData.error;
     }
 
-    // 2. Nếu server trả response nhưng không đúng định dạng envelope
     if (axiosError.response) {
       const status = axiosError.response.status;
       return {
@@ -44,7 +42,6 @@ export function parseApiError(error: unknown): ApiErrorPayload {
       };
     }
 
-    // 3. Lỗi mạng (mất mạng, timeout, không kết nối được server)
     if (axiosError.code === "ECONNABORTED") {
       return {
         code: "ERR_TIMEOUT",
@@ -62,7 +59,6 @@ export function parseApiError(error: unknown): ApiErrorPayload {
     }
   }
 
-  // 4. Lỗi JavaScript runtime thông thường
   if (error instanceof Error) {
     return {
       code: ERROR_CODES.INTERNAL_SERVER,
@@ -71,7 +67,6 @@ export function parseApiError(error: unknown): ApiErrorPayload {
     };
   }
 
-  // 5. Fallback cuối cùng
   return {
     code: ERROR_CODES.INTERNAL_SERVER,
     message: "Đã xảy ra lỗi hệ thống không xác định",

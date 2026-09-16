@@ -31,7 +31,6 @@ export function CheckoutPage() {
   const rawPlotParam = id || plotId || "PLOT-001";
   const navigate = useNavigate();
 
-  // State quản lý đơn hàng
   const [order, setOrder] = React.useState<CheckoutMockOrder>(() => ({
     ...CHECKOUT_DEFAULT_ORDER,
     plotId: rawPlotParam,
@@ -43,7 +42,6 @@ export function CheckoutPage() {
   const [realTransferContent, setRealTransferContent] = React.useState<string>(`CF${order.orderCode}`);
   const [serverLockedUntil, setServerLockedUntil] = React.useState<string | null>(null);
 
-  // Trạng thái modal & toast
   const [isSuccessModalOpen, setIsSuccessModalOpen] = React.useState<boolean>(false);
   const [isExpiredModalOpen, setIsExpiredModalOpen] = React.useState<boolean>(false);
   const [isSimulating, setIsSimulating] = React.useState<boolean>(false);
@@ -52,7 +50,6 @@ export function CheckoutPage() {
 
   const cleanPlotNumber = order.plotNumber;
 
-  // 1. Hook đếm ngược thời gian giữ chỗ (US-20: 5 phút có F5 resilience)
   const handleTimerExpired = React.useCallback(() => {
     setIsExpiredModalOpen(true);
   }, []);
@@ -70,7 +67,6 @@ export function CheckoutPage() {
   const initPayment = React.useCallback(async () => {
     setIsLoadingPlot(true);
     try {
-      // 2.1 Lấy thông tin ô đất thực tế
       const plotDetail = await fetchPlotDetailApi(rawPlotParam).catch(() => null);
 
       if (plotDetail) {
@@ -102,7 +98,6 @@ export function CheckoutPage() {
 
         setOrder(updatedOrder);
 
-        // 2.2 Thử gọi API Hold Lock (US-14 / US-20)
         try {
           const holdRes = await axiosClient.post<{
             success: boolean;
@@ -116,7 +111,6 @@ export function CheckoutPage() {
           // Bỏ qua lỗi nếu khách chưa đăng nhập hoặc ô đất đã được hold trước đó
         }
 
-        // 2.3 Thử tạo hợp đồng và lấy mã QR từ backend (US-15 & US-16)
         try {
           const todayStr = new Date().toISOString().split("T")[0];
           const contractRes = await axiosClient.post<{
@@ -194,11 +188,9 @@ export function CheckoutPage() {
     };
   }, [order.orderCode, isSuccessModalOpen, isExpiredModalOpen]);
 
-  // 4. US-22: Kích hoạt nhanh giả lập thanh toán phục vụ Demo (Mock Webhook Simulation)
   const handleSimulatePayment = async () => {
     setIsSimulating(true);
     try {
-      // 4.1 Thử bắn API Mock Webhook trên server (US-17)
       try {
         await axiosClient.post("/api/v1/payments/mock-webhook", {
           orderCode: order.orderCode,
@@ -207,7 +199,6 @@ export function CheckoutPage() {
         // Mock fallback nếu server mock endpoint trả lỗi (ví dụ demo offline)
       }
 
-      // 4.2 Lập tức kích hoạt màn hình Thành công trong vòng 1s
       window.setTimeout(() => {
         setIsSimulating(false);
         setIsSuccessModalOpen(true);
@@ -218,25 +209,21 @@ export function CheckoutPage() {
     }
   };
 
-  // Toast feedback khi copy
   const handleCopySuccess = (_text: string) => {
     setToastMessage(CHECKOUT_TEXTS.paymentHub.copiedToastText);
     window.setTimeout(() => setToastMessage(null), 2500);
   };
 
-  // Điều hướng sau khi thanh toán thành công
   const handleGoToFarm = () => {
     setIsSuccessModalOpen(false);
     navigate(`/my-farm/${order.plotId}`);
   };
 
-  // Điều hướng khi hết hạn giữ chỗ
   const handleBackToPlots = () => {
     setIsExpiredModalOpen(false);
     navigate("/plots");
   };
 
-  // Tự động chuyển trang sau 4 giây khi Modal thành công mở
   React.useEffect(() => {
     if (isSuccessModalOpen) {
       const timer = window.setTimeout(() => {
@@ -249,14 +236,12 @@ export function CheckoutPage() {
   return (
     <Box className="min-h-screen bg-slate-50/60 dark:bg-slate-950 font-sans pb-24 lg:pb-16">
       <Container size="7xl" className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-6">
-        {/* TOP BAR: BREADCRUMB, BACK BUTTON & STEPPER */}
         <CheckoutHeaderBar
           onBack={() => navigate(`/plots/${rawPlotParam}`)}
           plotNumber={cleanPlotNumber}
           plotId={rawPlotParam}
         />
 
-        {/* MOBILE VIEW: ACCORDION TÓM TẮT ĐƠN HÀNG THU GỌN TRÊN ĐẦU */}
         <Box className="lg:hidden">
           <Button
             variant="outline"
@@ -289,7 +274,6 @@ export function CheckoutPage() {
           )}
         </Box>
 
-        {/* LOADING SKELETON KHI ĐANG TẢI DỮ LIỆU */}
         {isLoadingPlot ? (
           <Grid cols={1} colsLg={12} gap={8} className="items-start">
             <Box className="hidden lg:block lg:col-span-5 space-y-4">
@@ -302,7 +286,6 @@ export function CheckoutPage() {
         ) : (
           /* BỐ CỤC CHÍNH 2 CỘT (DESKTOP: 38% CỘT TRÁI, 62% CỘT PHẢI) */
           <Grid cols={1} colsLg={12} gap={8} className="items-start">
-            {/* CỘT TRÁI: MINI RECEIPT CARD (DÍNH STICKY TOP-6) */}
             <Box className="hidden lg:block lg:col-span-5">
               <MiniReceiptCard order={order} />
             </Box>
@@ -324,11 +307,9 @@ export function CheckoutPage() {
           </Grid>
         )}
 
-        {/* TRUST BADGES FOOTER */}
         <TrustBadgesBar />
       </Container>
 
-      {/* TOAST THÔNG BÁO SAO CHÉP NHANH */}
       {toastMessage && (
         <Box className="fixed bottom-6 right-6 z-50 animate-in fade-in-50 slide-in-from-bottom-5 duration-200">
           <Flex align="center" gap={2} className="px-4 py-3 rounded-xl bg-slate-950 text-white shadow-2xl border border-slate-800">
@@ -340,14 +321,12 @@ export function CheckoutPage() {
         </Box>
       )}
 
-      {/* MODAL THÔNG BÁO THANH TOÁN THÀNH CÔNG (US-21) */}
       <PaymentSuccessModal
         isOpen={isSuccessModalOpen}
         order={order}
         onGoToFarm={handleGoToFarm}
       />
 
-      {/* MODAL THÔNG BÁO HẾT HẠN GIỮ CHỖ (US-20) */}
       <HoldExpiredModal
         isOpen={isExpiredModalOpen}
         onBackToPlots={handleBackToPlots}

@@ -63,9 +63,7 @@ export function PlotsFilterBarMobile({
 
   return (
     <Box className={cn("w-full space-y-4", className)}>
-      {/* ── Outer Mobile Card ── */}
       <Box className="w-full bg-card border border-border/80 rounded-2xl p-4 shadow-xs space-y-3.5">
-        {/* Row 1: Search Input */}
         <Box className="relative w-full">
           <Box className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-muted-foreground">
             <Search className="h-4 w-4" />
@@ -94,7 +92,6 @@ export function PlotsFilterBarMobile({
           )}
         </Box>
 
-        {/* Row 2: Size Pills (Sinh động từ mảng sizeOptions) */}
         <Box className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
           {sizeOptions.map((opt) => {
             const isActive = filters.size === opt.value;
@@ -116,9 +113,7 @@ export function PlotsFilterBarMobile({
           })}
         </Box>
 
-        {/* Row 3: Trạng thái & Tiện ích */}
         <Box className="pt-2 border-t border-border/40 space-y-2">
-          {/* Trạng thái */}
           <Box className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
             <Text
               variant="small"
@@ -149,7 +144,6 @@ export function PlotsFilterBarMobile({
             })}
           </Box>
 
-          {/* Tiện ích */}
           <Box className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
             <Text
               variant="small"
@@ -186,7 +180,6 @@ export function PlotsFilterBarMobile({
           </Box>
         </Box>
 
-        {/* Row 4: Sắp xếp + Nút đặt lại */}
         <Box className="flex items-center justify-between gap-2 pt-2 border-t border-border/40">
           <Box className="relative flex-1">
             <select
@@ -221,7 +214,6 @@ export function PlotsFilterBarMobile({
         </Box>
       </Box>
 
-      {/* ── Mobile Section Title & Counter ── */}
       <Box className="flex items-center justify-between px-1">
         <Box className="space-y-0.5">
           <Text

@@ -19,20 +19,17 @@ import { AUTH_UI_TEXT } from "../../constants";
 export function HeroBanner() {
   return (
     <Box className="relative hidden lg:flex flex-col justify-between h-full p-8 xl:p-10 2xl:p-12 overflow-hidden select-none">
-      {/* Background image loaded from public/images/background.jpg */}
       <img
         src="/images/background.jpg"
         alt="Green Farm Agriculture Sanctuary"
         className="absolute inset-0 h-full w-full object-cover object-center"
       />
 
-      {/* Cinematic dark & bio-green gradient overlays */}
       <Box className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/75" />
       <Box className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/30" />
       <Box className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-500/20 blur-3xl pointer-events-none" />
       <Box className="absolute -bottom-24 right-0 h-96 w-96 rounded-full bg-[hsl(154,50%,32%)]/25 blur-3xl pointer-events-none" />
 
-      {/* Top Header inside Hero */}
       <Box className="relative z-10 flex items-center justify-between w-full">
         <Link to="/" className="flex items-center gap-3 group transition-transform active:scale-95">
           <Logo size="md" />
@@ -58,7 +55,6 @@ export function HeroBanner() {
         </Link>
       </Box>
 
-      {/* Center Narrative Content */}
       <Box className="relative z-10 max-w-xl my-auto py-4 xl:py-6 space-y-4">
         <Box className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] text-emerald-300 backdrop-blur-md">
           <Radio className="h-2.5 w-2.5 text-emerald-400 animate-pulse" />
@@ -76,7 +72,6 @@ export function HeroBanner() {
           {AUTH_UI_TEXT.HERO_SUBTITLE}
         </Text>
 
-        {/* Social proof trust badge */}
         <Box className="pt-2 flex items-center gap-3">
           <Box className="flex -space-x-2">
             {["HN", "SG", "DL", "DN"].map((initials) => (
@@ -97,7 +92,6 @@ export function HeroBanner() {
           </Text>
         </Box>
 
-        {/* Feature Pills */}
         <Box className="flex flex-wrap gap-2 pt-1">
           {[
             { icon: CheckCircle2, label: AUTH_UI_TEXT.HERO_PILL_SOIL },
@@ -116,7 +110,6 @@ export function HeroBanner() {
         </Box>
       </Box>
 
-      {/* Bottom Footer Links */}
       <Box className="relative z-10 flex flex-wrap items-center justify-between text-xs text-white/60 border-t border-white/10 pt-4">
         <Box className="flex items-center gap-6">
           <Link to="/terms" className="hover:text-white transition-colors">

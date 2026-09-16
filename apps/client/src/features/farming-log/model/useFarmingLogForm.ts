@@ -49,7 +49,6 @@ export function useFarmingLogForm({
 
   const draftKey = `farming_log_draft_${contractId}`;
 
-  // Evaluate business eligibility
   const eligibility = React.useMemo(
     () => validateFarmingLogEligibility(contractStatus, isAssignedToFarmer),
     [contractStatus, isAssignedToFarmer]
@@ -90,7 +89,6 @@ export function useFarmingLogForm({
     };
   }, []);
 
-  // Restore draft from LocalStorage on mount if available
   React.useEffect(() => {
     try {
       const savedDraftRaw = localStorage.getItem(draftKey);
@@ -116,7 +114,6 @@ export function useFarmingLogForm({
     }
   }, [draftKey, initialTemperature, initialAirHumidity, initialSoilMoisture, reset]);
 
-  // Auto-save draft to LocalStorage when user makes changes
   React.useEffect(() => {
     if (!notes && !currentStage && uploadedImages.length === 0) {
       return;
@@ -157,30 +154,25 @@ export function useFarmingLogForm({
     });
   }, [draftKey, initialTemperature, initialAirHumidity, initialSoilMoisture, reset]);
 
-  // Keep form's photoUrls in sync with uploadedImages
   React.useEffect(() => {
     const urls = uploadedImages.map((img) => img.url);
     setValue("photoUrls", urls, { shouldValidate: true });
   }, [uploadedImages, setValue]);
 
-  // Stage selection handler
   const handleSelectStage = (stageId: GrowthStageId) => {
     setValue("selectedStage", stageId, { shouldValidate: true, shouldDirty: true });
   };
 
-  // Image Upload handler with client-side compression (US-23)
   const handleAddFiles = async (files: FileList | File[]) => {
     const rawFiles = Array.from(files);
     if (rawFiles.length === 0) return;
 
-    // Validate mime types
     const invalidType = rawFiles.find((f) => !ALLOWED_IMAGE_MIME_TYPES.includes(f.type.toLowerCase()));
     if (invalidType) {
       setSubmitError("Định dạng ảnh không hợp lệ. Vui lòng chọn ảnh PNG, JPG hoặc WEBP.");
       return;
     }
 
-    // Validate size limit (< 10MB)
     const oversizedFile = rawFiles.find((f) => f.size > MAX_IMAGE_SIZE_BYTES);
     if (oversizedFile) {
       setSubmitError(`Tệp ảnh "${oversizedFile.name}" vượt quá giới hạn 10MB (${(oversizedFile.size / (1024 * 1024)).toFixed(1)} MB).`);
@@ -196,11 +188,9 @@ export function useFarmingLogForm({
       for (let i = 0; i < rawFiles.length; i++) {
         const file = rawFiles[i];
 
-        // 1. Client-side compression
         const compression = await compressImage(file, 1600, 0.8);
         setIsCompressing(false);
 
-        // 2. Upload to Cloudinary API
         const uploadResult = await farmingLogApi.uploadMedia(
           compression.file,
           (percent) => {
@@ -234,23 +224,19 @@ export function useFarmingLogForm({
     }
   };
 
-  // Remove thumbnail handler (AC3)
   const handleRemoveImage = (id: string) => {
     setUploadedImages((prev) => prev.filter((img) => img.id !== id));
   };
 
-  // IoT sync helper
   const handleSyncSensors = (temp: number, humidity: number, moisture: number) => {
     setValue("temperature", temp, { shouldValidate: true });
     setValue("airHumidity", humidity, { shouldValidate: true });
     setValue("soilMoisture", moisture, { shouldValidate: true });
   };
 
-  // Submit handler (AC1 & AC2)
   const handleSubmitForm = form.handleSubmit(async (data) => {
     setSubmitError(null);
 
-    // Business check: contract status & assignment
     if (!eligibility.eligible) {
       setSubmitError(eligibility.message || "Bạn không đủ điều kiện đăng nhật ký cho ô đất này.");
       return;
@@ -280,7 +266,6 @@ export function useFarmingLogForm({
         },
       });
 
-      // Clear draft on successful submission
       localStorage.removeItem(draftKey);
       setHasRestoredDraft(false);
 

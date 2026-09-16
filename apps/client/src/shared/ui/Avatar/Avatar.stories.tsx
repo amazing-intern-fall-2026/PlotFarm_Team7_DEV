@@ -21,7 +21,6 @@ const meta: Meta<typeof Avatar> = {
 \`\`\`tsx
 import { Avatar } from "@/shared/ui";
 
-// Có link ảnh và trạng thái online
 <Avatar
   src="https://example.com/avatar.jpg"
   name="Nguyễn Văn An"
@@ -29,7 +28,6 @@ import { Avatar } from "@/shared/ui";
   status="online"
 />
 
-// Tự động tính chữ cái viết tắt "NA" khi không có ảnh
 <Avatar
   name="Nguyễn An"
   size="lg"

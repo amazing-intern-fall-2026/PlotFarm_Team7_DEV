@@ -19,7 +19,6 @@ export function PlotsExploreHero({
   const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
   const [liveTime, setLiveTime] = React.useState("14:28:05");
 
-  // Realtime clock update
   React.useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -59,7 +58,6 @@ export function PlotsExploreHero({
         <PlotsExploreHeroDesktop {...viewProps} />
       )}
 
-      {/* ── Video Garden & Camera Live Preview Modal ── */}
       <Modal
         isOpen={isVideoModalOpen}
         onClose={() => setIsVideoModalOpen(false)}

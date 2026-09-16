@@ -18,7 +18,6 @@ export function HomeCtaBannerDesktop({
       className={cn("w-full select-none", className)}
     >
       <Box className="relative overflow-hidden rounded-3xl bg-[#1d5c22] dark:bg-[#164619] p-8 md:p-10 lg:p-12 text-white shadow-xl">
-        {/* Background Decorative Watermark (Dashed Circle + Leaf Motif) */}
         <svg
           className="absolute -right-8 top-1/2 -translate-y-1/2 h-[340px] w-[340px] pointer-events-none opacity-20 text-white"
           viewBox="0 0 200 200"
@@ -46,20 +45,15 @@ export function HomeCtaBannerDesktop({
           />
         </svg>
 
-        {/* Ambient Subtle Glow */}
         <Box className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-emerald-400/10 blur-3xl pointer-events-none" />
 
-        {/* Main Content Layout: Grid 2 Columns */}
         <Box className="relative z-10 flex items-center justify-between gap-8">
-          {/* Left Column: Badge, Heading & Subtitle */}
           <Box className="space-y-4 max-w-2xl text-left">
-            {/* Urgency Badge */}
             <Box className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white/90 text-xs font-semibold backdrop-blur-md border border-white/20">
               <span className="h-2 w-2 rounded-full bg-orange-400 shrink-0 animate-pulse" />
               <span>{badge}</span>
             </Box>
 
-            {/* Main Title */}
             <Heading
               level={2}
               id="home-cta-banner-desktop-title"
@@ -68,13 +62,11 @@ export function HomeCtaBannerDesktop({
               {title}
             </Heading>
 
-            {/* Subtitle Description */}
             <Text className="text-xs sm:text-sm text-white/80 leading-relaxed font-normal max-w-xl">
               {subtitle}
             </Text>
           </Box>
 
-          {/* Right Column: High-Visibility Pill CTA Button */}
           <Box className="shrink-0">
             <Button
               type="button"

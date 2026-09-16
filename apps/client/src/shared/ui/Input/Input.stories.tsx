@@ -17,14 +17,12 @@ const meta: Meta<typeof Input> = {
 \`\`\`tsx
 import { Input } from "@/shared/ui";
 
-// Input tìm kiếm cơ bản
 <Input
   placeholder="Tìm kiếm ô đất canh tác..."
   value={searchTerm}
   onChange={(e) => setSearchTerm(e.target.value)}
 />
 
-// Input có label, hint và validation error
 <Input
   label="Email liên hệ"
   placeholder="farmer@greenfarm.vn"
@@ -115,7 +113,6 @@ export const PasswordWithToggle: Story = {
   render: function PasswordStory() {
     return (
       <div className="max-w-sm space-y-4">
-        {/* Cách 1: Tích hợp sẵn 1 prop duy nhất showPasswordToggle */}
         <Input
           label="Mật khẩu tài khoản (Tự động toggle)"
           type="password"

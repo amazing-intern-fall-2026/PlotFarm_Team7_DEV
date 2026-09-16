@@ -59,7 +59,6 @@ export function ImageDropzoneUploader({
 
   return (
     <Box className="space-y-3">
-      {/* Hidden file inputs */}
       <input
         ref={fileInputRef}
         type="file"
@@ -97,7 +96,6 @@ export function ImageDropzoneUploader({
         </Badge>
       </Box>
 
-      {/* Dropzone Container */}
       <Card
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -128,7 +126,6 @@ export function ImageDropzoneUploader({
             </Text>
           </Box>
 
-          {/* Action buttons: Camera capture and File explorer */}
           <Box className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
             <Button
               type="button"
@@ -156,7 +153,6 @@ export function ImageDropzoneUploader({
           </Box>
         </Box>
 
-        {/* Upload Progress Bar */}
         {isUploading && (
           <Box className="mt-4 space-y-1.5 p-3 rounded-2xl bg-background border border-border shadow-xs animate-in fade-in">
             <Box className="flex items-center justify-between text-xs">
@@ -178,14 +174,12 @@ export function ImageDropzoneUploader({
         )}
       </Card>
 
-      {/* Error message for AC2 */}
       {hasError && (
         <Text as="p" className="text-xs text-destructive font-semibold">
           Vui lòng chọn mốc sinh trưởng và đính kèm ít nhất 1 ảnh thực tế.
         </Text>
       )}
 
-      {/* Uploaded Thumbnails Grid (AC3: Remove image with X) */}
       {images.length > 0 && (
         <Box className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-2">
           {images.map((img, index) => (
@@ -193,7 +187,6 @@ export function ImageDropzoneUploader({
               key={img.id}
               className="group relative overflow-hidden rounded-2xl border border-border p-0 shadow-xs hover:shadow-md transition-all"
             >
-              {/* Image Preview */}
               <Box className="aspect-square w-full bg-black overflow-hidden relative">
                 <img
                   src={img.previewUrl}
@@ -201,7 +194,6 @@ export function ImageDropzoneUploader({
                   className="h-full w-full object-cover transition-transform group-hover:scale-105"
                 />
 
-                {/* Remove button (AC3) */}
                 <Button
                   type="button"
                   variant="destructive"
@@ -213,7 +205,6 @@ export function ImageDropzoneUploader({
                   <X className="h-3.5 w-3.5" />
                 </Button>
 
-                {/* Cloudinary Synced Badge */}
                 <Badge
                   variant="secondary"
                   className="absolute bottom-2 left-2 bg-black/70 text-emerald-300 text-[10px] backdrop-blur-xs flex items-center gap-1 py-0.5 px-2"
@@ -223,7 +214,6 @@ export function ImageDropzoneUploader({
                 </Badge>
               </Box>
 
-              {/* Compression stat footer */}
               <Box className="p-2 text-[10px] bg-card border-t border-border flex items-center justify-between text-muted-foreground">
                 <Text as="span" className="truncate max-w-[90px]">
                   {img.originalName}

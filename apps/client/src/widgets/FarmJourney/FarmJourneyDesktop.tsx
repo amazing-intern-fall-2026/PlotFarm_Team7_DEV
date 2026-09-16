@@ -12,7 +12,6 @@ export function FarmJourneyDesktop({
 }: FarmJourneyViewProps) {
   return (
     <section aria-labelledby="farm-journey-desktop-title" className={cn("w-full space-y-7 pt-0 pb-4 select-none", className)}>
-      {/* ── 1. Section Header ── */}
       <Box className="text-center space-y-3 max-w-3xl mx-auto px-4">
         <span className="text-xs font-bold uppercase tracking-wider text-secondary">
           {badge}
@@ -31,7 +30,6 @@ export function FarmJourneyDesktop({
         </Text>
       </Box>
 
-      {/* ── 2. 4-Step Cards Grid ── */}
       <Box className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
         {steps.map((step) => (
           <Card
@@ -39,7 +37,6 @@ export function FarmJourneyDesktop({
             className="h-full flex flex-col justify-between hover:border-primary/40 transition-colors group"
           >
             <CardContent className="p-6 flex flex-col justify-between h-full space-y-4">
-              {/* Top Row: Number & Icon */}
               <Box className="flex items-center justify-between">
                 <Text
                   as="span"
@@ -59,7 +56,6 @@ export function FarmJourneyDesktop({
                 </Box>
               </Box>
 
-              {/* Title & Description */}
               <Box className="space-y-2 pt-1">
                 <Heading level={3} className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
                   {step.title}

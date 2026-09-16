@@ -46,7 +46,6 @@ export function PlotGridMapMobile({
 
   return (
     <Box className={cn("w-full space-y-4", className)}>
-      {/* ── Lưới bản đồ ô đất Mobile: 1 Cột Tối Ưu Vuốt Chạm ── */}
       <Box className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {plots.map((plot) => (
           <PlotCard

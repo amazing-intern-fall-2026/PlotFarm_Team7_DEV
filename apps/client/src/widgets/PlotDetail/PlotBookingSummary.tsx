@@ -49,7 +49,6 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
 
   return (
     <>
-      {/* DESKTOP BOOKING CARD */}
       <Card
         className={cn(
           "hidden lg:block border border-emerald-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-emerald-950/5 rounded-2xl overflow-hidden",
@@ -73,7 +72,6 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
         <CardContent className="p-5 pt-0 space-y-4">
           <Separator />
 
-          {/* Line item 1: Phí thuê đất chuẩn */}
           <Flex justify="between" align="start" className="text-xs">
             <Box className="pr-2">
               <Text variant="body2" className="font-semibold text-slate-800 dark:text-slate-200">
@@ -88,7 +86,6 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
             </Text>
           </Flex>
 
-          {/* Line item 2: Giống cây quy hoạch đã bao gồm */}
           <Flex justify="between" align="start" className="text-xs">
             <Box className="pr-2">
               <Flex align="center" gap={1.5}>
@@ -106,7 +103,6 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
             </Badge>
           </Flex>
 
-          {/* Line item 3: Kỹ sư chăm sóc định kỳ */}
           <Flex justify="between" align="start" className="text-xs">
             <Box className="pr-2">
               <Flex align="center" gap={1.5}>
@@ -124,7 +120,6 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
             </Badge>
           </Flex>
 
-          {/* Line item 4: Camera 1080P & IoT vi khí hậu */}
           <Flex justify="between" align="start" className="text-xs">
             <Box className="pr-2">
               <Flex align="center" gap={1.5}>
@@ -144,7 +139,6 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
 
           <Separator />
 
-          {/* Total Box */}
           <Box className="bg-emerald-50/70 dark:bg-emerald-950/30 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
             <Flex justify="between" align="center" gap={2}>
               <Box className="min-w-0">
@@ -161,7 +155,6 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
             </Flex>
           </Box>
 
-          {/* Guarantee */}
           <Flex align="start" gap={2} className="text-slate-600 dark:text-slate-400 text-xs">
             <ShieldCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
             <Text variant="caption" className="text-[11px] text-slate-600 dark:text-slate-400 leading-normal font-medium">
@@ -182,7 +175,6 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
         </CardFooter>
       </Card>
 
-      {/* MOBILE STICKY BOTTOM BAR */}
       <Box className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-4 py-3 shadow-2xl">
         <Flex justify="between" align="center" gap={3}>
           <Box className="min-w-0">

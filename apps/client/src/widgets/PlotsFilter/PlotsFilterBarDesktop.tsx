@@ -63,9 +63,7 @@ export function PlotsFilterBarDesktop({
 
   return (
     <Box className={cn("w-full space-y-6", className)}>
-      {/* ── Outer Card Container (Style theo UI bên trái) ── */}
       <Box className="w-full bg-card border border-border/80 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5">
-        {/* ── Row 1: Search Input lớn toàn chiều ngang ── */}
         <Box className="relative w-full">
           <Box className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-muted-foreground">
             <Search className="h-5 w-5" />
@@ -94,7 +92,6 @@ export function PlotsFilterBarDesktop({
           )}
         </Box>
 
-        {/* ── Row 2: Bộ lọc kích thước/danh mục sinh động từ dữ liệu ── */}
         <Box className="flex items-center justify-between gap-4 pt-1">
           <Box className="flex items-center gap-2.5 flex-wrap">
             {sizeOptions.map((opt) => {
@@ -117,7 +114,6 @@ export function PlotsFilterBarDesktop({
             })}
           </Box>
 
-          {/* Sắp xếp nhanh (Desktop) */}
           <Box className="flex items-center gap-2 shrink-0">
             <Text variant="small" className="text-muted-foreground font-medium select-none">
               Sắp xếp:
@@ -144,10 +140,8 @@ export function PlotsFilterBarDesktop({
           </Box>
         </Box>
 
-        {/* ── Row 3: Lọc thêm theo Trạng thái & Tiện ích (Chuẩn UI bên trái) ── */}
         <Box className="flex items-center justify-between gap-4 pt-2 border-t border-border/40">
           <Box className="flex items-center gap-4 flex-wrap">
-            {/* Nhóm trạng thái */}
             <Box className="flex items-center gap-2 flex-wrap">
               <Text
                 variant="small"
@@ -178,10 +172,8 @@ export function PlotsFilterBarDesktop({
               })}
             </Box>
 
-            {/* Vách ngăn phân cách chuẩn ảnh mẫu bên trái */}
             <Box className="h-4 w-[1px] bg-border/80 hidden lg:block" />
 
-            {/* Nhóm tiện ích lọc thêm */}
             <Box className="flex items-center gap-2 flex-wrap">
               <Text
                 variant="small"
@@ -220,7 +212,6 @@ export function PlotsFilterBarDesktop({
             </Box>
           </Box>
 
-          {/* Đặt lại bộ lọc */}
           {hasActiveFilters && (
             <Button
               variant="ghost"
@@ -235,7 +226,6 @@ export function PlotsFilterBarDesktop({
         </Box>
       </Box>
 
-      {/* ── Section Title & Counter (Theo phong cách bên dưới card của ảnh trái) ── */}
       <Box className="flex items-end justify-between pt-2">
         <Box className="space-y-1">
           <Text

@@ -73,7 +73,6 @@ export function AdminFarmersPage() {
   const totalPlotsAssigned = farmers.reduce((sum, f) => sum + f.plots.length, 0);
   const overloadedFarmers = farmers.filter((f) => f.workloadStatus === "overloaded" || f.plots.length > 5);
 
-  // AI Load balancing trigger
   const handleAutoRebalance = () => {
     if (farmers.length === 0) {
       const sampleRebalanced: FarmerMatrixRow[] = [
@@ -166,7 +165,6 @@ export function AdminFarmersPage() {
 
   return (
     <Box className="w-full space-y-6 pb-16">
-      {/* ── Breadcrumbs & Header ── */}
       <Box className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <Box className="space-y-1">
           <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
@@ -204,9 +202,7 @@ export function AdminFarmersPage() {
         </div>
       </Box>
 
-      {/* ── 3 Summary KPI Cards ── */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {/* Metric 1 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-3">
           <div className="flex items-start justify-between">
             <div>
@@ -226,7 +222,6 @@ export function AdminFarmersPage() {
           </div>
         </Card>
 
-        {/* Metric 2 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-3">
           <div className="flex items-start justify-between">
             <div>
@@ -252,7 +247,6 @@ export function AdminFarmersPage() {
           </div>
         </Card>
 
-        {/* Metric 3 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-3">
           <div className="flex items-start justify-between">
             <div>
@@ -287,7 +281,6 @@ export function AdminFarmersPage() {
         </Card>
       </div>
 
-      {/* ── Search & Filter Controls ── */}
       <Card className="border-border bg-white dark:bg-slate-900 p-4 shadow-xs">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-3">
@@ -313,7 +306,6 @@ export function AdminFarmersPage() {
             </Button>
           </div>
 
-          {/* Legend */}
           <div className="flex flex-wrap items-center gap-4 text-xs font-semibold">
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-600" />
@@ -330,7 +322,6 @@ export function AdminFarmersPage() {
           </div>
         </div>
 
-        {/* Matrix Table */}
         <div className="mt-4 overflow-x-auto rounded-xl border border-border/80">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50/80 dark:bg-slate-800/60 text-muted-foreground border-b border-border uppercase font-semibold text-[11px] tracking-wider">
@@ -441,7 +432,6 @@ export function AdminFarmersPage() {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground">
           <span>Hiển thị {filteredFarmers.length === 0 ? 0 : 1} – {filteredFarmers.length} trong tổng số {totalFarmers} nông dân hệ thống</span>
           {filteredFarmers.length > 10 && (
@@ -467,7 +457,6 @@ export function AdminFarmersPage() {
         </div>
       </Card>
 
-      {/* ── AI Load Balancing Suggestion Banner ── */}
       <div className="rounded-2xl border border-amber-200/80 dark:border-amber-800/40 bg-gradient-to-r from-amber-50 via-orange-50/50 to-emerald-50 dark:from-amber-950/40 dark:via-orange-950/20 dark:to-emerald-950/30 p-4 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-start sm:items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/20 text-amber-700 dark:text-amber-400 shrink-0">
@@ -489,7 +478,6 @@ export function AdminFarmersPage() {
         </Button>
       </div>
 
-      {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-xl bg-emerald-900 text-white px-5 py-3.5 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-lg">
           <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />

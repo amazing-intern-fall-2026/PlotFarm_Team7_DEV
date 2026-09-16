@@ -35,7 +35,6 @@ export function CreateFarmingLogModal({
   return (
     <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-3 sm:p-5 overflow-y-auto animate-in fade-in">
       <Card className="relative w-full max-w-4xl max-h-[94vh] flex flex-col rounded-3xl bg-background border border-border shadow-2xl p-0 overflow-hidden my-auto">
-        {/* Top close button bar */}
         <Box className="absolute top-4 right-4 z-20">
           <Button
             type="button"
@@ -48,7 +47,6 @@ export function CreateFarmingLogModal({
           </Button>
         </Box>
 
-        {/* Modal Scrollable Content */}
         <Box className="overflow-y-auto p-4 sm:p-6 flex-1">
           <FarmingLogForm
             contractId={contractId}

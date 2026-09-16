@@ -30,10 +30,8 @@ export function FarmerTaskExecutePage() {
   const { id = "CARE-782" } = useParams();
   const navigate = useNavigate();
 
-  // Step state
   const [currentStep, setCurrentStep] = React.useState<number>(2); // 1: Đã nhận, 2: Minh chứng, 3: Đóng phiếu
 
-  // Form states
   const [proofImage, setProofImage] = React.useState<string>("");
   const [resultNote, setResultNote] = React.useState<string>("");
   const [isDosageChecked, setIsDosageChecked] = React.useState<boolean>(false);
@@ -42,7 +40,6 @@ export function FarmerTaskExecutePage() {
   const [isIncidentModalOpen, setIsIncidentModalOpen] = React.useState<boolean>(false);
   const [incidentText, setIncidentText] = React.useState<string>("");
 
-  // Quick chips
   const [selectedChips, setSelectedChips] = React.useState<string[]>([]);
 
   const toggleChip = (chip: string) => {
@@ -103,7 +100,6 @@ export function FarmerTaskExecutePage() {
             </Box>
           </Box>
 
-          {/* Countdown Badge */}
           <Badge
             variant="warning"
             className="flex items-center gap-2 px-3.5 py-2 text-xs font-bold self-start sm:self-auto rounded-xl"
@@ -121,7 +117,6 @@ export function FarmerTaskExecutePage() {
       ───────────────────────────────────────────────────────────── */}
       <Card className="p-4 sm:p-5">
         <Box className="grid grid-cols-3 gap-2 sm:gap-4 text-xs sm:text-sm">
-          {/* Step 1 */}
           <Box className="flex items-center gap-2 sm:gap-3 text-emerald-700 font-bold">
             <Box className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs shrink-0">
               ✓
@@ -136,7 +131,6 @@ export function FarmerTaskExecutePage() {
             </Box>
           </Box>
 
-          {/* Step 2 */}
           <Box className="flex items-center gap-2 sm:gap-3 text-emerald-900 dark:text-emerald-300 font-bold">
             <Box className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white font-extrabold text-xs shrink-0 shadow-xs">
               2
@@ -151,7 +145,6 @@ export function FarmerTaskExecutePage() {
             </Box>
           </Box>
 
-          {/* Step 3 */}
           <Box
             className={`flex items-center gap-2 sm:gap-3 ${
               currentStep === 3 ? "text-emerald-700 font-bold" : "text-muted-foreground"
@@ -182,7 +175,6 @@ export function FarmerTaskExecutePage() {
           3. MAIN 2-COLUMN DESKTOP WORKSPACE
       ───────────────────────────────────────────────────────────── */}
       <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* ── LEFT COLUMN: PROOF OF WORK & FORM (7 COLS) ── */}
         <Box className="lg:col-span-7 space-y-6">
           {/* Card: Minh chứng hiện trường bắt buộc */}
           <Card className="p-0 overflow-hidden">
@@ -201,7 +193,6 @@ export function FarmerTaskExecutePage() {
             </CardHeader>
 
             <CardContent className="p-5 pt-0 space-y-4">
-              {/* Proof Image Preview or Upload Dropzone */}
               {proofImage ? (
                 <Box className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-900 border border-border group">
                   <img
@@ -210,7 +201,6 @@ export function FarmerTaskExecutePage() {
                     className="w-full h-full object-cover"
                   />
 
-                  {/* Top Watermark & Valid Status Badge */}
                   <Box className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
                     <Badge variant="secondary" className="bg-black/60 text-white border border-white/20 backdrop-blur-md">
                       📍 Minh chứng thực địa
@@ -220,7 +210,6 @@ export function FarmerTaskExecutePage() {
                     </Badge>
                   </Box>
 
-                  {/* Change photo button */}
                   <Box className="absolute bottom-3 right-3 flex items-center gap-2">
                     <label className="cursor-pointer rounded-xl bg-white/95 hover:bg-white text-slate-900 px-3.5 py-2 text-xs font-bold flex items-center gap-1.5 shadow-md transition-all">
                       <Camera className="h-3.5 w-3.5 text-emerald-600" />
@@ -260,7 +249,6 @@ export function FarmerTaskExecutePage() {
                 </label>
               )}
 
-              {/* Result Note Field */}
               <Box className="space-y-2 pt-2">
                 <Text variant="small" className="font-bold text-foreground uppercase tracking-wider block">
                   Ghi chú kết quả xử lý kỹ thuật
@@ -274,7 +262,6 @@ export function FarmerTaskExecutePage() {
                 />
               </Box>
 
-              {/* Quick Action Chips */}
               <Box className="space-y-1.5">
                 <Text variant="muted" className="text-[11px] font-medium">Gắn thẻ nhanh vào nhật ký:</Text>
                 <Box className="flex flex-wrap gap-2">
@@ -304,7 +291,6 @@ export function FarmerTaskExecutePage() {
                 </Box>
               </Box>
 
-              {/* Dosage Confirmation Checkbox */}
               <label className="flex items-start gap-3 p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 cursor-pointer select-none">
                 <input
                   type="checkbox"
@@ -346,9 +332,7 @@ export function FarmerTaskExecutePage() {
           </Card>
         </Box>
 
-        {/* ── RIGHT COLUMN: TASK DETAILS & BED TELEMETRY (5 COLS) ── */}
         <Box className="lg:col-span-5 space-y-6">
-          {/* Task Info & Customer Instruction */}
           <Card className="p-0 overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between p-5 pb-2">
               <Text variant="muted" className="text-xs font-bold uppercase tracking-wider">
@@ -370,7 +354,6 @@ export function FarmerTaskExecutePage() {
                 </CardDescription>
               </Box>
 
-              {/* Customer Special Note Box */}
               <Box className="rounded-2xl border-l-4 border-amber-500 bg-amber-50/80 dark:bg-amber-950/30 p-3.5 text-xs text-amber-950 dark:text-amber-200 space-y-1">
                 <Box className="flex items-center gap-1.5 font-bold text-amber-900 dark:text-amber-100">
                   <FileText className="h-4 w-4 text-amber-600" />
@@ -390,7 +373,6 @@ export function FarmerTaskExecutePage() {
             </CardFooter>
           </Card>
 
-          {/* IoT Telemetry of Bed B-205 */}
           <Card className="p-0 overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between p-5 pb-2">
               <CardTitle className="text-xs font-bold text-foreground uppercase tracking-wider">
@@ -426,7 +408,6 @@ export function FarmerTaskExecutePage() {
             </CardContent>
           </Card>
 
-          {/* Live Camera Feed of Bed */}
           <Card className="p-0 overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
               <CardTitle className="text-xs font-bold text-foreground flex items-center gap-1.5">

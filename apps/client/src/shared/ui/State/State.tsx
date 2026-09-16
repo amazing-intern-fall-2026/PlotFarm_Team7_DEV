@@ -166,14 +166,12 @@ function renderSkeletonPreset(preset: SkeletonPreset, count: number): React.Reac
     case "table":
       return (
         <div className="w-full rounded-2xl border border-border bg-card overflow-hidden">
-          {/* Header row */}
           <div className="flex items-center gap-4 px-5 py-3.5 bg-muted/40 border-b border-border">
             <Skeleton className="h-4 w-1/4" />
             <Skeleton className="h-4 w-1/4" />
             <Skeleton className="h-4 w-1/4" />
             <Skeleton className="h-4 w-1/4" />
           </div>
-          {/* Data rows */}
           <div className="divide-y divide-border">
             {Array.from({ length: count || 4 }).map((_, i) => (
               <div key={i} className="flex items-center gap-4 px-5 py-4">
@@ -235,7 +233,6 @@ export const State: StateComponent = (({
   children,
   ...props
 }: StateProps) => {
-  // 1. Phân giải trạng thái hoạt động thực tế
   let resolvedState: AsyncStateType = "success";
 
   if (isLoading || state === "loading") {
@@ -250,7 +247,6 @@ export const State: StateComponent = (({
     resolvedState = "idle";
   }
 
-  // 2. Class bọc theo variant
   const containerClasses = cn(
     "flex flex-col items-center justify-center text-center transition-all duration-200",
     variant === "full-page" && "min-h-[60vh] w-full p-8",
@@ -259,7 +255,6 @@ export const State: StateComponent = (({
     className
   );
 
-  // 3. Trạng thái SKELETON (Fetching / Loading State)
   if (variant === "skeleton" && (resolvedState === "loading" || isLoading || state === undefined)) {
     const effectiveCount = skeletonCount ?? skeletonLines ?? 3;
 
@@ -270,7 +265,6 @@ export const State: StateComponent = (({
     );
   }
 
-  // 4. Trạng thái LOADING (Spinner)
   if (resolvedState === "loading") {
     return (
       <div className={containerClasses} {...props}>
@@ -288,7 +282,6 @@ export const State: StateComponent = (({
     );
   }
 
-  // 5. Trạng thái ERROR
   if (resolvedState === "error") {
     const errorMessage =
       typeof error === "string"
@@ -328,7 +321,6 @@ export const State: StateComponent = (({
     );
   }
 
-  // 6. Trạng thái EMPTY
   if (resolvedState === "empty") {
     const preset = emptyPresets[emptyPreset] || emptyPresets.general;
 
@@ -348,7 +340,6 @@ export const State: StateComponent = (({
     );
   }
 
-  // 7. Trạng thái FETCHING (Background sync)
   if (resolvedState === "fetching") {
     return (
       <div className="relative w-full" {...props}>
@@ -361,7 +352,6 @@ export const State: StateComponent = (({
     );
   }
 
-  // 8. Trạng thái SUCCESS / IDLE: Hiển thị nội dung chính
   return <>{children}</>;
 }) as StateComponent;
 

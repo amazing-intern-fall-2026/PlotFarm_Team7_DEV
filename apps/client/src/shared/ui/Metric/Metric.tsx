@@ -104,7 +104,6 @@ export const Metric = React.forwardRef<HTMLDivElement, MetricProps>(
           )}
         </div>
 
-        {/* Trend / Subtitle / Progress */}
         <div className="mt-3 space-y-2">
           {progress && (
             <div className="w-full space-y-1">

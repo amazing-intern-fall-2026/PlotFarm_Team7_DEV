@@ -109,7 +109,6 @@ export function Navigation({
   onTabChange,
   className,
 }: NavigationProps) {
-  // Xác định danh sách tabs theo items truyền vào hoặc role mặc định
   const resolvedItems = React.useMemo(() => {
     if (items && items.length > 0) return items;
     switch (role) {
@@ -123,7 +122,6 @@ export function Navigation({
     }
   }, [items, role]);
 
-  // Xác định activeIndex từ activeId hoặc activeIndex truyền vào
   const currentActiveIndex = React.useMemo(() => {
     if (activeId !== undefined) {
       const idx = resolvedItems.findIndex((i) => i.id === activeId);

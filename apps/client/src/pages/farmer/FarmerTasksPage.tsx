@@ -122,7 +122,6 @@ export function FarmerTasksPage() {
   const [activeTask] = React.useState<PriorityTask | null>(DEFAULT_ACTIVE_TASK);
   const [upcomingTasks] = React.useState<SecondaryTask[]>(DEFAULT_UPCOMING_TASKS);
 
-  // Sync with local storage when page regains focus or storage event triggers
   React.useEffect(() => {
     const handleSync = () => {
       setManagedPlots(loadManagedPlots());
@@ -136,7 +135,6 @@ export function FarmerTasksPage() {
     };
   }, []);
 
-  // Dynamic reading for A-104 if available in managedPlots or raw storage
   const activePlotData = React.useMemo(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY_PLOTS);
@@ -175,7 +173,6 @@ export function FarmerTasksPage() {
       ───────────────────────────────────────────────────────────── */}
       <Card className="p-0 overflow-hidden">
         <CardHeader className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5">
-          {/* Left: Staff Profile Info */}
           <Box className="flex items-center gap-3.5">
             <Box className="relative">
               <img
@@ -201,7 +198,6 @@ export function FarmerTasksPage() {
             </Box>
           </Box>
 
-          {/* Right: Quick Stat Badges */}
           <Box className="flex flex-wrap items-center gap-2 sm:gap-3">
             <Badge variant="warning" className="flex items-center gap-2 px-3.5 py-2 text-xs rounded-xl">
               <Clock className="h-4 w-4 text-amber-600" />
@@ -261,7 +257,6 @@ export function FarmerTasksPage() {
         </CardContent>
       </Card>
 
-      {/* Success alert toast when harvesting */}
       {showHarvestAlert && (
         <Card className="bg-emerald-600 text-white p-4 border-none shadow-lg animate-in fade-in">
           <Text className="text-sm font-semibold text-white">
@@ -274,9 +269,7 @@ export function FarmerTasksPage() {
           3. MAIN 2-COLUMN DESKTOP WORKSPACE
       ───────────────────────────────────────────────────────────── */}
       <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* ── LEFT COLUMN: PRIORITY TASK & UPCOMING SCHEDULE (7 COLS) ── */}
         <Box className="lg:col-span-7 space-y-5">
-          {/* Active Priority Task Card or Empty State */}
           {activeTaskData ? (
             <Card className="p-0 overflow-hidden border-2 border-emerald-500/50 shadow-md hover:shadow-lg transition-all relative">
               <Box className="h-1.5 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600" />
@@ -390,7 +383,6 @@ export function FarmerTasksPage() {
             </Card>
           )}
 
-          {/* Secondary / Upcoming Tasks */}
           <Box className="space-y-3">
             <Text variant="small" className="font-bold text-foreground uppercase tracking-wider block">
               Nhiệm Vụ Kế Tiếp Trong Ca Làm Việc
@@ -438,9 +430,7 @@ export function FarmerTasksPage() {
           </Box>
         </Box>
 
-        {/* ── RIGHT COLUMN: MANAGED PARCELS & TOOLS (5 COLS) ── */}
         <Box className="lg:col-span-5 space-y-5">
-          {/* Managed Plots Quick List */}
           <Card className="p-5 space-y-4">
             <CardHeader className="p-0 flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-base font-bold">
@@ -516,7 +506,6 @@ export function FarmerTasksPage() {
             </CardContent>
           </Card>
 
-          {/* Field Quick Tools Card */}
           <Card className="p-5 space-y-3">
             <CardHeader className="p-0 pb-1">
               <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
@@ -564,7 +553,6 @@ export function FarmerTasksPage() {
       {selectedLiveCamPlot && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <Card className="relative w-full max-w-2xl rounded-3xl overflow-hidden bg-slate-950 text-white shadow-2xl border border-white/20 p-0">
-            {/* Header */}
             <CardHeader className="flex flex-row items-center justify-between p-4 bg-slate-900 border-b border-white/10">
               <Box className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
@@ -585,7 +573,6 @@ export function FarmerTasksPage() {
               </Button>
             </CardHeader>
 
-            {/* Video preview frame */}
             <Box className="relative aspect-video w-full overflow-hidden bg-black">
               <img
                 src="/images/greenhouse_camera_live.jpg"
@@ -597,7 +584,6 @@ export function FarmerTasksPage() {
               </Badge>
             </Box>
 
-            {/* Footer */}
             <CardFooter className="flex items-center justify-between p-4 bg-slate-900 text-xs text-slate-400">
               <Text as="span" className="text-xs text-slate-300">
                 💧 Độ ẩm: <strong>68%</strong> • 🌡 Nhiệt độ: <strong>24.5°C</strong>

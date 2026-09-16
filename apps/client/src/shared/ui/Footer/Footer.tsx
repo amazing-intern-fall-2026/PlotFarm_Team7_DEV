@@ -60,7 +60,6 @@ export function Footer({
     >
       <Container className="pt-12 pb-8">
         <Box className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {/* Cột 1: Green Farm & Tiêu chuẩn */}
           <Box className="space-y-4">
             <Box className="flex items-center gap-2.5">
               <img
@@ -77,7 +76,6 @@ export function Footer({
               {t("footer.desc")}
             </Typography.P>
 
-            {/* Badges: Row 1 & Row 2 */}
             <Box className="space-y-2 pt-1">
               <Box className="flex flex-wrap items-center gap-2">
                 <Typography.Small className="rounded-full bg-background border border-border px-3 py-1 text-xs font-medium text-muted-foreground shadow-2xs hover:border-primary/40 hover:text-foreground transition-colors">
@@ -95,7 +93,6 @@ export function Footer({
             </Box>
           </Box>
 
-          {/* Cột 2: Phân Hệ Canh Tác */}
           <Box className="space-y-3.5">
             <Typography.H5 className="text-xs font-bold uppercase tracking-wider text-foreground">
               {t("footer.col_farming")}
@@ -136,7 +133,6 @@ export function Footer({
             </ul>
           </Box>
 
-          {/* Cột 3: Tài Khoản & Pháp Lý */}
           <Box className="space-y-3.5">
             <Typography.H5 className="text-xs font-bold uppercase tracking-wider text-foreground">
               {t("footer.col_legal")}
@@ -177,7 +173,6 @@ export function Footer({
             </ul>
           </Box>
 
-          {/* Cột 4: Trang Trại Đà Lạt */}
           <Box className="space-y-3.5">
             <Typography.H5 className="text-xs font-bold uppercase tracking-wider text-foreground">
               {t("footer.col_farm_dalat")}

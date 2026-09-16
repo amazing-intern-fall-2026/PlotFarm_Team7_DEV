@@ -1,7 +1,6 @@
 import { axiosClient, parseApiError } from "@/shared/api";
 import type { Plot, PlotStatus, PlotsQuery } from "@repo/shared";
 
-// Domain UI Types
 export interface PlotUiItem extends Plot {
   id?: string;
   zone?: string;
@@ -11,7 +10,6 @@ export interface PlotUiItem extends Plot {
   imageUrl?: string;
 }
 
-// Raw server shapes
 export interface RawServerPlotItem {
   id?: string;
   plotCode?: string;
@@ -72,7 +70,6 @@ export interface PlotDetailUiItem extends PlotUiItem {
   };
 }
 
-// Helper: resolve i18n object or plain string
 function resolveI18n(
   value: { vi?: string; en?: string } | string | null | undefined,
 ): string | undefined {
@@ -81,7 +78,6 @@ function resolveI18n(
   return value.vi || value.en || undefined;
 }
 
-// Mapper: raw server item -> UI item
 function mapRawPlotToUiItem(item: RawServerPlotItem): PlotUiItem {
   const plotCode = item.plotCode || "PLT-UNKNOWN";
   const plotNumber = item.plotNumber || `O ${plotCode}`;
@@ -142,7 +138,6 @@ function mapRawPlotToUiItem(item: RawServerPlotItem): PlotUiItem {
   };
 }
 
-// Response parser
 interface PlotsListResponseData {
   success: boolean;
   data:

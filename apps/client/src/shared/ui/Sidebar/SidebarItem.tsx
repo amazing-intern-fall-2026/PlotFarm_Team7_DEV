@@ -42,7 +42,6 @@ export function SidebarItem({
         collapsed ? "justify-center px-2 py-3" : "justify-start",
       )}
     >
-      {/* Icon */}
       <span
         className={cn(
           "flex h-5 w-5 shrink-0 items-center justify-center transition-colors duration-150",
@@ -54,12 +53,10 @@ export function SidebarItem({
         {icon}
       </span>
 
-      {/* Label — ẩn khi collapsed */}
       {!collapsed && (
         <span className="flex-1 truncate text-left leading-tight">{label}</span>
       )}
 
-      {/* Badge khi expanded */}
       {badge !== undefined && !collapsed && (
         <span
           className={cn(
@@ -73,7 +70,6 @@ export function SidebarItem({
         </span>
       )}
 
-      {/* Badge khi collapsed — dấu chấm nhỏ */}
       {badge !== undefined && collapsed && (
         <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-primary" />
       )}

@@ -12,7 +12,6 @@ export function FarmJourneyMobile({
 }: FarmJourneyViewProps) {
   return (
     <section aria-labelledby="farm-journey-mobile-title" className={cn("w-full space-y-4 pt-0 pb-2 select-none px-1", className)}>
-      {/* ── 1. Section Header ── */}
       <Box className="text-center space-y-2 px-2">
         <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
           {badge}
@@ -31,7 +30,6 @@ export function FarmJourneyMobile({
         </Text>
       </Box>
 
-      {/* ── 2. Mobile Cards Grid ── */}
       <Box className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
         {steps.map((step) => (
           <Card
@@ -39,7 +37,6 @@ export function FarmJourneyMobile({
             className="hover:border-primary/40 transition-colors"
           >
             <CardContent className="p-4 space-y-3">
-              {/* Top Row: Number & Icon */}
               <Box className="flex items-center justify-between">
                 <Text
                   as="span"
@@ -59,7 +56,6 @@ export function FarmJourneyMobile({
                 </Box>
               </Box>
 
-              {/* Title & Description */}
               <Box className="space-y-1">
                 <Heading level={3} className="text-sm font-bold text-foreground">
                   {step.title}

@@ -46,7 +46,6 @@ export function EnvironmentalInputs({
       </Box>
 
       <Box className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {/* Soil Moisture */}
         <Card className="p-3.5 rounded-2xl bg-muted/20 border border-border space-y-2">
           <Box className="flex items-center justify-between">
             <Box className="flex items-center gap-1.5">
@@ -68,7 +67,6 @@ export function EnvironmentalInputs({
           </Box>
         </Card>
 
-        {/* Temperature */}
         <Card className="p-3.5 rounded-2xl bg-muted/20 border border-border space-y-2">
           <Box className="flex items-center justify-between">
             <Box className="flex items-center gap-1.5">
@@ -91,7 +89,6 @@ export function EnvironmentalInputs({
           </Box>
         </Card>
 
-        {/* Air Humidity */}
         <Card className="p-3.5 rounded-2xl bg-muted/20 border border-border space-y-2">
           <Box className="flex items-center justify-between">
             <Box className="flex items-center gap-1.5">

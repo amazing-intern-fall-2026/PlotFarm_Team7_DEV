@@ -74,13 +74,11 @@ export function AdminRbacPage() {
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
   const [toastMessage, setToastMessage] = React.useState<string | null>(null);
 
-  // Modals
   const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [showAuditModal, setShowAuditModal] = React.useState(false);
   const [showPolicyModal, setShowPolicyModal] = React.useState(false);
   const [editingUserRole, setEditingUserRole] = React.useState<RbacUser | null>(null);
 
-  // New user form state
   const [newUserName, setNewUserName] = React.useState("");
   const [newUserEmail, setNewUserEmail] = React.useState("");
   const [newUserPhone, setNewUserPhone] = React.useState("");
@@ -175,7 +173,6 @@ export function AdminRbacPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-xl bg-slate-900 px-5 py-3.5 text-sm font-medium text-white shadow-2xl transition-all">
           <CheckCircle2 className="h-5 w-5 text-emerald-400" />
@@ -183,7 +180,6 @@ export function AdminRbacPage() {
         </div>
       )}
 
-      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -208,9 +204,7 @@ export function AdminRbacPage() {
         </Button>
       </div>
 
-      {/* Stats Cards (4 items) */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1: Tổng cộng */}
         <Card className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">TỔNG CỘNG</span>
@@ -224,7 +218,6 @@ export function AdminRbacPage() {
           </div>
         </Card>
 
-        {/* Card 2: Khách hàng */}
         <Card className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2">
@@ -243,7 +236,6 @@ export function AdminRbacPage() {
           </div>
         </Card>
 
-        {/* Card 3: Nông dân */}
         <Card className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2">
@@ -262,7 +254,6 @@ export function AdminRbacPage() {
           </div>
         </Card>
 
-        {/* Card 4: Quản trị viên */}
         <Card className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2">
@@ -282,12 +273,9 @@ export function AdminRbacPage() {
         </Card>
       </div>
 
-      {/* Main Table Card */}
       <Card className="rounded-2xl border border-slate-100 bg-white shadow-sm">
-        {/* Filter Bar */}
         <div className="flex flex-col gap-4 border-b border-slate-100 p-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-1 flex-wrap items-center gap-3">
-            {/* Search */}
             <div className="relative min-w-[260px] flex-1 max-w-md">
               <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
@@ -299,7 +287,6 @@ export function AdminRbacPage() {
               />
             </div>
 
-            {/* Role filter */}
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
@@ -311,7 +298,6 @@ export function AdminRbacPage() {
               <option value="Super Admin">Quản trị viên (Super Admin)</option>
             </select>
 
-            {/* Status filter */}
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -344,7 +330,6 @@ export function AdminRbacPage() {
           </div>
         </div>
 
-        {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -378,7 +363,6 @@ export function AdminRbacPage() {
               ) : (
                 filteredUsers.map((user) => (
                   <tr key={user.id} className="transition hover:bg-slate-50/80">
-                    {/* Người dùng */}
                     <td className="py-3.5 pl-6 pr-4">
                       <div className="flex items-center gap-3">
                         {user.avatar ? (
@@ -394,7 +378,6 @@ export function AdminRbacPage() {
                       </div>
                     </td>
 
-                    {/* Email & SĐT */}
                     <td className="px-4 py-3.5">
                       <div>
                         <div className="text-slate-700">{user.email}</div>
@@ -402,7 +385,6 @@ export function AdminRbacPage() {
                       </div>
                     </td>
 
-                    {/* Vai trò */}
                     <td className="px-4 py-3.5">
                       {user.role === "Customer" && (
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-semibold text-sky-700">
@@ -424,12 +406,10 @@ export function AdminRbacPage() {
                       )}
                     </td>
 
-                    {/* Ngày tham gia */}
                     <td className="px-4 py-3.5 text-slate-600 font-mono text-[11px]">
                       {user.joinedDate}
                     </td>
 
-                    {/* Hoạt động liên kết */}
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-2 text-slate-700">
                         {user.activityType === "plot" && (
@@ -459,7 +439,6 @@ export function AdminRbacPage() {
                       </div>
                     </td>
 
-                    {/* Trạng thái */}
                     <td className="px-4 py-3.5">
                       {user.status === "active" ? (
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">
@@ -474,10 +453,8 @@ export function AdminRbacPage() {
                       )}
                     </td>
 
-                    {/* Thao tác */}
                     <td className="py-3.5 pl-4 pr-6 text-right">
                       <div className="flex items-center justify-end gap-1">
-                        {/* Đổi quyền */}
                         <button
                           onClick={() => setEditingUserRole(user)}
                           className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-emerald-700"
@@ -486,7 +463,6 @@ export function AdminRbacPage() {
                           <Shield className="h-4 w-4" />
                         </button>
 
-                        {/* Đổi mã PIN / pass */}
                         <button
                           onClick={() => handleResetPin(user)}
                           className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-amber-600"
@@ -495,7 +471,6 @@ export function AdminRbacPage() {
                           <Key className="h-4 w-4" />
                         </button>
 
-                        {/* Khóa / Mở khóa */}
                         <button
                           onClick={() => handleToggleLock(user)}
                           className={`rounded-lg p-1.5 transition ${
@@ -520,7 +495,6 @@ export function AdminRbacPage() {
           </table>
         </div>
 
-        {/* Table footer */}
         <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-100 p-4 sm:flex-row text-xs text-slate-500">
           <span>
             Hiển thị <strong>{filteredUsers.length === 0 ? 0 : 1} - {filteredUsers.length}</strong> trên {totalUsers} tài khoản
@@ -538,9 +512,7 @@ export function AdminRbacPage() {
         </div>
       </Card>
 
-      {/* Bottom Section: RBAC Matrix (Left) & Security Audit Log (Right) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {/* Left: Kiểm soát Truy cập & Role Guard (RBAC Policy) */}
         <Card className="flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-6 shadow-sm lg:col-span-8">
           <div>
             <div className="flex items-center justify-between">
@@ -559,7 +531,6 @@ export function AdminRbacPage() {
               Bảng tổng hợp đặc quyền truy cập và phân quyền thao tác cho từng nhóm vai trò định danh trong hệ thống nông trại:
             </p>
 
-            {/* Matrix Table */}
             <div className="mt-5 overflow-hidden rounded-xl border border-slate-100">
               <table className="w-full text-left text-xs">
                 <thead className="bg-slate-50/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
@@ -615,7 +586,6 @@ export function AdminRbacPage() {
           </div>
         </Card>
 
-        {/* Right: Nhật ký Bảo mật */}
         <Card className="flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-6 shadow-sm lg:col-span-4">
           <div>
             <div className="flex items-center justify-between">
@@ -630,7 +600,6 @@ export function AdminRbacPage() {
               Ghi nhận phiên bảo mật và thay đổi quyền gần nhất
             </p>
 
-            {/* Audit log events */}
             <div className="mt-5 space-y-3">
               {users.length === 0 ? (
                 <div className="py-8 text-center text-xs text-slate-400">
@@ -638,7 +607,6 @@ export function AdminRbacPage() {
                 </div>
               ) : (
                 <>
-                  {/* Event 1 */}
                   <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3 text-xs">
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 flex-shrink-0">
                       <RotateCcw className="h-3.5 w-3.5" />
@@ -649,7 +617,6 @@ export function AdminRbacPage() {
                     </div>
                   </div>
 
-                  {/* Event 2 */}
                   <div className="flex items-start gap-3 rounded-xl bg-rose-50/60 p-3 text-xs">
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-rose-100 text-rose-600 flex-shrink-0">
                       <Ban className="h-3.5 w-3.5" />
@@ -660,7 +627,6 @@ export function AdminRbacPage() {
                     </div>
                   </div>
 
-                  {/* Event 3 */}
                   <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3 text-xs">
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-700 flex-shrink-0">
                       <ShieldCheck className="h-3.5 w-3.5" />
@@ -687,7 +653,6 @@ export function AdminRbacPage() {
         </Card>
       </div>
 
-      {/* Modal: Tạo tài khoản nhân sự mới */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
@@ -773,7 +738,6 @@ export function AdminRbacPage() {
         </div>
       )}
 
-      {/* Modal: Đổi vai trò */}
       {editingUserRole && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
@@ -812,7 +776,6 @@ export function AdminRbacPage() {
         </div>
       )}
 
-      {/* Modal: Toàn bộ Audit Log */}
       {showAuditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="relative w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl max-h-[85vh] flex flex-col">
@@ -885,7 +848,6 @@ export function AdminRbacPage() {
         </div>
       )}
 
-      {/* Modal: Tùy chỉnh vai trò chi tiết */}
       {showPolicyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="relative w-full max-w-xl rounded-2xl bg-white p-6 shadow-2xl">

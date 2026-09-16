@@ -86,7 +86,6 @@ export async function renderGoogleSignInButton(
     callback: (response) => onCredential(response.credential),
   });
 
-  // Dọn dẹp DOM cũ trong container để tránh duplicate nếu re-render
   container.innerHTML = "";
 
   const containerWidth = container.offsetWidth || 380;

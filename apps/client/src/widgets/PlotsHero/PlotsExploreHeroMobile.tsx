@@ -25,20 +25,16 @@ export function PlotsExploreHeroMobile({
         className,
       )}
     >
-      {/* Background Glow */}
       <Box className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
 
       <Box className="relative z-10 px-4 space-y-4">
-        {/* ── 1. VALUE PROPOSITION & HEADING ── */}
         <Box className="space-y-3 text-left">
-          {/* Tagline */}
           <Box className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary">
             <Text as="span" className="text-[11px] font-bold uppercase tracking-wider text-primary">
               {PLOTS_HERO_MESSAGES.TAGLINE}
             </Text>
           </Box>
 
-          {/* Heading */}
           <Heading
             as="h1"
             className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground leading-tight"
@@ -49,12 +45,10 @@ export function PlotsExploreHeroMobile({
             </Text>
           </Heading>
 
-          {/* Sub-copy */}
           <Text className="text-sm text-muted-foreground leading-relaxed font-normal">
             {PLOTS_HERO_MESSAGES.SUBTITLE}
           </Text>
 
-          {/* 2 checkmarks */}
           <Box className="space-y-1.5 pt-0.5">
             <Box className="flex items-center gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
@@ -71,7 +65,6 @@ export function PlotsExploreHeroMobile({
           </Box>
         </Box>
 
-        {/* ── 2. INTERACTIVE LIVE FARM MOCKUP ── */}
         <Box className="relative w-full h-[220px] rounded-2xl border-4 border-card shadow-xl ring-1 ring-border/80 overflow-hidden bg-slate-950 group">
           <img
             src="https://images.unsplash.com/photo-1592417817098-8f3d69109853?auto=format&fit=crop&w=1000&q=80"
@@ -81,7 +74,6 @@ export function PlotsExploreHeroMobile({
 
           <Box className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/60 pointer-events-none" />
 
-          {/* Header trên ảnh */}
           <Box className="absolute top-0 inset-x-0 bg-black/40 backdrop-blur-md px-3 py-2 flex justify-between items-center text-white text-[11px] z-10 border-b border-white/10">
             <Box className="flex items-center gap-1.5">
               <Box className="relative flex h-1.5 w-1.5">
@@ -102,7 +94,6 @@ export function PlotsExploreHeroMobile({
             </Box>
           </Box>
 
-          {/* Mini notification badge */}
           <Box className="absolute top-9 right-2 z-10">
             <Box className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-emerald-300 text-[10px] font-medium border border-white/20">
               <Sparkles className="h-2.5 w-2.5 text-emerald-400" />
@@ -110,9 +101,7 @@ export function PlotsExploreHeroMobile({
             </Box>
           </Box>
 
-          {/* Floating Telemetry Frosted Glass Cards */}
           <Box className="absolute bottom-2.5 inset-x-2.5 grid grid-cols-2 gap-2 z-10">
-            {/* Thẻ 1: Độ ẩm đất */}
             <Box className="bg-card/95 backdrop-blur-md p-2 rounded-xl shadow-md border border-border/80 flex items-center gap-2">
               <Box className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-sky-600 flex items-center justify-center shrink-0 border border-sky-100 dark:border-sky-900">
                 <Droplets className="h-4 w-4" />
@@ -132,7 +121,6 @@ export function PlotsExploreHeroMobile({
               </Box>
             </Box>
 
-            {/* Thẻ 2: Nhiệt độ */}
             <Box className="bg-card/95 backdrop-blur-md p-2 rounded-xl shadow-md border border-border/80 flex items-center gap-2">
               <Box className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100 dark:border-amber-900">
                 <Thermometer className="h-4 w-4" />
@@ -149,7 +137,6 @@ export function PlotsExploreHeroMobile({
           </Box>
         </Box>
 
-        {/* ── 3. CTA BUTTONS & SOCIAL PROOF ── */}
         <Box className="space-y-3 pt-1">
           <Button
             variant="primary"
@@ -171,7 +158,6 @@ export function PlotsExploreHeroMobile({
             {PLOTS_HERO_MESSAGES.CTA_VIDEO}
           </Button>
 
-          {/* Social Proof */}
           <Box className="pt-1 flex items-center justify-center gap-3 text-left">
             <Box className="flex -space-x-2 items-center">
               <Avatar

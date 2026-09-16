@@ -37,7 +37,6 @@ export const Primitives: Story = {
   name: "1. Các Khối Nguyên Tử (Primitives)",
   render: () => (
     <div className="space-y-6 max-w-md p-4 bg-card rounded-2xl border border-border">
-      {/* Avatar & text line */}
       <div className="flex items-center gap-3">
         <Skeleton className="h-12 w-12 rounded-full shrink-0" />
         <div className="space-y-2 flex-1">
@@ -46,17 +45,14 @@ export const Primitives: Story = {
         </div>
       </div>
 
-      {/* Paragraph lines */}
       <div className="space-y-2">
         <Skeleton className="h-3.5 w-full" />
         <Skeleton className="h-3.5 w-5/6" />
         <Skeleton className="h-3.5 w-2/3" />
       </div>
 
-      {/* Image / Banner block */}
       <Skeleton className="h-36 w-full rounded-xl" />
 
-      {/* Action buttons */}
       <div className="flex justify-end gap-2 pt-2">
         <Skeleton className="h-8 w-20 rounded-lg" />
         <Skeleton className="h-8 w-24 rounded-lg" />

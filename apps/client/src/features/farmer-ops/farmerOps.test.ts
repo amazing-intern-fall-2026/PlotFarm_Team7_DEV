@@ -11,9 +11,6 @@ import {
 } from "./farmerOps";
 
 describe("Farmer Operations Test Suite (Harvest, Incidents, Work History)", () => {
-  // ─────────────────────────────────────────────────────────────
-  // 1. HARVEST QUEUE & WEIGHT VALIDATION
-  // ─────────────────────────────────────────────────────────────
   describe("1. Harvest Weight & Range Standard Check (16.0–20.0 kg)", () => {
     it("should accept 18.5 kg as within standard yield", () => {
       const result = checkHarvestWeight(18.5);
@@ -60,9 +57,6 @@ describe("Farmer Operations Test Suite (Harvest, Incidents, Work History)", () =
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
-  // 2. INCIDENT REPORTING
-  // ─────────────────────────────────────────────────────────────
   describe("2. Incident Reporting & Proposals", () => {
     it("should support exactly 4 standardized incident categories", () => {
       const categories = Object.keys(INCIDENT_CATEGORIES) as IncidentCategory[];
@@ -118,9 +112,6 @@ describe("Farmer Operations Test Suite (Harvest, Incidents, Work History)", () =
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
-  // 3. WORK HISTORY & KPI CALCULATIONS
-  // ─────────────────────────────────────────────────────────────
   describe("3. Work History Filtering & Audit KPI Metrics", () => {
     const mockHistory: WorkHistoryItem[] = [
       {

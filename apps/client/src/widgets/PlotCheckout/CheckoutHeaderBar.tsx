@@ -23,7 +23,6 @@ export const CheckoutHeaderBar: React.FC<CheckoutHeaderBarProps> = ({
 }) => {
   return (
     <Box className="space-y-4 sm:space-y-5">
-      {/* 1. TOP BAR: BREADCRUMB BÊN TRÁI & NÚT QUAY LẠI BÊN PHẢI (CHUẨN LAYOUT NHƯ TRANG TRƯỚC ĐÓ) */}
       <Flex
         justify="between"
         align="center"
@@ -48,7 +47,6 @@ export const CheckoutHeaderBar: React.FC<CheckoutHeaderBarProps> = ({
         </Button>
       </Flex>
 
-      {/* 2. THANH TO NGANG PHÍA DƯỚI: PROGRESS STEPPER CHUẨN SHARED/UI TRẢI DÀI */}
       <Card className="w-full p-4 sm:py-4.5 sm:px-8 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs overflow-x-auto">
         <Steps
           variant="inline"

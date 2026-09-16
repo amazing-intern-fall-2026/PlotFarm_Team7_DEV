@@ -11,7 +11,6 @@ export function AuthSupportFab({ className }: AuthSupportFabProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const popoverRef = React.useRef<HTMLDivElement>(null);
 
-  // Đóng popover khi click ra ngoài
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -32,7 +31,6 @@ export function AuthSupportFab({ className }: AuthSupportFabProps) {
 
   return (
     <Box className={cn("fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50", className)}>
-      {/* ── Support Popover Card ── */}
       {isOpen && (
         <Box
           ref={popoverRef}
@@ -40,7 +38,6 @@ export function AuthSupportFab({ className }: AuthSupportFabProps) {
           aria-label="Trung tâm hỗ trợ khách hàng"
           className="absolute bottom-16 right-0 mb-2 w-80 sm:w-88 rounded-2xl border border-border/80 bg-background/95 backdrop-blur-md shadow-2xl p-5 space-y-4 animate-in fade-in-50 zoom-in-95 duration-200"
         >
-          {/* Header */}
           <Box className="flex items-center justify-between pb-3 border-b border-border/60">
             <Box className="flex items-center gap-2.5">
               <Box className="h-9 w-9 rounded-full bg-primary/10 text-primary flex items-center justify-center">
@@ -65,9 +62,7 @@ export function AuthSupportFab({ className }: AuthSupportFabProps) {
             </button>
           </Box>
 
-          {/* Contact Channels */}
           <Box className="space-y-2">
-            {/* Hotline */}
             <a
               href="tel:19006868"
               className="flex items-center gap-3 p-2.5 rounded-xl border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all group"
@@ -85,7 +80,6 @@ export function AuthSupportFab({ className }: AuthSupportFabProps) {
               </Box>
             </a>
 
-            {/* Email */}
             <a
               href="mailto:hotro@greenfarm.vn"
               className="flex items-center gap-3 p-2.5 rounded-xl border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all group"
@@ -103,7 +97,6 @@ export function AuthSupportFab({ className }: AuthSupportFabProps) {
               </Box>
             </a>
 
-            {/* Live Chat / Zalo */}
             <a
               href="https://zalo.me"
               target="_blank"
@@ -124,7 +117,6 @@ export function AuthSupportFab({ className }: AuthSupportFabProps) {
             </a>
           </Box>
 
-          {/* Quick Note */}
           <Box className="flex items-center gap-2 pt-1 text-[11px] text-muted-foreground border-t border-border/40">
             <HelpCircle className="h-3.5 w-3.5 shrink-0 text-primary" />
             <span>Thời gian trực tổng đài: 08:00 - 21:00 hàng ngày.</span>
@@ -132,7 +124,6 @@ export function AuthSupportFab({ className }: AuthSupportFabProps) {
         </Box>
       )}
 
-      {/* ── Circular Floating Headset Button ── */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}

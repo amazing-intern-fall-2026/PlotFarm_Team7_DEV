@@ -20,13 +20,10 @@ const meta: Meta<typeof Header> = {
 \`\`\`tsx
 import { Header } from "@/shared/ui/Header";
 
-// 1. Giao diện Khách hàng
 <Header role="customer" user={{ name: "Nguyễn Văn An" }} notificationCount={2} />
 
-// 2. Giao diện Kỹ thuật viên / Nông dân
 <Header role="farmer" user={{ name: "Kỹ sư Bác Bảy" }} notificationCount={5} />
 
-// 3. Giao diện Quản trị viên
 <Header role="admin" user={{ name: "Admin Trưởng" }} notificationCount={8} />
 \`\`\`
         `,
@@ -132,7 +129,6 @@ export const InteractiveRoleSwitcher: Story = {
 
     return (
       <div className="space-y-6 bg-slate-50 dark:bg-slate-900 min-h-[400px] pb-12">
-        {/* Bộ điều khiển Role */}
         <div className="p-4 bg-white dark:bg-slate-950 border-b border-border shadow-xs">
           <div className="max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div>
@@ -175,7 +171,6 @@ export const InteractiveRoleSwitcher: Story = {
           </div>
         </div>
 
-        {/* Component Header hiển thị theo vai trò đã chọn */}
         <div className="border border-border/80 rounded-xl overflow-hidden max-w-7xl mx-auto shadow-sm">
           <Header
             role={selectedRole}

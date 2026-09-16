@@ -84,9 +84,7 @@ export function Topbar({
         className,
       )}
     >
-      {/* ── Left: Hamburger (mobile) + Breadcrumb (desktop) + Search bar (flex trái) ── */}
       <div className="flex flex-1 items-center gap-3 sm:gap-4 min-w-0">
-        {/* Mobile menu toggle */}
         <button
           type="button"
           onClick={onMenuClick}
@@ -96,7 +94,6 @@ export function Topbar({
           <Menu className="h-5 w-5" />
         </button>
 
-        {/* Breadcrumbs — desktop only */}
         {_breadcrumbs.length > 0 && (
           <nav
             aria-label="Breadcrumb"
@@ -130,7 +127,6 @@ export function Topbar({
           </nav>
         )}
 
-        {/* Search bar — flex sang trái */}
         <div className="relative w-full max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input
@@ -145,9 +141,7 @@ export function Topbar({
         </div>
       </div>
 
-      {/* ── Right: Notification bell + User avatar ──────────────────────── */}
       <div className="flex items-center gap-2 shrink-0 ml-auto">
-        {/* Notifications */}
         <div className="relative">
           <Button
             variant="ghost"
@@ -168,7 +162,6 @@ export function Topbar({
           )}
         </div>
 
-        {/* ── User info / Login button ──────────────────────────────────── */}
         {user ? (
           <div className="flex items-center gap-2.5 pl-1">
             <div className="hidden sm:flex flex-col items-end leading-none">

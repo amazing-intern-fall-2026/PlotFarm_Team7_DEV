@@ -68,7 +68,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
     return `https://img.vietqr.io/image/${bankInfo.bankId}-${bankInfo.accountNumber}-compact2.png?amount=${cleanAmount}&addInfo=${encodedContent}&accountName=${encodeURIComponent(bankInfo.accountName)}`;
   }, [qrImageUrl, bankInfo, order.totalAmount, transferContent]);
 
-  // Deep-link mở app ngân hàng trên Mobile
   const bankingDeepLink = React.useMemo(() => {
     const cleanAmount = Math.round(order.totalAmount);
     const encodedContent = encodeURIComponent(transferContent);
@@ -112,7 +111,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
   return (
     <Box className={cn("space-y-6", className)}>
       <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-2xl overflow-hidden">
-        {/* Hub Header */}
         <CardHeader className="p-4 sm:p-5 bg-gradient-to-r from-emerald-50/70 to-slate-50/70 dark:from-emerald-950/20 dark:to-slate-900 border-b border-slate-100 dark:border-slate-800">
           <Flex justify="between" align="center" className="flex-wrap gap-2">
             <Flex align="center" gap={2}>
@@ -136,7 +134,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
               </Badge>
             </Flex>
 
-            {/* Countdown HUD Viền Pill Nhỏ */}
             <Flex
               align="center"
               gap={1.5}
@@ -159,7 +156,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
         </CardHeader>
 
         <CardContent className="p-4 sm:p-6 space-y-6">
-          {/* MOBILE PRIMARY ACTION: KHÁCH DÙNG ĐIỆN THOẠI KHÔNG THỂ QUÉT MÀN HÌNH CHÍNH HỌ */}
           <Box className="lg:hidden space-y-2">
             <Button
               size="lg"
@@ -177,9 +173,7 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
             </Text>
           </Box>
 
-          {/* GRID TRUNG TÂM: MÃ QR (BÊN TRÁI HOẶC TRÊN) & THÔNG TIN CHUYỂN KHOẢN (BÊN PHẢI HOẶC DƯỚI) */}
           <Grid cols={1} colsLg={12} gap={6} className="items-start">
-            {/* CỘT 1: KHUNG QR CHUẨN ĐỘNG (5 COLS TRÊN DESKTOP) */}
             <Box className="lg:col-span-5 flex flex-col items-center text-center space-y-3">
               <Box className="p-3.5 rounded-2xl bg-white border-2 border-emerald-500/30 shadow-md relative w-full max-w-[260px] mx-auto aspect-square flex items-center justify-center overflow-hidden group">
                 <Image
@@ -194,7 +188,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
                 {CHECKOUT_TEXTS.paymentHub.qrScanInstruction}
               </Text>
 
-              {/* Nút phụ: Tải ảnh QR về máy */}
               <Button
                 variant="outline"
                 size="sm"
@@ -206,9 +199,7 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
               </Button>
             </Box>
 
-            {/* CỘT 2: QUICK-COPY CARD (7 COLS TRÊN DESKTOP) */}
             <Box className="lg:col-span-7 space-y-3">
-              {/* 1. Ngân hàng thụ hưởng */}
               <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800">
                 <Flex justify="between" align="center">
                   <Box className="min-w-0 pr-2">
@@ -228,7 +219,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
                 </Flex>
               </Box>
 
-              {/* 2. Số tài khoản (1-Chạm Sao Chép) */}
               <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 hover:border-emerald-400/60 transition-colors">
                 <Flex justify="between" align="center">
                   <Box className="min-w-0 pr-2">
@@ -269,7 +259,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
                 </Flex>
               </Box>
 
-              {/* 3. Số tiền cần chuyển (To rõ ràng) */}
               <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 hover:border-emerald-400/60 transition-colors">
                 <Flex justify="between" align="center">
                   <Box className="min-w-0 pr-2">
@@ -304,7 +293,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
                 </Flex>
               </Box>
 
-              {/* 4. NỘI DUNG CHUYỂN KHOẢN (MÃ KHỚP LỆNH TỰ ĐỘNG - NỔI BẬT NHẤT) */}
               <Box className="p-4 rounded-xl bg-amber-500/10 dark:bg-amber-950/40 border-2 border-amber-400/60 dark:border-amber-600/50 relative overflow-hidden">
                 <Flex justify="between" align="center">
                   <Box className="min-w-0 pr-2">
@@ -351,7 +339,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
             </Box>
           </Grid>
 
-          {/* THANH TRẠNG THÁI POLLING: SÓNG RADAR XANH TINH GỌN */}
           <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
             <Flex align="center" gap={2.5}>
               <Box className="relative flex h-3 w-3 shrink-0">
@@ -366,7 +353,6 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
 
           <Separator />
 
-          {/* MÔI TRƯỜNG NGHIỆM THU CAPSTONE / DEMO FAST PAY (US-22) */}
           <Box className="p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200 dark:border-emerald-800 space-y-3">
             <Flex justify="between" align="center">
               <Flex align="center" gap={1.5}>

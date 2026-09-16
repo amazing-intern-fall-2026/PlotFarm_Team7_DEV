@@ -64,7 +64,6 @@ export function AdminDashboardPage() {
   });
   const [isRefreshing, setIsRefreshing] = React.useState(false);
 
-  // Dynamic KPI calculations from connected data stores
   const stats = React.useMemo(() => {
     let totalRevenue = 0;
     let activeContracts = 0;
@@ -155,7 +154,6 @@ export function AdminDashboardPage() {
 
   return (
     <Box className="w-full space-y-6 pb-12">
-      {/* ── Sub-breadcrumbs & Page Header ── */}
       <Flex direction="col" justify="between" className="gap-4 lg:flex-row lg:items-center">
         <Box className="space-y-1.5">
           <Breadcrumb
@@ -172,7 +170,6 @@ export function AdminDashboardPage() {
           </Text>
         </Box>
 
-        {/* Action controls */}
         <Flex wrap="wrap" align="center" className="gap-2.5">
           <Box className="inline-flex rounded-xl bg-muted p-1">
             <Button
@@ -217,9 +214,7 @@ export function AdminDashboardPage() {
         </Flex>
       </Flex>
 
-      {/* ── 4 Top KPI Metric Cards ── */}
       <Grid cols={1} colsSm={2} colsLg={4} gap={4}>
-        {/* Metric 1 */}
         <Card className="relative overflow-hidden p-5 shadow-xs">
           <Flex justify="between" align="start">
             <Box>
@@ -245,7 +240,6 @@ export function AdminDashboardPage() {
           </Flex>
         </Card>
 
-        {/* Metric 2 */}
         <Card className="relative overflow-hidden p-5 shadow-xs">
           <Flex justify="between" align="start">
             <Box>
@@ -275,7 +269,6 @@ export function AdminDashboardPage() {
           </Box>
         </Card>
 
-        {/* Metric 3 */}
         <Card className="relative overflow-hidden p-5 shadow-xs">
           <Flex justify="between" align="start">
             <Box>
@@ -298,7 +291,6 @@ export function AdminDashboardPage() {
           </Flex>
         </Card>
 
-        {/* Metric 4 */}
         <Card className="relative overflow-hidden p-5 shadow-xs">
           <Flex justify="between" align="start">
             <Box>
@@ -335,9 +327,7 @@ export function AdminDashboardPage() {
         </Card>
       </Grid>
 
-      {/* ── Section Charts: Bar Chart & Donut Chart ── */}
       <Grid cols={1} colsLg={3} gap={6}>
-        {/* Left: Bar Chart (2 cols) */}
         <Card className="p-6 shadow-xs lg:col-span-2">
           <Flex direction="col" justify="between" className="gap-2 sm:flex-row sm:items-center">
             <Box>
@@ -348,7 +338,6 @@ export function AdminDashboardPage() {
                 Chu kỳ luân canh từ Tháng 5 đến Tháng 10 năm 2026 (Triệu VND)
               </Text>
             </Box>
-            {/* Legend */}
             <Flex align="center" className="gap-4 text-xs font-semibold">
               <Flex align="center" className="gap-1.5">
                 <Box className="h-3 w-3 rounded-xs bg-primary" />
@@ -365,7 +354,6 @@ export function AdminDashboardPage() {
             </Flex>
           </Flex>
 
-          {/* SVG Bar Chart / Empty state */}
           {stats.totalRevenue > 0 ? (
             <Box className="mt-6 w-full pt-4">
               <Flex justify="between" align="end" className="h-52 border-b border-border pb-2 px-2 gap-3">
@@ -437,7 +425,6 @@ export function AdminDashboardPage() {
             </Flex>
           )}
 
-          {/* Bottom Highlight banner */}
           <Flex
             direction="col"
             justify="between"
@@ -458,7 +445,6 @@ export function AdminDashboardPage() {
           </Flex>
         </Card>
 
-        {/* Right: Donut Chart (1 col) */}
         <Card className="p-6 shadow-xs flex flex-col justify-between">
           <Box>
             <Heading level={2} variant="h3" className="text-base font-bold">
@@ -470,7 +456,6 @@ export function AdminDashboardPage() {
 
             {stats.cultivatingPlots > 0 ? (
               <Box>
-                {/* Donut graphic */}
                 <Box className="mt-6 flex items-center justify-center relative">
                   <svg viewBox="0 0 160 160" className="w-44 h-44 -rotate-90">
                     <circle
@@ -550,7 +535,6 @@ export function AdminDashboardPage() {
         </Card>
       </Grid>
 
-      {/* ── Real-Time Activity Log (Nhật ký tác vụ thời gian thực) ── */}
       <Card className="p-6 shadow-xs">
         <Flex justify="between" align="center" className="border-b border-border pb-4">
           <Flex align="center" className="gap-3">

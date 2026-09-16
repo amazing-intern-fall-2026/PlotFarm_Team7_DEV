@@ -50,7 +50,6 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
         className
       )}
     >
-      {/* ── 1. Thumbnail Ảnh Ô Đất với Overlay Badges ── */}
       <Box className="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-100 dark:bg-muted">
         <img
           src={currentImg}
@@ -66,10 +65,8 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
             isAvailable && "group-hover:scale-105"
           )}
         />
-        {/* Scrim overlay nhẹ để đọc rõ text */}
         <Box className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
 
-        {/* Top-left: Mã ô đất */}
         <Box className="absolute top-2.5 left-2.5">
           <Badge
             variant="outline"
@@ -79,7 +76,6 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
           </Badge>
         </Box>
 
-        {/* Top-right: Badge trạng thái với backdrop blur */}
         <Box className="absolute top-2.5 right-2.5">
           {isAvailable && (
             <Badge
@@ -122,7 +118,6 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
           )}
         </Box>
 
-        {/* Bottom-right: Cảm biến & Camera Indicators trên ảnh */}
         <Box className="absolute bottom-2 right-2 flex items-center gap-1.5 backdrop-blur-md bg-black/55 px-2 py-0.5 rounded-md text-white text-xs">
           {plot.cameraSupported && (
             <Box title={PLOT_CARD_MESSAGES.TOOLTIP_CAMERA} className="inline-flex items-center text-white/90">
@@ -137,10 +132,8 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
         </Box>
       </Box>
 
-      {/* ── 2. Nội Dung Thông Tin Chi Tiết (Padding p-4 sm:p-5) ── */}
       <Box className="p-4 sm:p-5 flex flex-col justify-between flex-1 space-y-3.5">
         <Box className="space-y-2">
-          {/* Tên ô đất & Khu vực */}
           <Box>
             <Heading
               as="h3"
@@ -155,7 +148,6 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
             )}
           </Box>
 
-          {/* Thông số diện tích & cây trồng / đất */}
           <Box className="flex items-center justify-between text-xs pt-2 border-t border-border/60">
             <Box className="flex items-center gap-1.5 text-muted-foreground">
               <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
@@ -167,7 +159,6 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
               </Text>
             </Box>
 
-            {/* Thống nhất hiển thị cây trồng quy hoạch / đang canh tác */}
             <Box className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-medium min-w-0">
               <Sprout className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
               <Text
@@ -181,7 +172,6 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
           </Box>
         </Box>
 
-        {/* ── 3. Bottom Section: Giá thuê & Nút thao tác ── */}
         <Box className="pt-3 border-t border-border/60 space-y-3">
           <Box className="flex items-baseline justify-between">
             <Text variant="small" className="text-xs text-muted-foreground">
@@ -192,7 +182,6 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
             </Text>
           </Box>
 
-          {/* Nút hành động theo trạng thái */}
           {isAvailable ? (
             <Button
               variant="default"

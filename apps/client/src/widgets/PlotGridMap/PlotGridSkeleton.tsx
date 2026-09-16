@@ -8,23 +8,19 @@ export function PlotGridSkeleton({ count = 8 }: { count?: number }) {
           key={index}
           className="rounded-2xl border border-border/60 bg-card overflow-hidden shadow-xs"
         >
-          {/* Thumbnail skeleton */}
           <Skeleton className="w-full h-44 sm:h-48 rounded-none" />
 
           <Box className="p-4 sm:p-5 space-y-3.5">
-            {/* Title & subtitle */}
             <Box className="space-y-2">
               <Skeleton className="h-5 w-3/4 rounded-md" />
               <Skeleton className="h-3.5 w-1/2 rounded-md" />
             </Box>
 
-            {/* Details */}
             <Box className="flex justify-between items-center pt-2 border-t border-border/40">
               <Skeleton className="h-4 w-20 rounded-md" />
               <Skeleton className="h-4 w-24 rounded-md" />
             </Box>
 
-            {/* Button & price */}
             <Box className="pt-3 border-t border-border/40 space-y-2.5">
               <Box className="flex justify-between items-center">
                 <Skeleton className="h-3.5 w-16 rounded-md" />

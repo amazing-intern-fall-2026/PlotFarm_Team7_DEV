@@ -27,7 +27,6 @@ export const farmingLogApi = {
     file: File,
     onProgress?: (percent: number) => void
   ): Promise<MediaUploadResponse> => {
-    // Simulated smooth progress for responsive mobile feel
     onProgress?.(15);
 
     try {

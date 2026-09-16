@@ -52,7 +52,6 @@ export function SeasonalCropsDesktop({
           },
         }}
       >
-        {/* ── 1. Header Block with Title and Prev/Next Arrows ── */}
         <Box className="flex items-end justify-between gap-4 mb-6">
           <Box className="space-y-1.5 text-left">
             <span className="text-xs font-bold uppercase tracking-wider text-secondary">
@@ -69,7 +68,6 @@ export function SeasonalCropsDesktop({
             </Text>
           </Box>
 
-          {/* Splide Custom Top-Right Arrows */}
           <Box className="splide__arrows flex items-center gap-2 shrink-0">
             <Button
               type="button"
@@ -92,12 +90,10 @@ export function SeasonalCropsDesktop({
           </Box>
         </Box>
 
-        {/* ── 2. Carousel Track with Crop Cards ── */}
         <SplideTrack>
           {items.map((crop) => (
             <SplideSlide key={crop.cropCode} className="pb-4">
               <Card className="h-full flex flex-col justify-between overflow-hidden group hover:border-primary/40 transition-all duration-300">
-                {/* Image & Badge */}
                 <Box className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                   <img
                     src={crop.imageUrl}
@@ -118,7 +114,6 @@ export function SeasonalCropsDesktop({
                   )}
                 </Box>
 
-                {/* Card Content */}
                 <CardContent className="p-5 flex-1 flex flex-col justify-between space-y-4 text-left">
                   <Box className="space-y-1.5">
                     <Typography
@@ -132,7 +127,6 @@ export function SeasonalCropsDesktop({
                     </Text>
                   </Box>
 
-                  {/* 3 Metric Specs */}
                   <Box className="space-y-2 pt-2 border-t border-border text-xs">
                     <Box className="flex items-center justify-between">
                       <span className="flex items-center gap-1.5 text-muted-foreground">
@@ -166,7 +160,6 @@ export function SeasonalCropsDesktop({
                   </Box>
                 </CardContent>
 
-                {/* Card Footer Button */}
                 <CardFooter className="px-5 pb-5 pt-0">
                   <Button
                     type="button"
@@ -183,13 +176,11 @@ export function SeasonalCropsDesktop({
           ))}
         </SplideTrack>
 
-        {/* ── 3. Autoplay Progress Bar ── */}
         <div className="splide__progress">
           <div className="splide__progress__bar" />
         </div>
       </Splide>
 
-      {/* ── 4. Custom CSS ── */}
       <style>{`
         .seasonal-crops-splide .splide__arrows {
           display: flex;

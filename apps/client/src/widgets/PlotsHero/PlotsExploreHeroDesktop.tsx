@@ -25,7 +25,6 @@ export function PlotsExploreHeroDesktop({
         className,
       )}
     >
-      {/* ── Background Ambient Glows & Subtle Pattern ── */}
       <Box className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
       <Box className="absolute top-1/2 -right-24 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
       <Box className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-30 pointer-events-none" />
@@ -36,14 +35,12 @@ export function PlotsExploreHeroDesktop({
               CỘT TRÁI: VALUE PROPOSITION & CTA (COL-SPAN-7)
              ═══════════════════════════════════════════════════════════ */}
           <Box className="col-span-7 flex flex-col items-start text-left space-y-4">
-            {/* Pill Tagline */}
             <Box className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary">
               <Text as="span" className="text-xs font-bold uppercase tracking-wider text-primary">
                 {PLOTS_HERO_MESSAGES.TAGLINE}
               </Text>
             </Box>
 
-            {/* Tiêu đề chính */}
             <Heading
               as="h1"
               className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground leading-tight"
@@ -54,7 +51,6 @@ export function PlotsExploreHeroDesktop({
               </Text>
             </Heading>
 
-            {/* Sub-copy */}
             <Box className="space-y-2.5 max-w-xl">
               <Text className="text-sm lg:text-base text-muted-foreground leading-relaxed">
                 {PLOTS_HERO_MESSAGES.SUBTITLE}
@@ -76,7 +72,6 @@ export function PlotsExploreHeroDesktop({
               </Box>
             </Box>
 
-            {/* Cụm Action Buttons */}
             <Box className="flex flex-wrap items-center gap-3 pt-1">
               <Button
                 variant="primary"
@@ -99,7 +94,6 @@ export function PlotsExploreHeroDesktop({
               </Button>
             </Box>
 
-            {/* Social Proof (Avatar stack + Star rating) */}
             <Box className="pt-1 flex items-center gap-3 text-left">
               <Box className="flex -space-x-2 items-center">
                 <Avatar
@@ -150,7 +144,6 @@ export function PlotsExploreHeroDesktop({
           <Box className="col-span-5 w-full relative">
             <Box className="absolute -inset-2 rounded-[28px] bg-primary/10 blur-xl opacity-80 pointer-events-none" />
 
-            {/* Khung máy tính bảng / streaming cao cấp */}
             <Box className="relative w-full h-[320px] lg:h-[350px] rounded-2xl border-4 border-card shadow-xl ring-1 ring-border/80 overflow-hidden bg-slate-950 group">
               <img
                 src="https://images.unsplash.com/photo-1592417817098-8f3d69109853?auto=format&fit=crop&w=1000&q=80"
@@ -158,10 +151,8 @@ export function PlotsExploreHeroDesktop({
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
 
-              {/* Gradient Scrim */}
               <Box className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/60 pointer-events-none" />
 
-              {/* Header trên ảnh */}
               <Box className="absolute top-0 inset-x-0 bg-black/40 backdrop-blur-md px-3.5 py-2 flex justify-between items-center text-white text-xs z-10 border-b border-white/10">
                 <Box className="flex items-center gap-2">
                   <Box className="relative flex h-2 w-2">
@@ -182,7 +173,6 @@ export function PlotsExploreHeroDesktop({
                 </Box>
               </Box>
 
-              {/* Mini notification badge */}
               <Box className="absolute top-10 right-2.5 z-10">
                 <Box className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/20 text-emerald-300 text-[10px] font-medium shadow-md">
                   <Sparkles className="h-3 w-3 text-emerald-400 shrink-0" />
@@ -190,9 +180,7 @@ export function PlotsExploreHeroDesktop({
                 </Box>
               </Box>
 
-              {/* Floating Telemetry Frosted Glass Cards */}
               <Box className="absolute bottom-3 inset-x-3 grid grid-cols-2 gap-2.5 z-10">
-                {/* Thẻ 1: Độ ẩm đất */}
                 <Box className="bg-card/95 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-border/80 flex items-center gap-2.5">
                   <Box className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950 text-sky-600 flex items-center justify-center shrink-0 border border-sky-100 dark:border-sky-900">
                     <Droplets className="h-4 w-4" />
@@ -212,7 +200,6 @@ export function PlotsExploreHeroDesktop({
                   </Box>
                 </Box>
 
-                {/* Thẻ 2: Nhiệt độ */}
                 <Box className="bg-card/95 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-border/80 flex items-center gap-2.5">
                   <Box className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100 dark:border-amber-900">
                     <Thermometer className="h-4 w-4" />

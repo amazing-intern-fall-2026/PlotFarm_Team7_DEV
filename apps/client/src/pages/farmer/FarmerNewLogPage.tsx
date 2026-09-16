@@ -7,7 +7,6 @@ export function FarmerNewLogPage() {
   const { id = "CONTRACT-A104" } = useParams();
   const navigate = useNavigate();
 
-  // Determine plot code, crop and contract status from id
   const plotCode = id.startsWith("A-") || id.startsWith("B-") || id.startsWith("C-") ? `Ô đất ${id}` : "Ô đất A-104";
   const cropName = id.includes("205")
     ? "Cải bó xôi Nhật"
@@ -38,7 +37,6 @@ export function FarmerNewLogPage() {
 
   return (
     <Box className="w-full space-y-6 pb-12">
-      {/* Top Breadcrumb Bar */}
       <Card className="p-4 rounded-2xl border-border flex items-center justify-between">
         <Button
           type="button"
@@ -56,7 +54,6 @@ export function FarmerNewLogPage() {
         </CardTitle>
       </Card>
 
-      {/* Main Form */}
       <FarmingLogForm
         contractId={id}
         contractStatus={contractStatus}

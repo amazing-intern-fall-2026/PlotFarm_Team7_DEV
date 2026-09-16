@@ -37,7 +37,6 @@ export function KeyFeaturesMobile({
     { label: "Thu Hoạch", icon: ShieldCheck },
   ] as const;
 
-  // Hỗ trợ vuốt ngón tay chuyển Tab cảm ứng mượt mà
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -57,7 +56,6 @@ export function KeyFeaturesMobile({
 
   return (
     <section aria-labelledby="key-features-mobile-title" className={cn("space-y-4 px-1", className)}>
-      {/* ── 1. Section Header ── */}
       <Box className="text-center space-y-2 px-1">
         <Badge
           variant="outline"
@@ -80,7 +78,6 @@ export function KeyFeaturesMobile({
         </Text>
       </Box>
 
-      {/* ── 2. Mobile Feature Quick Switcher Tabs ── */}
       <Box className="grid grid-cols-3 p-1 bg-muted/60 rounded-lg border border-border/80 gap-1">
         {tabs.map((tab, idx) => {
           const Icon = tab.icon;
@@ -104,7 +101,6 @@ export function KeyFeaturesMobile({
         })}
       </Box>
 
-      {/* ── 3. Active Mobile Feature Card (Vuốt Touch Swipe để đổi) ── */}
       <Box
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -112,7 +108,6 @@ export function KeyFeaturesMobile({
       >
         {activeTab === 0 && (
           <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
-            {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
                 <Box className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
@@ -137,7 +132,6 @@ export function KeyFeaturesMobile({
               </Badge>
             </Box>
 
-            {/* Core Feature Insight */}
             <Box className="p-3 rounded-lg bg-muted/40 border border-border space-y-2.5">
               <Box className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-muted-foreground flex items-center gap-1.5 text-[11px]">
@@ -190,7 +184,6 @@ export function KeyFeaturesMobile({
 
         {activeTab === 1 && (
           <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
-            {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
                 <Box className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
@@ -215,7 +208,6 @@ export function KeyFeaturesMobile({
               </Badge>
             </Box>
 
-            {/* Core Feature: 3 Key High-Contrast IoT Metrics */}
             <Box className="grid grid-cols-3 gap-1.5 p-2.5 rounded-lg bg-muted/40 border border-border">
               <Box className="flex flex-col items-center justify-center p-2 rounded-md bg-card border border-border/70 text-center">
                 <ThermometerSun className="w-3.5 h-3.5 text-secondary mb-0.5" />
@@ -276,7 +268,6 @@ export function KeyFeaturesMobile({
 
         {activeTab === 2 && (
           <Card className="p-4 sm:p-5 space-y-3.5 transition-all">
-            {/* Header */}
             <Box className="flex items-center justify-between gap-2">
               <Box className="flex items-center gap-2 min-w-0">
                 <Box className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
@@ -301,7 +292,6 @@ export function KeyFeaturesMobile({
               </Badge>
             </Box>
 
-            {/* Core Feature: QR Tracking Code */}
             <Box className="p-3 rounded-lg bg-muted/40 border border-border space-y-2">
               <Box className="flex items-center gap-2 p-2 rounded-md bg-card border border-border/80">
                 <Box className="w-8 h-8 rounded-md bg-secondary/10 flex items-center justify-center text-secondary shrink-0 border border-secondary/20">
@@ -346,7 +336,6 @@ export function KeyFeaturesMobile({
         )}
       </Box>
 
-      {/* ── 4. Minimalist Dot Indicator (Gợi ý vuốt nhẹ nhàng, không chiếm chỗ) ── */}
       <Box className="flex items-center justify-center gap-1.5 pt-1">
         {[0, 1, 2].map((idx) => (
           <button

@@ -89,7 +89,6 @@ export function FarmingLogForm({
   const airHumidity = watch("airHumidity");
   const soilMoisture = watch("soilMoisture");
 
-  // Quick note suggestions
   const quickNotes = [
     "Cây bung lá thật đều và màu sắc tươi sáng",
     "Đã tưới dung dịch vi sinh kích thích bộ rễ",
@@ -161,7 +160,6 @@ export function FarmingLogForm({
         </CardHeader>
       </Card>
 
-      {/* Business Ineligibility Banner (Rule 1 & Rule 2) */}
       {!eligibility.eligible && (
         <Card className="p-4 bg-amber-500/10 border-amber-500/40 text-amber-900 dark:text-amber-200 flex items-start gap-3 rounded-2xl animate-in fade-in">
           <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
@@ -191,7 +189,6 @@ export function FarmingLogForm({
         </Card>
       )}
 
-      {/* Draft Restored Banner (Rule 5) */}
       {hasRestoredDraft && (
         <Card className="p-3.5 bg-emerald-500/10 border-emerald-500/30 text-emerald-900 dark:text-emerald-200 flex items-center justify-between gap-3 rounded-2xl animate-in fade-in">
           <Box className="flex items-center gap-2">
@@ -213,7 +210,6 @@ export function FarmingLogForm({
         </Card>
       )}
 
-      {/* Global Error Banner */}
       {submitError && (
         <Card className="p-4 bg-destructive/10 border-destructive/40 text-destructive flex items-center gap-3 rounded-2xl animate-in fade-in">
           <AlertCircle className="h-5 w-5 shrink-0" />
@@ -229,14 +225,12 @@ export function FarmingLogForm({
       <form onSubmit={handleSubmitForm} className="space-y-6">
         <Card className="p-0 shadow-xs border-border overflow-hidden">
           <CardContent className="p-5 sm:p-7 space-y-6">
-            {/* STEP 1: Growth Stage Selector (AC2: Mandatory) */}
             <GrowthStageSelector
               selectedStage={currentStage}
               onSelectStage={handleSelectStage}
               hasError={Boolean(errors.selectedStage)}
             />
 
-            {/* STEP 2: Notes & Quick Tags */}
             <Box className="space-y-2.5">
               <Box className="flex items-center justify-between">
                 <Text as="label" className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
@@ -264,7 +258,6 @@ export function FarmingLogForm({
                 </Text>
               )}
 
-              {/* Quick chips suggestions */}
               <Box className="flex flex-wrap items-center gap-1.5 pt-1">
                 <Text variant="muted" className="text-[11px] flex items-center gap-1 mr-1">
                   <Sparkles className="h-3 w-3 text-amber-500" /> Gợi ý nhanh:
@@ -284,7 +277,6 @@ export function FarmingLogForm({
               </Box>
             </Box>
 
-            {/* STEP 3: Photo Upload Dropzone & Thumbnails (AC2 & AC3) */}
             <ImageDropzoneUploader
               images={uploadedImages}
               onAddFiles={handleAddFiles}
@@ -295,7 +287,6 @@ export function FarmingLogForm({
               hasError={Boolean(errors.photoUrls)}
             />
 
-            {/* STEP 4: IoT Environmental Readings */}
             <EnvironmentalInputs
               temperature={temperature}
               airHumidity={airHumidity}
@@ -307,7 +298,6 @@ export function FarmingLogForm({
             />
           </CardContent>
 
-          {/* Action footer */}
           <CardFooter className="p-4 sm:p-5 border-t border-border flex flex-col-reverse sm:flex-row items-center justify-between gap-3 bg-muted/20">
             <Button
               type="button"

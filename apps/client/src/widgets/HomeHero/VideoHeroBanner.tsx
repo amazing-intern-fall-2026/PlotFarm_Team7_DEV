@@ -26,7 +26,6 @@ export function VideoHeroBanner({
   const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const currentSlide = slides[currentIndex] || slides[0];
 
-  // Hàm chuyển video thủ công hoặc tự động
   const switchVideo = React.useCallback(
     (nextIndex: number) => {
       if (nextIndex === currentIndex && !isTransitioning) return;
@@ -39,25 +38,21 @@ export function VideoHeroBanner({
     [currentIndex, isTransitioning],
   );
 
-  // Khi video kết thúc, tự động chuyển mượt sang video kế tiếp (liên tục 4 video)
   const handleVideoEnded = React.useCallback(() => {
     switchVideo((currentIndex + 1) % slides.length);
   }, [currentIndex, slides.length, switchVideo]);
 
-  // Tự động nạp và phát video khi đổi slide
   React.useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Trình duyệt tự xử lý theo Autoplay Policy
         });
       }
     }
   }, [currentIndex]);
 
-  // Mỗi lần chuyển video: Tự động hiển thị thẻ thông số trong 5 giây rồi ẩn đi
   React.useEffect(() => {
     setShowStatsCard(true);
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);

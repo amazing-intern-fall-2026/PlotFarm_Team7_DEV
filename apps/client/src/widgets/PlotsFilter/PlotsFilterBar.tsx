@@ -115,7 +115,6 @@ export function PlotsFilterBar({
     onResetFilters?.();
   }, [onFilterChange, onResetFilters]);
 
-  // Sinh động danh sách sizeOptions nếu không truyền từ bên ngoài
   const resolvedSizeOptions: PlotFilterOption[] = React.useMemo(() => {
     if (userSizeOptions && userSizeOptions.length > 0) return userSizeOptions;
     const list: PlotFilterOption[] = [{ value: "all", label: `Tất cả (${counts.total})`, count: counts.total }];
@@ -132,7 +131,6 @@ export function PlotsFilterBar({
     return userZoneOptions || [{ value: "all", label: `Tất cả (${counts.total})`, count: counts.total }];
   }, [userZoneOptions, counts.total]);
 
-  // Tính toán số lượng hiển thị dựa trên bộ lọc đang áp dụng
   const totalFilteredCount = React.useMemo(() => {
     let count = counts.total;
     if (filters.status === "available") {

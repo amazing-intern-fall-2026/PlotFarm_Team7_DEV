@@ -37,7 +37,6 @@ export function AdminPlotConfigPage() {
   const [isSaving, setIsSaving] = React.useState(false);
   const [savedSuccess, setSavedSuccess] = React.useState(false);
 
-  // Form states
   const [plotCode, setPlotCode] = React.useState(id.startsWith("#") ? id : `#${id}`);
   const [plotArea, setPlotArea] = React.useState("20");
   const [soilType, setSoilType] = React.useState("Đất đỏ Bazan hữu cơ");
@@ -75,7 +74,6 @@ export function AdminPlotConfigPage() {
 
   return (
     <Box className="w-full space-y-6 pb-16">
-      {/* ── Top bar & Navigation ── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4">
         <div className="flex flex-wrap items-center gap-3">
           <Button
@@ -93,7 +91,6 @@ export function AdminPlotConfigPage() {
           </h1>
         </div>
 
-        {/* Status Pills */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
@@ -109,11 +106,8 @@ export function AdminPlotConfigPage() {
         </div>
       </div>
 
-      {/* ── Main Two-Column Layout ── */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {/* ── LEFT COLUMN: 4 Technical Blocks (7 cols) ── */}
         <div className="space-y-5 lg:col-span-7">
-          {/* Block 1: Basic Parameters */}
           <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2">
@@ -162,7 +156,6 @@ export function AdminPlotConfigPage() {
             </div>
           </Card>
 
-          {/* Block 2: HLS Camera Stream Configuration */}
           <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2">
@@ -220,7 +213,6 @@ export function AdminPlotConfigPage() {
             </div>
           </Card>
 
-          {/* Block 3: IoT Climate Sensors */}
           <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2">
@@ -302,7 +294,6 @@ export function AdminPlotConfigPage() {
             </div>
           </Card>
 
-          {/* Block 4: Staff Responsibility & Assignment */}
           <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2">
@@ -340,7 +331,6 @@ export function AdminPlotConfigPage() {
           </Card>
         </div>
 
-        {/* ── RIGHT COLUMN: Live HLS Camera Inspector (5 cols) ── */}
         <div className="space-y-5 lg:col-span-5">
           <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
@@ -353,7 +343,6 @@ export function AdminPlotConfigPage() {
               </span>
             </div>
 
-            {/* Video Player Display */}
             <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-950 border border-slate-800">
               <img
                 src="/images/plot-2.jpg"
@@ -364,7 +353,6 @@ export function AdminPlotConfigPage() {
                 }}
               />
 
-              {/* Top Video Overlay */}
               <div className="absolute top-2.5 left-3 right-3 flex items-center justify-between text-[10px] text-white">
                 <div className="flex items-center gap-2">
                   <span className="rounded-full bg-rose-600 px-2 py-0.5 font-bold uppercase tracking-wider">
@@ -379,7 +367,6 @@ export function AdminPlotConfigPage() {
                 </span>
               </div>
 
-              {/* Bottom Video Overlay */}
               <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] text-white font-mono rounded-lg bg-black/60 px-3 py-1.5 backdrop-blur-xs">
                 <span>🌱 Đất: 68%</span>
                 <span>🌡 Khí: 24.5°C</span>
@@ -387,7 +374,6 @@ export function AdminPlotConfigPage() {
               </div>
             </div>
 
-            {/* Technical Stream Metrics (HLS Inspector) */}
             <div className="rounded-xl bg-slate-50 dark:bg-slate-800/50 p-3.5 space-y-2.5 text-xs">
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-muted-foreground">Chỉ số truyền tải thực tế (HLS Inspector)</span>
@@ -417,7 +403,6 @@ export function AdminPlotConfigPage() {
               </div>
             </div>
 
-            {/* Technical Controls Buttons */}
             <div className="space-y-2 pt-1">
               <p className="text-xs font-semibold text-muted-foreground">Thao tác điều phối kỹ thuật</p>
               <div className="grid grid-cols-3 gap-2">
@@ -456,7 +441,6 @@ export function AdminPlotConfigPage() {
         </div>
       </div>
 
-      {/* ── Sticky / Fixed Bottom Action Bar ── */}
       <div className="rounded-2xl border border-border bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2.5 text-xs text-muted-foreground">
           <AlertCircle className="h-4 w-4 text-emerald-600 shrink-0" />

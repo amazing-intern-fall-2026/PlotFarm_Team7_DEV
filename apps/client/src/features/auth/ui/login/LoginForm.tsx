@@ -43,7 +43,6 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
       noValidate
       className={cn("w-full space-y-3.5 xl:space-y-4", className)}
     >
-      {/* Title & Subtitle */}
       <Box className="space-y-1.5 text-left">
         <Heading
           level={1}
@@ -59,7 +58,6 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         </Text>
       </Box>
 
-      {/* Prominent Google Login Button with official Google Popup overlay */}
       <GoogleSignInButton
         isLoading={isLoading || isGoogleLoading}
         onCredentialResponse={(credential) => {
@@ -71,10 +69,8 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         text={AUTH_UI_TEXT.SOCIAL_GOOGLE}
       />
 
-      {/* Divider */}
       <AuthDivider label={AUTH_UI_TEXT.DIVIDER_OR} />
 
-      {/* General Error Banner */}
       {errors.general && (
         <Box className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 shrink-0 text-destructive" />
@@ -82,7 +78,6 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         </Box>
       )}
 
-      {/* Email Input */}
       <Input
         id="login-email"
         type="email"
@@ -95,7 +90,6 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         {...registerEmail}
       />
 
-      {/* Password Input with Forgot Password inline header */}
       <Box className="space-y-1.5">
         <Box className="flex items-center justify-between">
           <label
@@ -124,7 +118,6 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         />
       </Box>
 
-      {/* Remember Me Checkbox */}
       <Box className="flex items-center justify-between pt-0.5">
         <label className="flex cursor-pointer items-center gap-2.5 text-sm text-foreground select-none">
           <input
@@ -140,7 +133,6 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         </label>
       </Box>
 
-      {/* Demo Account Quick-fill Pills */}
       <Box className="rounded-xl border border-primary/20 bg-primary/5 p-2.5 space-y-1.5 text-center">
         <Box className="flex items-center justify-center">
           <Text className="text-xs sm:text-sm font-semibold text-primary">
@@ -174,7 +166,6 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
 
       <Box className="border-t border-border/80 my-2" />
 
-      {/* Primary Submit Button */}
       <Button
         type="submit"
         variant="primary"
@@ -185,7 +176,6 @@ export function LoginForm({ onSwitchToRegister, className }: LoginFormProps) {
         {AUTH_UI_TEXT.SUBMIT_BUTTON}
       </Button>
 
-      {/* Bottom Switch to Register */}
       {onSwitchToRegister && (
         <Box className="text-center text-sm sm:text-base text-muted-foreground pt-1">
           <span>{AUTH_UI_TEXT.DONT_HAVE_ACCOUNT} </span>

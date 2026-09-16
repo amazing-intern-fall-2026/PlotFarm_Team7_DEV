@@ -17,7 +17,6 @@ export function useSeasonalCrops(): UseSeasonalCropsReturn {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simulate async data fetch – replace with real API call when ready
     const timer = setTimeout(() => {
       try {
         setCrops(SEASONAL_CROPS_DATA);

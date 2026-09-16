@@ -8,7 +8,6 @@ type DeepRecord = { [key: string]: string | DeepRecord };
 
 const locales: Record<Locale, DeepRecord> = { vi, en };
 
-// ─── Context ──────────────────────────────────────────────────────────────────
 interface I18nContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
@@ -19,7 +18,6 @@ const I18nContext = React.createContext<I18nContextValue>({
   setLocale: () => {},
 });
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
 export interface I18nProviderProps {
   defaultLocale?: Locale;
   children: React.ReactNode;
@@ -49,7 +47,6 @@ export function I18nProvider({
   );
 }
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 export function useI18n() {
   return React.useContext(I18nContext);
 }

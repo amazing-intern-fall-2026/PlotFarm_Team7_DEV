@@ -149,7 +149,6 @@ export function AdminCareSlipsPage() {
         </div>
       )}
 
-      {/* ── Breadcrumb & Header ── */}
       <Box className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <Box className="space-y-1">
           <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
@@ -173,9 +172,7 @@ export function AdminCareSlipsPage() {
         </span>
       </Box>
 
-      {/* ── 3 Summary KPI Cards ── */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {/* Metric 1 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-3">
           <div className="flex items-start justify-between">
             <div>
@@ -195,7 +192,6 @@ export function AdminCareSlipsPage() {
           </div>
         </Card>
 
-        {/* Metric 2 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-3">
           <div className="flex items-start justify-between">
             <div>
@@ -215,7 +211,6 @@ export function AdminCareSlipsPage() {
           </div>
         </Card>
 
-        {/* Metric 3 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-3">
           <div className="flex items-start justify-between">
             <div>
@@ -235,7 +230,6 @@ export function AdminCareSlipsPage() {
         </Card>
       </div>
 
-      {/* ── Filter Tabs & Status Pills ── */}
       <Card className="border-border bg-white dark:bg-slate-900 p-4 shadow-xs space-y-3">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-1.5">
@@ -297,7 +291,6 @@ export function AdminCareSlipsPage() {
           </div>
         </div>
 
-        {/* Status Pills */}
         <div className="flex flex-wrap items-center gap-1.5 border-t border-border pt-3 text-xs">
           <button
             type="button"
@@ -338,9 +331,7 @@ export function AdminCareSlipsPage() {
         </div>
       </Card>
 
-      {/* ── Two-Column Layout: Table on Left & QA Inspector on Right ── */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {/* Left: Table (7 cols) */}
         <div className="space-y-4 lg:col-span-7">
           <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
@@ -416,14 +407,12 @@ export function AdminCareSlipsPage() {
               </table>
             </div>
 
-            {/* Pagination */}
             <div className="flex items-center justify-between pt-2 text-xs text-muted-foreground border-t border-border">
               <span>Hiển thị {filteredSlips.length === 0 ? 0 : 1} – {filteredSlips.length} của {totalSlips} phiếu chăm sóc</span>
             </div>
           </Card>
         </div>
 
-        {/* Right: QA Inspector (5 cols) */}
         <div className="space-y-4 lg:col-span-5">
           <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4">
             {!selectedSlip ? (
@@ -451,7 +440,6 @@ export function AdminCareSlipsPage() {
                   </span>
                 </div>
 
-                {/* Photo Preview Container */}
                 <div className="relative aspect-4/3 w-full rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 group">
                   <img
                     src={selectedSlip.photoUrl}
@@ -459,7 +447,6 @@ export function AdminCareSlipsPage() {
                     className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
                   />
 
-                  {/* Photo Overlays */}
                   <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-mono text-white backdrop-blur-xs">
                     <MapPin className="h-3 w-3 text-emerald-400" />
                     <span>{selectedSlip.plotLocation} • {selectedSlip.timestamp}</span>
@@ -479,7 +466,6 @@ export function AdminCareSlipsPage() {
                   </button>
                 </div>
 
-                {/* Verification Metadata Box */}
                 <div className="rounded-xl bg-slate-50 dark:bg-slate-800/50 p-3.5 space-y-3 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Nông dân thực hiện:</span>
@@ -519,7 +505,6 @@ export function AdminCareSlipsPage() {
                   </div>
                 </div>
 
-                {/* QA Decision Buttons */}
                 <div className="space-y-2 pt-1">
                   <Button
                     size="sm"
@@ -563,7 +548,6 @@ export function AdminCareSlipsPage() {
         </div>
       </div>
 
-      {/* Floating Action Toast */}
       {actionToast && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-xl bg-emerald-900 text-white px-5 py-3 shadow-2xl animate-in slide-in-from-bottom duration-300">
           <CheckCircle2 className="h-5 w-5 text-emerald-400" />

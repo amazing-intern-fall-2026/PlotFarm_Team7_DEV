@@ -51,9 +51,6 @@ export function stepHarvestWeight(
   return next;
 }
 
-// ─────────────────────────────────────────────────────────────
-// INCIDENTS LOGIC
-// ─────────────────────────────────────────────────────────────
 
 export type IncidentCategory =
   | "pest_fungus"
@@ -143,9 +140,6 @@ export function validateIncidentReport(payload: Partial<IncidentReportPayload>):
   };
 }
 
-// ─────────────────────────────────────────────────────────────
-// WORK HISTORY LOGIC
-// ─────────────────────────────────────────────────────────────
 
 export type HistoryFilterType = "ALL" | "care" | "harvest" | "feedback";
 

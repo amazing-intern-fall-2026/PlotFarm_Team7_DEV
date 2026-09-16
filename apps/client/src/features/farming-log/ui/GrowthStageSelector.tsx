@@ -62,7 +62,6 @@ export function GrowthStageSelector({
                   : "border-border hover:border-emerald-300 hover:bg-muted/30 shadow-none"
               }`}
             >
-              {/* Top row: Icon, Stage label, Check indicator */}
               <Box className="flex items-start justify-between gap-2 mb-2">
                 <Box
                   className={`flex h-9 w-9 items-center justify-center rounded-xl transition-colors shrink-0 ${
@@ -82,7 +81,6 @@ export function GrowthStageSelector({
                 </Badge>
               </Box>
 
-              {/* Title & Description */}
               <Box className="space-y-1">
                 <Box className="flex items-center gap-1">
                   <Text as="h4" className="font-bold text-xs sm:text-sm text-foreground">
@@ -95,7 +93,6 @@ export function GrowthStageSelector({
                 </Text>
               </Box>
 
-              {/* Progress Bar Indicator */}
               <Box className="w-full h-1.5 rounded-full bg-muted mt-3 overflow-hidden">
                 <Box
                   className={`h-full rounded-full transition-all ${

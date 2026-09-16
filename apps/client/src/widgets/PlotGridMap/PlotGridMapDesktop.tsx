@@ -46,7 +46,6 @@ export function PlotGridMapDesktop({
 
   return (
     <Box className={cn("w-full space-y-6", className)}>
-      {/* ── Lưới bản đồ ô đất Desktop: 3-4 Cột Thoáng Đãng ── */}
       <Box className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {plots.map((plot) => (
           <PlotCard

@@ -86,7 +86,6 @@ export function AdminHarvestPage() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Status counts & totals
   const countAll = shipments.length;
   const countPending = shipments.filter((s) => s.status === "pending_export").length;
   const countDelivering = shipments.filter((s) => s.status === "delivering" || s.status === "waybill_created").length;
@@ -158,7 +157,6 @@ export function AdminHarvestPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-xl bg-slate-900 px-5 py-3.5 text-sm font-medium text-white shadow-2xl transition-all">
           <CheckCircle2 className="h-5 w-5 text-emerald-400" />
@@ -166,7 +164,6 @@ export function AdminHarvestPage() {
         </div>
       )}
 
-      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -210,9 +207,7 @@ export function AdminHarvestPage() {
         </div>
       </div>
 
-      {/* Stats Cards (3 cards) */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {/* Card 1: Tổng sản lượng */}
         <Card className="relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -235,7 +230,6 @@ export function AdminHarvestPage() {
           </div>
         </Card>
 
-        {/* Card 2: Đơn đang giao */}
         <Card className="relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -258,7 +252,6 @@ export function AdminHarvestPage() {
           </div>
         </Card>
 
-        {/* Card 3: Ô đất chờ nghiệm thu */}
         <Card className="relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -281,12 +274,9 @@ export function AdminHarvestPage() {
         </Card>
       </div>
 
-      {/* Main Table Card */}
       <Card className="rounded-2xl border border-slate-100 bg-white shadow-sm">
-        {/* Filter bar */}
         <div className="flex flex-col gap-4 border-b border-slate-100 p-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-1 flex-wrap items-center gap-3">
-            {/* Search */}
             <div className="relative min-w-[240px]">
               <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
@@ -298,7 +288,6 @@ export function AdminHarvestPage() {
               />
             </div>
 
-            {/* Tabs */}
             <div className="flex items-center gap-1 rounded-xl bg-slate-100 p-1">
               <button
                 onClick={() => setFilterTab("all")}
@@ -361,7 +350,6 @@ export function AdminHarvestPage() {
           </div>
         </div>
 
-        {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -395,14 +383,12 @@ export function AdminHarvestPage() {
               ) : (
                 filteredShipments.map((item) => (
                   <tr key={item.id} className="transition hover:bg-slate-50/80">
-                    {/* Mã vận đơn */}
                     <td className="py-4 pl-6 pr-4 font-mono font-bold text-slate-900">
                       <div className="flex items-center gap-2">
                         <span className="tracking-wide">{item.waybillCode}</span>
                       </div>
                     </td>
 
-                    {/* Ô đất & vụ mùa */}
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2">
                         <span className="font-semibold text-slate-800">{item.plotCode}</span>
@@ -414,7 +400,6 @@ export function AdminHarvestPage() {
                       </div>
                     </td>
 
-                    {/* Khách hàng nhận */}
                     <td className="px-4 py-4">
                       <div>
                         <div className="font-semibold text-slate-900">{item.recipientName}</div>
@@ -422,7 +407,6 @@ export function AdminHarvestPage() {
                       </div>
                     </td>
 
-                    {/* Sản lượng chốt */}
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-slate-800">{item.actualYieldKg} kg</span>
@@ -438,7 +422,6 @@ export function AdminHarvestPage() {
                       </div>
                     </td>
 
-                    {/* Ảnh thùng hàng */}
                     <td className="px-4 py-4 text-center">
                       <div
                         onClick={() => setZoomPhotoUrl(item.boxPhotoUrl)}
@@ -455,7 +438,6 @@ export function AdminHarvestPage() {
                       </div>
                     </td>
 
-                    {/* Trạng thái vận chuyển */}
                     <td className="px-4 py-4">
                       {item.status === "delivering" && (
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
@@ -483,7 +465,6 @@ export function AdminHarvestPage() {
                       )}
                     </td>
 
-                    {/* Thao tác */}
                     <td className="py-4 pl-4 pr-6 text-right">
                       <button
                         onClick={() => {
@@ -503,7 +484,6 @@ export function AdminHarvestPage() {
           </table>
         </div>
 
-        {/* Table footer */}
         <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-100 p-4 sm:flex-row text-xs text-slate-500">
           <span>
             Hiển thị <strong>{filteredShipments.length === 0 ? 0 : 1} – {filteredShipments.length}</strong> / {countAll} đơn hàng thu hoạch • Tự động làm mới dữ liệu sau 30s
@@ -521,9 +501,7 @@ export function AdminHarvestPage() {
         </div>
       </Card>
 
-      {/* Bottom 3 Feature Cards */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Card 1: Kiểm soát Chuỗi lạnh (Cold-Chain) */}
         <Card className="flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
           <div>
             <div className="flex items-center justify-between">
@@ -568,7 +546,6 @@ export function AdminHarvestPage() {
           </div>
         </Card>
 
-        {/* Card 2: Cổng API AgriExpress Gateway */}
         <Card className="flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
           <div>
             <div className="flex items-center justify-between">
@@ -608,7 +585,6 @@ export function AdminHarvestPage() {
           </div>
         </Card>
 
-        {/* Card 3: Bộ Công cụ Giả lập Demo */}
         <Card className="flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
           <div>
             <div className="flex items-center justify-between">
@@ -649,7 +625,6 @@ export function AdminHarvestPage() {
         </Card>
       </div>
 
-      {/* Modal: Xem Phiếu A6 Mẫu */}
       {showA6Modal && selectedShipmentForA6 && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
@@ -660,7 +635,6 @@ export function AdminHarvestPage() {
               <X className="h-5 w-5" />
             </button>
 
-            {/* A6 Header */}
             <div className="flex items-center justify-between border-b pb-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-800 text-white font-bold text-sm">
@@ -676,7 +650,6 @@ export function AdminHarvestPage() {
               </span>
             </div>
 
-            {/* Barcode Mockup */}
             <div className="my-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-center">
               <div className="mx-auto h-12 w-3/4 bg-[repeating-linear-gradient(90deg,#111_0px,#111_2px,#fff_2px,#fff_4px,#111_4px,#111_7px,#fff_7px,#fff_9px)]" />
               <div className="mt-2 font-mono text-sm font-bold text-slate-800 tracking-widest">
@@ -684,7 +657,6 @@ export function AdminHarvestPage() {
               </div>
             </div>
 
-            {/* Details Grid */}
             <div className="grid grid-cols-2 gap-4 text-xs">
               <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-3">
                 <span className="font-bold uppercase text-slate-400 text-[10px]">Người gửi (Trang trại)</span>
@@ -701,7 +673,6 @@ export function AdminHarvestPage() {
               </div>
             </div>
 
-            {/* Produce Summary */}
             <div className="mt-4 rounded-xl border border-slate-200 bg-white p-3 text-xs">
               <div className="flex justify-between border-b pb-2">
                 <span className="text-slate-500">Sản phẩm vụ mùa:</span>
@@ -719,7 +690,6 @@ export function AdminHarvestPage() {
               </div>
             </div>
 
-            {/* QR Code & Tamper Seal */}
             <div className="mt-4 flex items-center justify-between rounded-xl bg-slate-50 p-3">
               <div className="flex items-center gap-3">
                 <QrCode className="h-10 w-10 text-slate-700" />
@@ -757,7 +727,6 @@ export function AdminHarvestPage() {
         </div>
       )}
 
-      {/* Modal Zoom Photo */}
       {zoomPhotoUrl && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"

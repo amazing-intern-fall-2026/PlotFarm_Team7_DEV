@@ -54,7 +54,6 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
           {...props}
         >
           <BreadcrumbList>
-            {/* Icon Home ở đầu nếu được bật */}
             {showHomeIcon && (
               <>
                 <BreadcrumbItem>

@@ -43,7 +43,6 @@ export function AdminPlotsPage() {
   const navigate = useNavigate();
   const [plots, setPlots] = React.useState<PlotRow[]>(() => {
     try {
-      // Clear legacy mock data keys
       localStorage.removeItem("admin_managed_plots_data");
       localStorage.removeItem("admin_plots_data");
       const saved = localStorage.getItem(STORAGE_KEY_ADMIN_PLOTS);
@@ -78,12 +77,10 @@ export function AdminPlotsPage() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  // Modal form state
   const [bulkZone, setBulkZone] = React.useState("Khu A Đà Lạt - Vườn 1");
   const [bulkCount, setBulkCount] = React.useState(10);
   const [bulkArea, setBulkArea] = React.useState(20);
 
-  // Dynamic Metrics
   const totalPlots = plots.length;
   const zoneACount = plots.filter((p) => p.specs.includes("Khu A")).length;
   const zoneBCount = plots.filter((p) => p.specs.includes("Khu B")).length;
@@ -99,19 +96,15 @@ export function AdminPlotsPage() {
 
   const occupancyRate = totalPlots > 0 ? ((cultivatingCount / totalPlots) * 100).toFixed(1) : "0.0";
 
-  // Filtered list
   const filteredPlots = React.useMemo(() => {
     return plots.filter((plot) => {
-      // Zone filter
       if (zoneTab === "zoneA" && !plot.specs.includes("Khu A")) return false;
       if (zoneTab === "zoneB" && !plot.specs.includes("Khu B")) return false;
 
-      // Status filter
       if (statusFilter === "available" && plot.status !== "available") return false;
       if (statusFilter === "cultivating" && !["cultivating", "rented"].includes(plot.status)) return false;
       if (statusFilter === "maintenance" && plot.status !== "maintenance") return false;
 
-      // Search
       if (searchTerm.trim()) {
         const q = searchTerm.toLowerCase();
         const matchCode = plot.code.toLowerCase().includes(q);
@@ -150,7 +143,6 @@ export function AdminPlotsPage() {
 
   return (
     <Box className="w-full space-y-6 pb-12">
-      {/* ── Sub-breadcrumbs & Page Header ── */}
       <Box className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <Box className="space-y-1">
           <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
@@ -171,7 +163,6 @@ export function AdminPlotsPage() {
           </div>
         </Box>
 
-        {/* Top actions */}
         <div className="flex flex-wrap items-center gap-2.5">
           <Button
             variant="outline"
@@ -194,9 +185,7 @@ export function AdminPlotsPage() {
         </div>
       </Box>
 
-      {/* ── 4 Top KPI Metric Cards ── */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Metric 1 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs">
           <div className="flex items-start justify-between">
             <div>
@@ -211,7 +200,6 @@ export function AdminPlotsPage() {
           </div>
         </Card>
 
-        {/* Metric 2 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs">
           <div className="flex items-start justify-between">
             <div>
@@ -226,7 +214,6 @@ export function AdminPlotsPage() {
           </div>
         </Card>
 
-        {/* Metric 3 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs">
           <div className="flex items-start justify-between">
             <div>
@@ -241,7 +228,6 @@ export function AdminPlotsPage() {
           </div>
         </Card>
 
-        {/* Metric 4 */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs">
           <div className="flex items-start justify-between">
             <div>
@@ -257,10 +243,8 @@ export function AdminPlotsPage() {
         </Card>
       </div>
 
-      {/* ── Filter Bar ── */}
       <Card className="border-border bg-white dark:bg-slate-900 p-4 shadow-xs space-y-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          {/* Zone tabs */}
           <div className="flex flex-wrap items-center gap-2">
             <div className="inline-flex rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
               <button
@@ -298,7 +282,6 @@ export function AdminPlotsPage() {
               </button>
             </div>
 
-            {/* Status pills */}
             <div className="flex flex-wrap items-center gap-1.5 pl-2">
               <button
                 type="button"
@@ -350,7 +333,6 @@ export function AdminPlotsPage() {
             </div>
           </div>
 
-          {/* Search box */}
           <div className="relative w-full sm:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input
@@ -372,7 +354,6 @@ export function AdminPlotsPage() {
           </div>
         </div>
 
-        {/* Data Table */}
         <div className="overflow-x-auto rounded-xl border border-border/80">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50/80 dark:bg-slate-800/60 text-muted-foreground border-b border-border uppercase font-semibold text-[11px] tracking-wider">
@@ -494,7 +475,6 @@ export function AdminPlotsPage() {
           </table>
         </div>
 
-        {/* Pagination bar */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-2 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>
@@ -527,10 +507,8 @@ export function AdminPlotsPage() {
         </div>
       </Card>
 
-      {/* ── Bottom 3 Technical Monitoring Cards ── */}
       {plots.length > 0 && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Card 1: Camera Live Feed */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between">
@@ -543,7 +521,6 @@ export function AdminPlotsPage() {
               </span>
             </div>
 
-            {/* Video preview representation */}
             <div className="mt-4 relative aspect-video w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800 group">
               <img
                 src="/images/plot-1.jpg"
@@ -574,7 +551,6 @@ export function AdminPlotsPage() {
           </div>
         </Card>
 
-        {/* Card 2: Soil Moisture & Nutrients */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -626,7 +602,6 @@ export function AdminPlotsPage() {
           </div>
         </Card>
 
-        {/* Card 3: Farmer Workload */}
         <Card className="border-border bg-white dark:bg-slate-900 p-5 shadow-xs space-y-4 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between">
@@ -694,7 +669,6 @@ export function AdminPlotsPage() {
       </div>
       )}
 
-      {/* Bulk Create Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl border border-border space-y-4">

@@ -64,14 +64,12 @@ const INITIAL_PLOTS: PlotData[] = [];
 export function FarmerPlotsPage() {
   const navigate = useNavigate();
 
-  // Manage plots in state and persist changes across user operations
   const [plots, setPlots] = React.useState<PlotData[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_PLOTS);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          // If stored data contains the old mock IDs, reset to empty
           const hasOldMocks = parsed.some((p: PlotData) =>
             ["CONTRACT-A104", "CONTRACT-B205", "CONTRACT-B206", "CONTRACT-A101", "CONTRACT-C301"].includes(p?.id)
           );
@@ -158,18 +156,15 @@ export function FarmerPlotsPage() {
     []
   );
 
-  // Filters state
   const [searchQuery, setSearchQuery] = React.useState("");
   const [zoneFilter, setZoneFilter] = React.useState<"ALL" | "Khu A" | "Khu B">("ALL");
   const [statusFilter, setStatusFilter] = React.useState<"ALL" | "need_water" | "growing" | "ready_harvest">("ALL");
 
-  // Selected plot for Detail / Telemetry modal
   const [selectedPlotForDetail, setSelectedPlotForDetail] = React.useState<PlotData | null>(null);
   const [selectedLiveCamPlot, setSelectedLiveCamPlot] = React.useState<PlotData | null>(null);
   const [createLogPlot, setCreateLogPlot] = React.useState<PlotData | null>(null);
   const [toastMessage, setToastMessage] = React.useState<string | null>(null);
 
-  // Quick note chips state inside Telemetry modal
   const [activeTags, setActiveTags] = React.useState<string[]>([
     "Cây bung lá khỏe",
     "Nắng ấm",
@@ -186,7 +181,6 @@ export function FarmerPlotsPage() {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  // Filtered plots
   const filteredPlots = plots.filter((plot) => {
     const matchesSearch =
       plot.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -263,7 +257,6 @@ export function FarmerPlotsPage() {
         </CardHeader>
       </Card>
 
-      {/* Toast notification */}
       {toastMessage && (
         <Card className="rounded-2xl bg-foreground text-background px-5 py-3 text-sm font-semibold flex items-center justify-between shadow-xl animate-in fade-in">
           <Text as="span" className="text-xs font-medium">{toastMessage}</Text>
@@ -284,9 +277,7 @@ export function FarmerPlotsPage() {
       ───────────────────────────────────────────────────────────── */}
       <Card className="p-4 shadow-xs border-border space-y-3">
         <CardContent className="p-0 space-y-3">
-          {/* Search and primary zone tabs */}
           <Box className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-            {/* Search box */}
             <Box className="relative flex-1 max-w-md">
               <Search className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
               <input
@@ -298,7 +289,6 @@ export function FarmerPlotsPage() {
               />
             </Box>
 
-            {/* Zone tabs */}
             <Box className="flex items-center gap-1.5 p-1 bg-muted/60 rounded-2xl self-start md:self-auto">
               <Button
                 type="button"
@@ -330,7 +320,6 @@ export function FarmerPlotsPage() {
             </Box>
           </Box>
 
-          {/* Sub-filters by status */}
           <Box className="flex flex-wrap items-center gap-2 pt-2 border-t border-border">
             <Text variant="muted" className="text-xs font-medium flex items-center gap-1">
               <Filter className="h-3 w-3" /> Lọc trạng thái:
@@ -412,7 +401,6 @@ export function FarmerPlotsPage() {
                 : "border-border"
             }`}
           >
-            {/* Card Header: Plot code & Progress Badge */}
             <CardHeader className="p-5 pb-3">
               <Box className="flex items-center justify-between">
                 <Box>
@@ -449,7 +437,6 @@ export function FarmerPlotsPage() {
                 </Box>
               </Box>
 
-              {/* Crop name & Customer */}
               <Box className="space-y-1 mt-3">
                 <Text as="h4" className="text-sm sm:text-base font-bold text-emerald-800 dark:text-emerald-400 flex items-center gap-1.5">
                   <Sprout className="h-4 w-4 shrink-0" />
@@ -462,9 +449,7 @@ export function FarmerPlotsPage() {
               </Box>
             </CardHeader>
 
-            {/* Card Content: IoT Stats & Progress Bar */}
             <CardContent className="p-5 pt-0 space-y-4 flex-1 flex flex-col justify-between">
-              {/* IoT Telemetry Stats Bar */}
               <Box className="grid grid-cols-2 gap-2 p-2.5 rounded-2xl bg-muted/40 border border-border text-xs">
                 <Box className="flex items-center gap-2">
                   <Droplets
@@ -499,7 +484,6 @@ export function FarmerPlotsPage() {
                 </Box>
               </Box>
 
-              {/* Growth Progress Bar */}
               <Box className="space-y-1.5 mt-auto">
                 <Box className="flex items-center justify-between text-xs">
                   <Text variant="muted" className="font-medium">Tiến độ vụ:</Text>
@@ -523,7 +507,6 @@ export function FarmerPlotsPage() {
               </Box>
             </CardContent>
 
-            {/* Card Footer: Action Buttons */}
             <CardFooter className="p-5 pt-0">
               {plot.readyForHarvest ? (
                 <Box className="grid grid-cols-2 gap-2 w-full">
@@ -583,7 +566,6 @@ export function FarmerPlotsPage() {
       {selectedLiveCamPlot && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <Card className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-slate-950 text-white shadow-2xl border border-white/20 p-0">
-            {/* Header */}
             <CardHeader className="flex flex-row items-center justify-between p-4 bg-slate-900 border-b border-white/10">
               <Box className="flex items-center gap-3">
                 <Box className="h-2.5 w-2.5 rounded-full bg-rose-500 animate-ping" />
@@ -605,7 +587,6 @@ export function FarmerPlotsPage() {
               </Button>
             </CardHeader>
 
-            {/* Video representation */}
             <CardContent className="p-0">
               <Box className="relative aspect-video w-full overflow-hidden bg-black">
                 <img
@@ -619,7 +600,6 @@ export function FarmerPlotsPage() {
               </Box>
             </CardContent>
 
-            {/* Footer Bar */}
             <CardFooter className="flex flex-wrap items-center justify-between p-4 bg-slate-900 text-xs text-slate-300 gap-3 border-t border-white/10">
               <Box className="flex items-center gap-4">
                 <Text as="span">🌱 Cây trồng: <Text as="strong" className="text-white font-bold">{selectedLiveCamPlot.cropName}</Text></Text>
@@ -662,7 +642,6 @@ export function FarmerPlotsPage() {
       {selectedPlotForDetail && (
         <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto animate-in fade-in">
           <Card className="relative w-full max-w-4xl rounded-3xl bg-background shadow-2xl border border-border overflow-hidden my-auto max-h-[92vh] flex flex-col p-0">
-            {/* Header */}
             <CardHeader className="flex flex-row items-center justify-between p-5 border-b border-border bg-muted/30 shrink-0">
               <Box className="flex items-center gap-3">
                 <Button
@@ -692,9 +671,7 @@ export function FarmerPlotsPage() {
               </Text>
             </CardHeader>
 
-            {/* Modal Body: 2 Columns */}
             <CardContent className="overflow-y-auto p-5 space-y-6 flex-1">
-              {/* Stepper vụ mùa: Gieo hạt (25%) > Nảy mầm (50%) > Bung lá (75%) > Thu hoạch (100%) */}
               <Box className="space-y-2 p-3.5 rounded-2xl bg-muted/30 border border-border">
                 <Box className="flex items-center justify-between text-xs">
                   <Text as="label" className="font-bold text-foreground flex items-center gap-1.5">
@@ -738,7 +715,6 @@ export function FarmerPlotsPage() {
                 </Box>
               </Box>
 
-              {/* 3 Telemetry Cards */}
               <Box className="grid grid-cols-3 gap-3">
                 <Card className="p-3.5 text-center bg-muted/30 border-border shadow-none">
                   <Droplets className="h-5 w-5 text-cyan-600 mx-auto mb-1" />
@@ -768,9 +744,7 @@ export function FarmerPlotsPage() {
                 </Card>
               </Box>
 
-              {/* Real Crop Image & Growth update form */}
               <Box className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Left: Crop photo */}
                 <Box className="space-y-2">
                   <Text as="h4" className="text-xs font-bold text-foreground uppercase tracking-wider">
                     Ảnh chụp kiểm định luống thực tế
@@ -790,7 +764,6 @@ export function FarmerPlotsPage() {
                   </Box>
                 </Box>
 
-                {/* Right: Quick tags & log submission */}
                 <Box className="space-y-3">
                   <Text as="h4" className="text-xs font-bold text-foreground uppercase tracking-wider">
                     Ghi chú nhanh nông vụ hôm nay
@@ -833,7 +806,6 @@ export function FarmerPlotsPage() {
               </Box>
             </CardContent>
 
-            {/* Footer */}
             <CardFooter className="p-5 border-t border-border bg-muted/20 flex flex-col sm:flex-row items-center justify-between gap-3">
               <Button
                 type="button"

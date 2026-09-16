@@ -53,7 +53,6 @@ export async function dispatchAction<TReq = unknown, TRes = unknown>(
     ...(token ? { [GATEWAY_HEADER_AUTHORIZATION]: `Bearer ${token}` } : {}),
   };
 
-  // ── Mã hóa payload (JWE) nếu có Public Key cấu hình; Fallback gửi raw envelope ──
   let bodyPayload: string;
   if (isJweConfigured()) {
     try {
@@ -70,7 +69,6 @@ export async function dispatchAction<TReq = unknown, TRes = unknown>(
     bodyPayload = JSON.stringify(envelope);
   }
 
-  // ── Network ───────────────────────────────────────────────────────────────
   let res: Response;
   try {
     res = await fetch(GATEWAY_ENDPOINT, {
@@ -86,7 +84,6 @@ export async function dispatchAction<TReq = unknown, TRes = unknown>(
     );
   }
 
-  // ── Parse ─────────────────────────────────────────────────────────────────
   let body: ApiResponseEnvelope<TRes>;
   try {
     body = await res.json();
@@ -97,7 +94,6 @@ export async function dispatchAction<TReq = unknown, TRes = unknown>(
     );
   }
 
-  // ── Error ─────────────────────────────────────────────────────────────────
   if (!res.ok || "error" in body) {
     throw new AppError(body as ApiErrorResponse);
   }

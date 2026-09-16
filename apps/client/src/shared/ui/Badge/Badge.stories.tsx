@@ -23,12 +23,10 @@ const meta: Meta<typeof Badge> = {
 import { Badge } from "@/shared/ui";
 import { CheckCircle2 } from "lucide-react";
 
-// Nhãn thành công kèm icon
 <Badge variant="success" icon={<CheckCircle2 className="h-3 w-3" />}>
   Đạt chuẩn VietGAP
 </Badge>
 
-// Nhãn cảnh báo màu cam
 <Badge variant="warning">
   Cần bổ sung phân bón
 </Badge>

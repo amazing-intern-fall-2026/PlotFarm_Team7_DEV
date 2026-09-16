@@ -53,7 +53,6 @@ export const MiniReceiptCard: React.FC<MiniReceiptCardProps> = ({
         className,
       )}
     >
-      {/* Card Header với Banner tóm tắt */}
       <CardHeader className="p-5 pb-4 bg-slate-50/70 dark:bg-slate-800/40 border-b border-slate-100 dark:border-slate-800">
         <Flex justify="between" align="center" className="gap-2">
           <Flex align="center" gap={2}>
@@ -75,7 +74,6 @@ export const MiniReceiptCard: React.FC<MiniReceiptCardProps> = ({
           </Badge>
         </Flex>
 
-        {/* Mini Thumbnail & Plot Highlight */}
         <Flex align="center" gap={3} className="pt-3">
           <Box className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-slate-200/80 shadow-xs relative">
             <Image
@@ -102,7 +100,6 @@ export const MiniReceiptCard: React.FC<MiniReceiptCardProps> = ({
       </CardHeader>
 
       <CardContent className="p-5 space-y-4">
-        {/* Thông số thời hạn mùa vụ */}
         <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
           <Flex justify="between" align="center" className="text-xs">
             <Flex align="center" gap={2} className="text-slate-600 dark:text-slate-400">
@@ -128,7 +125,6 @@ export const MiniReceiptCard: React.FC<MiniReceiptCardProps> = ({
           </Flex>
         </Box>
 
-        {/* Bảng chiết tính giá ngắn gọn (Clean Mini Invoice) */}
         <Box className="space-y-2.5 pt-1">
           <Flex justify="between" align="center" className="text-xs">
             <Text variant="body2" className="text-slate-600 dark:text-slate-400">
@@ -150,7 +146,6 @@ export const MiniReceiptCard: React.FC<MiniReceiptCardProps> = ({
 
           <Separator className="my-2" />
 
-          {/* Tổng tiền nổi bật */}
           <Flex justify="between" align="end" className="pt-1">
             <Box>
               <Text variant="caption" className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px] block">
@@ -166,7 +161,6 @@ export const MiniReceiptCard: React.FC<MiniReceiptCardProps> = ({
           </Flex>
         </Box>
 
-        {/* Accordion thu gọn Quyền lợi gói canh tác */}
         <Box className="pt-1">
           <Button
             variant="ghost"
