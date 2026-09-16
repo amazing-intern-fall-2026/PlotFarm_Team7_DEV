@@ -9,6 +9,8 @@ import {
   ChevronLeft,
   AlertTriangle,
   RotateCcw,
+  ShieldCheck,
+  CheckCircle2,
 } from "lucide-react";
 import {
   Box,
@@ -77,18 +79,17 @@ export function PlotDetailPage() {
 
           <Box className="space-y-6 sm:space-y-8">
             <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-              <Box className="lg:col-span-7 space-y-6">
+              <Box className="lg:col-span-8 space-y-6">
                 <Box className="w-full aspect-video sm:h-[340px] bg-muted/60 rounded-2xl" />
                 <Box className="h-44 bg-muted/50 rounded-2xl" />
-              </Box>
-              <Box className="lg:col-span-5 space-y-6">
-                <Box className="h-80 bg-muted/60 rounded-2xl" />
+                <Box className="h-64 bg-muted/50 rounded-2xl" />
+                <Box className="h-64 bg-muted/50 rounded-2xl" />
                 <Box className="h-48 bg-muted/50 rounded-2xl" />
               </Box>
-            </Box>
-            <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-              <Box className="lg:col-span-6 h-64 bg-muted/50 rounded-2xl" />
-              <Box className="lg:col-span-6 h-64 bg-muted/50 rounded-2xl" />
+              <Box className="lg:col-span-4 space-y-6">
+                <Box className="h-96 bg-muted/60 rounded-2xl" />
+                <Box className="h-48 bg-muted/50 rounded-2xl" />
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -216,196 +217,235 @@ export function PlotDetailPage() {
           </Box>
         )}
 
-        {/* ── BỐ CỤC CHUẨN FINTECH & AGRO-TECH CÂN BẰNG HÀI HÒA ── */}
-        <Box className="space-y-6 sm:space-y-8">
-          {/* HÀNG 1: TRUNG TÂM GIÁM SÁT THỰC TẾ & ĐẶT THUÊ (7 COLS vs 5 COLS) */}
-          <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-            {/* Cột trái (7 cols): Camera trực tiếp 1080P & Thông số ô đất */}
-            <Box className="lg:col-span-7 space-y-6">
-              {/* Live Camera View Card */}
-              <Card className="border border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
-                <Box className="relative w-full aspect-video sm:h-[340px] bg-slate-950 overflow-hidden group">
-                  {/* HLS stream nếu có, fallback về ảnh tĩnh */}
-                  <HlsVideoPlayer
-                    streamUrl={displayStreamUrl}
-                    fallbackImageUrl={displayImageUrl}
-                    alt={`Live Camera ${displayPlotCode}`}
-                    className="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
-                  />
+        {/* ── BỐ CỤC CHUẨN FINTECH & AGRO-TECH: CÁC KHỐI NẰM NGANG (8 COLS) vs CARD DỌC STICKY (4 COLS) ── */}
+        <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          {/* CỘT TRÁI (8 COLS): CÁC KHỐI NỘI DUNG NẰM NGANG (HORIZONTAL STACK) */}
+          <Box className="lg:col-span-8 space-y-6 sm:space-y-8">
+            {/* 1. Khối nằm ngang: Camera trực tiếp 1080P & Thông số ô đất */}
+            <Card className="border border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
+              <Box className="relative w-full aspect-video sm:h-[340px] bg-slate-950 overflow-hidden group">
+                {/* HLS stream nếu có, fallback về ảnh tĩnh */}
+                <HlsVideoPlayer
+                  streamUrl={displayStreamUrl}
+                  fallbackImageUrl={displayImageUrl}
+                  alt={`Live Camera ${displayPlotCode}`}
+                  className="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
+                />
 
-                  <Box className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                    <Flex
-                      align="center"
-                      gap={2}
-                      className="bg-slate-950/70 backdrop-blur-md px-3 py-1 rounded-full border border-white/20"
+                <Box className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                  <Flex
+                    align="center"
+                    gap={2}
+                    className="bg-slate-950/70 backdrop-blur-md px-3 py-1 rounded-full border border-white/20"
+                  >
+                    <Box className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                    <Camera className="w-3.5 h-3.5 text-white" />
+                    <Text
+                      variant="caption"
+                      className="text-white font-mono text-[11px] font-semibold"
                     >
-                      <Box className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                      <Camera className="w-3.5 h-3.5 text-white" />
-                      <Text
-                        variant="caption"
-                        className="text-white font-mono text-[11px] font-semibold"
-                      >
-                        LIVE CAM 1080P • KHU VỰC {displayZone.toUpperCase()}
-                      </Text>
-                    </Flex>
+                      LIVE CAM 1080P • KHU VỰC {displayZone.toUpperCase()}
+                    </Text>
+                  </Flex>
 
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setIsZoomCamera(true)}
-                      className="h-8 w-8 p-0 rounded-full bg-slate-950/60 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20"
-                      aria-label="Phóng to camera"
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsZoomCamera(true)}
+                    className="h-8 w-8 p-0 rounded-full bg-slate-950/60 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20"
+                    aria-label="Phóng to camera"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                  </Button>
+                </Box>
+
+                <Box className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white/90">
+                  <Flex
+                    align="center"
+                    gap={3}
+                    className="bg-slate-950/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10"
+                  >
+                    <Text variant="caption">Nhiệt độ: 19.4°C</Text>
+                    <Text variant="caption">•</Text>
+                    <Text variant="caption">Độ ẩm đất: 74%</Text>
+                    <Text variant="caption">•</Text>
+                    <Text variant="caption">pH: 6.5</Text>
+                  </Flex>
+                  <Badge
+                    variant="secondary"
+                    className="bg-emerald-600/90 text-white text-[11px] font-medium border-0 backdrop-blur-md"
+                  >
+                    {isAvailable ? "Sẵn sàng gieo trồng" : plotData.status}
+                  </Badge>
+                </Box>
+              </Box>
+
+              {/* Thông số ô đất */}
+              <CardContent className="p-4 sm:p-6 space-y-4">
+                <Flex
+                  justify="between"
+                  align="start"
+                  className="flex-wrap gap-2"
+                >
+                  <Box>
+                    <Heading
+                      level={2}
+                      className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white"
                     >
-                      <Maximize2 className="w-4 h-4" />
-                    </Button>
+                      {plotData.plotNumber || `Ô đất #${cleanPlotNumber}`}
+                    </Heading>
+                    <Text className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                      {displayZone} • {plotData.farmAddress || "Lạc Dương, Đà Lạt, Lâm Đồng"}
+                    </Text>
                   </Box>
 
-                  <Box className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white/90">
-                    <Flex
-                      align="center"
-                      gap={3}
-                      className="bg-slate-950/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10"
-                    >
-                      <Text variant="caption">Nhiệt độ: 19.4°C</Text>
-                      <Text variant="caption">•</Text>
-                      <Text variant="caption">Độ ẩm đất: 74%</Text>
-                      <Text variant="caption">•</Text>
-                      <Text variant="caption">pH: 6.5</Text>
-                    </Flex>
-                    <Badge
-                      variant="secondary"
-                      className="bg-emerald-600/90 text-white text-[11px] font-medium border-0 backdrop-blur-md"
-                    >
-                      {isAvailable ? "Sẵn sàng gieo trồng" : plotData.status}
-                    </Badge>
+                  <Badge
+                    variant="outline"
+                    className="border-emerald-200 text-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300 font-semibold shrink-0"
+                  >
+                    Mã số: #{cleanPlotNumber}
+                  </Badge>
+                </Flex>
+
+                <Box className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                  <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                    <Text className="text-xs text-slate-500 dark:text-slate-400">
+                      Diện tích
+                    </Text>
+                    <Text className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5 break-words leading-tight">
+                      {displayArea} m²
+                    </Text>
+                  </Box>
+                  <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                    <Text className="text-xs text-slate-500 dark:text-slate-400">
+                      Cây quy hoạch
+                    </Text>
+                    <Text className="text-sm sm:text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5 break-words leading-tight" title={currentCrop.name}>
+                      {currentCrop.name}
+                    </Text>
+                  </Box>
+                  <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                    <Text className="text-xs text-slate-500 dark:text-slate-400">
+                      Chu kỳ thu hoạch
+                    </Text>
+                    <Text className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5 break-words leading-tight">
+                      {currentCrop.harvestCycleDays} ngày
+                    </Text>
+                  </Box>
+                  <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                    <Text className="text-xs text-slate-500 dark:text-slate-400">
+                      Hệ thống tưới
+                    </Text>
+                    <Text className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5 break-words leading-tight">
+                      Nhỏ giọt Israel
+                    </Text>
                   </Box>
                 </Box>
 
-                {/* Thông số ô đất */}
-                <CardContent className="p-4 sm:p-6 space-y-4">
+                <Box className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                   <Flex
-                    justify="between"
                     align="start"
-                    className="flex-wrap gap-2"
+                    gap={2}
+                    className="text-slate-600 dark:text-slate-400"
                   >
-                    <Box>
-                      <Heading
-                        level={2}
-                        className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white"
-                      >
-                        {plotData.plotNumber || `Ô đất #${cleanPlotNumber}`}
-                      </Heading>
-                      <Text className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-                        {displayZone} • {plotData.farmAddress || "Lạc Dương, Đà Lạt, Lâm Đồng"}
-                      </Text>
-                    </Box>
-
-                    <Badge
-                      variant="outline"
-                      className="border-emerald-200 text-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300 font-semibold"
-                    >
-                      Mã số: #{cleanPlotNumber}
-                    </Badge>
+                    <Award className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <Text variant="caption" className="text-xs break-words">
+                      {PLOT_DETAIL_TEXTS.systemSpecs.standard}
+                    </Text>
                   </Flex>
+                  <Flex
+                    align="start"
+                    gap={2}
+                    className="text-slate-600 dark:text-slate-400"
+                  >
+                    <Droplets className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <Text variant="caption" className="text-xs break-words">
+                      Cải tạo vi sinh hữu cơ 100%
+                    </Text>
+                  </Flex>
+                  <Flex
+                    align="start"
+                    gap={2}
+                    className="text-slate-600 dark:text-slate-400"
+                  >
+                    <Activity className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <Text variant="caption" className="text-xs break-words">
+                      Giám sát IoT 24/7 tự động
+                    </Text>
+                  </Flex>
+                </Box>
+              </CardContent>
+            </Card>
 
-                  <Box className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                    <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
-                      <Text className="text-xs text-slate-500 dark:text-slate-400">
-                        Diện tích
-                      </Text>
-                      <Text className="text-base font-bold text-slate-900 dark:text-white mt-0.5">
-                        {displayArea} m²
-                      </Text>
-                    </Box>
-                    <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
-                      <Text className="text-xs text-slate-500 dark:text-slate-400">
-                        Cây quy hoạch
-                      </Text>
-                      <Text className="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5 truncate" title={currentCrop.name}>
-                        {currentCrop.name}
-                      </Text>
-                    </Box>
-                    <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
-                      <Text className="text-xs text-slate-500 dark:text-slate-400">
-                        Chu kỳ thu hoạch
-                      </Text>
-                      <Text className="text-base font-bold text-slate-900 dark:text-white mt-0.5">
-                        {currentCrop.harvestCycleDays} ngày
-                      </Text>
-                    </Box>
-                    <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
-                      <Text className="text-xs text-slate-500 dark:text-slate-400">
-                        Hệ thống tưới
-                      </Text>
-                      <Text className="text-base font-bold text-slate-900 dark:text-white mt-0.5">
-                        Nhỏ giọt Israel
-                      </Text>
-                    </Box>
-                  </Box>
+            {/* 2. Khối nằm ngang: Giống Cây Trồng Quy Hoạch Của Ô Đất */}
+            <PlotCropCard crop={currentCrop} />
 
-                  <Box className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-                    <Flex
-                      align="start"
-                      gap={2}
-                      className="text-slate-600 dark:text-slate-400"
-                    >
-                      <Award className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <Text variant="caption" className="text-xs">
-                        {PLOT_DETAIL_TEXTS.systemSpecs.standard}
-                      </Text>
-                    </Flex>
-                    <Flex
-                      align="start"
-                      gap={2}
-                      className="text-slate-600 dark:text-slate-400"
-                    >
-                      <Droplets className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <Text variant="caption" className="text-xs">
-                        Cải tạo vi sinh hữu cơ 100%
-                      </Text>
-                    </Flex>
-                    <Flex
-                      align="start"
-                      gap={2}
-                      className="text-slate-600 dark:text-slate-400"
-                    >
-                      <Activity className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <Text variant="caption" className="text-xs">
-                        Giám sát IoT 24/7 tự động
-                      </Text>
-                    </Flex>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Box>
+            {/* 3. Khối nằm ngang: Lộ Trình Sinh Trưởng Vụ Mùa (4 Giai đoạn) */}
+            <CropTimeline />
 
-            {/* Cột phải (5 cols): Hóa đơn chi phí vụ mùa & Kỹ sư nông học phụ trách */}
-            <Box className="lg:col-span-5 space-y-6">
-              {/* Hóa đơn & Đặt thuê */}
-              <PlotBookingSummary
-                basePrice={displayBasePrice}
-                crop={currentCrop}
-                plotCode={cleanPlotNumber}
-                areaSqm={displayArea}
-                onCheckout={handleCheckout}
-              />
-
-              {/* Kỹ Sư Nông Học Phụ Trách (Đưa lên cột phải tạo uy tín chuyển đổi) */}
-              <FarmerProfileCard />
-            </Box>
+            {/* 4. Khối nằm ngang: Kỹ Sư Nông Nghiệp Phụ Trách */}
+            <FarmerProfileCard />
           </Box>
 
-          {/* HÀNG 2: THÔNG TIN CHI TIẾT VỤ MÙA & LỘ TRÌNH CANH TÁC (CÂN BẰNG 2 CỘT 50% - 50%) */}
-          <Box className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-            {/* Cột trái (6 cols): Giống Cây Trồng Quy Hoạch Của Ô Đất */}
-            <Box className="lg:col-span-6 flex flex-col">
-              <PlotCropCard crop={currentCrop} className="flex-1" />
-            </Box>
+          {/* CỘT PHẢI (4 COLS): CARD DỌC HÓA ĐƠN & CAM KẾT (STICKY) */}
+          <Box className="lg:col-span-4 space-y-6 lg:sticky lg:top-6">
+            {/* Hóa đơn & Đặt thuê (Card dọc) */}
+            <PlotBookingSummary
+              basePrice={displayBasePrice}
+              crop={currentCrop}
+              plotCode={cleanPlotNumber}
+              areaSqm={displayArea}
+              onCheckout={handleCheckout}
+            />
 
-            {/* Cột phải (6 cols): Lộ Trình Sinh Trưởng Vụ Mùa (4 Giai đoạn) */}
-            <Box className="lg:col-span-6 flex flex-col">
-              <CropTimeline className="flex-1" />
-            </Box>
+            {/* Cam kết chất lượng & Bảo hiểm an tâm */}
+            <Card className="hidden lg:block border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm p-5 rounded-2xl space-y-4">
+              <Heading
+                level={4}
+                className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2"
+              >
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                Cam kết dịch vụ GreenFarm
+              </Heading>
+
+              <Box className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
+                <Flex align="start" gap={2.5}>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <Box className="min-w-0">
+                    <Text className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                      100% Tiêu chuẩn VietGAP
+                    </Text>
+                    <Text variant="caption" className="text-[11px] text-slate-500 leading-normal block mt-0.5">
+                      Cam kết canh tác hữu cơ vi sinh, minh bạch nhật ký chăm sóc điện tử.
+                    </Text>
+                  </Box>
+                </Flex>
+
+                <Flex align="start" gap={2.5}>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <Box className="min-w-0">
+                    <Text className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                      Bảo hiểm rủi ro thiên tai
+                    </Text>
+                    <Text variant="caption" className="text-[11px] text-slate-500 leading-normal block mt-0.5">
+                      Bảo đảm hoàn tiền hoặc tái canh tác miễn phí nếu thời tiết bất lợi.
+                    </Text>
+                  </Box>
+                </Flex>
+
+                <Flex align="start" gap={2.5}>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <Box className="min-w-0">
+                    <Text className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                      Giao nông sản tận nhà
+                    </Text>
+                    <Text variant="caption" className="text-[11px] text-slate-500 leading-normal block mt-0.5">
+                      Đóng thùng bảo quản lạnh và vận chuyển định kỳ sau mỗi đợt thu hoạch.
+                    </Text>
+                  </Box>
+                </Flex>
+              </Box>
+            </Card>
           </Box>
         </Box>
       </Box>

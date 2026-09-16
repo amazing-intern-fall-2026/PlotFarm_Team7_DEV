@@ -95,10 +95,10 @@ export const CropTimeline: React.FC<CropTimelineProps> = ({ className }) => {
                   {isHarvest ? <Sparkles className="w-3.5 h-3.5" /> : milestone.step}
                 </Box>
                 <Box className="min-w-0">
-                  <Text variant="caption" className="font-bold text-[11px] block truncate text-slate-800 dark:text-slate-200">
+                  <Text variant="caption" className="font-bold text-[11px] block text-slate-800 dark:text-slate-200 break-words">
                     GĐ {milestone.step}
                   </Text>
-                  <Text variant="caption" className="text-[10px] text-slate-500 block truncate">
+                  <Text variant="caption" className="text-[10px] text-slate-500 block break-words">
                     {milestone.daysRange}
                   </Text>
                 </Box>
@@ -151,7 +151,7 @@ export const CropTimeline: React.FC<CropTimelineProps> = ({ className }) => {
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                       )}
                     </Box>
-                    <Box className="min-w-0">
+                    <Box className="min-w-0 flex-1">
                       <Flex align="center" gap={2} className="flex-wrap">
                         <Badge
                           variant={isHarvest ? "warning" : "secondary"}
@@ -166,7 +166,7 @@ export const CropTimeline: React.FC<CropTimelineProps> = ({ className }) => {
                       <Heading
                         level={4}
                         className={cn(
-                          "text-sm font-semibold mt-0.5 truncate",
+                          "text-sm font-semibold mt-0.5 break-words",
                           isExpanded
                             ? "text-emerald-900 dark:text-emerald-300"
                             : "text-slate-800 dark:text-slate-200",

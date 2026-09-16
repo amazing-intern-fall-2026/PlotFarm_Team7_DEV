@@ -62,33 +62,33 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
             {/* Name, Badge, Role */}
             <Box className="min-w-0 space-y-1">
               <Flex align="center" gap={2} className="flex-wrap">
-                <Heading level={3} className="text-base sm:text-lg font-bold text-slate-900 dark:text-white truncate">
+                <Heading level={3} className="text-base sm:text-lg font-bold text-slate-900 dark:text-white break-words">
                   {farmer.name}
                 </Heading>
                 <Badge
                   variant="outline"
-                  className="bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 text-[11px] font-semibold py-0.5 px-2 flex items-center gap-1"
+                  className="bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 text-[11px] font-semibold py-0.5 px-2 flex items-center gap-1 shrink-0"
                 >
                   <Award className="w-3 h-3 text-emerald-600" />
                   {farmer.badgeTitle}
                 </Badge>
               </Flex>
 
-              <Flex align="center" gap={2} className="text-xs text-slate-500 dark:text-slate-400">
+              <Flex align="center" gap={2} className="text-xs text-slate-500 dark:text-slate-400 flex-wrap">
                 <Flex align="center" gap={1}>
-                  <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                  <Text variant="caption" className="truncate">{farmer.location}</Text>
+                  <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <Text variant="caption" className="break-words">{farmer.location}</Text>
                 </Flex>
                 <Text variant="caption">•</Text>
                 <Flex align="center" gap={1.5}>
-                  <Box className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <Box className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                   <Text variant="caption" className="text-emerald-700 dark:text-emerald-400 font-medium">
                     Đang phụ trách tại vườn
                   </Text>
                 </Flex>
               </Flex>
 
-              <Text variant="muted" className="text-xs line-clamp-2 pt-0.5">
+              <Text variant="muted" className="text-xs sm:text-sm pt-1 leading-relaxed break-words">
                 {farmer.bio}
               </Text>
             </Box>
@@ -107,7 +107,7 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
           </Flex>
         </Flex>
 
-        {/* Stats Grid like Grab Driver / Shopee Official Store */}
+        {/* Stats Grid */}
         <Box className="grid grid-cols-3 gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800 text-center">
           <Box className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
             <Flex align="center" justify="center" gap={1} className="text-amber-500 mb-0.5">
@@ -116,7 +116,7 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
                 {farmer.rating}
               </Text>
             </Flex>
-            <Text variant="caption" className="text-[10px] text-slate-500 block truncate">
+            <Text variant="caption" className="text-[10px] sm:text-xs text-slate-500 block leading-tight break-words">
               {farmer.reviewsCount} đánh giá tích cực
             </Text>
           </Box>
@@ -128,7 +128,7 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
                 {farmer.experienceYears} Năm
               </Text>
             </Flex>
-            <Text variant="caption" className="text-[10px] text-slate-500 block truncate">
+            <Text variant="caption" className="text-[10px] sm:text-xs text-slate-500 block leading-tight break-words">
               Kinh nghiệm canh tác
             </Text>
           </Box>
@@ -140,7 +140,7 @@ export const FarmerProfileCard: React.FC<FarmerProfileCardProps> = ({
                 {farmer.successfulCrops} Vụ
               </Text>
             </Flex>
-            <Text variant="caption" className="text-[10px] text-slate-500 block truncate">
+            <Text variant="caption" className="text-[10px] sm:text-xs text-slate-500 block leading-tight break-words">
               Tỉ lệ vụ mùa 99.2%
             </Text>
           </Box>

@@ -112,7 +112,7 @@ export const PlotCropCard: React.FC<PlotCropCardProps> = ({
                     {PLOT_DETAIL_TEXTS.cropDensityLabel}
                   </Text>
                 </Flex>
-                <Text variant="body2" className="font-bold text-slate-800 dark:text-slate-200 truncate">
+                <Text variant="body2" className="font-bold text-slate-800 dark:text-slate-200 break-words leading-tight text-xs sm:text-sm">
                   {crop.plantingDensity}
                 </Text>
               </Box>
