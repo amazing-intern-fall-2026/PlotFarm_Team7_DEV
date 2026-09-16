@@ -6,6 +6,7 @@ export * from "./types/crop.types";
 export * from "./types/contract.types";
 export * from "./types/payment.types";
 export * from "./types/diary.types";
+export { GROWTH_STAGE_IDS, GROWTH_STAGES } from "./types/diary.types";
 export * from "./types/shipment.types";
 export * from "./constants/common.constants";
 export * from "./constants/error.constants";

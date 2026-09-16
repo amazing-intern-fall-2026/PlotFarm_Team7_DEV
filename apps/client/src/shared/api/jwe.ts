@@ -4,6 +4,10 @@ const PUBLIC_KEY_PEM = import.meta.env?.VITE_JWE_PUBLIC_KEY as
   | string
   | undefined;
 
+export function isJweConfigured(): boolean {
+  return Boolean(PUBLIC_KEY_PEM && PUBLIC_KEY_PEM.trim().length > 0);
+}
+
 /**
  * Mã hóa payload bằng RSA-OAEP-256 (JWE) trước khi gửi lên Gateway.
  * Chỉ FE giữ Public Key — không ai (kể cả F12 Network) đọc được nội dung gốc.
