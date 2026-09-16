@@ -148,7 +148,7 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
             )}
           </Box>
 
-          <Box className="flex items-center justify-between text-xs pt-2 border-t border-border/60">
+          <Box className="space-y-1.5 pt-2 border-t border-border/60 text-xs">
             <Box className="flex items-center gap-1.5 text-muted-foreground">
               <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
               <Text variant="small">
@@ -159,14 +159,17 @@ export function PlotCard({ plot, onSelect, className }: PlotCardProps) {
               </Text>
             </Box>
 
-            <Box className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-medium min-w-0">
-              <Sprout className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
+            <Box className="flex items-start gap-1.5 text-emerald-700 dark:text-emerald-400 font-medium">
+              <Sprout className="h-3.5 w-3.5 shrink-0 text-emerald-600 mt-0.5" />
               <Text
                 variant="small"
-                className="text-emerald-700 dark:text-emerald-400 font-medium truncate max-w-[135px]"
+                className="text-emerald-700 dark:text-emerald-400 font-medium leading-snug break-words flex-1"
                 title={plot.cropName || "Rau sạch Đà Lạt"}
               >
-                {PLOT_CARD_MESSAGES.CROP_PREFIX}{plot.cropName || "Rau sạch Đà Lạt"}
+                {PLOT_CARD_MESSAGES.CROP_PREFIX}
+                <Text as="span" className="font-semibold text-emerald-800 dark:text-emerald-300">
+                  {plot.cropName || "Rau sạch Đà Lạt"}
+                </Text>
               </Text>
             </Box>
           </Box>
