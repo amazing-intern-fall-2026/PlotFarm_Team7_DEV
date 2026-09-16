@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   ShieldCheck,
 } from "lucide-react";
+import { cn } from "@/shared/lib/utils";
 import {
   Box,
   Card,
@@ -13,8 +14,6 @@ import {
   Button,
   Modal,
   Tabs,
-  TabsList,
-  TabsTrigger,
   TabsContent,
 } from "@/shared/ui";
 
@@ -50,22 +49,34 @@ export function AboutLegalCharter() {
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
 
         <Box className="flex justify-center">
-          <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 dark:bg-slate-800/80 rounded-xl">
-            <TabsTrigger
-              value="organic"
+          <Box className="inline-flex items-center p-1.5 bg-slate-100 dark:bg-slate-800/90 rounded-full border border-slate-200/80 dark:border-slate-700 shadow-inner max-w-md w-full sm:w-auto">
+            <button
+              type="button"
               id="organic-standards"
-              className="text-xs sm:text-sm font-semibold py-2 rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900 data-[state=active]:text-primary data-[state=active]:shadow-2xs transition-all"
+              onClick={() => handleTabChange("organic")}
+              className={cn(
+                "flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 text-center select-none cursor-pointer",
+                activeTab === "organic"
+                  ? "bg-white dark:bg-slate-900 text-emerald-800 dark:text-emerald-400 shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200",
+              )}
             >
               Cam kết chuẩn hữu cơ
-            </TabsTrigger>
-            <TabsTrigger
-              value="insurance"
+            </button>
+            <button
+              type="button"
               id="crop-insurance"
-              className="text-xs sm:text-sm font-semibold py-2 rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900 data-[state=active]:text-primary data-[state=active]:shadow-2xs transition-all"
+              onClick={() => handleTabChange("insurance")}
+              className={cn(
+                "flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 text-center select-none cursor-pointer",
+                activeTab === "insurance"
+                  ? "bg-white dark:bg-slate-900 text-emerald-800 dark:text-emerald-400 shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200",
+              )}
             >
               Bảo hiểm rủi ro mùa vụ
-            </TabsTrigger>
-          </TabsList>
+            </button>
+          </Box>
         </Box>
 
         <TabsContent value="organic" className="mt-4 focus-visible:outline-none">
