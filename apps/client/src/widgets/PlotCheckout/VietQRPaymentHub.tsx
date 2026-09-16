@@ -283,7 +283,7 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
                 </Button>
               </Flex>
               <Text variant="caption" className="text-[11px] text-slate-400 mt-1.5 block">
-                Ngân hàng TMCP Quân Đội
+                {bankInfo.bankName}
               </Text>
             </Box>
 

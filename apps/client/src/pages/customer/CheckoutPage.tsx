@@ -146,10 +146,14 @@ export function CheckoutPage() {
                 transferContent: string;
                 expiresAt: string;
                 bankInfo?: {
-                  bankName: string;
-                  bankCode: string;
-                  accountNumber: string;
-                  accountHolderName: string;
+                  bankName?: string;
+                  bankCode?: string;
+                  bankId?: string;
+                  bankShortName?: string;
+                  accountNo?: string;
+                  accountNumber?: string;
+                  accountName?: string;
+                  accountHolderName?: string;
                 };
               };
             }>("/payments/create-qr", { contractId });
@@ -163,11 +167,14 @@ export function CheckoutPage() {
                 orderCode: paymentData.orderCode,
               }));
               if (paymentData.bankInfo) {
+                const b = paymentData.bankInfo;
                 setBankBeneficiary((prev) => ({
                   ...prev,
-                  bankName: paymentData.bankInfo?.bankName || prev.bankName,
-                  accountNumber: paymentData.bankInfo?.accountNumber || prev.accountNumber,
-                  accountName: paymentData.bankInfo?.accountHolderName || prev.accountName,
+                  bankId: b.bankId || b.bankCode || prev.bankId,
+                  bankName: b.bankName || prev.bankName,
+                  bankShortName: b.bankShortName || (b.bankName ? b.bankName.split("(")[0].trim() : prev.bankShortName),
+                  accountNumber: b.accountNo || b.accountNumber || prev.accountNumber,
+                  accountName: b.accountName || b.accountHolderName || prev.accountName,
                 }));
               }
               if (paymentData.expiresAt) {

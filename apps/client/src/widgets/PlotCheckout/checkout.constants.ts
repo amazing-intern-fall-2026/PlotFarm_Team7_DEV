@@ -33,11 +33,11 @@ export interface TrustBadgeItem {
 }
 
 export const CHECKOUT_BANK_INFO: BankBeneficiaryInfo = {
-  bankId: "970422",
-  bankName: "MBBank (Ngân hàng Quân Đội)",
-  bankShortName: "MBBank",
-  accountNumber: "999988886868",
-  accountName: "NONG NGHIEP SO GREEN FARM DALAT",
+  bankId: (import.meta.env?.VITE_VIETQR_BANK_ID as string) || "970423",
+  bankName: (import.meta.env?.VITE_VIETQR_BANK_NAME as string) || "TPBank",
+  bankShortName: (import.meta.env?.VITE_VIETQR_BANK_SHORT_NAME as string) || "TPBank",
+  accountNumber: (import.meta.env?.VITE_VIETQR_ACCOUNT_NO as string) || "90356150205",
+  accountName: (import.meta.env?.VITE_VIETQR_ACCOUNT_NAME as string) || "NGUYEN PHUOC SANG",
 };
 
 export const CHECKOUT_DEFAULT_ORDER: CheckoutMockOrder = {

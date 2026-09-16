@@ -84,10 +84,10 @@ describe("US-20, US-21, US-22: PlotCheckout Business Logic & Constants Tests", (
 
   describe("VietQR Bank Beneficiary Specs (US-21)", () => {
     it("contains valid Napas 24/7 bank ID and account details", () => {
-      expect(CHECKOUT_BANK_INFO.bankId).toBe("970422");
-      expect(CHECKOUT_BANK_INFO.bankShortName).toBe("MBBank");
-      expect(CHECKOUT_BANK_INFO.accountNumber).toBe("999988886868");
-      expect(CHECKOUT_BANK_INFO.accountName).toBe("NONG NGHIEP SO GREEN FARM DALAT");
+      expect(CHECKOUT_BANK_INFO.bankId).toBe("970423");
+      expect(CHECKOUT_BANK_INFO.bankShortName).toBe("TPBank");
+      expect(CHECKOUT_BANK_INFO.accountNumber).toBe("90356150205");
+      expect(CHECKOUT_BANK_INFO.accountName).toBe("NGUYEN PHUOC SANG");
     });
 
     it("generates correct VietQR transfer content with CF prefix", () => {
