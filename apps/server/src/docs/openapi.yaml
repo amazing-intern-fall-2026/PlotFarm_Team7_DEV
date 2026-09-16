@@ -914,6 +914,60 @@ paths:
         "404": { $ref: "#/components/responses/NotFound" }
 
   # ===================== NHÓM 5: PLOTS & RESERVATION =====================
+  /plots/{id}/hold:
+    post:
+      tags: [Plots]
+      summary: Hold plot for 10 minutes (CUSTOMER only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Plot held successfully for 10 minutes (600 seconds)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: object
+                    properties:
+                      plotId: { type: string, format: uuid }
+                      lockedUntil: { type: string, format: date-time }
+                      expiresInSeconds: { type: integer, example: 600 }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /plots/{id}/release-hold:
+    post:
+      tags: [Plots]
+      summary: Release plot hold lock (Lock owner or ADMIN only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Plot lock released successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: object
+                    properties:
+                      unlocked: { type: boolean }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
   /plots/{plotCode}/lock:
     post:
       tags: [Plots]
