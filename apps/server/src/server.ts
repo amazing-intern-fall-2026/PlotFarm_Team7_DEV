@@ -32,6 +32,7 @@ app.get("/health", (_req: Request, res: Response) => {
 
 import fs from "fs";
 import { paymentsRouter } from "./modules/payments/payments.routes";
+import { contractsRoutes } from "./modules/contracts/contracts.routes";
 import { initPlotLockCron } from "./modules/plots/plots.cron";
 
 const openApiPath = fs.existsSync(path.join(__dirname, "docs/openapi.yaml"))
@@ -47,6 +48,7 @@ if (fs.existsSync(openApiPath)) {
 app.use("/api/auth", authRoutes);
 app.use("/api/v1", authRoutes);
 app.use("/api/v1", paymentsRouter);
+app.use("/api/v1/contracts", contractsRoutes);
 app.use("/api/v1/plots", plotsRoutes);
 app.use("/api/v1", mediaRouter);
 app.use("/api/v1", diaryRouter);
