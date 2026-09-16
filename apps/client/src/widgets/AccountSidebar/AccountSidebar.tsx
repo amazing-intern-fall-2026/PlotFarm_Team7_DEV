@@ -10,6 +10,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import {
+  Box,
   Card,
   CardContent,
   Avatar,
@@ -17,9 +18,9 @@ import {
   Typography,
 } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
-import { ACCOUNT_NAV_ITEMS, DEFAULT_USER_PROFILE } from "./profile.constants";
+import { ACCOUNT_NAV_ITEMS, DEFAULT_USER_PROFILE } from "@/widgets/AccountProfile/profile.constants";
 
-interface AccountSidebarProps {
+export interface AccountSidebarProps {
   className?: string;
 }
 
@@ -45,7 +46,7 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
   };
 
   return (
-    <aside className={cn("w-full lg:w-72 shrink-0 space-y-4", className)}>
+    <Box className={cn("w-full lg:w-72 shrink-0 space-y-4", className)}>
       {/* Mini Profile Card */}
       <Card className="border-border/80 bg-white dark:bg-slate-900 shadow-xs rounded-2xl overflow-hidden">
         <CardContent className="p-5 flex items-center gap-3.5">
@@ -55,25 +56,25 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
             size="lg"
             className="ring-2 ring-emerald-500/20 shadow-xs"
           />
-          <div className="min-w-0 flex-1 space-y-1">
-            <div className="flex items-center gap-1.5 flex-wrap">
+          <Box className="min-w-0 flex-1 space-y-1">
+            <Box className="flex items-center gap-1.5 flex-wrap">
               <Typography.H4 className="text-sm font-bold text-foreground truncate">
                 {DEFAULT_USER_PROFILE.fullName}
               </Typography.H4>
               <Badge variant="outline" className="bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 text-[10px] font-bold px-1.5 py-0">
                 Đã xác thực
               </Badge>
-            </div>
-            <Typography.Muted className="text-xs truncate text-muted-foreground">
+            </Box>
+            <Typography.Muted className="text-xs truncate text-muted-foreground block">
               {DEFAULT_USER_PROFILE.email}
             </Typography.Muted>
-          </div>
+          </Box>
         </CardContent>
       </Card>
 
       {/* Navigation List */}
       <Card className="border-border/80 bg-white dark:bg-slate-900 shadow-xs rounded-2xl overflow-hidden">
-        <div className="p-2 space-y-1">
+        <Box className="p-2 space-y-1">
           {ACCOUNT_NAV_ITEMS.map((item) => {
             const isActive = currentPath === item.href;
             return (
@@ -87,8 +88,8 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/80 dark:hover:bg-slate-800/50",
                 )}
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div
+                <Box className="flex items-center gap-3 min-w-0">
+                  <Box
                     className={cn(
                       "p-1.5 rounded-lg transition-colors",
                       isActive
@@ -97,14 +98,14 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
                     )}
                   >
                     {getNavIcon(item.id)}
-                  </div>
-                  <div className="min-w-0 text-left">
-                    <div className="truncate text-xs font-semibold">{item.title}</div>
-                    <div className="text-[10px] text-muted-foreground truncate hidden sm:block">
+                  </Box>
+                  <Box className="min-w-0 text-left">
+                    <Typography.Text className="truncate text-xs font-semibold block">{item.title}</Typography.Text>
+                    <Typography.Muted className="text-[10px] text-muted-foreground truncate hidden sm:block">
                       {item.description}
-                    </div>
-                  </div>
-                </div>
+                    </Typography.Muted>
+                  </Box>
+                </Box>
 
                 <ChevronRight
                   className={cn(
@@ -115,11 +116,11 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
               </Link>
             );
           })}
-        </div>
+        </Box>
       </Card>
 
       {/* Hotline Support Quick Banner */}
-      <div className="p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-800/50 space-y-2 hidden lg:block">
+      <Box className="p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-800/50 space-y-2 hidden lg:block">
         <Typography.Small className="font-bold text-emerald-900 dark:text-emerald-300 block">
           Cần hỗ trợ hợp đồng & pháp lý?
         </Typography.Small>
@@ -132,7 +133,7 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({ className }) => 
         >
           1900 6868 (Phím 3)
         </a>
-      </div>
-    </aside>
+      </Box>
+    </Box>
   );
 };

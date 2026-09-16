@@ -5,6 +5,10 @@ export * from "./customer/CheckoutPage";
 export * from "./customer/MyFarmPage";
 export * from "./customer/JournalPage";
 export * from "./customer/AboutPage";
+export * from "./customer/ProfilePage";
+export * from "./customer/CustomerContractsPage";
+export * from "./customer/OrganicStandardsPage";
+export * from "./customer/CropInsurancePage";
 
 export * from "./farmer/FarmerTasksPage";
 export * from "./farmer/FarmerTaskExecutePage";
@@ -24,5 +28,3 @@ export * from "./admin/AdminFarmersPage";
 export * from "./admin/AdminHarvestPage";
 export * from "./admin/AdminRbacPage";
 
-export * from "./account";
-export * from "./legal";
