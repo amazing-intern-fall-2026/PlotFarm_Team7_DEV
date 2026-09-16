@@ -14,7 +14,6 @@ import {
 import {
   Box,
   Flex,
-  Grid,
   Card,
   CardHeader,
   CardContent,
@@ -156,188 +155,193 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
         </CardHeader>
 
         <CardContent className="p-4 sm:p-6 space-y-6">
-          <Box className="lg:hidden space-y-2">
-            <Button
-              size="lg"
-              variant="default"
-              onClick={handleOpenBankingApp}
-              className="w-full h-12 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-lg shadow-emerald-700/20 flex items-center justify-center gap-2"
-            >
-              <Smartphone className="w-5 h-5 shrink-0" />
-              <Text variant="body1" className="font-bold text-white text-sm">
-                {CHECKOUT_TEXTS.paymentHub.openBankingAppButton}
-              </Text>
-            </Button>
-            <Text variant="caption" className="text-center text-slate-500 block text-[11px]">
-              Tự động điền đúng Số tài khoản, Số tiền và Nội dung trên App ngân hàng
+          {/* 1. KHỐI TRUNG TÂM: MÃ VIETQR HERO (CĂN GIỮA NỔI BẬT) */}
+          <Box className="flex flex-col items-center justify-center text-center space-y-4">
+            <Box className="p-4 sm:p-5 rounded-2xl bg-white border-2 border-emerald-500/30 shadow-lg shadow-emerald-600/5 dark:shadow-none relative w-full max-w-[260px] sm:max-w-[280px] aspect-square flex items-center justify-center overflow-hidden group">
+              <Image
+                src={computedQrUrl}
+                alt="Mã VietQR Chuyển Khoản Napas 24/7"
+                className="w-full h-full object-contain"
+              />
+              <Box className="absolute inset-0 bg-emerald-950/5 pointer-events-none rounded-2xl" />
+            </Box>
+
+            <Text variant="caption" className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium max-w-sm leading-relaxed">
+              {CHECKOUT_TEXTS.paymentHub.qrScanInstruction}
             </Text>
-          </Box>
 
-          <Grid cols={1} colsLg={12} gap={6} className="items-start">
-            <Box className="lg:col-span-5 flex flex-col items-center text-center space-y-3">
-              <Box className="p-3.5 rounded-2xl bg-white border-2 border-emerald-500/30 shadow-md relative w-full max-w-[260px] mx-auto aspect-square flex items-center justify-center overflow-hidden group">
-                <Image
-                  src={computedQrUrl}
-                  alt="Mã VietQR Chuyển Khoản Napas 24/7"
-                  className="w-full h-full object-contain"
-                />
-                <Box className="absolute inset-0 bg-emerald-950/5 pointer-events-none rounded-2xl" />
-              </Box>
-
-              <Text variant="caption" className="text-xs text-slate-600 dark:text-slate-400 font-medium max-w-[240px] leading-relaxed">
-                {CHECKOUT_TEXTS.paymentHub.qrScanInstruction}
-              </Text>
-
+            <Flex align="center" justify="center" gap={3} className="w-full max-w-sm pt-1 flex-wrap">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleDownloadQr}
-                className="w-full max-w-[240px] h-9 text-xs rounded-xl font-semibold border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5 hover:bg-slate-50 dark:hover:bg-slate-800"
+                className="flex-1 min-w-[140px] h-9 text-xs rounded-xl font-semibold border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5 hover:bg-slate-50 dark:hover:bg-slate-800"
               >
                 <Download className="w-3.5 h-3.5 shrink-0" />
                 {CHECKOUT_TEXTS.paymentHub.downloadQrButton}
               </Button>
-            </Box>
 
-            <Box className="lg:col-span-7 space-y-3">
-              <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800">
-                <Flex justify="between" align="center">
-                  <Box className="min-w-0 pr-2">
-                    <Text variant="caption" className="text-[11px] text-slate-500 font-medium block">
-                      {CHECKOUT_TEXTS.paymentHub.bankNameLabel}
-                    </Text>
-                    <Flex align="center" gap={1.5} className="mt-0.5">
-                      <Building2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <Text variant="body2" className="font-bold text-slate-900 dark:text-white truncate">
-                        {bankInfo.bankName}
-                      </Text>
-                    </Flex>
-                  </Box>
-                  <Badge variant="secondary" className="font-bold text-[10px] shrink-0">
-                    {bankInfo.bankShortName}
-                  </Badge>
-                </Flex>
-              </Box>
+              <Button
+                size="sm"
+                variant="default"
+                onClick={handleOpenBankingApp}
+                className="flex-1 min-w-[140px] h-9 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-700/20 flex items-center justify-center gap-1.5"
+              >
+                <Smartphone className="w-3.5 h-3.5 shrink-0" />
+                Mở App Ngân Hàng
+              </Button>
+            </Flex>
+          </Box>
 
-              <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 hover:border-emerald-400/60 transition-colors">
-                <Flex justify="between" align="center">
-                  <Box className="min-w-0 pr-2">
-                    <Text variant="caption" className="text-[11px] text-slate-500 font-medium block">
-                      {CHECKOUT_TEXTS.paymentHub.accountNumberLabel}
-                    </Text>
-                    <Flex align="center" gap={1.5} className="mt-0.5">
-                      <CreditCard className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <Text variant="body1" className="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-wider">
-                        {bankInfo.accountNumber}
-                      </Text>
-                    </Flex>
-                    <Text variant="caption" className="text-[11px] text-slate-500 mt-0.5 block uppercase">
-                      Chủ TK: {bankInfo.accountName}
-                    </Text>
-                  </Box>
-                  <Button
-                    size="sm"
-                    variant={copiedField === "accountNumber" ? "default" : "outline"}
-                    onClick={() => handleCopy("accountNumber", bankInfo.accountNumber)}
-                    className={cn(
-                      "h-8 px-3 text-xs font-bold rounded-lg shrink-0 flex items-center gap-1 transition-all",
-                      copiedField === "accountNumber" && "bg-emerald-600 text-white",
-                    )}
-                  >
-                    {copiedField === "accountNumber" ? (
-                      <>
-                        <Check className="w-3.5 h-3.5" />
-                        Đã chép
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        {CHECKOUT_TEXTS.paymentHub.copyButtonText}
-                      </>
-                    )}
-                  </Button>
-                </Flex>
-              </Box>
+          {/* ĐƯỜNG PHÂN CÁCH TRANG TRÃ HÀI HÒA */}
+          <Flex align="center" gap={3} className="py-1">
+            <Separator className="flex-1 bg-slate-200 dark:bg-slate-800" />
+            <Text variant="caption" className="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-2 shrink-0">
+              Hoặc chuyển khoản thủ công
+            </Text>
+            <Separator className="flex-1 bg-slate-200 dark:bg-slate-800" />
+          </Flex>
 
-              <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 hover:border-emerald-400/60 transition-colors">
-                <Flex justify="between" align="center">
-                  <Box className="min-w-0 pr-2">
-                    <Text variant="caption" className="text-[11px] text-slate-500 font-medium block">
-                      {CHECKOUT_TEXTS.paymentHub.amountLabel}
-                    </Text>
-                    <Text variant="body1" className="font-black text-xl text-emerald-800 dark:text-emerald-400 mt-0.5 tracking-tight">
-                      {formattedAmount}&nbsp;VNĐ
-                    </Text>
-                  </Box>
-                  <Button
-                    size="sm"
-                    variant={copiedField === "amount" ? "default" : "outline"}
-                    onClick={() => handleCopy("amount", String(Math.round(order.totalAmount)))}
-                    className={cn(
-                      "h-8 px-3 text-xs font-bold rounded-lg shrink-0 flex items-center gap-1 transition-all",
-                      copiedField === "amount" && "bg-emerald-600 text-white",
-                    )}
-                  >
-                    {copiedField === "amount" ? (
-                      <>
-                        <Check className="w-3.5 h-3.5" />
-                        Đã chép
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        {CHECKOUT_TEXTS.paymentHub.copyButtonText}
-                      </>
-                    )}
-                  </Button>
-                </Flex>
-              </Box>
-
-              <Box className="p-4 rounded-xl bg-amber-500/10 dark:bg-amber-950/40 border-2 border-amber-400/60 dark:border-amber-600/50 relative overflow-hidden">
-                <Flex justify="between" align="center">
-                  <Box className="min-w-0 pr-2">
-                    <Flex align="center" gap={1}>
-                      <Hash className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
-                      <Text variant="caption" className="text-[11px] font-bold text-amber-800 dark:text-amber-300 block uppercase tracking-wider">
-                        {CHECKOUT_TEXTS.paymentHub.transferContentLabel}
-                      </Text>
-                    </Flex>
-                    <Text variant="body1" className="font-mono font-black text-lg sm:text-xl text-amber-950 dark:text-amber-200 mt-1 tracking-wider">
-                      {transferContent}
-                    </Text>
-                  </Box>
-                  <Button
-                    size="sm"
-                    variant="default"
-                    onClick={() => handleCopy("transferContent", transferContent)}
-                    className={cn(
-                      "h-9 px-3.5 text-xs font-black rounded-lg shrink-0 flex items-center gap-1.5 transition-all shadow-md bg-amber-600 hover:bg-amber-700 text-white",
-                      copiedField === "transferContent" && "bg-emerald-600 hover:bg-emerald-700",
-                    )}
-                  >
-                    {copiedField === "transferContent" ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        Đã chép
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4" />
-                        Sao chép mã
-                      </>
-                    )}
-                  </Button>
-                </Flex>
-
-                <Flex align="center" gap={1.5} className="mt-2 text-amber-800 dark:text-amber-300/90 text-xs">
-                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                  <Text variant="caption" className="text-[11px] font-medium leading-tight">
-                    {CHECKOUT_TEXTS.paymentHub.transferContentWarning}
+          {/* 2. THÔNG TIN CHUYỂN KHOẢN THỦ CÔNG: BỐ CỤC LƯỚI GỌN GÀNG, KHÔNG RỐI */}
+          <Box className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* THÔNG TIN NGÂN HÀNG */}
+            <Box className="p-3.5 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+              <Text variant="caption" className="text-[11px] text-slate-500 font-medium block mb-1">
+                {CHECKOUT_TEXTS.paymentHub.bankNameLabel}
+              </Text>
+              <Flex justify="between" align="center" gap={2}>
+                <Flex align="center" gap={1.5} className="min-w-0">
+                  <Building2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <Text variant="body2" className="font-bold text-slate-900 dark:text-white truncate text-sm">
+                    {bankInfo.bankName}
                   </Text>
                 </Flex>
-              </Box>
+                <Badge variant="secondary" className="font-bold text-[10px] shrink-0">
+                  {bankInfo.bankShortName}
+                </Badge>
+              </Flex>
+              <Text variant="caption" className="text-[11px] text-slate-500 mt-1.5 block uppercase truncate">
+                Chủ TK: {bankInfo.accountName}
+              </Text>
             </Box>
-          </Grid>
+
+            {/* SỐ TÀI KHOẢN */}
+            <Box className="p-3.5 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 hover:border-emerald-400/60 transition-colors flex flex-col justify-between">
+              <Text variant="caption" className="text-[11px] text-slate-500 font-medium block mb-1">
+                {CHECKOUT_TEXTS.paymentHub.accountNumberLabel}
+              </Text>
+              <Flex justify="between" align="center" gap={2}>
+                <Flex align="center" gap={1.5} className="min-w-0">
+                  <CreditCard className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <Text variant="body1" className="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-wider">
+                    {bankInfo.accountNumber}
+                  </Text>
+                </Flex>
+                <Button
+                  size="sm"
+                  variant={copiedField === "accountNumber" ? "default" : "outline"}
+                  onClick={() => handleCopy("accountNumber", bankInfo.accountNumber)}
+                  className={cn(
+                    "h-8 px-3 text-xs font-bold rounded-lg shrink-0 flex items-center gap-1 transition-all",
+                    copiedField === "accountNumber" && "bg-emerald-600 text-white",
+                  )}
+                >
+                  {copiedField === "accountNumber" ? (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      Đã chép
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      {CHECKOUT_TEXTS.paymentHub.copyButtonText}
+                    </>
+                  )}
+                </Button>
+              </Flex>
+              <Text variant="caption" className="text-[11px] text-slate-400 mt-1.5 block">
+                Ngân hàng TMCP Quân Đội
+              </Text>
+            </Box>
+
+            {/* SỐ TIỀN CẦN CHUYỂN (FULL ROW) */}
+            <Box className="sm:col-span-2 p-3.5 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 hover:border-emerald-400/60 transition-colors flex items-center justify-between gap-3">
+              <Box className="min-w-0">
+                <Text variant="caption" className="text-[11px] text-slate-500 font-medium block">
+                  {CHECKOUT_TEXTS.paymentHub.amountLabel}
+                </Text>
+                <Text variant="body1" className="font-black text-xl text-emerald-800 dark:text-emerald-400 mt-0.5 tracking-tight">
+                  {formattedAmount}&nbsp;VNĐ
+                </Text>
+              </Box>
+              <Button
+                size="sm"
+                variant={copiedField === "amount" ? "default" : "outline"}
+                onClick={() => handleCopy("amount", String(Math.round(order.totalAmount)))}
+                className={cn(
+                  "h-8 px-3.5 text-xs font-bold rounded-lg shrink-0 flex items-center gap-1 transition-all",
+                  copiedField === "amount" && "bg-emerald-600 text-white",
+                )}
+              >
+                {copiedField === "amount" ? (
+                  <>
+                    <Check className="w-3.5 h-3.5" />
+                    Đã chép
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    {CHECKOUT_TEXTS.paymentHub.copyButtonText}
+                  </>
+                )}
+              </Button>
+            </Box>
+
+            {/* NỘI DUNG CHUYỂN KHOẢN (BẮT BUỘC GIỮ NGUYÊN) (FULL ROW NỔI BẬT) */}
+            <Box className="sm:col-span-2 p-4 rounded-xl bg-amber-500/10 dark:bg-amber-950/40 border-2 border-amber-400/60 dark:border-amber-600/50 relative overflow-hidden space-y-2">
+              <Flex justify="between" align="center" className="flex-wrap gap-2">
+                <Box className="min-w-0 pr-2">
+                  <Flex align="center" gap={1.5}>
+                    <Hash className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
+                    <Text variant="caption" className="text-[11px] font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wider">
+                      {CHECKOUT_TEXTS.paymentHub.transferContentLabel}
+                    </Text>
+                  </Flex>
+                  <Text variant="body1" className="font-mono font-black text-xl sm:text-2xl text-amber-950 dark:text-amber-200 mt-1 tracking-wider">
+                    {transferContent}
+                  </Text>
+                </Box>
+                <Button
+                  size="sm"
+                  variant="default"
+                  onClick={() => handleCopy("transferContent", transferContent)}
+                  className={cn(
+                    "h-9 px-4 text-xs font-black rounded-lg shrink-0 flex items-center gap-1.5 transition-all shadow-md bg-amber-600 hover:bg-amber-700 text-white",
+                    copiedField === "transferContent" && "bg-emerald-600 hover:bg-emerald-700",
+                  )}
+                >
+                  {copiedField === "transferContent" ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Đã chép
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      Sao chép mã
+                    </>
+                  )}
+                </Button>
+              </Flex>
+
+              <Flex align="center" gap={1.5} className="pt-1 text-amber-800 dark:text-amber-300/90 text-xs">
+                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                <Text variant="caption" className="text-[11px] font-medium leading-tight">
+                  {CHECKOUT_TEXTS.paymentHub.transferContentWarning}
+                </Text>
+              </Flex>
+            </Box>
+          </Box>
 
           <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
             <Flex align="center" gap={2.5}>
