@@ -6,24 +6,19 @@ interface AboutHeroBannerProps {
 
 export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
   return (
-    <Box className="relative w-full min-h-[220px] sm:min-h-[260px] md:min-h-[300px] lg:min-h-[320px] flex items-center justify-center overflow-hidden select-none bg-emerald-950 py-10 sm:py-12 md:py-14">
-      {/* 1. Background Photo từ thư mục /images/ của dự án (Hiển thị sáng rõ nét) */}
+    <Box className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl shadow-sm bg-[#071309] text-white py-14 sm:py-16 lg:py-20 flex items-center justify-center select-none">
       <img
         src="/images/background.jpg"
         alt="Nông trại số Green Farm"
-        className="absolute inset-0 w-full h-full object-cover object-center"
+        className="absolute inset-0 w-full h-full object-cover object-center transform scale-105"
       />
 
-      {/* 2. Lớp phủ gradient vừa phải, không quá tối để thấy rõ cảnh nông trại thật */}
-      <Box className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/45" />
-      <Box className="absolute inset-0 bg-gradient-to-r from-emerald-950/35 via-transparent to-emerald-950/35" />
+      <Box className="absolute inset-0 bg-[#081a0e]/80 mix-blend-multiply" />
+      <Box className="absolute inset-0 bg-gradient-to-r from-[#051108]/95 via-[#07180c]/75 to-[#051108]/95" />
+      <Box className="absolute inset-0 bg-gradient-to-t from-[#051108] via-transparent to-[#051108]/85" />
 
-      {/* 3. Hiệu ứng ánh sáng nhẹ ở góc */}
-      <Box className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-emerald-400/20 blur-3xl pointer-events-none" />
-
-      {/* 4. Digital Agriculture Constellation Network SVG Overlay */}
       <svg
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-25 md:opacity-35"
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-40 md:opacity-50"
         viewBox="0 0 1440 450"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
@@ -40,9 +35,7 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
           </radialGradient>
         </defs>
 
-        {/* Constellation Network Lines */}
         <g stroke="url(#agriLineGrad)" strokeWidth="1">
-          {/* Left/Center connecting mesh */}
           <line x1="380" y1="280" x2="450" y2="210" />
           <line x1="450" y1="210" x2="520" y2="290" />
           <line x1="450" y1="210" x2="560" y2="170" />
@@ -50,7 +43,6 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
           <line x1="560" y1="170" x2="650" y2="240" />
           <line x1="520" y1="290" x2="650" y2="240" />
 
-          {/* Center to Right Mesh */}
           <line x1="650" y1="240" x2="720" y2="160" />
           <line x1="650" y1="240" x2="740" y2="320" />
           <line x1="600" y1="340" x2="740" y2="320" />
@@ -61,7 +53,6 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
           <line x1="810" y1="220" x2="900" y2="280" />
           <line x1="830" y1="360" x2="900" y2="280" />
 
-          {/* Far Right Tech Mesh */}
           <line x1="890" y1="150" x2="980" y2="210" />
           <line x1="900" y1="280" x2="980" y2="210" />
           <line x1="900" y1="280" x2="990" y2="340" />
@@ -84,14 +75,12 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
           <line x1="1380" y1="180" x2="1440" y2="140" />
           <line x1="1400" y1="290" x2="1440" y2="270" />
 
-          {/* Top subtle cross-lines */}
           <line x1="650" y1="90" x2="720" y2="160" strokeDasharray="3 3" opacity="0.4" />
           <line x1="810" y1="90" x2="890" y2="150" strokeDasharray="3 3" opacity="0.4" />
           <line x1="1000" y1="80" x2="1080" y2="140" strokeDasharray="3 3" opacity="0.4" />
           <line x1="1200" y1="70" x2="1280" y2="130" strokeDasharray="3 3" opacity="0.4" />
         </g>
 
-        {/* Constellation Dots / Nodes */}
         <g fill="url(#nodeGlow)">
           <circle cx="380" cy="280" r="3.5" />
           <circle cx="450" cy="210" r="4" />
@@ -120,23 +109,19 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
         </g>
       </svg>
 
-      {/* 5. Centered Hero Content (Gọn gàng, tinh tế) */}
-      <Box className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center space-y-3 sm:space-y-4">
-        {/* Main Title */}
-        <Typography.H1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider uppercase text-white font-sans drop-shadow-md">
+      <Box className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center space-y-6">
+        <Typography.H1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-wider uppercase text-white font-sans drop-shadow-md">
           VỀ CHÚNG TÔI
         </Typography.H1>
 
-        {/* Subtitle / Tagline */}
-        <Typography.P className="text-xs sm:text-sm md:text-base font-normal text-white/90 max-w-xl mx-auto leading-relaxed tracking-wide drop-shadow-sm">
+        <Typography.P className="text-base sm:text-xl lg:text-2xl font-light text-slate-100 max-w-3xl mx-auto leading-relaxed tracking-wide drop-shadow-sm">
           Số Hóa Nông Nghiệp — Mang Vườn Rau Hữu Cơ Minh Bạch Đến Từng Bữa Cơm Gia Đình.
         </Typography.P>
 
-        {/* Button: LIÊN HỆ VỚI CHÚNG TÔI */}
-        <Box className="pt-1">
+        <Box className="pt-2">
           <a
             href="tel:19006868"
-            className="inline-flex items-center justify-center px-6 py-2.5 border border-white text-white text-xs font-bold tracking-widest uppercase transition-all duration-200 hover:bg-white hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-xs bg-black/20 shadow-sm"
+            className="inline-flex items-center justify-center px-9 py-3 border border-white text-white text-xs sm:text-sm font-bold tracking-widest uppercase transition-all duration-200 hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-white/50"
           >
             LIÊN HỆ VỚI CHÚNG TÔI
           </a>
@@ -145,7 +130,3 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
     </Box>
   );
 }
-
-
-
-

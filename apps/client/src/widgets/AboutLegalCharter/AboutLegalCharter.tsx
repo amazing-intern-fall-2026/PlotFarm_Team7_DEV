@@ -24,7 +24,6 @@ export function AboutLegalCharter() {
   const [activeTab, setActiveTab] = React.useState<string>("organic");
   const [viewingDoc, setViewingDoc] = React.useState<DocumentModalType>(null);
 
-  // Đồng bộ hash URL (#organic-standards hoặc #crop-insurance) với Tabs
   React.useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace("#", "");
@@ -48,7 +47,6 @@ export function AboutLegalCharter() {
 
   return (
     <Box className="w-full max-w-3xl mx-auto space-y-6 font-sans">
-      {/* 2. Tabs Trọng Yếu: 2 Tab Tinh Gọn */}
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
 
         <Box className="flex justify-center">
@@ -70,7 +68,6 @@ export function AboutLegalCharter() {
           </TabsList>
         </Box>
 
-        {/* TAB 1: CAM KẾT CHUẨN HỮU CƠ */}
         <TabsContent value="organic" className="mt-4 focus-visible:outline-none">
           <Card className="border-border/80 bg-white dark:bg-slate-900 rounded-2xl shadow-xs">
             <CardContent className="p-6 sm:p-8 space-y-6">
@@ -83,7 +80,6 @@ export function AboutLegalCharter() {
                 </Typography.Muted>
               </Box>
 
-              {/* 5 Tiêu chuẩn then chốt dạng danh sách sạch sẽ */}
               <Box className="space-y-3.5 divide-y divide-border/60 text-sm">
                 <Box className="pt-3.5 first:pt-0 flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -146,7 +142,6 @@ export function AboutLegalCharter() {
                 </Box>
               </Box>
 
-              {/* Hộp Cam kết đền bù */}
               <Box className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-border space-y-1">
                 <Typography.Text className="text-xs font-bold text-foreground block">
                   Cam kết bảo lãnh chất lượng:
@@ -156,7 +151,6 @@ export function AboutLegalCharter() {
                 </Typography.Muted>
               </Box>
 
-              {/* Nút xem văn bản chứng chỉ */}
               <Box className="pt-2 flex justify-end">
                 <Button
                   variant="outline"
@@ -172,7 +166,6 @@ export function AboutLegalCharter() {
           </Card>
         </TabsContent>
 
-        {/* TAB 2: CHÍNH SÁCH BẢO HIỂM MÙA VỤ */}
         <TabsContent value="insurance" className="mt-4 focus-visible:outline-none">
           <Card className="border-border/80 bg-white dark:bg-slate-900 rounded-2xl shadow-xs">
             <CardContent className="p-6 sm:p-8 space-y-6">
@@ -185,7 +178,6 @@ export function AboutLegalCharter() {
                 </Typography.Muted>
               </Box>
 
-              {/* 3 Phương án bồi thường */}
               <Box className="space-y-3.5 divide-y divide-border/60 text-sm">
                 <Box className="pt-3.5 first:pt-0 flex items-start gap-3">
                   <Box className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
@@ -230,7 +222,6 @@ export function AboutLegalCharter() {
                 </Box>
               </Box>
 
-              {/* Thời hạn giải quyết */}
               <Box className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-border space-y-1">
                 <Typography.Text className="text-xs font-bold text-foreground block">
                   Thời hạn tiếp nhận & bồi hoàn:
@@ -240,7 +231,6 @@ export function AboutLegalCharter() {
                 </Typography.Muted>
               </Box>
 
-              {/* Nút xem văn bản quy chế */}
               <Box className="pt-2 flex justify-end">
                 <Button
                   variant="outline"
@@ -257,7 +247,6 @@ export function AboutLegalCharter() {
         </TabsContent>
       </Tabs>
 
-      {/* 3. MODAL XEM VĂN BẢN PHÁP QUY CHÍNH THỨC (Chỉ hiện khi người dùng bấm xem) */}
       <Modal
         isOpen={viewingDoc !== null}
         onClose={() => setViewingDoc(null)}
@@ -270,7 +259,6 @@ export function AboutLegalCharter() {
         size="lg"
       >
         <Box className="space-y-6 pt-2 font-sans">
-          {/* Tiêu ngữ hành chính */}
           <Box className="text-center pb-4 border-b border-border space-y-1">
             <Typography.Text className="text-xs font-bold uppercase tracking-wide text-foreground block">
               CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
@@ -284,7 +272,6 @@ export function AboutLegalCharter() {
             </Typography.Text>
           </Box>
 
-          {/* Chi tiết văn bản pháp lý */}
           <Box className="space-y-3 max-h-[55vh] overflow-y-auto pr-2 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
             {viewingDoc === "organic" && (
               <Box className="space-y-2.5">
@@ -339,7 +326,6 @@ export function AboutLegalCharter() {
             )}
           </Box>
 
-          {/* Footer xác thực điện tử */}
           <Box className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-border flex items-center justify-between gap-3">
             <Box className="space-y-0.5">
               <Box className="flex items-center gap-1.5 text-xs font-bold text-primary">

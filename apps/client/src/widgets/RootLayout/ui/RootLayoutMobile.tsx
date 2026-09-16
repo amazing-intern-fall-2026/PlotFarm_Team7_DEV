@@ -60,7 +60,6 @@ export function RootLayoutMobile(props: RootLayoutViewProps) {
 
         <Footer />
 
-        {/* Mobile Fixed Bottom Navigation with >= 44px Touch Targets */}
         <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border">
           <Navigation
             items={customerBottomItems}
@@ -78,7 +77,6 @@ export function RootLayoutMobile(props: RootLayoutViewProps) {
 
   return (
     <div className={cn("flex h-screen w-full max-w-full flex-col overflow-x-hidden bg-muted/30", className)}>
-      {/* Mobile Topbar without persistent desktop sidebar */}
       <Topbar
         user={user ? { ...user, role } : undefined}
         breadcrumbs={defaultBreadcrumbs}
@@ -96,7 +94,6 @@ export function RootLayoutMobile(props: RootLayoutViewProps) {
         {children}
       </main>
 
-      {/* Mobile Fixed Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border">
         <Navigation
           items={bottomItems}

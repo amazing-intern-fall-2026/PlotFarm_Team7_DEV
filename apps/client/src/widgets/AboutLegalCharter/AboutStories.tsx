@@ -47,7 +47,6 @@ const STORIES: TestimonialStory[] = [
 export function AboutStories() {
   return (
     <Box className="w-full max-w-6xl mx-auto space-y-12 sm:space-y-16">
-      {/* Section Header */}
       <Box className="text-center space-y-4 max-w-3xl mx-auto">
         <Typography.H2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight font-sans leading-tight">
           Số Hóa Luống Đất Nông Nghiệp, Mang An Tâm Đến Từng Bữa Cơm
@@ -57,14 +56,12 @@ export function AboutStories() {
         </Typography.P>
       </Box>
 
-      {/* 3 Story Cards */}
       <Box className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-8 items-stretch">
         {STORIES.map((story) => (
           <Box
             key={story.id}
             className="bg-card dark:bg-slate-900 border border-border/80 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-md transition-shadow duration-300"
           >
-            {/* Top Photo */}
             <Box className="relative w-full h-52 sm:h-56 overflow-hidden bg-slate-100 dark:bg-slate-800">
               <img
                 src={story.imageSrc}
@@ -74,21 +71,17 @@ export function AboutStories() {
               />
             </Box>
 
-            {/* Content & Quote */}
             <Box className="p-6 sm:p-7 flex flex-col flex-1 justify-between space-y-5">
               <Box className="space-y-3">
-                {/* Quotation Icon */}
                 <Box className="flex items-center">
                   <Quote className="w-8 h-8 text-primary fill-primary/85 shrink-0 transform scale-x-[-1]" />
                 </Box>
 
-                {/* Quote Text */}
                 <Typography.P className="text-xs sm:text-sm text-foreground/90 leading-relaxed font-sans text-justify">
                   {story.quote}
                 </Typography.P>
               </Box>
 
-              {/* Author Info */}
               <Box className="pt-4 border-t border-border/60">
                 <Typography.Text className="text-xs font-bold uppercase tracking-wider text-foreground block font-sans">
                   — {story.author.toUpperCase()}, {story.location}
