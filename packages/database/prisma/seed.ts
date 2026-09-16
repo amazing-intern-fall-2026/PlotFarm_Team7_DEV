@@ -1,4 +1,10 @@
 import { PrismaClient, PlotStatus, UserRole } from "@prisma/client";
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+dotenv.config();
 
 const prisma = new PrismaClient();
 
@@ -428,7 +434,7 @@ async function main() {
       const plotNumStr = String(p).padStart(3, "0");
       const plotCode = `PLT-${zoneName}-${plotNumStr}`;
       const plotNumber = `${zoneName}-${plotNumStr}`;
-      const name = `Lô Đất Hữu Cơ Khu ${zoneName} #${p}`;
+      const name = `Khu ${zoneName} - Lô ${p}`;
       validPlotCodes.add(plotCode);
 
       // Select default crop sequentially

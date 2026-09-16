@@ -7,6 +7,9 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "clean": "turbo run clean",
+    "db:seed": "pnpm --filter @repo/database db:seed",
+    "db:push": "pnpm --filter @repo/database db:push",
+    "db:generate": "pnpm --filter @repo/database db:generate",
     "prepare": "husky"
   },
   "eslintConfig": {
