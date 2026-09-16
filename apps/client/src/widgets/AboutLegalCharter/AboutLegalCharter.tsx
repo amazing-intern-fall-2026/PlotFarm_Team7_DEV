@@ -4,9 +4,6 @@ import {
   Printer,
   CheckCircle2,
   ShieldCheck,
-  Building2,
-  Phone,
-  MapPin,
 } from "lucide-react";
 import {
   Box,
@@ -51,33 +48,9 @@ export function AboutLegalCharter() {
 
   return (
     <Box className="w-full max-w-3xl mx-auto space-y-6 font-sans">
-      {/* 1. Header Giới thiệu Tối Giản */}
-      <Box className="text-center space-y-2 pb-2">
-        <Typography.H2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-          Nông Trại Số Green Farm
-        </Typography.H2>
-        <Typography.Muted className="text-sm text-muted-foreground max-w-xl mx-auto">
-          Mô hình kết nối cư dân đô thị đồng sở hữu & canh tác vườn rau hữu cơ từ xa tại Đà Lạt qua công nghệ IoT và Camera trực tiếp 24/7.
-        </Typography.Muted>
-
-        <Box className="flex flex-wrap items-center justify-center gap-4 pt-1 text-xs text-muted-foreground">
-          <Box className="flex items-center gap-1">
-            <MapPin className="w-3.5 h-3.5 text-primary" />
-            <span>Đạ Sar, Lạc Dương, Lâm Đồng</span>
-          </Box>
-          <Box className="flex items-center gap-1">
-            <Phone className="w-3.5 h-3.5 text-primary" />
-            <span>Hotline: 1900 6868</span>
-          </Box>
-          <Box className="flex items-center gap-1">
-            <Building2 className="w-3.5 h-3.5 text-primary" />
-            <span>MST: 5801456899</span>
-          </Box>
-        </Box>
-      </Box>
-
       {/* 2. Tabs Trọng Yếu: 2 Tab Tinh Gọn */}
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+
         <Box className="flex justify-center">
           <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 dark:bg-slate-800/80 rounded-xl">
             <TabsTrigger
