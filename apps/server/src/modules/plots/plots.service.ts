@@ -217,7 +217,7 @@ export class PlotsService {
     const lockedUntil = new Date(now.getTime() + durationSeconds * 1000);
 
     const updatedCount = await PlotsRepository.atomicHoldPlot(
-      plotId,
+      plot.id,
       userId,
       lockedUntil,
       now
@@ -231,7 +231,8 @@ export class PlotsService {
     }
 
     return {
-      plotId,
+      plotId: plot.id,
+      plotCode: plot.plotCode ?? plotId,
       lockedUntil: lockedUntil.toISOString(),
       expiresInSeconds: durationSeconds,
     };
@@ -254,7 +255,7 @@ export class PlotsService {
       );
     }
 
-    await PlotsRepository.clearPlotLock(plotId);
+    await PlotsRepository.clearPlotLock(plot.id);
 
     return {
       unlocked: true,

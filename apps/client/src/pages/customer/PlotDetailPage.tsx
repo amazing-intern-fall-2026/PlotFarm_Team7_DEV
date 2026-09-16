@@ -38,6 +38,7 @@ import {
   fetchPlotDetailApi,
   type PlotDetailUiItem,
 } from "@/entities/plot/api/plotsApi";
+import { isAuthenticated } from "@/features/auth";
 
 export function PlotDetailPage() {
   const { id, plotId } = useParams<{ id?: string; plotId?: string }>();
@@ -165,6 +166,10 @@ export function PlotDetailPage() {
   ];
 
   const handleCheckout = () => {
+    if (!isAuthenticated()) {
+      navigate(`/login?returnUrl=/checkout/${displayPlotCode}`);
+      return;
+    }
     navigate(`/checkout/${displayPlotCode}`);
   };
 

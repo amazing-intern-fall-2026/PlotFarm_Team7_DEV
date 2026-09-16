@@ -30,6 +30,17 @@ export const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const customConfig = config as CustomAxiosRequestConfig;
+
+    if (customConfig.url) {
+      if (customConfig.url.startsWith("/api/v1/")) {
+        customConfig.url = customConfig.url.replace(/^\/api\/v1/, "");
+      } else if (customConfig.url === "/api/v1") {
+        customConfig.url = "/";
+      } else if (customConfig.url.startsWith("/api/")) {
+        customConfig.url = customConfig.url.replace(/^\/api/, "");
+      }
+    }
+
     const token = getStoredToken();
 
     if (token && customConfig.headers && !customConfig.headers.Authorization) {

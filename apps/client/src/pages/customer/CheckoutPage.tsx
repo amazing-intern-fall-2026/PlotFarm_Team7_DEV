@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronDown, ChevronUp, Check, Layers } from "lucide-react";
+import { ChevronDown, ChevronUp, Check, Layers, AlertCircle } from "lucide-react";
 import {
   Box,
   Flex,
@@ -12,10 +12,12 @@ import {
 } from "@/shared/ui";
 import { axiosClient } from "@/shared/api";
 import { fetchPlotDetailApi } from "@/entities/plot";
+import { isAuthenticated } from "@/features/auth";
 import {
   CHECKOUT_DEFAULT_ORDER,
   CHECKOUT_BANK_INFO,
   CHECKOUT_TEXTS,
+  type BankBeneficiaryInfo,
   type CheckoutMockOrder,
   MiniReceiptCard,
   VietQRPaymentHub,
@@ -41,6 +43,7 @@ export function CheckoutPage() {
   const [realQrImageUrl, setRealQrImageUrl] = React.useState<string | undefined>(undefined);
   const [realTransferContent, setRealTransferContent] = React.useState<string>(`CF${order.orderCode}`);
   const [serverLockedUntil, setServerLockedUntil] = React.useState<string | null>(null);
+  const [bankBeneficiary, setBankBeneficiary] = React.useState<BankBeneficiaryInfo>(CHECKOUT_BANK_INFO);
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = React.useState<boolean>(false);
   const [isExpiredModalOpen, setIsExpiredModalOpen] = React.useState<boolean>(false);
@@ -50,9 +53,16 @@ export function CheckoutPage() {
 
   const cleanPlotNumber = order.plotNumber;
 
-  const handleTimerExpired = React.useCallback(() => {
+  const handleTimerExpired = React.useCallback(async () => {
     setIsExpiredModalOpen(true);
-  }, []);
+    if (order.plotId) {
+      try {
+        await axiosClient.post(`/plots/${order.plotId}/release-hold`);
+      } catch {
+        // ignore release error on expired
+      }
+    }
+  }, [order.plotId]);
 
   const {
     formattedTime,
@@ -98,11 +108,14 @@ export function CheckoutPage() {
 
         setOrder(updatedOrder);
 
+        const plotIdToHold = plotDetail.id || rawPlotParam;
+        const cropIdToBook = plotDetail.defaultCropId || "77fd0c1f-82cc-4cc2-96f3-4c7e5d11b579";
+
         try {
           const holdRes = await axiosClient.post<{
             success: boolean;
             data: { plotId: string; lockedUntil: string; expiresInSeconds: number };
-          }>(`/api/v1/plots/${plotDetail.id || rawPlotParam}/hold`);
+          }>(`/plots/${plotIdToHold}/hold`);
 
           if (holdRes.data?.data?.lockedUntil) {
             setServerLockedUntil(holdRes.data.data.lockedUntil);
@@ -115,10 +128,10 @@ export function CheckoutPage() {
           const todayStr = new Date().toISOString().split("T")[0];
           const contractRes = await axiosClient.post<{
             success: boolean;
-            data: { id: string };
-          }>("/api/v1/contracts", {
-            plotId: plotDetail.id || rawPlotParam,
-            cropId: plotDetail.defaultCropId || "crop-1",
+            data: { id: string; contractCode?: string };
+          }>("/contracts", {
+            plotId: plotIdToHold,
+            cropId: cropIdToBook,
             startDate: todayStr,
           });
 
@@ -127,12 +140,19 @@ export function CheckoutPage() {
             const qrRes = await axiosClient.post<{
               success: boolean;
               data: {
+                paymentOrderId: string;
                 orderCode: string;
                 qrImageUrl: string;
                 transferContent: string;
                 expiresAt: string;
+                bankInfo?: {
+                  bankName: string;
+                  bankCode: string;
+                  accountNumber: string;
+                  accountHolderName: string;
+                };
               };
-            }>("/api/v1/payments/create-qr", { contractId });
+            }>("/payments/create-qr", { contractId });
 
             if (qrRes.data?.data) {
               const paymentData = qrRes.data.data;
@@ -142,6 +162,14 @@ export function CheckoutPage() {
                 ...prev,
                 orderCode: paymentData.orderCode,
               }));
+              if (paymentData.bankInfo) {
+                setBankBeneficiary((prev) => ({
+                  ...prev,
+                  bankName: paymentData.bankInfo?.bankName || prev.bankName,
+                  accountNumber: paymentData.bankInfo?.accountNumber || prev.accountNumber,
+                  accountName: paymentData.bankInfo?.accountHolderName || prev.accountName,
+                }));
+              }
               if (paymentData.expiresAt) {
                 setServerLockedUntil(paymentData.expiresAt);
               }
@@ -163,16 +191,16 @@ export function CheckoutPage() {
     initPayment();
   }, [initPayment]);
 
-  // 3. Cơ chế Polling kiểm tra trạng thái thanh toán (US-21: mỗi 2.5s)
   React.useEffect(() => {
     if (isSuccessModalOpen || isExpiredModalOpen) return;
+    if (!order.orderCode) return;
 
     const intervalId = window.setInterval(async () => {
       try {
         const checkRes = await axiosClient.get<{
           success: boolean;
           data: { status: string; orderCode: string };
-        }>(`/api/v1/payments/check-status/${order.orderCode}`);
+        }>(`/payments/check-status/${order.orderCode}`);
 
         if (checkRes.data?.data?.status === "SUCCESS") {
           setIsSuccessModalOpen(true);
@@ -192,7 +220,7 @@ export function CheckoutPage() {
     setIsSimulating(true);
     try {
       try {
-        await axiosClient.post("/api/v1/payments/mock-webhook", {
+        await axiosClient.post("/payments/mock-webhook", {
           orderCode: order.orderCode,
         });
       } catch {
@@ -219,8 +247,15 @@ export function CheckoutPage() {
     navigate(`/my-farm/${order.plotId}`);
   };
 
-  const handleBackToPlots = () => {
+  const handleBackToPlots = async () => {
     setIsExpiredModalOpen(false);
+    if (order.plotId) {
+      try {
+        await axiosClient.post(`/plots/${order.plotId}/release-hold`);
+      } catch {
+        // ignore
+      }
+    }
     navigate("/plots");
   };
 
@@ -241,6 +276,25 @@ export function CheckoutPage() {
           plotNumber={cleanPlotNumber}
           plotId={rawPlotParam}
         />
+
+        {!isAuthenticated() && (
+          <Box className="p-4 rounded-xl border border-amber-200 bg-amber-50/90 dark:bg-amber-950/40 dark:border-amber-800 text-amber-900 dark:text-amber-200 flex items-center justify-between flex-wrap gap-3">
+            <Flex align="center" gap={3}>
+              <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
+              <Text className="text-xs sm:text-sm font-medium">
+                Quý khách chưa đăng nhập. Vui lòng đăng nhập tài khoản Khách hàng để hệ thống máy chủ giữ chỗ và tạo hợp đồng điện tử chính thức.
+              </Text>
+            </Flex>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => navigate(`/login?returnUrl=/checkout/${rawPlotParam}`)}
+              className="text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-white"
+            >
+              Đăng nhập ngay
+            </Button>
+          </Box>
+        )}
 
         <Box className="lg:hidden">
           <Button
@@ -294,7 +348,7 @@ export function CheckoutPage() {
             <Box className="lg:col-span-7">
               <VietQRPaymentHub
                 order={order}
-                bankInfo={CHECKOUT_BANK_INFO}
+                bankInfo={bankBeneficiary}
                 qrImageUrl={realQrImageUrl}
                 formattedCountdown={formattedTime}
                 isTimerWarning={isWarning}
