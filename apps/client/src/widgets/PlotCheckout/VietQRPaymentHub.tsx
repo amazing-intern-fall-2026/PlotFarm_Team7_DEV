@@ -137,17 +137,40 @@ export const VietQRPaymentHub: React.FC<VietQRPaymentHubProps> = ({
               align="center"
               gap={1.5}
               className={cn(
-                "px-3 py-1 rounded-full text-xs font-mono font-bold transition-all border shadow-2xs",
+                "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border shadow-xs",
                 isTimerWarning
-                  ? "bg-rose-50 text-rose-600 border-rose-200 animate-pulse dark:bg-rose-950/50 dark:border-rose-800 dark:text-rose-300"
-                  : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700",
+                  ? "bg-rose-100 text-rose-900 border-rose-300 animate-pulse dark:bg-rose-950/90 dark:border-rose-700 dark:text-rose-100"
+                  : "bg-amber-100 border-amber-300/90 text-amber-950 dark:bg-amber-950/80 dark:border-amber-600/80 dark:text-amber-200",
               )}
             >
-              <Clock className={cn("w-3.5 h-3.5 shrink-0", isTimerWarning && "text-rose-600 animate-spin")} />
-              <Text variant="caption" className="font-sans text-[11px] font-medium">
+              <Clock
+                className={cn(
+                  "w-4 h-4 shrink-0",
+                  isTimerWarning
+                    ? "text-rose-700 dark:text-rose-400 animate-spin"
+                    : "text-amber-800 dark:text-amber-400",
+                )}
+              />
+              <Text
+                variant="caption"
+                className={cn(
+                  "font-sans text-xs font-bold",
+                  isTimerWarning
+                    ? "text-rose-900 dark:text-rose-200"
+                    : "text-amber-900 dark:text-amber-200",
+                )}
+              >
                 {CHECKOUT_TEXTS.paymentHub.qrExpiryPrefix}
               </Text>
-              <Text variant="body2" className="font-mono font-bold text-xs">
+              <Text
+                variant="body2"
+                className={cn(
+                  "font-mono font-black text-xs sm:text-sm tracking-wide",
+                  isTimerWarning
+                    ? "text-rose-950 dark:text-rose-100"
+                    : "text-amber-950 dark:text-amber-100",
+                )}
+              >
                 {formattedCountdown}
               </Text>
             </Flex>
