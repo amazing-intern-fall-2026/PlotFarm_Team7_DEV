@@ -85,4 +85,12 @@ export interface VideoHeroBannerViewProps {
   secondaryCtaText?: string;
   onSecondaryCtaClick?: () => void;
   className?: string;
+  telemetryLoading?: boolean;
+  telemetry?: {
+    location: string;
+    areaM2: number;
+    humidity: number;
+    temperature: number;
+    sensorStatus: string;
+  };
 }

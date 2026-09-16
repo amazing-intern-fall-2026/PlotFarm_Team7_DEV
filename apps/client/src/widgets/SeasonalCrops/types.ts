@@ -68,7 +68,7 @@ export const SEASONAL_CROPS_DATA: SeasonalCropItem[] = [
     description: "Nữ hoàng siêu thực phẩm, giàu canxi, chất chống oxy hóa và chất xơ hòa tan.",
     tagBadge: "Siêu thực phẩm",
     badgeVariant: "success",
-    imageUrl: "/images/plot-1.jpg",
+    imageUrl: "/images/plot-4.jpg",
     growthDurationDays: 70,
     durationLabel: "70 ngày",
     expectedYieldKg: "14 – 18kg / vụ",
@@ -82,7 +82,7 @@ export const SEASONAL_CROPS_DATA: SeasonalCropItem[] = [
     description: "Củ thon nhỏ, vị ngọt đậm giòn tan, giàu beta-carotene cho thị lực và làn da.",
     tagBadge: "Ưa chuộng",
     badgeVariant: "secondary",
-    imageUrl: "/images/plot-2.jpg",
+    imageUrl: "/images/plot-5.jpg",
     growthDurationDays: 65,
     durationLabel: "65 ngày",
     expectedYieldKg: "16 – 20kg / vụ",
@@ -90,3 +90,16 @@ export const SEASONAL_CROPS_DATA: SeasonalCropItem[] = [
     basePricePerPlot: 1250000,
   },
 ];
+
+export interface SeasonalCropsCarouselProps {
+  items?: SeasonalCropItem[];
+  title?: string;
+  seasonBadge?: string;
+  subtitle?: string;
+  className?: string;
+}
+
+export interface SeasonalCropsViewProps extends SeasonalCropsCarouselProps {
+  onSelectCrop: (cropSlug: string) => void;
+}
+

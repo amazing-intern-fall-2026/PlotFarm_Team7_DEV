@@ -3,6 +3,7 @@ import { useDevice } from "@/shared/lib/device";
 import { DEFAULT_FARM_VIDEOS, type VideoHeroBannerProps, type VideoHeroBannerViewProps } from "./types";
 import { VideoHeroBannerDesktop } from "./VideoHeroBannerDesktop";
 import { VideoHeroBannerMobile } from "./VideoHeroBannerMobile";
+import { useHeroTelemetry } from "./useHeroTelemetry";
 
 export * from "./types";
 export * from "./VideoHeroBannerDesktop";
@@ -70,6 +71,8 @@ export function VideoHeroBanner({
     };
   }, [currentIndex]);
 
+  const { telemetry, loading: telemetryLoading } = useHeroTelemetry();
+
   const viewProps: VideoHeroBannerViewProps = {
     slides,
     currentIndex,
@@ -85,6 +88,8 @@ export function VideoHeroBanner({
     secondaryCtaText,
     onSecondaryCtaClick,
     className,
+    telemetry,
+    telemetryLoading,
   };
 
   if (isMobile) {

@@ -45,6 +45,19 @@ export const PlotsQuerySchema = z.object({
 export type PlotsQuery = z.infer<typeof PlotsQuerySchema>;
 
 export const PlotDetailParamsSchema = z.object({
-  id: z.string().uuid("ID ô đất không hợp lệ"),
+  id: z.string().min(1, "ID hoặc mã ô đất không hợp lệ"),
 });
 export type PlotDetailParams = z.infer<typeof PlotDetailParamsSchema>;
+
+export const HoldPlotResponseSchema = z.object({
+  plotId: z.string(),
+  lockedUntil: z.string(),
+  expiresInSeconds: z.number(),
+});
+export type HoldPlotResponse = z.infer<typeof HoldPlotResponseSchema>;
+
+export const ReleaseHoldResponseSchema = z.object({
+  unlocked: z.boolean(),
+});
+export type ReleaseHoldResponse = z.infer<typeof ReleaseHoldResponseSchema>;
+

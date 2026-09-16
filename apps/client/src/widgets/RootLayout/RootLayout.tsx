@@ -380,8 +380,8 @@ export function RootLayout({
           onLogoutClick={onLogoutClick}
         />
 
-        <main className={cn("flex-1 w-full", activeId === "home" ? "pb-20 lg:pb-0" : "py-6 lg:pb-6 pb-20")}>
-          {activeId === "home" ? children : <Container>{children}</Container>}
+        <main className={cn("flex-1 w-full", activeId === "home" || activeId === "explore" ? "pb-20 lg:pb-0" : "py-6 lg:pb-6 pb-20")}>
+          {activeId === "home" || activeId === "explore" ? children : <Container>{children}</Container>}
         </main>
 
         <Footer />

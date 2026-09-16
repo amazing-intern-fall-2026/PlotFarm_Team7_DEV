@@ -1,0 +1,239 @@
+import * as React from "react";
+import {
+  ShieldCheck,
+  Sprout,
+  PackageCheck,
+  Truck,
+  Headphones,
+  Sparkles,
+} from "lucide-react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Container,
+  Card,
+  CardHeader,
+  CardContent,
+  Heading,
+  Text,
+  Badge,
+  Button,
+} from "@/shared/ui";
+import { cn } from "@/shared/lib/utils";
+import {
+  COMMITMENTS_HEADER,
+  COMMITMENT_ITEMS,
+  COMMITMENTS_SUPPORT_BAR,
+  type CommitmentItem,
+  type CommitmentIconType,
+} from "./commitments.constants";
+
+export interface CommitmentsSectionProps extends React.HTMLAttributes<HTMLElement> {
+  onConsultClick?: () => void;
+  title?: string;
+  subtitle?: string;
+  items?: CommitmentItem[];
+  useContainer?: boolean;
+}
+
+function CommitmentIcon({
+  name,
+  className,
+}: {
+  name: CommitmentIconType;
+  className?: string;
+}) {
+  switch (name) {
+    case "ShieldCheck":
+      return <ShieldCheck className={className} />;
+    case "Sprout":
+      return <Sprout className={className} />;
+    case "PackageCheck":
+      return <PackageCheck className={className} />;
+    case "Truck":
+      return <Truck className={className} />;
+    default:
+      return <Sparkles className={className} />;
+  }
+}
+
+function CommitmentCard({ item }: { item: CommitmentItem }) {
+  return (
+    <Card
+      className={cn(
+        "group relative flex flex-col justify-between overflow-hidden rounded-xl",
+        "border border-slate-100 dark:border-border/80 bg-card",
+        "p-4 sm:p-5 transition-all duration-300",
+        "hover:shadow-sm hover:-translate-y-0.5",
+        item.colorTheme.borderHoverClass,
+      )}
+    >
+      <CardHeader className="p-0 space-y-3">
+        <Flex align="center" justify="between" className="gap-2">
+          <Box
+            className={cn(
+              "w-9 h-9 rounded-lg flex items-center justify-center border shrink-0 transition-transform duration-300 group-hover:scale-105",
+              item.colorTheme.iconBgClass,
+            )}
+          >
+            <CommitmentIcon
+              name={item.icon}
+              className={cn("w-4 h-4", item.colorTheme.iconTextClass)}
+            />
+          </Box>
+
+          <Badge
+            variant="outline"
+            className={cn(
+              "px-2 py-0.5 text-[11px] font-semibold rounded-full transition-colors",
+              item.colorTheme.badgeClass,
+            )}
+          >
+            {item.highlight}
+          </Badge>
+        </Flex>
+
+        <Heading
+          level={3}
+          variant="h5"
+          className="text-sm sm:text-base font-bold text-foreground tracking-tight group-hover:text-primary transition-colors"
+        >
+          {item.title}
+        </Heading>
+      </CardHeader>
+
+      <CardContent className="p-0 pt-2">
+        <Text
+          variant="body2"
+          className="text-xs text-muted-foreground leading-relaxed line-clamp-3"
+        >
+          {item.description}
+        </Text>
+      </CardContent>
+    </Card>
+  );
+}
+
+function SupportActionBar({ onConsultClick }: { onConsultClick?: () => void }) {
+
+
+  return (
+    <Box className="rounded-xl bg-muted/40 dark:bg-muted/20 border border-border/70 p-3.5 sm:p-4 transition-colors">
+      <Flex
+        direction="col"
+        className="sm:flex-row sm:items-center sm:justify-between gap-3"
+      >
+        <Flex align="center" className="gap-3 min-w-0">
+          <Box className="w-9 h-9 rounded-full bg-secondary/15 text-secondary border border-secondary/25 flex items-center justify-center shrink-0">
+            <Headphones className="w-4 h-4 text-secondary" />
+          </Box>
+
+          <Box className="space-y-0.5 min-w-0">
+            <Heading
+              level={4}
+              variant="h5"
+              className="text-xs sm:text-sm font-bold text-foreground"
+            >
+              {COMMITMENTS_SUPPORT_BAR.TITLE}
+            </Heading>
+            <Text
+              variant="body2"
+              className="text-[11px] sm:text-xs text-muted-foreground"
+            >
+              {COMMITMENTS_SUPPORT_BAR.SUBTITLE}
+            </Text>
+          </Box>
+        </Flex>
+
+        <Button
+          asChild
+          variant="secondary"
+          size="sm"
+          className={cn(
+            "w-full sm:w-auto h-9 px-4 rounded-lg font-semibold text-xs inline-flex items-center justify-center",
+            "bg-secondary hover:bg-secondary-hover text-secondary-foreground",
+            "shadow-xs hover:shadow-sm transition-all active:scale-[0.98] shrink-0",
+          )}
+        >
+          <a
+            href={`tel:${COMMITMENTS_SUPPORT_BAR.PHONE_HOTLINE.replace(/[^0-9]/g, "") || "19006868"}`}
+            onClick={(e) => {
+              if (onConsultClick) {
+                e.preventDefault();
+                onConsultClick();
+              }
+            }}
+          >
+            <Headphones className="w-3.5 h-3.5 mr-1.5" />
+            {COMMITMENTS_SUPPORT_BAR.CTA_TEXT}
+          </a>
+        </Button>
+      </Flex>
+    </Box>
+  );
+}
+
+export function CommitmentsSection({
+  onConsultClick,
+  title = COMMITMENTS_HEADER.TITLE,
+  subtitle = COMMITMENTS_HEADER.SUBTITLE,
+  items = COMMITMENT_ITEMS,
+  useContainer = false,
+  className,
+  ...props
+}: CommitmentsSectionProps) {
+  const content = (
+    <Box className="w-full rounded-2xl bg-white dark:bg-card border border-slate-100 dark:border-border/80 shadow-xs p-5 sm:p-6 md:p-8 space-y-6 md:space-y-7">
+      <Flex
+        direction="col"
+        align="center"
+        className="text-center space-y-2 max-w-2xl mx-auto"
+      >
+        <Badge
+          variant="outline"
+          icon={<Sparkles className="w-3 h-3 text-emerald-600" />}
+          className="px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full border-emerald-200 bg-emerald-50/80 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
+        >
+          {COMMITMENTS_HEADER.BADGE}
+        </Badge>
+
+        <Heading
+          level={2}
+          variant="h3"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0d3b1e] dark:text-foreground tracking-tight"
+        >
+          {title}
+        </Heading>
+
+        <Text
+          variant="body2"
+          className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl"
+        >
+          {subtitle}
+        </Text>
+      </Flex>
+
+      <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {items.map((item) => (
+          <CommitmentCard key={item.id} item={item} />
+        ))}
+      </Grid>
+
+      <SupportActionBar onConsultClick={onConsultClick} />
+    </Box>
+  );
+
+  return (
+    <Box
+      as="section"
+      aria-label="Cam kết chất lượng canh tác"
+      className={cn("w-full", className)}
+      {...props}
+    >
+      {useContainer ? <Container size="7xl">{content}</Container> : content}
+    </Box>
+  );
+}
+
+export { CommitmentsSection as QualityCommitments };

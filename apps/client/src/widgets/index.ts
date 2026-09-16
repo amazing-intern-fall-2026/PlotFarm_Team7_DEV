@@ -11,5 +11,11 @@
 export * from "./RootLayout";
 export * from "./HomeHero";
 export * from "./SeasonalCrops";
-export * from "./HowItWorks";
+export * from "./FarmJourney";
+export * from "./HomeCtaBanner";
+export * from "./KeyFeatures";
+export * from "./PlotsHero";
+export * from "./PlotsFilter";
+export * from "./PlotGridMap";
+export * from "./QualityCommitments";
 
