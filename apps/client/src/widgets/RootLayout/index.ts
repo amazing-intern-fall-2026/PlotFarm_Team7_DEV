@@ -1,7 +1,7 @@
-export { RootLayout, AppShell } from "./RootLayout";
+export { RootLayout, AppShell } from "./ui/RootLayout";
 export type {
   RootLayoutProps,
   RootLayoutUser,
   AppShellProps,
   AppShellUser,
-} from "./RootLayout";
+} from "./model/types";
