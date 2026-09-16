@@ -23,5 +23,6 @@ export * from "./PlotCheckout";
 export * from "./AccountSidebar";
 export * from "./AccountProfile";
 export * from "./CustomerContracts";
-export * from "./OrganicStandards";
-export * from "./CropInsurance";
+export * from "./AboutLegalCharter";
+
+

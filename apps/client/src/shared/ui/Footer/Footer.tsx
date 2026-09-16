@@ -156,7 +156,7 @@ export function Footer({
               </li>
               <li>
                 <a
-                  href="/legal/organic-standards"
+                  href="/about#organic-standards"
                   className="hover:text-primary transition-colors inline-block"
                 >
                   {t("footer.link_organic_commitment")}
@@ -164,7 +164,7 @@ export function Footer({
               </li>
               <li>
                 <a
-                  href="/legal/crop-insurance"
+                  href="/about#crop-insurance"
                   className="hover:text-primary transition-colors inline-block"
                 >
                   {t("footer.link_crop_insurance")}

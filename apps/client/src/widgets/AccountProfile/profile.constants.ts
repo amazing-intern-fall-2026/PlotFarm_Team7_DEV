@@ -137,15 +137,16 @@ export const ACCOUNT_NAV_ITEMS = [
   {
     id: "organic-standards",
     title: "Cam kết chuẩn hữu cơ",
-    description: "5 Trụ cột an toàn sinh học Đà Lạt",
-    href: "/legal/organic-standards",
+    description: "Quy chuẩn kỹ thuật & an toàn sinh học",
+    href: "/about#organic-standards",
     badge: undefined,
   },
   {
     id: "crop-insurance",
     title: "Bảo hiểm rủi ro mùa vụ",
     description: "Chính sách bồi hoàn 100% khi có sự cố",
-    href: "/legal/crop-insurance",
+    href: "/about#crop-insurance",
     badge: undefined,
   },
 ];
+

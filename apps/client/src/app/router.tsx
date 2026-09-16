@@ -36,9 +36,8 @@ import {
   AdminRbacPage,
   ProfilePage,
   CustomerContractsPage,
-  OrganicStandardsPage,
-  CropInsurancePage,
 } from "@/pages";
+
 
 interface RouteNavRule {
   pattern: RegExp;
@@ -334,8 +333,9 @@ export const router = createBrowserRouter([
       { path: "/about", element: <AboutPage /> },
       { path: "/account/profile", element: <ProfilePage /> },
       { path: "/account/contracts", element: <CustomerContractsPage /> },
-      { path: "/legal/organic-standards", element: <OrganicStandardsPage /> },
-      { path: "/legal/crop-insurance", element: <CropInsurancePage /> },
+      { path: "/legal/organic-standards", element: <Navigate to="/about#organic-standards" replace /> },
+      { path: "/legal/crop-insurance", element: <Navigate to="/about#crop-insurance" replace /> },
+
 
       {
         element: <ProtectedRoute />,
