@@ -13,12 +13,11 @@ export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
         className="absolute inset-0 w-full h-full object-cover object-center transform scale-105"
       />
 
-      <Box className="absolute inset-0 bg-[#081a0e]/80 mix-blend-multiply" />
-      <Box className="absolute inset-0 bg-gradient-to-r from-[#051108]/95 via-[#07180c]/75 to-[#051108]/95" />
-      <Box className="absolute inset-0 bg-gradient-to-t from-[#051108] via-transparent to-[#051108]/85" />
+      <Box className="absolute inset-0 bg-black/35" />
+      <Box className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
 
       <svg
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-40 md:opacity-50"
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-20 md:opacity-30"
         viewBox="0 0 1440 450"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
