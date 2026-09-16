@@ -49,10 +49,10 @@ export const PlotBookingSummary: React.FC<PlotBookingSummaryProps> = ({
 
   return (
     <>
-      {/* DESKTOP STICKY BOOKING CARD */}
+      {/* DESKTOP BOOKING CARD */}
       <Card
         className={cn(
-          "hidden lg:block sticky top-6 border border-emerald-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-emerald-950/5 rounded-2xl overflow-hidden",
+          "hidden lg:block border border-emerald-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl shadow-emerald-950/5 rounded-2xl overflow-hidden",
           className,
         )}
       >
