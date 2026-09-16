@@ -50,7 +50,7 @@ const variantStyles: Record<TypographyVariant, string> = {
   p: "text-sm text-foreground leading-relaxed",
   body1: "text-sm text-foreground leading-relaxed",
   body2: "text-xs text-muted-foreground leading-relaxed",
-  caption: "text-[11px] text-muted-foreground tracking-normal",
+  caption: "text-xs text-muted-foreground tracking-normal",
   lead: "text-base text-muted-foreground leading-relaxed font-normal",
   large: "text-base font-semibold text-foreground",
   small: "text-xs text-muted-foreground font-medium",

@@ -8,6 +8,7 @@ export interface BreadcrumbItemData {
   onClick?: () => void;
   icon?: React.ReactNode;
   isActive?: boolean;
+  isCurrent?: boolean;
 }
 
 export interface BreadcrumbProps extends React.ComponentPropsWithoutRef<"nav"> {
@@ -60,7 +61,7 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
                   <BreadcrumbLink
                     href={homeHref}
                     onClick={onHomeClick}
-                    className="flex items-center text-rose-500 hover:text-rose-600 dark:text-rose-400"
+                    className="flex items-center text-muted-foreground hover:text-primary transition-colors"
                     aria-label="Trang chủ"
                   >
                     <svg
@@ -78,7 +79,12 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
 
             {items.map((item, index) => {
               const isLast = index === items.length - 1;
-              const isCurrent = item.isActive !== undefined ? item.isActive : isLast;
+              const isCurrent =
+                item.isCurrent !== undefined
+                  ? item.isCurrent
+                  : item.isActive !== undefined
+                    ? item.isActive
+                    : isLast;
 
               return (
                 <React.Fragment key={index}>

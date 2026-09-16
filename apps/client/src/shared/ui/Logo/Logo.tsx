@@ -25,21 +25,21 @@ export function Logo({
     if (brandText === "Green Farm") {
       return (
         <>
-          Green <span className="text-[#23a54f]">Farm</span>
+          Green <span className="text-primary">Farm</span>
         </>
       );
     }
     if (brandText === "CloudFarm") {
       return (
         <>
-          Cloud<span className="text-[#23a54f]">Farm</span>
+          Cloud<span className="text-primary">Farm</span>
         </>
       );
     }
     if (brandText === "PlotFarm") {
       return (
         <>
-          Plot<span className="text-[#23a54f]">Farm</span>
+          Plot<span className="text-primary">Farm</span>
         </>
       );
     }
@@ -47,9 +47,9 @@ export function Logo({
       return (
         <div className="flex flex-col text-left leading-none">
           <span className="font-extrabold text-foreground text-base tracking-tight">
-            Bio<span className="text-[#23a54f]">Cloud</span>
+            Bio<span className="text-primary">Cloud</span>
           </span>
-          <span className="text-[9px] font-bold tracking-widest text-slate-500 uppercase mt-0.5">
+          <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase mt-0.5">
             FARMING ADMIN
           </span>
         </div>

@@ -249,10 +249,11 @@ export function CheckoutPage() {
   return (
     <Box className="min-h-screen bg-slate-50/60 dark:bg-slate-950 font-sans pb-24 lg:pb-16">
       <Container size="7xl" className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-6">
-        {/* TOP BAR: BACK BUTTON & STEPPER */}
+        {/* TOP BAR: BREADCRUMB, BACK BUTTON & STEPPER */}
         <CheckoutHeaderBar
           onBack={() => navigate(`/plots/${rawPlotParam}`)}
           plotNumber={cleanPlotNumber}
+          plotId={rawPlotParam}
         />
 
         {/* MOBILE VIEW: ACCORDION TÓM TẮT ĐƠN HÀNG THU GỌN TRÊN ĐẦU */}

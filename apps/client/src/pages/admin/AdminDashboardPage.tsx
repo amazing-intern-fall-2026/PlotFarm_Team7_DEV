@@ -13,12 +13,18 @@ import {
   Droplets,
   Truck,
   Sparkles,
-  ChevronRight,
 } from "lucide-react";
 import {
   Card,
   Button,
+  Badge,
   Box,
+  Flex,
+  Grid,
+  Breadcrumb,
+  Heading,
+  Text,
+  Typography,
 } from "@/shared/ui";
 
 interface TimelineEvent {
@@ -67,22 +73,33 @@ export function AdminDashboardPage() {
     let harvestReadyCount = 0;
 
     try {
-      const contractsRaw = localStorage.getItem("admin_managed_contracts_data_v2") || localStorage.getItem("admin_managed_contracts_data");
+      const contractsRaw =
+        localStorage.getItem("admin_managed_contracts_data_v2") ||
+        localStorage.getItem("admin_managed_contracts_data");
       if (contractsRaw) {
         const contracts = JSON.parse(contractsRaw);
         if (Array.isArray(contracts)) {
           activeContracts = contracts.length;
-          totalRevenue = contracts.filter((c: Record<string, unknown>) => c.status === "paid").reduce((sum: number, c: Record<string, unknown>) => sum + (Number(c.amount) || 0), 0);
+          totalRevenue = contracts
+            .filter((c: Record<string, unknown>) => c.status === "paid")
+            .reduce((sum: number, c: Record<string, unknown>) => sum + (Number(c.amount) || 0), 0);
         }
       }
 
-      const plotsRaw = localStorage.getItem("admin_managed_plots_data_v2") || localStorage.getItem("admin_managed_plots_data");
+      const plotsRaw =
+        localStorage.getItem("admin_managed_plots_data_v2") ||
+        localStorage.getItem("admin_managed_plots_data");
       if (plotsRaw) {
         const plots = JSON.parse(plotsRaw);
         if (Array.isArray(plots)) {
           totalPlots = plots.length;
-          cultivatingPlots = plots.filter((p: Record<string, unknown>) => typeof p.status === "string" && ["cultivating", "rented"].includes(p.status)).length;
-          harvestReadyCount = plots.filter((p: Record<string, unknown>) => p.status === "harvest_ready").length;
+          cultivatingPlots = plots.filter(
+            (p: Record<string, unknown>) =>
+              typeof p.status === "string" && ["cultivating", "rented"].includes(p.status)
+          ).length;
+          harvestReadyCount = plots.filter(
+            (p: Record<string, unknown>) => p.status === "harvest_ready"
+          ).length;
         }
       }
     } catch {
@@ -118,9 +135,9 @@ export function AdminDashboardPage() {
         time: new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }),
         icon: "droplet",
         content: (
-          <>
+          <Text variant="body2" className="text-foreground">
             Cảm biến vi khí hậu tự động hiệu chỉnh thông số đo tại khu vực nhà màng A
-          </>
+          </Text>
         ),
         plotCode: "Ô #A-102",
         category: "Tự động",
@@ -139,199 +156,219 @@ export function AdminDashboardPage() {
   return (
     <Box className="w-full space-y-6 pb-12">
       {/* ── Sub-breadcrumbs & Page Header ── */}
-      <Box className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <Box className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-            <span>Hệ thống</span>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-foreground font-semibold">Bảng điều khiển tổng quan</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+      <Flex direction="col" justify="between" className="gap-4 lg:flex-row lg:items-center">
+        <Box className="space-y-1.5">
+          <Breadcrumb
+            items={[
+              { label: "Hệ thống", href: "/admin" },
+              { label: "Bảng điều khiển tổng quan", isCurrent: true },
+            ]}
+          />
+          <Heading level={1} variant="h1" className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Bảng điều khiển Tổng quan &amp; Phân tích Vận hành
-          </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground">
+          </Heading>
+          <Text variant="body2" className="text-muted-foreground">
             Trung tâm điều hành vĩ mô – Giám sát chỉ số tài chính, tình trạng ô đất và chất lượng canh tác
-          </p>
+          </Text>
         </Box>
 
         {/* Action controls */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          <div className="inline-flex rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
-            <button
+        <Flex wrap="wrap" align="center" className="gap-2.5">
+          <Box className="inline-flex rounded-xl bg-muted p-1">
+            <Button
               type="button"
+              variant={activeFilter === "today" ? "secondary" : "ghost"}
+              size="sm"
               onClick={() => setActiveFilter("today")}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
-                activeFilter === "today"
-                  ? "bg-white dark:bg-slate-900 text-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
+              className="h-8 text-xs font-semibold"
             >
               Hôm nay
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant={activeFilter === "7days" ? "secondary" : "ghost"}
+              size="sm"
               onClick={() => setActiveFilter("7days")}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
-                activeFilter === "7days"
-                  ? "bg-white dark:bg-slate-900 text-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
+              className="h-8 text-xs font-semibold"
             >
               7 ngày
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant={activeFilter === "season" ? "default" : "ghost"}
+              size="sm"
               onClick={() => setActiveFilter("season")}
-              className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
-                activeFilter === "season"
-                  ? "bg-emerald-700 text-white shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
+              className="h-8 text-xs font-bold"
             >
               Vụ mùa Đông Xuân 2026
-            </button>
-          </div>
+            </Button>
+          </Box>
 
           <Button
             variant="outline"
             size="sm"
             onClick={handleExport}
             disabled={isExporting}
-            className="flex items-center gap-2 border-border font-semibold shadow-xs"
+            leftIcon={<Download className="h-4 w-4" />}
+            className="h-9 font-semibold shadow-xs"
           >
-            <Download className="h-4 w-4" />
-            <span>{isExporting ? "Đang xuất..." : "Xuất báo cáo PDF/Excel"}</span>
+            {isExporting ? "Đang xuất..." : "Xuất báo cáo PDF/Excel"}
           </Button>
-        </div>
-      </Box>
+        </Flex>
+      </Flex>
 
       {/* ── 4 Top KPI Metric Cards ── */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Grid cols={1} colsSm={2} colsLg={4} gap={4}>
         {/* Metric 1 */}
-        <Card className="relative overflow-hidden border-border bg-white dark:bg-slate-900 p-5 shadow-xs">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground">Tổng doanh thu mùa vụ</p>
-              <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-foreground">
+        <Card className="relative overflow-hidden p-5 shadow-xs">
+          <Flex justify="between" align="start">
+            <Box>
+              <Text variant="caption" className="font-semibold text-muted-foreground">
+                Tổng doanh thu mùa vụ
+              </Text>
+              <Heading level={3} variant="h2" className="mt-2 text-2xl font-extrabold tracking-tight">
                 {stats.totalRevenue.toLocaleString("vi-VN")} đ
-              </h3>
-            </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600">
+              </Heading>
+            </Box>
+            <Flex align="center" justify="center" className="h-10 w-10 rounded-xl bg-primary/10 text-primary">
               <Wallet className="h-5 w-5" />
-            </div>
-          </div>
-          <div className="mt-4 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
+            </Flex>
+          </Flex>
+          <Flex align="center" className="mt-4 gap-2">
+            <Badge variant="outline" className="gap-1 border-primary/20 bg-primary/10 text-primary font-bold">
               <TrendingUp className="h-3.5 w-3.5" />
               {stats.totalRevenue > 0 ? "+14.2%" : "0%"}
-            </span>
-            <span className="text-xs text-muted-foreground">
+            </Badge>
+            <Text variant="caption" className="text-muted-foreground">
               {stats.totalRevenue > 0 ? "so với vụ trước" : "Chưa có phát sinh"}
-            </span>
-          </div>
+            </Text>
+          </Flex>
         </Card>
 
         {/* Metric 2 */}
-        <Card className="relative overflow-hidden border-border bg-white dark:bg-slate-900 p-5 shadow-xs">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground">Tỷ lệ lấp đầy ô đất</p>
-              <div className="mt-2 flex items-baseline gap-2">
-                <span className="text-2xl font-extrabold tracking-tight text-foreground">{stats.occupancyPercent}%</span>
-                <span className="text-xs text-muted-foreground font-medium">({stats.cultivatingPlots}/{stats.totalPlots} ô đang canh tác)</span>
-              </div>
-            </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 dark:bg-teal-950/50 text-teal-600">
+        <Card className="relative overflow-hidden p-5 shadow-xs">
+          <Flex justify="between" align="start">
+            <Box>
+              <Text variant="caption" className="font-semibold text-muted-foreground">
+                Tỷ lệ lấp đầy ô đất
+              </Text>
+              <Flex align="baseline" className="mt-2 gap-2">
+                <Heading level={3} variant="h2" className="text-2xl font-extrabold tracking-tight">
+                  {stats.occupancyPercent}%
+                </Heading>
+                <Text variant="caption" className="text-muted-foreground font-medium">
+                  ({stats.cultivatingPlots}/{stats.totalPlots} ô đang canh tác)
+                </Text>
+              </Flex>
+            </Box>
+            <Flex align="center" justify="center" className="h-10 w-10 rounded-xl bg-secondary/10 text-secondary">
               <Sprout className="h-5 w-5" />
-            </div>
-          </div>
-          <div className="mt-4 w-full">
-            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
-              <div className="h-full rounded-full bg-emerald-700 transition-all" style={{ width: `${stats.occupancyPercent}%` }} />
-            </div>
-          </div>
+            </Flex>
+          </Flex>
+          <Box className="mt-4 w-full">
+            <Box className="h-2 w-full overflow-hidden rounded-full bg-muted">
+              <Box
+                className="h-full rounded-full bg-primary transition-all duration-500"
+                style={{ width: `${stats.occupancyPercent}%` }}
+              />
+            </Box>
+          </Box>
         </Card>
 
         {/* Metric 3 */}
-        <Card className="relative overflow-hidden border-border bg-white dark:bg-slate-900 p-5 shadow-xs">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground">Hợp đồng đang thực hiện</p>
-              <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-foreground">
+        <Card className="relative overflow-hidden p-5 shadow-xs">
+          <Flex justify="between" align="start">
+            <Box>
+              <Text variant="caption" className="font-semibold text-muted-foreground">
+                Hợp đồng đang thực hiện
+              </Text>
+              <Heading level={3} variant="h2" className="mt-2 text-2xl font-extrabold tracking-tight">
                 {stats.activeContracts} đơn
-              </h3>
-            </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600">
+              </Heading>
+            </Box>
+            <Flex align="center" justify="center" className="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
               <ClipboardList className="h-5 w-5" />
-            </div>
-          </div>
-          <div className="mt-4 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/60 dark:text-amber-400">
+            </Flex>
+          </Flex>
+          <Flex align="center" className="mt-4 gap-2">
+            <Badge variant="outline" className="gap-1 border-amber-500/20 bg-amber-500/10 text-amber-700 dark:text-amber-400 font-semibold">
               <Clock className="h-3.5 w-3.5" />
               {stats.harvestReadyCount} đơn sắp thu hoạch
-            </span>
-          </div>
+            </Badge>
+          </Flex>
         </Card>
 
         {/* Metric 4 */}
-        <Card className="relative overflow-hidden border-border bg-white dark:bg-slate-900 p-5 shadow-xs">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground">Cảnh báo vi khí hậu</p>
-              <div className="mt-2 flex items-center gap-2.5">
-                <span className="text-2xl font-extrabold tracking-tight text-foreground">0 ô đất</span>
-                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+        <Card className="relative overflow-hidden p-5 shadow-xs">
+          <Flex justify="between" align="start">
+            <Box>
+              <Text variant="caption" className="font-semibold text-muted-foreground">
+                Cảnh báo vi khí hậu
+              </Text>
+              <Flex align="center" className="mt-2 gap-2.5">
+                <Heading level={3} variant="h2" className="text-2xl font-extrabold tracking-tight">
+                  0 ô đất
+                </Heading>
+                <Badge variant="outline" className="border-primary/20 bg-primary/10 text-primary font-bold">
                   Hệ thống an toàn
-                </span>
-              </div>
-            </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600">
+                </Badge>
+              </Flex>
+            </Box>
+            <Flex align="center" justify="center" className="h-10 w-10 rounded-xl bg-muted text-muted-foreground">
               <AlertTriangle className="h-5 w-5" />
-            </div>
-          </div>
-          <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-            <span>Tất cả cảm biến hoạt động bình thường</span>
-            <button
+            </Flex>
+          </Flex>
+          <Flex justify="between" align="center" className="mt-4">
+            <Text variant="caption" className="text-muted-foreground">
+              Tất cả cảm biến hoạt động bình thường
+            </Text>
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => navigate("/admin/plots")}
-              className="text-emerald-700 hover:text-emerald-800 font-semibold"
+              className="h-auto p-0 text-xs font-semibold text-primary hover:text-primary hover:bg-transparent"
             >
               Xem →
-            </button>
-          </div>
+            </Button>
+          </Flex>
         </Card>
-      </div>
+      </Grid>
 
       {/* ── Section Charts: Bar Chart & Donut Chart ── */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <Grid cols={1} colsLg={3} gap={6}>
         {/* Left: Bar Chart (2 cols) */}
-        <Card className="border-border bg-white dark:bg-slate-900 p-6 shadow-xs lg:col-span-2">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-base font-bold text-foreground">
+        <Card className="p-6 shadow-xs lg:col-span-2">
+          <Flex direction="col" justify="between" className="gap-2 sm:flex-row sm:items-center">
+            <Box>
+              <Heading level={2} variant="h3" className="text-base font-bold">
                 Biểu đồ Doanh thu &amp; Chi phí theo tháng
-              </h2>
-              <p className="text-xs text-muted-foreground">
+              </Heading>
+              <Text variant="caption" className="text-muted-foreground">
                 Chu kỳ luân canh từ Tháng 5 đến Tháng 10 năm 2026 (Triệu VND)
-              </p>
-            </div>
+              </Text>
+            </Box>
             {/* Legend */}
-            <div className="flex items-center gap-4 text-xs font-semibold">
-              <div className="flex items-center gap-1.5">
-                <span className="h-3 w-3 rounded-xs bg-emerald-800" />
-                <span className="text-foreground">Doanh thu vụ</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="h-3 w-3 rounded-xs bg-slate-300 dark:bg-slate-600" />
-                <span className="text-muted-foreground">Chi phí vận hành</span>
-              </div>
-            </div>
-          </div>
+            <Flex align="center" className="gap-4 text-xs font-semibold">
+              <Flex align="center" className="gap-1.5">
+                <Box className="h-3 w-3 rounded-xs bg-primary" />
+                <Typography as="span" variant="caption" className="text-foreground font-semibold">
+                  Doanh thu vụ
+                </Typography>
+              </Flex>
+              <Flex align="center" className="gap-1.5">
+                <Box className="h-3 w-3 rounded-xs bg-muted-foreground/30" />
+                <Typography as="span" variant="caption" className="text-muted-foreground font-semibold">
+                  Chi phí vận hành
+                </Typography>
+              </Flex>
+            </Flex>
+          </Flex>
 
           {/* SVG Bar Chart / Empty state */}
           {stats.totalRevenue > 0 ? (
-            <div className="mt-6 w-full pt-4">
-              <div className="flex items-end justify-between gap-3 h-52 border-b border-border pb-2 px-2">
+            <Box className="mt-6 w-full pt-4">
+              <Flex justify="between" align="end" className="h-52 border-b border-border pb-2 px-2 gap-3">
                 {[
                   { month: "Th.5", revenue: 48, cost: 28 },
                   { month: "Th.6", revenue: 60, cost: 32 },
@@ -345,210 +382,284 @@ export function AdminDashboardPage() {
                   const costHeightPercent = (stat.cost / maxVal) * 100;
 
                   return (
-                    <div key={stat.month} className="flex flex-1 flex-col items-center gap-2 h-full justify-end group">
-                      <div className="flex items-end gap-1.5 w-full justify-center h-full">
-                        <div
-                          className="w-5 sm:w-7 rounded-t-md bg-emerald-800 transition-all duration-300 hover:bg-emerald-700 relative flex justify-center group-hover:scale-y-102 origin-bottom"
+                    <Flex
+                      key={stat.month}
+                      direction="col"
+                      align="center"
+                      justify="end"
+                      className="flex-1 h-full gap-2 group"
+                    >
+                      <Flex align="end" justify="center" className="w-full h-full gap-1.5">
+                        <Box
+                          className="w-5 sm:w-7 rounded-t-md bg-primary transition-all duration-300 hover:opacity-90 relative flex justify-center group-hover:scale-y-105 origin-bottom"
                           style={{ height: `${revHeightPercent}%` }}
                         >
-                          <span className="opacity-0 group-hover:opacity-100 absolute -top-6 text-[10px] font-bold text-emerald-800 transition-opacity whitespace-nowrap">
+                          <Typography
+                            as="span"
+                            variant="caption"
+                            className="opacity-0 group-hover:opacity-100 absolute -top-6 font-bold text-primary transition-opacity whitespace-nowrap"
+                          >
                             {stat.revenue}M
-                          </span>
-                        </div>
-                        <div
-                          className="w-5 sm:w-7 rounded-t-md bg-slate-200 dark:bg-slate-700 transition-all duration-300 hover:bg-slate-300 relative flex justify-center group-hover:scale-y-102 origin-bottom"
+                          </Typography>
+                        </Box>
+                        <Box
+                          className="w-5 sm:w-7 rounded-t-md bg-muted-foreground/25 transition-all duration-300 hover:bg-muted-foreground/35 relative flex justify-center group-hover:scale-y-105 origin-bottom"
                           style={{ height: `${costHeightPercent}%` }}
                         >
-                          <span className="opacity-0 group-hover:opacity-100 absolute -top-6 text-[10px] font-bold text-slate-600 transition-opacity whitespace-nowrap">
+                          <Typography
+                            as="span"
+                            variant="caption"
+                            className="opacity-0 group-hover:opacity-100 absolute -top-6 font-bold text-muted-foreground transition-opacity whitespace-nowrap"
+                          >
                             {stat.cost}M
-                          </span>
-                        </div>
-                      </div>
-                      <span className="text-xs font-semibold text-muted-foreground">{stat.month}</span>
-                    </div>
+                          </Typography>
+                        </Box>
+                      </Flex>
+                      <Typography as="span" variant="caption" className="font-semibold text-muted-foreground">
+                        {stat.month}
+                      </Typography>
+                    </Flex>
                   );
                 })}
-              </div>
-            </div>
+              </Flex>
+            </Box>
           ) : (
-            <div className="flex flex-col items-center justify-center py-16 text-center text-xs text-muted-foreground">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 dark:bg-slate-800 mb-3">
+            <Flex direction="col" align="center" justify="center" className="py-16 text-center">
+              <Flex align="center" justify="center" className="h-12 w-12 rounded-2xl bg-muted text-muted-foreground mb-3">
                 <Wallet className="h-6 w-6" />
-              </div>
-              <p className="font-semibold text-foreground text-sm">Chưa có phát sinh doanh thu vụ mùa</p>
-              <p className="text-muted-foreground mt-1">Khi các hợp đồng thuê ô đất được thanh toán, biểu đồ tài chính sẽ cập nhật tại đây.</p>
-            </div>
+              </Flex>
+              <Text variant="body1" className="font-semibold text-foreground">
+                Chưa có phát sinh doanh thu vụ mùa
+              </Text>
+              <Text variant="caption" className="text-muted-foreground mt-1">
+                Khi các hợp đồng thuê ô đất được thanh toán, biểu đồ tài chính sẽ cập nhật tại đây.
+              </Text>
+            </Flex>
           )}
 
           {/* Bottom Highlight banner */}
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between rounded-xl bg-slate-50 dark:bg-slate-800/60 px-4 py-3 border border-border/60">
-            <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
-              <Sparkles className="h-4 w-4 text-emerald-600" />
-              <span>Hiệu suất sinh lời bình quân: <strong className="font-bold text-emerald-700 dark:text-emerald-400">{stats.totalRevenue > 0 ? "54.8% / ô đất" : "0%"}</strong></span>
-            </div>
-            <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-full self-start sm:self-auto">
+          <Flex
+            direction="col"
+            justify="between"
+            className="mt-5 gap-2 sm:flex-row sm:items-center rounded-xl bg-muted/50 px-4 py-3 border border-border/60"
+          >
+            <Flex align="center" className="gap-2 text-xs font-semibold text-foreground">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <Typography as="span" variant="caption" className="text-foreground">
+                Hiệu suất sinh lời bình quân:{" "}
+                <Typography as="strong" variant="caption" className="font-bold text-primary">
+                  {stats.totalRevenue > 0 ? "54.8% / ô đất" : "0%"}
+                </Typography>
+              </Typography>
+            </Flex>
+            <Badge variant="outline" className="border-primary/20 bg-primary/10 text-primary self-start sm:self-auto font-semibold">
               {stats.totalRevenue > 0 ? "Tăng trưởng ổn định" : "Khởi tạo hệ thống"}
-            </span>
-          </div>
+            </Badge>
+          </Flex>
         </Card>
 
         {/* Right: Donut Chart (1 col) */}
-        <Card className="border-border bg-white dark:bg-slate-900 p-6 shadow-xs flex flex-col justify-between">
-          <div>
-            <h2 className="text-base font-bold text-foreground">
+        <Card className="p-6 shadow-xs flex flex-col justify-between">
+          <Box>
+            <Heading level={2} variant="h3" className="text-base font-bold">
               Cơ cấu Cây trồng Hiện tại
-            </h2>
-            <p className="text-xs text-muted-foreground">
+            </Heading>
+            <Text variant="caption" className="text-muted-foreground">
               Tỷ trọng phân bổ giống rau trên {stats.cultivatingPlots} ô canh tác
-            </p>
+            </Text>
 
             {stats.cultivatingPlots > 0 ? (
-              <>
+              <Box>
                 {/* Donut graphic */}
-                <div className="mt-6 flex items-center justify-center relative">
+                <Box className="mt-6 flex items-center justify-center relative">
                   <svg viewBox="0 0 160 160" className="w-44 h-44 -rotate-90">
-                    <circle cx="80" cy="80" r="58" stroke="currentColor" strokeWidth="22" className="text-slate-100 dark:text-slate-800" fill="none" />
                     <circle
                       cx="80"
                       cy="80"
                       r="58"
-                      stroke="#166534"
+                      stroke="currentColor"
+                      strokeWidth="22"
+                      className="text-muted"
+                      fill="none"
+                    />
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="58"
+                      stroke="currentColor"
                       strokeWidth="22"
                       strokeDasharray="163.8 200.2"
                       strokeDashoffset="0"
                       fill="none"
-                      className="transition-all duration-500"
+                      className="text-primary transition-all duration-500"
                     />
                   </svg>
 
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-xl font-extrabold text-foreground tracking-tight">{stats.cultivatingPlots} Ô</span>
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">CANH TÁC</span>
-                  </div>
-                </div>
+                  <Flex direction="col" align="center" justify="center" className="absolute inset-0 text-center">
+                    <Heading level={3} variant="h3" className="text-xl font-extrabold tracking-tight">
+                      {stats.cultivatingPlots} Ô
+                    </Heading>
+                    <Text variant="caption" className="font-bold text-muted-foreground uppercase tracking-wider">
+                      CANH TÁC
+                    </Text>
+                  </Flex>
+                </Box>
 
-                <div className="mt-6 space-y-2.5 text-xs">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#166534]" />
-                      <span className="font-semibold text-foreground">Rau ăn lá tự nhiên</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground">{stats.cultivatingPlots} ô</span>
-                      <span className="font-bold text-foreground">100%</span>
-                    </div>
-                  </div>
-                </div>
-              </>
+                <Box className="mt-6 space-y-2.5 text-xs">
+                  <Flex justify="between" align="center">
+                    <Flex align="center" className="gap-2">
+                      <Box className="h-2.5 w-2.5 rounded-full bg-primary" />
+                      <Typography as="span" variant="caption" className="font-semibold text-foreground">
+                        Rau ăn lá tự nhiên
+                      </Typography>
+                    </Flex>
+                    <Flex align="center" className="gap-2">
+                      <Text variant="caption" className="text-muted-foreground">
+                        {stats.cultivatingPlots} ô
+                      </Text>
+                      <Text variant="caption" className="font-bold text-foreground">
+                        100%
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Box>
+              </Box>
             ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-center text-xs text-muted-foreground">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 mb-3">
+              <Flex direction="col" align="center" justify="center" className="py-16 text-center">
+                <Flex align="center" justify="center" className="h-12 w-12 rounded-2xl bg-primary/10 text-primary mb-3">
                   <Sprout className="h-6 w-6" />
-                </div>
-                <p className="font-semibold text-foreground text-sm">Chưa có ô đất canh tác</p>
-                <p className="text-muted-foreground mt-1">Chưa có giống rau nào đang được gieo trồng trong mùa vụ này.</p>
-              </div>
+                </Flex>
+                <Text variant="body1" className="font-semibold text-foreground">
+                  Chưa có ô đất canh tác
+                </Text>
+                <Text variant="caption" className="text-muted-foreground mt-1">
+                  Chưa có giống rau nào đang được gieo trồng trong mùa vụ này.
+                </Text>
+              </Flex>
             )}
-          </div>
+          </Box>
 
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate("/admin/crops")}
-            className="mt-4 w-full text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50"
+            className="mt-4 w-full text-xs font-semibold text-primary hover:text-primary hover:bg-primary/10"
           >
             Quản lý danh mục giống cây →
           </Button>
         </Card>
-      </div>
+      </Grid>
 
       {/* ── Real-Time Activity Log (Nhật ký tác vụ thời gian thực) ── */}
-      <Card className="border-border bg-white dark:bg-slate-900 p-6 shadow-xs">
-        <div className="flex items-center justify-between border-b border-border pb-4">
-          <div className="flex items-center gap-3">
-            <h2 className="text-base font-bold text-foreground">
+      <Card className="p-6 shadow-xs">
+        <Flex justify="between" align="center" className="border-b border-border pb-4">
+          <Flex align="center" className="gap-3">
+            <Heading level={2} variant="h3" className="text-base font-bold">
               Nhật ký tác vụ thời gian thực
-            </h2>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+            </Heading>
+            <Badge variant="outline" className="gap-1.5 border-primary/20 bg-primary/10 text-primary font-bold">
+              <Box className="h-1.5 w-1.5 rounded-full bg-primary animate-ping" />
               Live Event Stream
-            </span>
-          </div>
+            </Badge>
+          </Flex>
 
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             title="Làm mới sự kiện"
             aria-label="Làm mới sự kiện"
             onClick={handleRefreshEvents}
-            className="rounded-lg p-1.5 text-slate-400 hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="h-8 w-8 p-0"
           >
             <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
-          </button>
-        </div>
+          </Button>
+        </Flex>
 
         {events.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center text-xs text-muted-foreground">
-            <Clock className="h-6 w-6 text-slate-400 mb-2" />
-            <p className="font-semibold text-foreground text-sm">Chưa có nhật ký tác vụ nào phát sinh</p>
-            <p className="text-muted-foreground mt-1">Các thao tác thanh toán, cảm biến IoT và vận chuyển sẽ tự động xuất hiện tại đây.</p>
-          </div>
+          <Flex direction="col" align="center" justify="center" className="py-12 text-center">
+            <Clock className="h-6 w-6 text-muted-foreground mb-2" />
+            <Text variant="body1" className="font-semibold text-foreground">
+              Chưa có nhật ký tác vụ nào phát sinh
+            </Text>
+            <Text variant="caption" className="text-muted-foreground mt-1">
+              Các thao tác thanh toán, cảm biến IoT và vận chuyển sẽ tự động xuất hiện tại đây.
+            </Text>
+          </Flex>
         ) : (
-          <div className="mt-4 divide-y divide-border/60">
+          <Box className="mt-4 divide-y divide-border/60">
             {events.map((evt) => {
               const getIconComponent = () => {
                 switch (evt.icon) {
                   case "bank":
-                    return <Wallet className="h-4 w-4 text-emerald-600" />;
+                    return <Wallet className="h-4 w-4 text-primary" />;
                   case "camera":
-                    return <Camera className="h-4 w-4 text-blue-600" />;
+                    return <Camera className="h-4 w-4 text-blue-500" />;
                   case "droplet":
-                    return <Droplets className="h-4 w-4 text-amber-600" />;
+                    return <Droplets className="h-4 w-4 text-amber-500" />;
                   case "truck":
-                    return <Truck className="h-4 w-4 text-indigo-600" />;
+                    return <Truck className="h-4 w-4 text-indigo-500" />;
                   default:
-                    return <Sparkles className="h-4 w-4 text-slate-600" />;
+                    return <Sparkles className="h-4 w-4 text-muted-foreground" />;
                 }
               };
 
-              const getBadgeClasses = () => {
+              const getBadgeVariantClass = () => {
                 switch (evt.badgeVariant) {
                   case "success":
-                    return "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300";
+                    return "border-primary/20 bg-primary/10 text-primary";
                   case "info":
-                    return "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300";
+                    return "border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400";
                   case "warning":
-                    return "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300";
+                    return "border-amber-500/20 bg-amber-500/10 text-amber-700 dark:text-amber-400";
                   default:
-                    return "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300";
+                    return "border-border bg-muted text-muted-foreground";
                 }
               };
 
               return (
-                <div key={evt.id} className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:justify-between hover:bg-slate-50/50 dark:hover:bg-slate-800/30 px-2 rounded-lg transition-colors">
-                  <div className="flex items-start gap-3">
-                    <span className="text-xs font-mono font-medium text-muted-foreground shrink-0 mt-0.5">
+                <Flex
+                  key={evt.id}
+                  direction="col"
+                  justify="between"
+                  className="gap-2 py-3 sm:flex-row sm:items-center hover:bg-muted/40 px-2 rounded-lg transition-colors"
+                >
+                  <Flex align="start" className="gap-3">
+                    <Typography
+                      as="span"
+                      variant="caption"
+                      className="font-mono font-medium text-muted-foreground shrink-0 mt-0.5"
+                    >
                       {evt.time}
-                    </span>
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 shrink-0">
+                    </Typography>
+                    <Flex
+                      align="center"
+                      justify="center"
+                      className="h-7 w-7 rounded-lg bg-muted shrink-0"
+                    >
                       {getIconComponent()}
-                    </div>
-                    <div className="text-xs text-foreground leading-relaxed">
+                    </Flex>
+                    <Box className="leading-relaxed">
                       {evt.content}
-                    </div>
-                  </div>
+                    </Box>
+                  </Flex>
 
-                  <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
-                    <span className="text-xs font-mono font-medium text-muted-foreground">
+                  <Flex align="center" className="gap-3 self-end sm:self-center shrink-0">
+                    <Typography
+                      as="span"
+                      variant="caption"
+                      className="font-mono font-medium text-muted-foreground"
+                    >
                       {evt.plotCode}
-                    </span>
-                    <span className={`rounded-md px-2 py-0.5 text-[11px] font-bold ${getBadgeClasses()}`}>
+                    </Typography>
+                    <Badge variant="outline" className={`font-bold ${getBadgeVariantClass()}`}>
                       {evt.category}
-                    </span>
-                  </div>
-                </div>
+                    </Badge>
+                  </Flex>
+                </Flex>
               );
             })}
-          </div>
+          </Box>
         )}
       </Card>
     </Box>

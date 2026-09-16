@@ -15,7 +15,7 @@ export interface StepItem {
 export interface StepsProps {
   steps: StepItem[];
   currentStep?: number; // 0-indexed
-  variant?: "horizontal" | "vertical" | "pills";
+  variant?: "horizontal" | "vertical" | "pills" | "compact" | "inline";
   className?: string;
   onStepClick?: (stepIndex: number) => void;
 }
@@ -37,6 +37,72 @@ export const Steps: React.FC<StepsProps> = ({
     }
     return { ...s, state: resolvedState };
   });
+
+  // ── VARIANT: INLINE / COMPACT (HEADER PROCESS BAR) ────────
+  if (variant === "compact" || variant === "inline") {
+    return (
+      <nav
+        className={cn("flex items-center gap-1.5 sm:gap-2 font-sans select-none text-xs font-semibold", className)}
+        aria-label="Progress Stepper"
+      >
+        {resolvedSteps.map((step, idx) => {
+          const isLast = idx === resolvedSteps.length - 1;
+          const isCompleted = step.state === "completed";
+          const isCurrent = step.state === "current";
+
+          return (
+            <React.Fragment key={step.id || idx}>
+              <div
+                className={cn(
+                  "flex items-center gap-1.5 transition-colors",
+                  onStepClick ? "cursor-pointer" : "cursor-default",
+                  isCompleted && "text-emerald-700 dark:text-emerald-400 font-semibold",
+                  isCurrent && "text-foreground font-bold",
+                  step.state === "upcoming" && "text-muted-foreground"
+                )}
+                onClick={() => onStepClick?.(idx)}
+              >
+                <div
+                  className={cn(
+                    "flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full text-[10px] font-bold transition-all",
+                    isCompleted && "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
+                    isCurrent && "bg-primary text-primary-foreground shadow-xs",
+                    step.state === "upcoming" && "bg-muted text-muted-foreground"
+                  )}
+                >
+                  {isCompleted ? (
+                    <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3 stroke-[3]" />
+                  ) : (
+                    <span>{idx + 1}</span>
+                  )}
+                </div>
+                <span
+                  className={cn(
+                    "whitespace-nowrap text-[11px] sm:text-xs",
+                    isCurrent
+                      ? "text-foreground font-bold"
+                      : isCompleted
+                        ? "text-emerald-700 dark:text-emerald-400"
+                        : "text-muted-foreground"
+                  )}
+                >
+                  {step.title}
+                </span>
+              </div>
+              {!isLast && (
+                <div
+                  className={cn(
+                    "w-3 sm:w-6 h-0.5 transition-colors",
+                    isCompleted ? "bg-emerald-600" : "bg-border"
+                  )}
+                />
+              )}
+            </React.Fragment>
+          );
+        })}
+      </nav>
+    );
+  }
 
   // ── VARIANT 1: PILLS NAVIGATION ───────────────────────────
   if (variant === "pills") {
