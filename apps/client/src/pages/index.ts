@@ -24,3 +24,5 @@ export * from "./admin/AdminFarmersPage";
 export * from "./admin/AdminHarvestPage";
 export * from "./admin/AdminRbacPage";
 
+export * from "./account";
+export * from "./legal";

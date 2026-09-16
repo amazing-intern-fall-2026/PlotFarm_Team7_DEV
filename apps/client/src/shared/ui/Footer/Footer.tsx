@@ -140,7 +140,7 @@ export function Footer({
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li>
                 <a
-                  href="/my-farm"
+                  href="/account/profile"
                   className="hover:text-primary transition-colors inline-block"
                 >
                   {t("footer.link_account_settings")}
@@ -148,7 +148,7 @@ export function Footer({
               </li>
               <li>
                 <a
-                  href="/about"
+                  href="/account/contracts"
                   className="hover:text-primary transition-colors inline-block"
                 >
                   {t("footer.link_contracts")}
@@ -156,7 +156,7 @@ export function Footer({
               </li>
               <li>
                 <a
-                  href="/about"
+                  href="/legal/organic-standards"
                   className="hover:text-primary transition-colors inline-block"
                 >
                   {t("footer.link_organic_commitment")}
@@ -164,7 +164,7 @@ export function Footer({
               </li>
               <li>
                 <a
-                  href="/about"
+                  href="/legal/crop-insurance"
                   className="hover:text-primary transition-colors inline-block"
                 >
                   {t("footer.link_crop_insurance")}

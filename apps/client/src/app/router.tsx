@@ -34,6 +34,10 @@ import {
   AdminFarmersPage,
   AdminHarvestPage,
   AdminRbacPage,
+  ProfilePage,
+  CustomerContractsPage,
+  OrganicStandardsPage,
+  CropInsurancePage,
 } from "@/pages";
 
 interface RouteNavRule {
@@ -67,6 +71,26 @@ const CUSTOMER_NAV_RULES: RouteNavRule[] = [
     pattern: /^\/journal/,
     breadcrumbs: [{ label: "Trang chủ", href: "/" }, { label: "Nhật ký nông vụ" }],
     activeNavId: "journal",
+  },
+  {
+    pattern: /^\/account\/profile/,
+    breadcrumbs: [{ label: "Trang chủ", href: "/" }, { label: "Tài khoản", href: "/account/profile" }, { label: "Hồ sơ & Cài đặt" }],
+    activeNavId: "profile",
+  },
+  {
+    pattern: /^\/account\/contracts/,
+    breadcrumbs: [{ label: "Trang chủ", href: "/" }, { label: "Tài khoản", href: "/account/profile" }, { label: "Hợp đồng thuê đất số" }],
+    activeNavId: "orders",
+  },
+  {
+    pattern: /^\/legal\/organic-standards/,
+    breadcrumbs: [{ label: "Trang chủ", href: "/" }, { label: "Pháp lý", href: "/legal/organic-standards" }, { label: "Cam kết tiêu chuẩn hữu cơ" }],
+    activeNavId: "about",
+  },
+  {
+    pattern: /^\/legal\/crop-insurance/,
+    breadcrumbs: [{ label: "Trang chủ", href: "/" }, { label: "Pháp lý", href: "/legal/crop-insurance" }, { label: "Chính sách bảo hiểm rủi ro mùa vụ" }],
+    activeNavId: "about",
   },
   {
     pattern: /^\/about/,
@@ -252,7 +276,7 @@ export function ShellRouteLayout({ role = "customer" }: { role?: AppRole }) {
   const handleNavChange = React.useCallback(
     (id: string) => {
       if (id === "profile") {
-        navigate(user ? "/my-farm" : AUTH_ROUTES.LOGIN);
+        navigate(user ? "/account/profile" : AUTH_ROUTES.LOGIN);
         return;
       }
       if (role === "farmer") {
@@ -308,6 +332,10 @@ export const router = createBrowserRouter([
       { path: "/checkout", element: <CheckoutPage /> },
       { path: "/checkout/:id", element: <CheckoutPage /> },
       { path: "/about", element: <AboutPage /> },
+      { path: "/account/profile", element: <ProfilePage /> },
+      { path: "/account/contracts", element: <CustomerContractsPage /> },
+      { path: "/legal/organic-standards", element: <OrganicStandardsPage /> },
+      { path: "/legal/crop-insurance", element: <CropInsurancePage /> },
 
       {
         element: <ProtectedRoute />,
