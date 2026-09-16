@@ -3,7 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import {
   Box,
   Flex,
-  Text,
+  Card,
   Button,
   Breadcrumb,
   Steps,
@@ -22,45 +22,46 @@ export const CheckoutHeaderBar: React.FC<CheckoutHeaderBarProps> = ({
   plotId,
 }) => {
   return (
-    <Box className="space-y-3 pb-1">
-      {/* 1. BREADCRUMB CHUẨN DESIGN SYSTEM TỪ @/shared/ui/Breadcrumb */}
-      <Breadcrumb
-        items={[
-          { label: "Khám phá ô đất", href: "/plots" },
-          { label: `Ô đất #${plotNumber}`, href: `/plots/${plotId || plotNumber}` },
-          { label: "Thanh toán VietQR", isCurrent: true },
-        ]}
-      />
+    <Box className="space-y-4 sm:space-y-5">
+      {/* 1. TOP BAR: BREADCRUMB BÊN TRÁI & NÚT QUAY LẠI BÊN PHẢI (CHUẨN LAYOUT NHƯ TRANG TRƯỚC ĐÓ) */}
+      <Flex
+        justify="between"
+        align="center"
+        className="flex-wrap gap-3"
+      >
+        <Breadcrumb
+          items={[
+            { label: "Khám phá ô đất", href: "/plots" },
+            { label: `Ô đất #${plotNumber}`, href: `/plots/${plotId || plotNumber}` },
+            { label: "Thanh toán VietQR", isCurrent: true },
+          ]}
+        />
 
-      {/* 2. THANH TIẾN TRÌNH & NÚT QUAY LẠI SỬ DỤNG COMPONENT <Steps /> TỪ @/shared/ui/Steps */}
-      <Flex justify="between" align="center" className="flex-wrap gap-4 pt-1">
-        {/* Nút quay lại */}
         <Button
           variant="ghost"
           size="sm"
           onClick={onBack}
           leftIcon={<ChevronLeft className="w-4 h-4" />}
-          className="text-muted-foreground hover:text-foreground font-semibold text-xs -ml-2 h-8 flex items-center gap-1.5"
+          className="text-slate-600 hover:text-emerald-700 text-xs font-medium"
         >
-          <Text variant="caption" className="font-semibold text-xs">
-            {CHECKOUT_TEXTS.header.backButton} (Ô #{plotNumber})
-          </Text>
+          {CHECKOUT_TEXTS.header.backButton} (Ô #{plotNumber})
         </Button>
-
-        {/* Component Steps từ Design System */}
-        <Box className="shrink-0">
-          <Steps
-            variant="inline"
-            currentStep={2}
-            steps={[
-              { id: "step-1", title: CHECKOUT_TEXTS.stepper.step1 },
-              { id: "step-2", title: CHECKOUT_TEXTS.stepper.step2 },
-              { id: "step-3", title: CHECKOUT_TEXTS.stepper.step3 },
-              { id: "step-4", title: CHECKOUT_TEXTS.stepper.step4 },
-            ]}
-          />
-        </Box>
       </Flex>
+
+      {/* 2. THANH TO NGANG PHÍA DƯỚI: PROGRESS STEPPER CHUẨN SHARED/UI TRẢI DÀI */}
+      <Card className="w-full p-4 sm:py-4.5 sm:px-8 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs overflow-x-auto">
+        <Steps
+          variant="inline"
+          currentStep={2}
+          className="min-w-[620px] sm:min-w-0"
+          steps={[
+            { id: "step-1", title: CHECKOUT_TEXTS.stepper.step1 },
+            { id: "step-2", title: CHECKOUT_TEXTS.stepper.step2 },
+            { id: "step-3", title: CHECKOUT_TEXTS.stepper.step3 },
+            { id: "step-4", title: CHECKOUT_TEXTS.stepper.step4 },
+          ]}
+        />
+      </Card>
     </Box>
   );
 };

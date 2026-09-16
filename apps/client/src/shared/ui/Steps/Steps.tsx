@@ -42,7 +42,10 @@ export const Steps: React.FC<StepsProps> = ({
   if (variant === "compact" || variant === "inline") {
     return (
       <nav
-        className={cn("flex items-center gap-1.5 sm:gap-2 font-sans select-none text-xs font-semibold", className)}
+        className={cn(
+          "w-full flex items-center justify-between sm:justify-center sm:gap-6 font-sans select-none text-xs",
+          className
+        )}
         aria-label="Progress Stepper"
       >
         {resolvedSteps.map((step, idx) => {
@@ -54,36 +57,33 @@ export const Steps: React.FC<StepsProps> = ({
             <React.Fragment key={step.id || idx}>
               <div
                 className={cn(
-                  "flex items-center gap-1.5 transition-colors",
-                  onStepClick ? "cursor-pointer" : "cursor-default",
-                  isCompleted && "text-emerald-700 dark:text-emerald-400 font-semibold",
-                  isCurrent && "text-foreground font-bold",
-                  step.state === "upcoming" && "text-muted-foreground"
+                  "flex items-center gap-2 transition-colors shrink-0",
+                  onStepClick ? "cursor-pointer" : "cursor-default"
                 )}
                 onClick={() => onStepClick?.(idx)}
               >
                 <div
                   className={cn(
-                    "flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full text-[10px] font-bold transition-all",
-                    isCompleted && "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
-                    isCurrent && "bg-primary text-primary-foreground shadow-xs",
-                    step.state === "upcoming" && "bg-muted text-muted-foreground"
+                    "flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full text-xs font-bold transition-all shrink-0",
+                    isCompleted && "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300",
+                    isCurrent && "bg-emerald-700 text-white shadow-xs font-bold ring-2 ring-emerald-700/20",
+                    step.state === "upcoming" && "bg-slate-100 text-slate-400 dark:bg-slate-800"
                   )}
                 >
                   {isCompleted ? (
-                    <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3 stroke-[3]" />
+                    <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5 stroke-[3] text-emerald-700 dark:text-emerald-300" />
                   ) : (
                     <span>{idx + 1}</span>
                   )}
                 </div>
                 <span
                   className={cn(
-                    "whitespace-nowrap text-[11px] sm:text-xs",
+                    "whitespace-nowrap text-xs font-semibold",
                     isCurrent
-                      ? "text-foreground font-bold"
+                      ? "text-slate-900 dark:text-white font-bold"
                       : isCompleted
-                        ? "text-emerald-700 dark:text-emerald-400"
-                        : "text-muted-foreground"
+                        ? "text-emerald-800 dark:text-emerald-400"
+                        : "text-slate-400 dark:text-slate-500"
                   )}
                 >
                   {step.title}
@@ -92,8 +92,8 @@ export const Steps: React.FC<StepsProps> = ({
               {!isLast && (
                 <div
                   className={cn(
-                    "w-3 sm:w-6 h-0.5 transition-colors",
-                    isCompleted ? "bg-emerald-600" : "bg-border"
+                    "flex-1 max-w-[60px] sm:max-w-[120px] h-0.5 transition-colors mx-1 sm:mx-3",
+                    isCompleted ? "bg-emerald-600" : "bg-slate-200 dark:bg-slate-700"
                   )}
                 />
               )}
