@@ -1,33 +1,32 @@
 import type { Request, Response, NextFunction } from "express";
-import { CreateFarmingLogRequestSchema } from "@repo/shared";
-import { DiaryService } from "./diary.service";
+import { CreateCareRequestSchema } from "@repo/shared";
+import { CareService } from "./care.service";
 import { AppError } from "../../errors/AppError";
 
-export class DiaryController {
+export class CareController {
   /**
-   * Endpoint: POST /api/v1/contracts/:id/farming-logs
-   * Nhân viên nông dân đăng bài nhật ký canh tác (yêu cầu vai trò STAFF hoặc ADMIN)
+   * Endpoint: POST /api/v1/contracts/:id/care-requests
+   * Khách hàng gửi phiếu yêu cầu chăm sóc (yêu cầu vai trò CUSTOMER, sở hữu hợp đồng)
    */
-  static async createFarmingLog(
+  static async createCareRequest(
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
     try {
-      if (req.user?.role !== "STAFF" && req.user?.role !== "ADMIN") {
+      if (req.user?.role !== "CUSTOMER") {
         throw AppError.forbidden(
-          "Chỉ nhân viên nông dân mới có thể đăng nhật ký",
+          "Chỉ khách hàng mới có thể gửi phiếu chăm sóc",
         );
       }
 
       const contractId = req.params.id;
       const payload = req.body?.payload ?? req.body;
-      const data = CreateFarmingLogRequestSchema.parse(payload);
+      const data = CreateCareRequestSchema.parse(payload);
 
-      const result = await DiaryService.createFarmingLog(
+      const result = await CareService.createCareRequest(
         contractId,
         req.user.userId,
-        req.user.role,
         data,
       );
 
@@ -41,10 +40,10 @@ export class DiaryController {
   }
 
   /**
-   * Endpoint: GET /api/v1/contracts/:id/farming-logs
-   * Khách hàng sở hữu hợp đồng, STAFF hoặc ADMIN xem danh sách nhật ký
+   * Endpoint: GET /api/v1/contracts/:id/care-requests
+   * Khách hàng sở hữu hợp đồng, STAFF hoặc ADMIN xem danh sách phiếu chăm sóc
    */
-  static async getFarmingLogs(
+  static async getCareRequests(
     req: Request,
     res: Response,
     next: NextFunction,
@@ -52,7 +51,7 @@ export class DiaryController {
     try {
       const contractId = req.params.id;
 
-      const result = await DiaryService.getFarmingLogs(contractId, {
+      const result = await CareService.getCareRequests(contractId, {
         userId: req.user!.userId,
         role: req.user!.role,
       });

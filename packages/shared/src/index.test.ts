@@ -4,7 +4,7 @@ import {
   PlotSchema,
   CropSchema,
   ContractListItemSchema,
-  CareRequestSchema,
+  CreateCareRequestSchema,
   ShipmentSchema,
   FarmListItemSchema,
   VietQRPaymentSchema,
@@ -124,25 +124,19 @@ describe("contract.types - ContractListItemSchema", () => {
   });
 });
 
-describe("diary.types - CareRequestSchema", () => {
+describe("diary.types - CreateCareRequestSchema", () => {
   it("accepts a valid care request", () => {
-    const result = CareRequestSchema.safeParse({
-      requestCode: "REQ-2026-0089",
-      contractCode: "PF-2026-0915-A01",
-      serviceType: "ORGANIC_FERTILIZER",
-      status: "PENDING",
-      extraFee: 150000,
+    const result = CreateCareRequestSchema.safeParse({
+      serviceTitleI18n: { vi: "Bón phân hữu cơ vi sinh", en: "Organic Fertilizing" },
+      customerNote: "Nhờ nhà vườn bón thêm phân vi sinh quanh gốc rau giúp mình nhé.",
     });
     expect(result.success).toBe(true);
   });
 
-  it("rejects a status not in CARE_REQUEST_STATUSES", () => {
-    const result = CareRequestSchema.safeParse({
-      requestCode: "REQ-2026-0089",
-      contractCode: "PF-2026-0915-A01",
-      serviceType: "ORGANIC_FERTILIZER",
-      status: "DONE",
-      extraFee: 150000,
+  it("rejects a request missing serviceTitleI18n.vi", () => {
+    const result = CreateCareRequestSchema.safeParse({
+      serviceTitleI18n: { en: "Organic Fertilizing" },
+      customerNote: "Nhờ nhà vườn bón thêm phân vi sinh quanh gốc rau giúp mình nhé.",
     });
     expect(result.success).toBe(false);
   });
