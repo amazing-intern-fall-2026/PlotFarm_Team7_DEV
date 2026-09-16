@@ -1,243 +1,148 @@
-import * as React from "react";
-import {
-  CheckCircle2,
-  Sparkles,
-  Shield,
-  Sprout,
-  Star,
-  ArrowRight,
-  FileText,
-} from "lucide-react";
-import { Box, Typography, Button, Avatar } from "@/shared/ui";
+import { Box, Typography } from "@/shared/ui";
 
 interface AboutHeroBannerProps {
   onSelectTab?: (tab: "organic" | "insurance") => void;
 }
 
-export function AboutHeroBanner({ onSelectTab }: AboutHeroBannerProps) {
-  const [liveTime, setLiveTime] = React.useState("14:28:05");
-
-  React.useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setLiveTime(
-        now.toTimeString().split(" ")[0] ||
-          now.toLocaleTimeString("vi-VN", { hour12: false }),
-      );
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleScrollToContent = (tab: "organic" | "insurance") => {
-    onSelectTab?.(tab);
-    const target = document.getElementById(
-      tab === "insurance" ? "crop-insurance" : "organic-standards",
-    );
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
+export function AboutHeroBanner(_props?: AboutHeroBannerProps) {
   return (
-    <Box className="relative w-full overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background pt-8 lg:pt-12 pb-12 lg:pb-16 flex flex-col justify-center select-none">
-      <Box className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
-      <Box className="absolute top-1/2 -right-24 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
-      <Box className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-30 pointer-events-none" />
+    <Box className="relative w-full overflow-hidden bg-[#071309] text-white py-24 sm:py-28 lg:py-36 flex items-center justify-center select-none">
+      {/* 1. Background Photo: Hands holding seedling in rich dark soil */}
+      <Box
+        className="absolute inset-0 bg-cover bg-left md:bg-center transform scale-105"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=2000&q=80')",
+        }}
+      />
 
-      <Box className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Box className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* ═══════════════════════════════════════════════════════════
-              CỘT TRÁI: GIỚI THIỆU & CAM KẾT (COL-SPAN-7)
-             ═══════════════════════════════════════════════════════════ */}
-          <Box className="lg:col-span-7 flex flex-col items-start text-left space-y-4">
-            <Box className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary">
-              <Typography.Text className="text-xs font-bold uppercase tracking-wider text-primary">
-                HỆ SINH THÁI NÔNG NGHIỆP SỐ ĐÀ LẠT
-              </Typography.Text>
-            </Box>
+      {/* 2. Dark Green & Vignette Gradients (Agrivi Dark Forest Green aesthetic) */}
+      <Box className="absolute inset-0 bg-[#081a0e]/75 mix-blend-multiply" />
+      <Box className="absolute inset-0 bg-gradient-to-r from-[#051108]/90 via-[#07180c]/70 to-[#051108]/90" />
+      <Box className="absolute inset-0 bg-gradient-to-t from-[#051108] via-transparent to-[#051108]/80" />
 
-            <Typography.H1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
-              Về Green Farm —{" "}
-              <Typography.Text as="span" className="text-primary font-extrabold">
-                Nông Nghiệp Hữu Cơ Minh Bạch
-              </Typography.Text>
-            </Typography.H1>
+      {/* 3. Digital Agriculture Constellation Network SVG Overlay */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-40 md:opacity-50"
+        viewBox="0 0 1440 450"
+        preserveAspectRatio="xMidYMid slice"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="agriLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#15803d" stopOpacity="0.2" />
+            <stop offset="50%" stopColor="#22c55e" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#16a34a" stopOpacity="0.3" />
+          </linearGradient>
+          <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#4ade80" stopOpacity="1" />
+            <stop offset="100%" stopColor="#15803d" stopOpacity="0.2" />
+          </radialGradient>
+        </defs>
 
-            <Box className="space-y-2.5 max-w-xl">
-              <Typography.P className="text-sm lg:text-base text-muted-foreground leading-relaxed">
-                Hệ sinh thái kết nối cư dân đô thị đồng sở hữu & canh tác vườn rau sạch từ xa tại Đạ Sar - Lạc Dương, Đà Lạt. Giám sát 24/7 qua cảm biến vi khí hậu IoT và luồng camera trực tiếp thời gian thực.
-              </Typography.P>
+        {/* Constellation Network Lines */}
+        <g stroke="url(#agriLineGrad)" strokeWidth="1">
+          {/* Left/Center connecting mesh */}
+          <line x1="380" y1="280" x2="450" y2="210" />
+          <line x1="450" y1="210" x2="520" y2="290" />
+          <line x1="450" y1="210" x2="560" y2="170" />
+          <line x1="520" y1="290" x2="600" y2="340" />
+          <line x1="560" y1="170" x2="650" y2="240" />
+          <line x1="520" y1="290" x2="650" y2="240" />
 
-              <Box className="space-y-2 pt-1">
-                <Box className="flex items-center gap-2.5">
-                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                  <Typography.Text className="text-xs sm:text-sm text-foreground font-medium">
-                    100% chuẩn hữu cơ quốc gia TCVN 11041:2017 & nguồn nước ngầm sâu 85m.
-                  </Typography.Text>
-                </Box>
-                <Box className="flex items-center gap-2.5">
-                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                  <Typography.Text className="text-xs sm:text-sm text-foreground font-medium">
-                    Bảo hiểm rủi ro mùa vụ 100% — Đền bù gấp 10 lần nếu có tồn dư hóa chất cấm.
-                  </Typography.Text>
-                </Box>
-              </Box>
-            </Box>
+          {/* Center to Right Mesh */}
+          <line x1="650" y1="240" x2="720" y2="160" />
+          <line x1="650" y1="240" x2="740" y2="320" />
+          <line x1="600" y1="340" x2="740" y2="320" />
+          <line x1="720" y1="160" x2="810" y2="220" />
+          <line x1="740" y1="320" x2="830" y2="360" />
+          <line x1="740" y1="320" x2="810" y2="220" />
+          <line x1="810" y1="220" x2="890" y2="150" />
+          <line x1="810" y1="220" x2="900" y2="280" />
+          <line x1="830" y1="360" x2="900" y2="280" />
 
-            <Box className="flex flex-wrap items-center gap-3 pt-1">
-              <Button
-                variant="default"
-                size="default"
-                onClick={() => handleScrollToContent("organic")}
-                rightIcon={<ArrowRight className="h-4 w-4" />}
-                className="h-11 px-5 rounded-xl font-semibold shadow-md shadow-primary/20"
-              >
-                Cam kết chuẩn hữu cơ
-              </Button>
+          {/* Far Right Tech Mesh */}
+          <line x1="890" y1="150" x2="980" y2="210" />
+          <line x1="900" y1="280" x2="980" y2="210" />
+          <line x1="900" y1="280" x2="990" y2="340" />
+          <line x1="980" y1="210" x2="1080" y2="140" />
+          <line x1="980" y1="210" x2="1070" y2="260" />
+          <line x1="990" y1="340" x2="1070" y2="260" />
+          <line x1="990" y1="340" x2="1090" y2="380" />
+          <line x1="1080" y1="140" x2="1180" y2="190" />
+          <line x1="1070" y1="260" x2="1180" y2="190" />
+          <line x1="1070" y1="260" x2="1190" y2="310" />
+          <line x1="1090" y1="380" x2="1190" y2="310" />
+          <line x1="1180" y1="190" x2="1280" y2="130" />
+          <line x1="1180" y1="190" x2="1290" y2="240" />
+          <line x1="1190" y1="310" x2="1290" y2="240" />
+          <line x1="1190" y1="310" x2="1310" y2="360" />
+          <line x1="1280" y1="130" x2="1380" y2="180" />
+          <line x1="1290" y1="240" x2="1380" y2="180" />
+          <line x1="1290" y1="240" x2="1400" y2="290" />
+          <line x1="1310" y1="360" x2="1400" y2="290" />
+          <line x1="1380" y1="180" x2="1440" y2="140" />
+          <line x1="1400" y1="290" x2="1440" y2="270" />
 
-              <Button
-                variant="outline"
-                size="default"
-                onClick={() => handleScrollToContent("insurance")}
-                leftIcon={<FileText className="h-4 w-4 text-primary" />}
-                className="h-11 px-5 rounded-xl font-medium"
-              >
-                Chính sách bảo hiểm mùa vụ
-              </Button>
-            </Box>
+          {/* Top subtle cross-lines */}
+          <line x1="650" y1="90" x2="720" y2="160" strokeDasharray="3 3" opacity="0.4" />
+          <line x1="810" y1="90" x2="890" y2="150" strokeDasharray="3 3" opacity="0.4" />
+          <line x1="1000" y1="80" x2="1080" y2="140" strokeDasharray="3 3" opacity="0.4" />
+          <line x1="1200" y1="70" x2="1280" y2="130" strokeDasharray="3 3" opacity="0.4" />
+        </g>
 
-            {/* Social proof */}
-            <Box className="pt-2 flex items-center gap-3 text-left">
-              <Box className="flex -space-x-2 items-center">
-                <Avatar
-                  size="sm"
-                  name="Thu Hằng"
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&h=80&q=80"
-                  className="ring-2 ring-background shadow-xs"
-                />
-                <Avatar
-                  size="sm"
-                  name="Tuấn Anh"
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80"
-                  className="ring-2 ring-background shadow-xs"
-                />
-                <Avatar
-                  size="sm"
-                  name="Thanh Mai"
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80"
-                  className="ring-2 ring-background shadow-xs"
-                />
-                <Box className="w-8 h-8 rounded-full bg-primary/15 text-primary ring-2 ring-background flex items-center justify-center text-[11px] font-bold shadow-xs">
-                  +1.2k
-                </Box>
-              </Box>
+        {/* Constellation Dots / Nodes */}
+        <g fill="url(#nodeGlow)">
+          <circle cx="380" cy="280" r="3.5" />
+          <circle cx="450" cy="210" r="4" />
+          <circle cx="520" cy="290" r="3.5" />
+          <circle cx="560" cy="170" r="3" />
+          <circle cx="600" cy="340" r="4.5" />
+          <circle cx="650" cy="240" r="5" />
+          <circle cx="720" cy="160" r="4" />
+          <circle cx="740" cy="320" r="4.5" />
+          <circle cx="810" cy="220" r="5.5" />
+          <circle cx="830" cy="360" r="3.5" />
+          <circle cx="890" cy="150" r="4" />
+          <circle cx="900" cy="280" r="5" />
+          <circle cx="980" cy="210" r="6" />
+          <circle cx="990" cy="340" r="4" />
+          <circle cx="1080" cy="140" r="4" />
+          <circle cx="1070" cy="260" r="6.5" />
+          <circle cx="1090" cy="380" r="3.5" />
+          <circle cx="1180" cy="190" r="5" />
+          <circle cx="1190" cy="310" r="4.5" />
+          <circle cx="1280" cy="130" r="4" />
+          <circle cx="1290" cy="240" r="6" />
+          <circle cx="1310" cy="360" r="3.5" />
+          <circle cx="1380" cy="180" r="4" />
+          <circle cx="1400" cy="290" r="4.5" />
+        </g>
+      </svg>
 
-              <Box className="flex flex-col">
-                <Box className="flex items-center gap-0.5 text-amber-500">
-                  <Star className="h-3.5 w-3.5 fill-amber-500" />
-                  <Star className="h-3.5 w-3.5 fill-amber-500" />
-                  <Star className="h-3.5 w-3.5 fill-amber-500" />
-                  <Star className="h-3.5 w-3.5 fill-amber-500" />
-                  <Star className="h-3.5 w-3.5 fill-amber-500" />
-                </Box>
-                <Typography.Text className="text-xs text-muted-foreground pt-0.5">
-                  Được tin chọn bởi{" "}
-                  <Typography.Text as="span" className="text-foreground font-bold">
-                    1.200+
-                  </Typography.Text>{" "}
-                  gia đình thành thị đồng canh tác
-                </Typography.Text>
-              </Box>
-            </Box>
-          </Box>
+      {/* 4. Centered Hero Content */}
+      <Box className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center space-y-6">
+        {/* Main Title */}
+        <Typography.H1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-wider uppercase text-white font-sans drop-shadow-md">
+          ABOUT US
+        </Typography.H1>
 
-          {/* ═══════════════════════════════════════════════════════════
-              CỘT PHẢI: LIVE FARM OVERVIEW PREVIEW (COL-SPAN-5)
-             ═══════════════════════════════════════════════════════════ */}
-          <Box className="lg:col-span-5 w-full relative">
-            <Box className="absolute -inset-2 rounded-[28px] bg-primary/10 blur-xl opacity-80 pointer-events-none" />
+        {/* Subtitle / Tagline */}
+        <Typography.P className="text-base sm:text-xl lg:text-2xl font-light text-slate-100 max-w-3xl mx-auto leading-relaxed tracking-wide drop-shadow-sm">
+          Solving the Global Food Problem by Digitalizing Agriculture.
+        </Typography.P>
 
-            <Box className="relative w-full h-[300px] sm:h-[330px] lg:h-[350px] rounded-2xl border-4 border-card shadow-xl ring-1 ring-border/80 overflow-hidden bg-slate-950 group">
-              {/* Ảnh mới về nhà màng rau hữu cơ xanh ngát */}
-              <img
-                src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1000&q=80"
-                alt="Tổ hợp nông trại hữu cơ công nghệ cao Green Farm Lạc Dương"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-
-              <Box className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/60 pointer-events-none" />
-
-              {/* Top Live Bar */}
-              <Box className="absolute top-0 inset-x-0 bg-black/40 backdrop-blur-md px-3.5 py-2 flex justify-between items-center text-white text-xs z-10 border-b border-white/10">
-                <Box className="flex items-center gap-2">
-                  <Box className="relative flex h-2 w-2">
-                    <Box className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <Box className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                  </Box>
-                  <Typography.Text as="span" className="font-bold uppercase tracking-wider text-emerald-300 text-[11px]">
-                    TRỰC TIẾP
-                  </Typography.Text>
-                  <Typography.Text as="span" className="text-white/40">•</Typography.Text>
-                  <Typography.Text as="span" className="text-white/90 font-medium text-[11px]">
-                    Nông trại Hữu cơ #Zone-A Lạc Dương
-                  </Typography.Text>
-                </Box>
-
-                <Box className="font-mono text-white/90 bg-white/10 px-2 py-0.5 rounded text-[11px] border border-white/10">
-                  {liveTime}
-                </Box>
-              </Box>
-
-              {/* Status Badge */}
-              <Box className="absolute top-10 right-2.5 z-10">
-                <Box className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/20 text-emerald-300 text-[10px] font-medium shadow-md">
-                  <Sparkles className="h-3 w-3 text-emerald-400 shrink-0" />
-                  <span>Chuẩn VietGAP & GlobalGAP</span>
-                </Box>
-              </Box>
-
-              {/* Bottom Telemetry Info */}
-              <Box className="absolute bottom-3 inset-x-3 grid grid-cols-2 gap-2.5 z-10">
-                <Box className="bg-card/95 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-border/80 flex items-center gap-2.5">
-                  <Box className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100 dark:border-emerald-900">
-                    <Sprout className="h-4 w-4" />
-                  </Box>
-                  <Box className="flex flex-col min-w-0 text-left">
-                    <Typography.Text className="text-[10px] text-muted-foreground font-medium truncate">
-                      Quy chuẩn canh tác
-                    </Typography.Text>
-                    <Typography.Text className="text-xs font-extrabold text-foreground truncate">
-                      TCVN 11041:2017
-                    </Typography.Text>
-                    <Typography.Text className="text-[9px] font-semibold text-primary">
-                      100% Không hóa chất
-                    </Typography.Text>
-                  </Box>
-                </Box>
-
-                <Box className="bg-card/95 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-border/80 flex items-center gap-2.5">
-                  <Box className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100 dark:border-amber-900">
-                    <Shield className="h-4 w-4" />
-                  </Box>
-                  <Box className="flex flex-col min-w-0 text-left">
-                    <Typography.Text className="text-[10px] text-muted-foreground font-medium truncate">
-                      Bảo hiểm rủi ro
-                    </Typography.Text>
-                    <Typography.Text className="text-xs font-extrabold text-foreground truncate">
-                      Bảo lãnh 100%
-                    </Typography.Text>
-                    <Typography.Text className="text-[9px] font-semibold text-amber-600">
-                      Green Farm Care
-                    </Typography.Text>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
+        {/* Button: CONTACT US */}
+        <Box className="pt-2">
+          <a
+            href="tel:19006868"
+            className="inline-flex items-center justify-center px-9 py-3 border border-white text-white text-xs sm:text-sm font-bold tracking-widest uppercase transition-all duration-200 hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-white/50"
+          >
+            CONTACT US
+          </a>
         </Box>
       </Box>
     </Box>
   );
 }
+
