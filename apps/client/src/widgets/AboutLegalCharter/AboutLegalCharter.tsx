@@ -1,23 +1,38 @@
 import * as React from "react";
-import { Printer, Copy, Check, ShieldCheck, FileText } from "lucide-react";
-import { Box, Button, Typography, Badge } from "@/shared/ui";
+import {
+  ShieldCheck,
+  FileText,
+  Printer,
+  CheckCircle2,
+  ExternalLink,
+  AlertCircle,
+} from "lucide-react";
+import {
+  Box,
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  Badge,
+  Button,
+  Modal,
+} from "@/shared/ui";
 
+type DocumentViewType = "organic" | "insurance" | "sgs" | null;
 
 export function AboutLegalCharter() {
-  const [copied, setCopied] = React.useState(false);
-  const [activeSection, setActiveSection] = React.useState<string>("all");
+  const [viewingDoc, setViewingDoc] = React.useState<DocumentViewType>(null);
 
-  // Xử lý scroll đến hash anchor khi load trang (e.g. #organic-standards hoặc #crop-insurance)
+  // Tự động scroll mượt đến anchor khi load trang (e.g. #organic-standards hoặc #crop-insurance)
   React.useEffect(() => {
     const handleHashScroll = () => {
       const hash = window.location.hash.replace("#", "");
       if (hash) {
-        setActiveSection(hash);
-        const element = document.getElementById(hash);
-        if (element) {
+        const el = document.getElementById(hash);
+        if (el) {
           setTimeout(() => {
-            element.scrollIntoView({ behavior: "smooth", block: "start" });
-          }, 100);
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 150);
         }
       }
     };
@@ -27,463 +42,502 @@ export function AboutLegalCharter() {
     return () => window.removeEventListener("hashchange", handleHashScroll);
   }, []);
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handlePrint = () => {
-    window.print();
-  };
-
-  const scrollToElement = (id: string) => {
-    setActiveSection(id);
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.history.pushState(null, "", `#${id}`);
-    }
-  };
-
   return (
-    <Box className="w-full space-y-6">
-      {/* Top Document Controls (Print-hidden) */}
-      <Box className="print:hidden flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs">
-        <Box className="flex flex-wrap items-center gap-1 sm:gap-2">
-          <Button
-            size="sm"
-            variant={activeSection === "all" ? "default" : "ghost"}
-            onClick={() => {
-              setActiveSection("all");
-              window.scrollTo({ top: 0, behavior: "smooth" });
-              window.history.pushState(null, "", window.location.pathname);
-            }}
-            className="text-xs h-8 px-3"
-          >
-            Toàn văn bản
-          </Button>
-          <Button
-            size="sm"
-            variant={activeSection === "organic-standards" ? "default" : "ghost"}
-            onClick={() => scrollToElement("organic-standards")}
-            className="text-xs h-8 px-3"
-          >
-            Cam kết tiêu chuẩn hữu cơ
-          </Button>
-          <Button
-            size="sm"
-            variant={activeSection === "crop-insurance" ? "default" : "ghost"}
-            onClick={() => scrollToElement("crop-insurance")}
-            className="text-xs h-8 px-3"
-          >
-            Bảo hiểm rủi ro mùa vụ
-          </Button>
-        </Box>
-
-        <Box className="flex items-center gap-2 justify-end">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={handleCopyLink}
-            className="text-xs h-8 gap-1.5"
-            title="Sao chép liên kết văn bản"
-          >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copied ? "Đã chép" : "Chia sẻ link"}</span>
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={handlePrint}
-            className="text-xs h-8 gap-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100"
-            title="In văn bản hợp đồng"
-          >
-            <Printer className="w-3.5 h-3.5" />
-            <span>In văn bản (PDF)</span>
-          </Button>
-        </Box>
-      </Box>
-
-      {/* Main Legal Contract Document Sheet */}
-      <Box className="relative bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-md rounded-md max-w-4xl mx-auto p-6 sm:p-12 lg:p-16 text-slate-800 dark:text-slate-200 leading-relaxed font-serif print:shadow-none print:border-none print:p-0">
-        {/* Subtle Watermark Stamp */}
-        <Box className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden opacity-[0.03] dark:opacity-[0.04]">
-          <Box className="text-center transform -rotate-24 select-none">
-            <Typography.Text className="text-6xl sm:text-8xl font-black uppercase tracking-widest font-sans">
-              GREEN FARM
-            </Typography.Text>
-            <Typography.Text className="text-2xl sm:text-3xl font-bold uppercase tracking-widest font-sans mt-2 block">
-              BẢN CAM KẾT CHÍNH THỨC 2026
-            </Typography.Text>
-          </Box>
-        </Box>
-
-        {/* 1. Header Tiêu Ngữ & Thông Tin Cơ Quan */}
-        <Box className="border-b-2 border-slate-800/80 dark:border-slate-300/80 pb-6 mb-8 font-sans">
-          <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start text-center md:text-left">
+    <Box className="w-full space-y-8 font-sans">
+      {/* 1. Header Giới thiệu Green Farm & Tôn chỉ */}
+      <Card className="border-border/80 bg-white dark:bg-slate-900 rounded-2xl shadow-xs overflow-hidden">
+        <Box className="p-6 sm:p-8 space-y-6">
+          <Box className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-6">
             <Box className="space-y-1">
-              <Typography.Text className="text-xs sm:text-sm font-bold uppercase tracking-tight text-slate-900 dark:text-slate-100 block">
-                CÔNG TY CP NÔNG NGHIỆP CÔNG NGHỆ CAO GREEN FARM
-              </Typography.Text>
-              <Typography.Text className="text-xs text-slate-600 dark:text-slate-400 block">
-                Số: 08/2026/QCKT-CK-DALAT
-              </Typography.Text>
-              <Typography.Text className="text-[11px] text-slate-500 italic block">
-                V/v: Quy chuẩn canh tác hữu cơ & chính sách bảo hiểm mùa vụ
-              </Typography.Text>
+              <Box className="flex items-center gap-2">
+                <Badge className="bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 text-xs font-semibold px-2.5 py-0.5">
+                  Nông nghiệp Số 4.0
+                </Badge>
+                <Badge variant="outline" className="text-xs text-muted-foreground">
+                  Đà Lạt, Lâm Đồng
+                </Badge>
+              </Box>
+              <Typography.H2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
+                Về Nông Trại Số Green Farm
+              </Typography.H2>
+              <Typography.Muted className="text-sm text-muted-foreground">
+                Hệ sinh thái kết nối cư dân đô thị đồng sở hữu & canh tác vườn rau hữu cơ từ xa qua IoT và Camera 24/7.
+              </Typography.Muted>
             </Box>
 
-            <Box className="space-y-1 md:text-center text-center">
-              <Typography.Text className="text-xs sm:text-sm font-bold uppercase tracking-wide text-slate-900 dark:text-slate-100 block">
-                CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-              </Typography.Text>
-              <Typography.Text className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 block">
-                Độc lập - Tự do - Hạnh phúc
-              </Typography.Text>
-              <Box className="w-24 h-0.5 bg-slate-400 mx-auto my-1.5" />
-              <Typography.Text className="text-[11px] text-slate-500 italic block">
-                Lâm Đồng, ngày 15 tháng 10 năm 2025
-              </Typography.Text>
-            </Box>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setViewingDoc("organic")}
+              className="text-xs h-9 gap-1.5 border-emerald-300 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+            >
+              <FileText className="w-4 h-4 text-emerald-600" />
+              <span>Xem văn bản cam kết pháp lý</span>
+            </Button>
           </Box>
 
-          <Box className="text-center pt-8 space-y-2">
-            <Typography.H2 className="text-xl sm:text-2xl font-extrabold uppercase text-slate-950 dark:text-white tracking-normal font-serif">
-              BẢN CAM KẾT QUY CHUẨN KỸ THUẬT CANH TÁC HỮU CƠ & CHÍNH SÁCH BẢO HIỂM RỦI RO MÙA VỤ
-            </Typography.H2>
-            <Typography.Text className="text-xs text-slate-600 dark:text-slate-400 italic block">
-              (Áp dụng bắt buộc đối với toàn bộ Hợp đồng điện tử thuê đất canh tác tại Hệ thống Nông trại Green Farm Đà Lạt)
+          {/* 4 Chỉ số trọng yếu */}
+          <Box className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <Box className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-border/60">
+              <Typography.Muted className="text-xs text-muted-foreground block">
+                Tiêu chuẩn canh tác
+              </Typography.Muted>
+              <Typography.H4 className="text-base sm:text-lg font-extrabold text-emerald-700 dark:text-emerald-400 mt-0.5">
+                TCVN 11041:2017
+              </Typography.H4>
+              <Typography.Muted className="text-[11px] text-muted-foreground mt-0.5 block">
+                100% chuẩn hữu cơ quốc gia
+              </Typography.Muted>
+            </Box>
+
+            <Box className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-border/60">
+              <Typography.Muted className="text-xs text-muted-foreground block">
+                Bảo hiểm mùa vụ
+              </Typography.Muted>
+              <Typography.H4 className="text-base sm:text-lg font-extrabold text-amber-700 dark:text-amber-400 mt-0.5">
+                Bảo lãnh 100%
+              </Typography.H4>
+              <Typography.Muted className="text-[11px] text-muted-foreground mt-0.5 block">
+                3 phương án bồi thường linh hoạt
+              </Typography.Muted>
+            </Box>
+
+            <Box className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-border/60">
+              <Typography.Muted className="text-xs text-muted-foreground block">
+                Minh bạch giám sát
+              </Typography.Muted>
+              <Typography.H4 className="text-base sm:text-lg font-extrabold text-sky-700 dark:text-sky-400 mt-0.5">
+                Camera Live 24/7
+              </Typography.H4>
+              <Typography.Muted className="text-[11px] text-muted-foreground mt-0.5 block">
+                Cảm biến vi khí hậu cập nhật 5p
+              </Typography.Muted>
+            </Box>
+
+            <Box className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-border/60">
+              <Typography.Muted className="text-xs text-muted-foreground block">
+                Kiểm định độc lập
+              </Typography.Muted>
+              <Typography.H4 className="text-base sm:text-lg font-extrabold text-slate-800 dark:text-slate-200 mt-0.5">
+                SGS & Eurofins
+              </Typography.H4>
+              <Typography.Muted className="text-[11px] text-muted-foreground mt-0.5 block">
+                Xét nghiệm định kỳ 800+ hoạt chất
+              </Typography.Muted>
+            </Box>
+          </Box>
+        </Box>
+      </Card>
+
+      {/* 2. Khối Trọng Yếu 1: Cam kết Tiêu chuẩn Hữu cơ (#organic-standards) */}
+      <Box id="organic-standards" className="scroll-mt-24">
+        <Card className="border-border/80 bg-white dark:bg-slate-900 rounded-2xl shadow-xs overflow-hidden">
+          <CardHeader className="border-b border-border/80 pb-4 bg-slate-50/40 dark:bg-slate-800/30">
+            <Box className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <Box className="space-y-1">
+                <Box className="flex items-center gap-2">
+                  <Badge className="bg-emerald-600 text-white text-[11px] font-bold px-2 py-0.5">
+                    Trọng Yếu
+                  </Badge>
+                  <Typography.Text className="text-xs text-muted-foreground font-semibold">
+                    Quy chuẩn an toàn sinh học Đà Lạt
+                  </Typography.Text>
+                </Box>
+                <Typography.H3 className="text-xl font-extrabold text-foreground tracking-tight">
+                  Cam kết Tiêu chuẩn Hữu cơ & Không Hóa Chất
+                </Typography.H3>
+              </Box>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setViewingDoc("organic")}
+                className="text-xs h-8 gap-1.5 shrink-0"
+              >
+                <FileText className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Xem văn bản quy chuẩn</span>
+              </Button>
+            </Box>
+          </CardHeader>
+
+          <CardContent className="p-6 sm:p-8 space-y-6">
+            {/* Nguyên tắc 5 KHÔNG */}
+            <Box className="space-y-3">
+              <Typography.Text className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                Nguyên tắc 5 KHÔNG bắt buộc tại từng luống đất
+              </Typography.Text>
+              <Box className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {[
+                  { title: "Không thuốc sâu", desc: "Tuyệt đối không dùng hóa chất tổng hợp trừ sâu" },
+                  { title: "Không phân hóa học", desc: "100% ủ phân hữu cơ vi sinh & đạm trùn quế" },
+                  { title: "Không thuốc diệt cỏ", desc: "Nhổ cỏ thủ công và che phủ rơm mùn tự nhiên" },
+                  { title: "Không kích thích", desc: "Không dùng hormone kích thích tăng trưởng" },
+                  { title: "Không bảo quản", desc: "Thu hái và chuyển lạnh giao ngay trong 24 giờ" },
+                ].map((item, idx) => (
+                  <Box key={idx} className="p-3.5 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40">
+                    <Box className="flex items-center gap-1.5 text-emerald-800 dark:text-emerald-300 font-bold text-xs">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>{item.title}</span>
+                    </Box>
+                    <Typography.Muted className="text-[11px] text-muted-foreground mt-1 block">
+                      {item.desc}
+                    </Typography.Muted>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+
+            {/* Điều kiện môi trường then chốt */}
+            <Box className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <Box className="p-4 rounded-xl border border-border/80 space-y-1">
+                <Typography.Text className="text-xs font-bold text-foreground block">
+                  Đất trồng & Vùng đệm 50m
+                </Typography.Text>
+                <Typography.Muted className="text-xs text-muted-foreground leading-relaxed">
+                  Khoảng cách ly tối thiểu 50m với nông trại hóa chất. Đất kiểm định định kỳ đạt chuẩn QCVN 03-MT:2015/BTNMT không kim loại nặng.
+                </Typography.Muted>
+              </Box>
+
+              <Box className="p-4 rounded-xl border border-border/80 space-y-1">
+                <Typography.Text className="text-xs font-bold text-foreground block">
+                  Nước ngầm tự nhiên sâu 85m
+                </Typography.Text>
+                <Typography.Muted className="text-xs text-muted-foreground leading-relaxed">
+                  Khai thác từ mạch ngầm rừng thông Lạc Dương, dẫn qua hệ thống lọc vi sinh đa tầng và khử khuẩn tia UV đạt QCVN 08-MT:2015.
+                </Typography.Muted>
+              </Box>
+
+              <Box className="p-4 rounded-xl border border-border/80 space-y-1">
+                <Typography.Text className="text-xs font-bold text-foreground block">
+                  Giống thuần chủng Non-GMO
+                </Typography.Text>
+                <Typography.Muted className="text-xs text-muted-foreground leading-relaxed">
+                  100% hạt giống chọn lọc F1 bản địa thuần chủng, không biến đổi gen, có chứng nhận kiểm dịch thực vật của Viện Nông Lâm nghiệp.
+                </Typography.Muted>
+              </Box>
+            </Box>
+
+            {/* Chế tài xử lý vi phạm */}
+            <Box className="p-4 rounded-xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60 flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+              <Box className="space-y-1">
+                <Typography.Text className="text-xs font-bold text-rose-900 dark:text-rose-200 block">
+                  Cam kết bảo lãnh pháp lý: Bồi thường gấp 10 lần giá trị hợp đồng
+                </Typography.Text>
+                <Typography.Muted className="text-xs text-rose-700 dark:text-rose-300/90 leading-relaxed">
+                  Nếu kiểm nghiệm phát hiện tồn dư hóa chất bảo vệ thực vật hoặc chất cấm trong sản phẩm thu hoạch từ ô đất của khách hàng, Green Farm cam kết bồi thường gấp 10 lần tổng giá trị hợp đồng và chịu hoàn toàn trách nhiệm trước pháp luật.
+                </Typography.Muted>
+              </Box>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+
+      {/* 3. Khối Trọng Yếu 2: Chính sách Bảo hiểm Rủi ro Mùa vụ (#crop-insurance) */}
+      <Box id="crop-insurance" className="scroll-mt-24">
+        <Card className="border-border/80 bg-white dark:bg-slate-900 rounded-2xl shadow-xs overflow-hidden">
+          <CardHeader className="border-b border-border/80 pb-4 bg-slate-50/40 dark:bg-slate-800/30">
+            <Box className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <Box className="space-y-1">
+                <Box className="flex items-center gap-2">
+                  <Badge className="bg-amber-600 text-white text-[11px] font-bold px-2 py-0.5">
+                    Trọng Yếu
+                  </Badge>
+                  <Typography.Text className="text-xs text-muted-foreground font-semibold">
+                    Chính sách bảo vệ quyền lợi cư dân Green Farm Care
+                  </Typography.Text>
+                </Box>
+                <Typography.H3 className="text-xl font-extrabold text-foreground tracking-tight">
+                  Chính sách Bảo hiểm Rủi ro Mùa vụ 100%
+                </Typography.H3>
+              </Box>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setViewingDoc("insurance")}
+                className="text-xs h-8 gap-1.5 shrink-0"
+              >
+                <FileText className="w-3.5 h-3.5 text-amber-600" />
+                <span>Xem quy chế bồi hoàn</span>
+              </Button>
+            </Box>
+          </CardHeader>
+
+          <CardContent className="p-6 sm:p-8 space-y-6">
+            <Typography.Muted className="text-sm text-muted-foreground leading-relaxed">
+              Mọi hợp đồng canh tác tại Green Farm đều tự động được áp dụng gói bảo lãnh rủi ro mà không phụ thu. Khi gặp thiên tai, sâu bệnh bất khả kháng hoặc lỗi kỹ thuật nhà màng, cư dân được quyền chọn một trong 3 phương án bồi hoàn sau:
+            </Typography.Muted>
+
+            {/* 3 Phương án bồi thường */}
+            <Box className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Box className="p-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-900/50 space-y-2">
+                <Box className="flex items-center gap-2">
+                  <Badge className="bg-emerald-600 text-white text-[10px] font-bold">
+                    Phương án 1
+                  </Badge>
+                  <Typography.Text className="text-xs font-bold text-emerald-900 dark:text-emerald-200">
+                    Trồng bù khẩn cấp
+                  </Typography.Text>
+                </Box>
+                <Typography.Muted className="text-xs text-muted-foreground leading-relaxed">
+                  Làm sạch đất và gieo trồng lại luống rau mới trong 48 giờ. Miễn phí 100% chi phí cây giống, phân bón và công chăm sóc. Hợp đồng tự động kéo dài bù số ngày thiệt hại.
+                </Typography.Muted>
+              </Box>
+
+              <Box className="p-4 rounded-xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-200/80 dark:border-sky-900/50 space-y-2">
+                <Box className="flex items-center gap-2">
+                  <Badge className="bg-sky-600 text-white text-[10px] font-bold">
+                    Phương án 2
+                  </Badge>
+                  <Typography.Text className="text-xs font-bold text-sky-900 dark:text-sky-200">
+                    Xuất kho rau dự phòng
+                  </Typography.Text>
+                </Box>
+                <Typography.Muted className="text-xs text-muted-foreground leading-relaxed">
+                  Giao nhận lượng rau hữu cơ đạt chuẩn tương đương sản lượng cam kết từ Vườn canh tác đối ứng của Green Farm để bàn ăn gia đình bạn không bao giờ bị gián đoạn.
+                </Typography.Muted>
+              </Box>
+
+              <Box className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/50 space-y-2">
+                <Box className="flex items-center gap-2">
+                  <Badge className="bg-amber-600 text-white text-[10px] font-bold">
+                    Phương án 3
+                  </Badge>
+                  <Typography.Text className="text-xs font-bold text-amber-900 dark:text-amber-200">
+                    Hoàn tiền 100%
+                  </Typography.Text>
+                </Box>
+                <Typography.Muted className="text-xs text-muted-foreground leading-relaxed">
+                  Hoàn trả 100% tiền thuê ô đất và phí dịch vụ chăm sóc của chu kỳ mùa vụ bị ảnh hưởng trực tiếp về tài khoản ngân hàng của khách hàng trong 03 ngày làm việc.
+                </Typography.Muted>
+              </Box>
+            </Box>
+
+            {/* Quy trình giải quyết cấp tốc */}
+            <Box className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+              <Box className="space-y-0.5 text-center sm:text-left">
+                <Typography.Text className="text-xs font-bold text-foreground">
+                  Quy trình giám định số hóa: Xác minh 2 giờ • Bồi hoàn 24 giờ
+                </Typography.Text>
+                <Typography.Muted className="text-[11px] text-muted-foreground">
+                  Đối chiếu dữ liệu camera và nhật ký IoT tự động, gửi biên bản điện tử trực tiếp về ứng dụng của bạn.
+                </Typography.Muted>
+              </Box>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setViewingDoc("insurance")}
+                className="text-xs h-8 gap-1 text-primary hover:text-primary/90 shrink-0"
+              >
+                <span>Xem điều khoản chi tiết</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+
+      {/* 4. Khối 3: Danh mục Chứng thư & Kiểm định độc lập */}
+      <Card className="border-border/80 bg-white dark:bg-slate-900 rounded-2xl shadow-xs overflow-hidden">
+        <CardHeader className="border-b border-border/80 pb-4">
+          <Box className="flex items-center justify-between">
+            <Box className="space-y-1">
+              <Typography.H3 className="text-lg font-bold text-foreground tracking-tight">
+                Chứng thư & Pháp lý Minh bạch
+              </Typography.H3>
+              <Typography.Muted className="text-xs text-muted-foreground">
+                Nhấp vào từng chứng chỉ để xem toàn văn bản gốc và con dấu số điện tử xác thực.
+              </Typography.Muted>
+            </Box>
+            <ShieldCheck className="w-5 h-5 text-emerald-600" />
+          </Box>
+        </CardHeader>
+
+        <CardContent className="p-4 sm:p-6 divide-y divide-border/60">
+          {[
+            {
+              id: "organic" as DocumentViewType,
+              title: "Quy chuẩn Canh tác Hữu cơ Quốc gia (TCVN 11041:2017)",
+              code: "Số: 08/2026/QCKT-CK-DALAT",
+              auth: "Bộ Nông nghiệp & PTNT • Ban Kỹ thuật Green Farm",
+              status: "Đã ký số SHA-256",
+            },
+            {
+              id: "insurance" as DocumentViewType,
+              title: "Quy chế Bảo hiểm Mùa vụ & Bồi hoàn Nông sản Green Farm Care",
+              code: "Số: 12/2026/QC-BH-GF",
+              auth: "Hội đồng Quản trị Công ty CP Nông nghiệp Công nghệ cao Green Farm",
+              status: "Bảo lãnh 100%",
+            },
+            {
+              id: "sgs" as DocumentViewType,
+              title: "Phiếu Kiểm nghiệm Định kỳ Dư lượng Hoạt chất Nông sản",
+              code: "Số: SGS-VNM-2026-8891 / Eurofins",
+              auth: "Tổ chức Giám định Độc lập SGS Việt Nam & Eurofins Sắc Ký Hải Đăng",
+              status: "Đạt chuẩn 0% hóa chất",
+            },
+          ].map((cert) => (
+            <Box
+              key={cert.id}
+              className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 first:pt-0 last:pb-0"
+            >
+              <Box className="space-y-1">
+                <Box className="flex items-center gap-2">
+                  <Typography.Text className="text-xs sm:text-sm font-bold text-foreground">
+                    {cert.title}
+                  </Typography.Text>
+                  <Badge variant="outline" className="text-[10px] text-emerald-700 dark:text-emerald-300 border-emerald-300 bg-emerald-50 dark:bg-emerald-950/40">
+                    {cert.status}
+                  </Badge>
+                </Box>
+                <Typography.Muted className="text-[11px] text-muted-foreground block">
+                  {cert.code} • Cơ quan/Tổ chức: {cert.auth}
+                </Typography.Muted>
+              </Box>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setViewingDoc(cert.id)}
+                className="text-xs h-8 gap-1.5 shrink-0 self-start sm:self-center"
+              >
+                <FileText className="w-3.5 h-3.5 text-slate-600" />
+                <span>Xem văn bản</span>
+              </Button>
+            </Box>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* 5. MODAL XEM VĂN BẢN CHỨNG CHỈ / HỢP ĐỒNG PHÁP LÝ CHÍNH THỨC (Khi người dùng cần view) */}
+      <Modal
+        isOpen={viewingDoc !== null}
+        onClose={() => setViewingDoc(null)}
+        title={
+          viewingDoc === "organic"
+            ? "Bản Cam Kết Quy Chuẩn Kỹ Thuật Canh Tác Hữu Cơ"
+            : viewingDoc === "insurance"
+              ? "Quy Chế Bảo Hiểm Rủi Ro Mùa Vụ & Bồi Hoàn Nông Sản"
+              : "Phiếu Kiểm Nghiệm Định Kỳ An Toàn Nông Sản"
+        }
+        description="Văn bản pháp quy điện tử chính thức được ký số mã hóa theo Luật Giao dịch Điện tử Việt Nam."
+        size="lg"
+      >
+        <Box className="space-y-6 pt-2 font-sans">
+          {/* Header Hành chính trang nghiêm */}
+          <Box className="text-center pb-4 border-b border-border space-y-1">
+            <Typography.Text className="text-xs font-bold uppercase tracking-wide text-foreground block">
+              CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+            </Typography.Text>
+            <Typography.Text className="text-xs font-semibold text-foreground block">
+              Độc lập - Tự do - Hạnh phúc
+            </Typography.Text>
+            <Box className="w-20 h-0.5 bg-slate-300 mx-auto my-1" />
+            <Typography.Text className="text-[11px] text-muted-foreground italic block">
+              Lâm Đồng, ngày 15 tháng 10 năm 2025
             </Typography.Text>
           </Box>
-        </Box>
 
-        {/* 2. Căn Cứ Pháp Lý (Legal Basis) */}
-        <Box className="space-y-1.5 text-xs sm:text-sm italic text-slate-700 dark:text-slate-300 pb-6 border-b border-slate-200 dark:border-slate-800 mb-8">
-          <Typography.P className="leading-relaxed">
-            - Căn cứ Luật Trồng trọt số 31/2018/QH14 được Quốc hội nước Cộng hòa Xã hội Chủ nghĩa Việt Nam thông qua ngày 19 tháng 11 năm 2018;
-          </Typography.P>
-          <Typography.P className="leading-relaxed">
-            - Căn cứ Nghị định số 109/2018/NĐ-CP ngày 29 tháng 8 năm 2018 của Chính phủ về Nông nghiệp hữu cơ;
-          </Typography.P>
-          <Typography.P className="leading-relaxed">
-            - Căn cứ Bộ Tiêu chuẩn Quốc gia TCVN 11041-1:2017 & TCVN 11041-2:2017 về Trồng trọt hữu cơ và các quy chuẩn kỹ thuật an toàn thực phẩm;
-          </Typography.P>
-          <Typography.P className="leading-relaxed">
-            - Căn cứ Luật Giao dịch Điện tử số 20/2023/QH15 và Luật Bảo vệ Quyền lợi Người tiêu dùng số 19/2023/QH15;
-          </Typography.P>
-          <Typography.P className="leading-relaxed">
-            - Căn cứ Quy chế Vận hành Nông trại Công nghệ cao Green Farm tại Tiểu khu 158, xã Đạ Sar, huyện Lạc Dương, tỉnh Lâm Đồng.
-          </Typography.P>
-        </Box>
-
-        {/* 3. Nội Dung Văn Bản Điều Khoản */}
-        <Box className="space-y-10 text-xs sm:text-sm leading-relaxed">
-          {/* CHƯƠNG I */}
-          <Box className="space-y-4">
-            <Typography.H3 className="text-sm sm:text-base font-bold uppercase text-slate-900 dark:text-slate-100 tracking-wide border-l-4 border-slate-800 dark:border-slate-200 pl-3">
-              CHƯƠNG I: QUY ĐỊNH CHUNG & MÔ HÌNH NÔNG NGHIỆP SỐ MINH BẠCH
-            </Typography.H3>
-
-            <Box className="space-y-3 pl-3 sm:pl-4 border-l border-slate-200 dark:border-slate-800">
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 1. Tư cách pháp nhân và Thông tin chủ thể nông trại
+          {/* Nội dung chi tiết văn bản theo tab */}
+          <Box className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+            {viewingDoc === "organic" && (
+              <Box className="space-y-3">
+                <Typography.Text className="font-bold text-foreground text-sm block">
+                  BẢN CAM KẾT TIÊU CHUẨN HỮU CƠ TCVN 11041:2017
                 </Typography.Text>
-                <Typography.P className="text-justify">
-                  1.1. Doanh nghiệp vận hành: <strong>CÔNG TY CỔ PHẦN NÔNG NGHIỆP CÔNG NGHỆ CAO GREEN FARM ĐÀ LẠT</strong> (Sau đây gọi tắt là <em>&quot;Green Farm&quot;</em>). Mã số doanh nghiệp: 5801456899 do Sở Kế hoạch & Đầu tư tỉnh Lâm Đồng cấp.
+                <Typography.P className="italic text-muted-foreground">
+                  Số: 08/2026/QCKT-CK-DALAT • Ban hành kèm Hợp đồng Canh tác số Green Farm 2026
                 </Typography.P>
                 <Typography.P className="text-justify">
-                  1.2. Địa chỉ tổ hợp canh tác: Tiểu khu 158, xã Đạ Sar, huyện Lạc Dương, thành phố Đà Lạt, tỉnh Lâm Đồng.
+                  <strong>Điều 1. Căn cứ pháp lý:</strong> Căn cứ Luật Trồng trọt số 31/2018/QH14; Nghị định số 109/2018/NĐ-CP về Nông nghiệp hữu cơ; Bộ Tiêu chuẩn Quốc gia TCVN 11041-1:2017 và TCVN 11041-2:2017.
                 </Typography.P>
                 <Typography.P className="text-justify">
-                  1.3. Tôn chỉ hoạt động: Xóa bỏ ranh giới bất đối xứng thông tin giữa cư dân đô thị và người sản xuất thông qua công nghệ số, cam kết 100% nông sản sạch chuẩn hữu cơ không can thiệp hóa chất, minh bạch mọi chỉ số qua vi cảm biến và camera truyền phát thời gian thực.
+                  <strong>Điều 2. Quy chuẩn cách ly:</strong> Thiết lập vùng đệm cách ly cơ học tối thiểu 50 mét đối với khu vực sản xuất xung quanh. Đất trồng được kiểm định định kỳ không chứa kim loại nặng (Chì, Cadmi, Asen, Thủy ngân) đạt QCVN 03-MT:2015/BTNMT.
+                </Typography.P>
+                <Typography.P className="text-justify">
+                  <strong>Điều 3. Nguồn nước tưới:</strong> 100% nước giếng khoan tầng ngầm sâu 85m tại Lạc Dương, khử trùng qua hệ thống tia cực tím UV và vi lọc, đạt tiêu chuẩn QCVN 08-MT:2015/BTNMT.
+                </Typography.P>
+                <Typography.P className="text-justify">
+                  <strong>Điều 4. Nguyên tắc 5 Không:</strong> Không thuốc trừ sâu hóa học; Không phân bón vô cơ tổng hợp; Không thuốc diệt cỏ; Không hormone kích thích tăng trưởng; Không chất bảo quản.
+                </Typography.P>
+                <Typography.P className="text-justify">
+                  <strong>Điều 5. Giám sát mở 24/7:</strong> Cung cấp luồng hình ảnh Camera HLS trực tiếp không ngắt quãng và dữ liệu cảm biến IoT cập nhật liên tục mỗi 5 phút vào nhật ký canh tác của khách hàng.
+                </Typography.P>
+                <Typography.P className="text-justify font-bold text-rose-700 dark:text-rose-400 p-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200">
+                  Điều 6. Chế tài bồi thường: Green Farm cam kết bồi thường gấp 10 (mười) lần toàn bộ giá trị hợp đồng nếu cơ quan kiểm định độc lập phát hiện tồn dư hóa chất cấm trong sản phẩm thu hoạch.
                 </Typography.P>
               </Box>
+            )}
 
-              <Box className="space-y-1 pt-2">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 2. Bản chất pháp lý của mô hình Đồng canh tác
+            {viewingDoc === "insurance" && (
+              <Box className="space-y-3">
+                <Typography.Text className="font-bold text-foreground text-sm block">
+                  QUY CHẾ BẢO HIỂM RỦI RO MÙA VỤ & BỒI HOÀN NÔNG SẢN
                 </Typography.Text>
-                <Typography.P className="text-justify">
-                  2.1. Khách hàng tham gia ký kết hợp đồng điện tử là chủ sở hữu hợp pháp đối với toàn bộ sản lượng nông sản thu hoạch được trên diện tích ô đất được giao quyền khai thác trong thời hạn hợp đồng.
+                <Typography.P className="italic text-muted-foreground">
+                  Số: 12/2026/QC-BH-GF • Chương trình Green Farm Care 100%
                 </Typography.P>
                 <Typography.P className="text-justify">
-                  2.2. Kỹ thuật viên nông trại Green Farm đóng vai trò là bên nhận ủy thác chăm sóc chuyên nghiệp theo đúng phác đồ sinh học nghiêm ngặt được quy định tại Bản Cam kết này.
+                  <strong>Điều 1. Phạm vi áp dụng:</strong> Bảo lãnh 100% rủi ro mùa vụ cho toàn bộ khách hàng có hợp đồng thuê đất đang còn thời hạn canh tác tại nông trại.
+                </Typography.P>
+                <Typography.P className="text-justify">
+                  <strong>Điều 2. Các trường hợp được bồi hoàn:</strong> Thiên tai thời tiết cực đoan (mưa đá, sương muối, lốc xoáy); Dịch hại bất khả kháng dù đã áp dụng phác đồ sinh học; Sự cố kỹ thuật nhà kính (mất điện, vỡ ống nước, lỗi cảm biến tưới) làm giảm trên 30% năng suất.
+                </Typography.P>
+                <Typography.P className="text-justify">
+                  <strong>Điều 3. Ba phương án bồi thường lựa chọn:</strong> (1) Trồng bù miễn phí luống mới trong 48h; (2) Cung cấp rau hữu cơ tương đương từ kho dự phòng đối ứng; (3) Hoàn tiền 100% chi phí chu kỳ canh tác bị ảnh hưởng.
+                </Typography.P>
+                <Typography.P className="text-justify">
+                  <strong>Điều 4. Thời hạn xử lý:</strong> Kỹ sư thẩm định dữ liệu IoT và camera trong vòng 02 giờ. Hoàn tất bồi hoàn hoặc gieo trồng lại trong vòng 24 giờ kể từ khi khách hàng xác nhận trên ứng dụng.
                 </Typography.P>
               </Box>
-            </Box>
+            )}
+
+            {viewingDoc === "sgs" && (
+              <Box className="space-y-3">
+                <Typography.Text className="font-bold text-foreground text-sm block">
+                  KẾT QUẢ KIỂM NGHIỆM ĐỊNH KỲ SGS & EUROFINS
+                </Typography.Text>
+                <Typography.P className="italic text-muted-foreground">
+                  Mã giám định: SGS-VNM-2026-8891 • Ngày phân tích: 02/01/2026
+                </Typography.P>
+                <Typography.P className="text-justify">
+                  <strong>Đối tượng kiểm nghiệm:</strong> Rau xà lách Romaine, Cải Kale, Cà chua bi canh tác tại Lô đất Khu A - Green Farm Lạc Dương.
+                </Typography.P>
+                <Typography.P className="text-justify">
+                  <strong>Chỉ tiêu kiểm định:</strong> Dư lượng 810 hoạt chất bảo vệ thực vật (thuốc trừ sâu, thuốc trừ nấm, thuốc trừ cỏ), hàm lượng kim loại nặng (Pb, Cd, As, Hg), vi sinh vật gây hại (E. coli, Salmonella).
+                </Typography.P>
+                <Typography.P className="text-justify font-semibold text-emerald-700 dark:text-emerald-400 p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200">
+                  Kết luận: 100% mẫu kiểm nghiệm đều cho kết quả KHÔNG PHÁT HIỆN (Not Detected - LOD &lt; 0.01 mg/kg), hoàn toàn tuân thủ tiêu chuẩn TCVN 11041:2017 và tiêu chuẩn xuất khẩu GlobalGAP.
+                </Typography.P>
+              </Box>
+            )}
           </Box>
 
-          {/* CHƯƠNG II: CAM KẾT TIÊU CHUẨN HỮU CƠ (ANCHOR: organic-standards) */}
-          <Box id="organic-standards" className="space-y-4 pt-4 scroll-mt-20">
-            <Box className="flex items-center justify-between gap-3 border-l-4 border-emerald-700 dark:border-emerald-500 pl-3">
-              <Typography.H3 className="text-sm sm:text-base font-bold uppercase text-slate-900 dark:text-slate-100 tracking-wide">
-                CHƯƠNG II: QUY CHUẨN KỸ THUẬT & CAM KẾT TIÊU CHUẨN HỮU CƠ
-              </Typography.H3>
-              <Badge variant="outline" className="bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 text-[10px] font-mono">
-                TCVN 11041:2017
-              </Badge>
+          {/* Con dấu số điện tử xác thực */}
+          <Box className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-border flex flex-col sm:flex-row items-center justify-between gap-3">
+            <Box className="space-y-0.5 text-center sm:text-left">
+              <Box className="flex items-center justify-center sm:justify-start gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                <ShieldCheck className="w-4 h-4" />
+                <span>CHỨNG THƯ SỐ ĐIỆN TỬ HỢP LỆ • VIETTEL-CA TrustID</span>
+              </Box>
+              <Typography.Muted className="text-[10px] text-muted-foreground block font-mono">
+                CÔNG TY CP NÔNG NGHIỆP CÔNG NGHỆ CAO GREEN FARM • MST: 5801456899
+              </Typography.Muted>
             </Box>
 
-            <Box className="space-y-4 pl-3 sm:pl-4 border-l border-emerald-200 dark:border-emerald-900/50">
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 3. Quy chuẩn cách ly thổ nhưỡng và vùng đệm an toàn
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  3.1. Toàn bộ khu đất canh tác được thiết lập vùng đệm cách ly cơ học tối thiểu 50 mét so với các khu vực canh tác nông nghiệp sử dụng hóa chất truyền thống xung quanh.
-                </Typography.P>
-                <Typography.P className="text-justify">
-                  3.2. Đất trồng trải qua giai đoạn chuyển đổi sinh học tối thiểu 36 tháng không sử dụng hóa chất. Hàm lượng kim loại nặng (Chì - Pb, Cadmi - Cd, Asen - As, Thủy ngân - Hg) phải đạt chỉ số an toàn tuyệt đối theo Quy chuẩn Kỹ thuật Quốc gia QCVN 03-MT:2015/BTNMT.
-                </Typography.P>
-              </Box>
-
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 4. Quy chuẩn nguồn nước tưới ngầm tự nhiên
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  4.1. Nguồn nước tưới được khai thác hoàn toàn từ giếng khoan tầng ngầm sâu 85 mét tại sườn rừng thông nguyên sinh Lạc Dương, không chịu tác động của nước mặt đô thị hoặc nước thải sinh hoạt.
-                </Typography.P>
-                <Typography.P className="text-justify">
-                  4.2. Nước được lọc qua hệ thống vi sinh đa tầng và khử trùng bằng tia cực tím (UV) trước khi đưa vào hệ thống tưới nhỏ giọt tự động, bảo đảm đáp ứng tiêu chuẩn QCVN 08-MT:2015/BTNMT về chất lượng nước mặt và nước dưới đất phục vụ mục đích nông nghiệp.
-                </Typography.P>
-              </Box>
-
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 5. Kiểm soát nguồn giống thuần chủng không biến đổi gen (Non-GMO)
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  5.1. 100% hạt giống và cây con được chọn lọc từ các dòng thuần F1 hoặc giống bản địa đặc sản Đà Lạt có chứng chỉ nguồn gốc xuất xứ rõ ràng từ Viện Nghiên cứu Khoa học Nông Lâm nghiệp Tây Nguyên hoặc các nhà cung ứng giống đạt chuẩn quốc tế.
-                </Typography.P>
-                <Typography.P className="text-justify">
-                  5.2. Tuyệt đối nghiêm cấm việc đưa vào sử dụng các loại giống cây trồng biến đổi gen (GMO) hoặc giống đã qua xử lý chất bảo quản hóa học tổng hợp.
-                </Typography.P>
-              </Box>
-
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 6. Nguyên tắc 5 KHÔNG trong chăm sóc và dinh dưỡng thực vật
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  Green Farm cam kết thực thi nghiêm ngặt <strong>&quot;Nguyên tắc 5 KHÔNG&quot;</strong> tại từng luống đất:
-                </Typography.P>
-                <Box className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200 dark:border-slate-700 space-y-1.5 my-2">
-                  <Typography.P className="font-semibold text-slate-900 dark:text-slate-100">
-                    (1) KHÔNG thuốc trừ sâu hóa học tổng hợp.
-                  </Typography.P>
-                  <Typography.P className="font-semibold text-slate-900 dark:text-slate-100">
-                    (2) KHÔNG phân bón hóa học (vô cơ, NPK tổng hợp, đạm urê nhân tạo).
-                  </Typography.P>
-                  <Typography.P className="font-semibold text-slate-900 dark:text-slate-100">
-                    (3) KHÔNG thuốc diệt cỏ hay chất làm rụng lá.
-                  </Typography.P>
-                  <Typography.P className="font-semibold text-slate-900 dark:text-slate-100">
-                    (4) KHÔNG chất kích thích tăng trưởng (hormone sinh trưởng thực vật).
-                  </Typography.P>
-                  <Typography.P className="font-semibold text-slate-900 dark:text-slate-100">
-                    (5) KHÔNG chất bảo quản nông sản sau thu hoạch.
-                  </Typography.P>
-                </Box>
-                <Typography.P className="text-justify">
-                  Dinh dưỡng cung cấp cho rau màu chỉ bao gồm phân hữu cơ hoai mục ủ vi sinh IMO, dịch đạm trùn quế và phân cá ủ men sinh học tự nhiên theo công thức nông học bản quyền.
-                </Typography.P>
-              </Box>
-
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 7. Minh bạch dữ liệu vi khí hậu IoT và Luồng hình ảnh trực tiếp 24/7
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  7.1. Mỗi ô đất canh tác được gắn camera HLS chuyên dụng hoạt động liên tục 24/7/365, truyền phát hình ảnh thời gian thực không ngắt quãng đến ứng dụng của Khách hàng.
-                </Typography.P>
-                <Typography.P className="text-justify">
-                  7.2. Cảm biến IoT đo nhiệt độ không khí, độ ẩm không khí, độ ẩm đất và độ dẫn điện dinh dưỡng (EC) được cập nhật liên tục 5 phút/lần, lưu vết dữ liệu bất biến trên hệ sinh thái đám mây để khách hàng và cơ quan thanh tra kiểm tra bất cứ lúc nào.
-                </Typography.P>
-              </Box>
-
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 8. Kiểm định độc lập và Trách nhiệm pháp lý đặc biệt
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  8.1. Định kỳ mỗi quý một lần, Green Farm gửi mẫu đất, mẫu nước tưới và mẫu rau ngẫu nhiên đến Phòng kiểm nghiệm đạt chuẩn quốc tế (SGS Việt Nam hoặc Eurofins Sắc Ký Hải Đăng) để phân tích tồn dư hơn 800 hoạt chất bảo vệ thực vật. Phiếu kết quả kiểm nghiệm được công bố công khai trên hệ thống.
-                </Typography.P>
-                <Typography.P className="text-justify text-rose-700 dark:text-rose-400 font-semibold bg-rose-50 dark:bg-rose-950/40 p-3 rounded-lg border border-rose-200 dark:border-rose-900/60">
-                  8.2. CHẾ TÀI ĐẶC BIỆT: Nếu Khách hàng đem nông sản thu hoạch từ ô đất của mình đi kiểm nghiệm tại các cơ quan đo lường độc lập có thẩm quyền của Nhà nước và phát hiện tồn dư hóa chất bảo vệ thực vật hoặc chất cấm vượt quá giới hạn quy định, Green Farm cam kết bồi thường gấp 10 (mười) lần toàn bộ giá trị hợp đồng thuê đất mùa vụ đã thanh toán và chịu hoàn toàn trách nhiệm trước pháp luật.
-                </Typography.P>
-              </Box>
-            </Box>
-          </Box>
-
-          {/* CHƯƠNG III: CHÍNH SÁCH BẢO HIỂM RỦI RO MÙA VỤ (ANCHOR: crop-insurance) */}
-          <Box id="crop-insurance" className="space-y-4 pt-4 scroll-mt-20">
-            <Box className="flex items-center justify-between gap-3 border-l-4 border-amber-700 dark:border-amber-500 pl-3">
-              <Typography.H3 className="text-sm sm:text-base font-bold uppercase text-slate-900 dark:text-slate-100 tracking-wide">
-                CHƯƠNG III: CHÍNH SÁCH BẢO HIỂM RỦI RO MÙA VỤ & QUY CHẾ BỒI HOÀN
-              </Typography.H3>
-              <Badge variant="outline" className="bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-300 text-[10px] font-mono">
-                BẢO HIỂM 100%
-              </Badge>
-            </Box>
-
-            <Box className="space-y-4 pl-3 sm:pl-4 border-l border-amber-200 dark:border-amber-900/50">
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 9. Phạm vi bảo lãnh rủi ro nông vụ (Green Farm Care 100%)
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  Mọi ô đất canh tác có hợp đồng điện tử hợp lệ đều tự động được áp dụng gói bảo lãnh an toàn mùa vụ mà không phát sinh thêm bất kỳ khoản phí phụ thu nào. Green Farm đứng ra bảo lãnh 100% rủi ro nông sản đến tay người tiêu dùng.
-                </Typography.P>
-              </Box>
-
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 10. Các trường hợp sự cố được chi trả bảo hiểm
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  10.1. Thiên tai thời tiết cực đoan: Mưa đá cục bộ tại cao nguyên, sương muối giá lạnh gây táp lá, giông lốc làm ảnh hưởng màng che nhà kính.
-                </Typography.P>
-                <Typography.P className="text-justify">
-                  10.2. Dịch hại tự nhiên bất khả kháng: Bùng phát dịch bọ trĩ, sâu tơ hoặc nấm bệnh sinh học dù kỹ thuật viên đã áp dụng đầy đủ quy trình an toàn sinh học theo đúng nhật ký công việc.
-                </Typography.P>
-                <Typography.P className="text-justify">
-                  10.3. Sự cố kỹ thuật công nghệ cao: Lỗi mất điện lưới dự phòng kéo dài, vỡ ống cấp nước chính hoặc hỏng hóc cảm biến tưới tự động làm ảnh hưởng năng suất luống rau quá 30% sản lượng dự kiến.
-                </Typography.P>
-              </Box>
-
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 11. Ba (03) hình thức bồi thường linh hoạt
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  Khi xảy ra sự cố thuộc phạm vi bảo hiểm, Khách hàng có toàn quyền chủ động lựa chọn một trong ba phương án bồi thường sau đây:
-                </Typography.P>
-                <Box className="grid grid-cols-1 md:grid-cols-3 gap-3 my-2">
-                  <Box className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-lg border border-slate-200 dark:border-slate-700 space-y-1">
-                    <Typography.Text className="font-bold text-xs uppercase text-emerald-800 dark:text-emerald-400 block">
-                      Phương án 1: Trồng bù khẩn cấp
-                    </Typography.Text>
-                    <Typography.P className="text-xs text-justify text-slate-600 dark:text-slate-400">
-                      Nông trại dọn sạch luống và gieo trồng lại luống rau mới trong vòng 48 giờ. Miễn phí 100% cây giống, giá thể và công chăm sóc. Hạn thuê đất tự động kéo dài bù số ngày thiệt hại.
-                    </Typography.P>
-                  </Box>
-
-                  <Box className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-lg border border-slate-200 dark:border-slate-700 space-y-1">
-                    <Typography.Text className="font-bold text-xs uppercase text-sky-800 dark:text-sky-400 block">
-                      Phương án 2: Xuất kho dự phòng
-                    </Typography.Text>
-                    <Typography.P className="text-xs text-justify text-slate-600 dark:text-slate-400">
-                      Giao nhận rau củ sạch đạt chuẩn hữu cơ tương đương sản lượng cam kết từ Vườn canh tác đối ứng của Green Farm để bàn ăn gia đình khách hàng không bị gián đoạn.
-                    </Typography.P>
-                  </Box>
-
-                  <Box className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-lg border border-slate-200 dark:border-slate-700 space-y-1">
-                    <Typography.Text className="font-bold text-xs uppercase text-amber-800 dark:text-amber-400 block">
-                      Phương án 3: Hoàn tiền 100%
-                    </Typography.Text>
-                    <Typography.P className="text-xs text-justify text-slate-600 dark:text-slate-400">
-                      Hoàn trả 100% chi phí thuê đất và chi phí canh tác của chu kỳ mùa vụ bị ảnh hưởng trực tiếp vào tài khoản ngân hàng hoặc ví điện tử của khách hàng trong 03 ngày làm việc.
-                    </Typography.P>
-                  </Box>
-                </Box>
-              </Box>
-
-              <Box className="space-y-1">
-                <Typography.Text className="font-bold text-slate-900 dark:text-slate-100 block">
-                  Điều 12. Quy trình giám định tự động và Thời hạn xử lý bồi thường
-                </Typography.Text>
-                <Typography.P className="text-justify">
-                  12.1. Giám định số hóa: Khi có báo cáo sự cố hoặc cảm biến kích hoạt cảnh báo, Trưởng Ban Nông học và Kỹ sư trưởng tiến hành đối chiếu dữ liệu hình ảnh camera và biểu đồ cảm biến trong vòng tối đa <strong>02 (hai) giờ</strong> làm việc.
-                </Typography.P>
-                <Typography.P className="text-justify">
-                  12.2. Thời hạn hoàn tất bồi hoàn: Toàn bộ thủ tục gieo trồng lại hoặc giải ngân hoàn tiền bồi hoàn được thực thi hoàn tất trong vòng <strong>24 (hai mươi bốn) giờ</strong> làm việc kể từ thời điểm Khách hàng xác nhận phương án xử lý trên ứng dụng.
-                </Typography.P>
-              </Box>
-            </Box>
-          </Box>
-
-          {/* CHƯƠNG IV: ĐIỀU KHOẢN THI HÀNH & KÝ SỐ */}
-          <Box className="space-y-4 pt-4">
-            <Typography.H3 className="text-sm sm:text-base font-bold uppercase text-slate-900 dark:text-slate-100 tracking-wide border-l-4 border-slate-800 dark:border-slate-200 pl-3">
-              CHƯƠNG IV: HIỆU LỰC THI HÀNH & KÝ SỐ PHÁP NHÂN
-            </Typography.H3>
-
-            <Box className="space-y-3 pl-3 sm:pl-4 border-l border-slate-200 dark:border-slate-800">
-              <Typography.P className="text-justify">
-                Bản Quy chuẩn Kỹ thuật Canh tác Hữu cơ và Chính sách Bảo hiểm Rủi ro Mùa vụ này có hiệu lực kể từ ngày công bố và được tích hợp mặc định như một điều khoản hợp đồng bắt buộc trong Hợp đồng Thuê đất số ký kết giữa Khách hàng và Green Farm.
-              </Typography.P>
-              <Typography.P className="text-justify">
-                Mọi tranh chấp phát sinh (nếu có) trước hết được giải quyết trên tinh thần thương lượng thiện chí, bảo vệ tối đa quyền lợi sức khỏe và quyền thụ hưởng nông sản hữu cơ của khách hàng.
-              </Typography.P>
-            </Box>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => window.print()}
+              className="text-xs h-8 gap-1.5 shrink-0"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>In / Tải văn bản</span>
+            </Button>
           </Box>
         </Box>
-
-        {/* 4. Phần Chữ Ký Số & Con Dấu Điện Tử Chuẩn Hợp Đồng */}
-        <Box className="pt-12 mt-12 border-t-2 border-slate-800/80 dark:border-slate-300/80 font-sans">
-          <Box className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-start">
-            <Box className="text-center sm:text-left space-y-1">
-              <Typography.Text className="text-xs font-bold uppercase text-slate-900 dark:text-slate-100 block">
-                ĐẠI DIỆN HỘI ĐỒNG THẨM ĐỊNH NÔNG HỌC
-              </Typography.Text>
-              <Typography.Text className="text-[11px] text-slate-500 italic block">
-                (Ký, ghi rõ họ tên và xác thực chức danh)
-              </Typography.Text>
-              <Box className="pt-10">
-                <Typography.Text className="text-sm font-bold text-slate-800 dark:text-slate-200 font-serif italic block">
-                  TS. Lê Hoàng Nam
-                </Typography.Text>
-                <Typography.Text className="text-xs text-slate-500 block">
-                  Phó Giám đốc Kỹ thuật Sinh học Nông nghiệp
-                </Typography.Text>
-              </Box>
-            </Box>
-
-            <Box className="text-center sm:text-right space-y-1">
-              <Typography.Text className="text-xs font-bold uppercase text-slate-900 dark:text-slate-100 block">
-                ĐẠI DIỆN THEO PHÁP LUẬT CỦA DOANH NGHIỆP
-              </Typography.Text>
-              <Typography.Text className="text-[11px] text-slate-500 italic block">
-                (Ký số điện tử & Đóng dấu pháp nhân)
-              </Typography.Text>
-
-              {/* Con Dấu Số Điện Tử (Official Digital Seal) */}
-              <Box className="pt-4 inline-block text-left">
-                <Box className="border-2 border-rose-700/80 bg-rose-50/70 dark:bg-rose-950/30 p-3 rounded-lg text-rose-800 dark:text-rose-300 space-y-0.5 shadow-2xs">
-                  <Box className="flex items-center gap-1.5 text-xs font-black uppercase text-rose-700 dark:text-rose-400">
-                    <ShieldCheck className="w-4 h-4 text-rose-700 dark:text-rose-400 shrink-0" />
-                    <span>ĐÃ KÝ SỐ HỢP LỆ (DIGITALLY SIGNED)</span>
-                  </Box>
-                  <Typography.Text className="text-[10px] block font-mono font-semibold">
-                    CN = CÔNG TY CP NÔNG NGHIỆP CÔNG NGHỆ CAO GREEN FARM
-                  </Typography.Text>
-                  <Typography.Text className="text-[10px] block font-mono text-slate-600 dark:text-slate-400">
-                    MST: 5801456899 • CA: VIETTEL-CA TrustID
-                  </Typography.Text>
-                  <Typography.Text className="text-[9px] block font-mono text-slate-500">
-                    Thời gian ký: 15/10/2025 08:30:00 GMT+7
-                  </Typography.Text>
-                  <Typography.Text className="text-[9px] block font-mono text-slate-500 truncate max-w-[260px]">
-                    SHA256: 7F8B2C9A-4E1D-4A23-9BC0-88214EFA72B1
-                  </Typography.Text>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-
-        {/* 5. Document Metadata Footer */}
-        <Box className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-slate-400 dark:text-slate-500 font-sans">
-          <Box className="flex items-center gap-2">
-            <FileText className="w-3.5 h-3.5" />
-            <span>Văn bản pháp quy điện tử • Lưu hành nội bộ và công bố khách hàng</span>
-          </Box>
-          <Typography.Text>Trang 1 / 1 • Mã lưu trữ: GF-CHARTER-2026</Typography.Text>
-        </Box>
-      </Box>
+      </Modal>
     </Box>
   );
 }
