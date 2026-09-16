@@ -134,4 +134,64 @@ export class PlotsRepository {
 
     return plot;
   }
+
+  /**
+   * Atomic hold plot for race condition protection.
+   * Only updates if status is AVAILABLE and lock is null or expired (lockedUntil <= now).
+   * Note: Calling /hold again while holding does not extend the 10-min timer.
+   */
+  static async atomicHoldPlot(
+    plotId: string,
+    userId: string,
+    lockedUntil: Date,
+    now: Date = new Date()
+  ): Promise<number> {
+    const result = await db.plot.updateMany({
+      where: {
+        id: plotId,
+        deletedAt: null,
+        status: "AVAILABLE",
+        OR: [
+          { lockedUntil: null },
+          { lockedUntil: { lte: now } },
+        ],
+      },
+      data: {
+        lockedByUserId: userId,
+        lockedUntil,
+      },
+    });
+    return result.count;
+  }
+
+  /**
+   * Clears plot lock (lockedByUserId = null, lockedUntil = null) without altering status.
+   */
+  static async clearPlotLock(plotId: string) {
+    return db.plot.update({
+      where: { id: plotId },
+      data: {
+        lockedByUserId: null,
+        lockedUntil: null,
+      },
+    });
+  }
+
+  /**
+   * Auto release expired locks for AVAILABLE plots where lockedUntil <= now.
+   */
+  static async releaseExpiredLocks(now: Date = new Date()): Promise<number> {
+    const result = await db.plot.updateMany({
+      where: {
+        status: "AVAILABLE",
+        lockedUntil: { lte: now },
+      },
+      data: {
+        lockedByUserId: null,
+        lockedUntil: null,
+      },
+    });
+    return result.count;
+  }
 }
+

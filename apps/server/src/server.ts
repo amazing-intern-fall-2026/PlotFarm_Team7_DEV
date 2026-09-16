@@ -33,6 +33,7 @@ app.get("/health", (_req: Request, res: Response) => {
 
 import fs from "fs";
 import { paymentsRouter } from "./modules/payments/payments.routes";
+import { initPlotLockCron } from "./modules/plots/plots.cron";
 
 const openApiPath = fs.existsSync(path.join(__dirname, "docs/openapi.yaml"))
   ? path.join(__dirname, "docs/openapi.yaml")
@@ -78,9 +79,11 @@ app.post("/api/gateway", gatewayController);
 app.use(errorHandler);
 
 if (process.env.NODE_ENV !== "test") {
+  initPlotLockCron();
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
 
 export { app };
+

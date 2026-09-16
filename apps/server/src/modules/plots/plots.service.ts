@@ -1,6 +1,19 @@
-import { PlotSchema, type Plot, type PlotsQuery, type PlotStatus } from "@repo/shared";
+import { PlotSchema, ERROR_CODES, type Plot, type PlotsQuery, type PlotStatus } from "@repo/shared";
 import { PlotsRepository } from "./plots.repository";
 import { AppError } from "../../errors/AppError";
+
+const DEFAULT_HOLD_DURATION_SECONDS = 600;
+
+export function getPlotHoldDurationSeconds(): number {
+  const envVal = process.env.PLOT_HOLD_DURATION_SECONDS;
+  if (envVal) {
+    const parsed = parseInt(envVal, 10);
+    if (!isNaN(parsed) && parsed > 0) {
+      return parsed;
+    }
+  }
+  return DEFAULT_HOLD_DURATION_SECONDS;
+}
 
 const mockPlots: Plot[] = [
   {
@@ -66,8 +79,18 @@ export interface PlotWithRelations {
   status: PlotStatus;
   streamUrl?: string | null;
   lockedUntil?: Date | string | null;
-  defaultCrop?: CropDetail | null;
-  farm?: FarmDetail | null;
+  lockedByUserId?: string | null;
+  defaultCrop?: {
+    id: string;
+    slug: string;
+    nameI18n: unknown;
+  } | null;
+  farm?: {
+    id: string;
+    slug: string;
+    nameI18n: unknown;
+    addressI18n: unknown;
+  } | null;
 }
 
 export class PlotsService {
@@ -176,4 +199,75 @@ export class PlotsService {
 
     return this.formatPlotDetailItem(plot, now);
   }
+
+  static async holdPlot(plotId: string, userId: string) {
+    const now = new Date();
+    const plot = await PlotsRepository.findById(plotId);
+
+    if (!plot) {
+      throw AppError.notFound("Không tìm thấy ô đất", ERROR_CODES.NOT_FOUND);
+    }
+
+    if (plot.status !== "AVAILABLE") {
+      throw AppError.badRequest(
+        "Ô đất không ở trạng thái AVAILABLE",
+        ERROR_CODES.PLOT_NOT_AVAILABLE
+      );
+    }
+
+    if (plot.lockedUntil && plot.lockedUntil > now) {
+      throw AppError.conflict(
+        "Ô đất đã bị khóa bởi người dùng khác",
+        ERROR_CODES.PLOT_ALREADY_LOCKED
+      );
+    }
+
+    const durationSeconds = getPlotHoldDurationSeconds();
+    const lockedUntil = new Date(now.getTime() + durationSeconds * 1000);
+
+    const updatedCount = await PlotsRepository.atomicHoldPlot(
+      plotId,
+      userId,
+      lockedUntil,
+      now
+    );
+
+    if (updatedCount === 0) {
+      throw AppError.conflict(
+        "Ô đất đã bị khóa bởi người dùng khác",
+        ERROR_CODES.PLOT_ALREADY_LOCKED
+      );
+    }
+
+    return {
+      plotId,
+      lockedUntil: lockedUntil.toISOString(),
+      expiresInSeconds: durationSeconds,
+    };
+  }
+
+  static async releaseHoldPlot(plotId: string, userId: string, userRole: string) {
+    const plot = await PlotsRepository.findById(plotId);
+
+    if (!plot) {
+      throw AppError.notFound("Không tìm thấy ô đất", ERROR_CODES.NOT_FOUND);
+    }
+
+    const isOwner = plot.lockedByUserId === userId;
+    const isAdmin = userRole === "ADMIN";
+
+    if (!isOwner && !isAdmin) {
+      throw AppError.forbidden(
+        "Bạn không có quyền mở khóa ô đất này",
+        ERROR_CODES.FORBIDDEN
+      );
+    }
+
+    await PlotsRepository.clearPlotLock(plotId);
+
+    return {
+      unlocked: true,
+    };
+  }
 }
+
