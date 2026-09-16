@@ -29,7 +29,7 @@ export function RootLayoutMobile(props: RootLayoutViewProps) {
     const bottomIndex = customerBottomItems.findIndex((i) => i.id === activeId);
 
     return (
-      <div className={cn("flex min-h-screen flex-col", className)}>
+      <div className={cn("flex min-h-screen w-full max-w-full flex-col overflow-x-hidden", className)}>
         <Header
           role="customer"
           navItems={customerNavItems}
@@ -45,14 +45,16 @@ export function RootLayoutMobile(props: RootLayoutViewProps) {
 
         <main
           className={cn(
-            "flex-1 w-full pb-20",
-            activeId === "home" || activeId === "explore" ? "" : "py-4",
+            "flex-1 w-full max-w-full overflow-x-hidden pb-20",
+            activeId === "home" || activeId === "explore" ? "" : "py-2 sm:py-4",
           )}
         >
           {activeId === "home" || activeId === "explore" ? (
             children
           ) : (
-            <Container>{children}</Container>
+            <Container padding={false} className="w-full max-w-full overflow-x-hidden">
+              {children}
+            </Container>
           )}
         </main>
 
@@ -75,7 +77,7 @@ export function RootLayoutMobile(props: RootLayoutViewProps) {
   const bottomIndex = bottomItems.findIndex((i) => i.id === activeId);
 
   return (
-    <div className={cn("flex h-screen flex-col overflow-hidden bg-muted/30", className)}>
+    <div className={cn("flex h-screen w-full max-w-full flex-col overflow-x-hidden bg-muted/30", className)}>
       {/* Mobile Topbar without persistent desktop sidebar */}
       <Topbar
         user={user ? { ...user, role } : undefined}
@@ -90,7 +92,7 @@ export function RootLayoutMobile(props: RootLayoutViewProps) {
         onLogoutClick={onLogoutClick}
       />
 
-      <main className="flex-1 overflow-y-auto px-4 py-4 pb-20">
+      <main className="flex-1 w-full max-w-full overflow-y-auto overflow-x-hidden px-3 sm:px-4 py-4 pb-20">
         {children}
       </main>
 

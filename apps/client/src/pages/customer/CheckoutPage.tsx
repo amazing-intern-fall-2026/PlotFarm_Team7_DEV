@@ -276,8 +276,8 @@ export function CheckoutPage() {
   }, [isSuccessModalOpen]);
 
   return (
-    <Box className="min-h-screen bg-slate-50/60 dark:bg-slate-950 font-sans pb-24 lg:pb-16">
-      <Container size="7xl" className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-6">
+    <Box className="min-h-screen w-full max-w-full overflow-x-hidden bg-slate-50/60 dark:bg-slate-950 font-sans pb-24 lg:pb-16">
+      <Container size="7xl" className="px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-6 w-full max-w-full overflow-x-hidden">
         <CheckoutHeaderBar
           onBack={() => navigate(`/plots/${rawPlotParam}`)}
           plotNumber={cleanPlotNumber}
@@ -303,33 +303,39 @@ export function CheckoutPage() {
           </Box>
         )}
 
-        <Box className="lg:hidden">
-          <Button
-            variant="outline"
-            size="default"
+        <Box className="lg:hidden w-full max-w-full">
+          <div
+            role="button"
+            tabIndex={0}
             onClick={() => setIsMobileReceiptOpen((prev) => !prev)}
-            className="w-full justify-between h-auto p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xs"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setIsMobileReceiptOpen((prev) => !prev);
+              }
+            }}
+            className="w-full cursor-pointer flex items-center justify-between p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xs gap-2 select-none active:scale-[0.99] transition-transform"
           >
-            <Flex align="center" gap={2} className="min-w-0">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
               <Layers className="w-4 h-4 text-emerald-600 shrink-0" />
-              <Text variant="caption" className="font-bold text-xs text-slate-800 dark:text-slate-200 leading-snug break-words">
+              <span className="font-bold text-xs text-slate-800 dark:text-slate-200 truncate">
                 Đơn hàng: Ô #{cleanPlotNumber} ({order.totalAmount.toLocaleString("vi-VN")}&nbsp;đ)
-              </Text>
-            </Flex>
-            <Flex align="center" gap={1} className="text-emerald-700 dark:text-emerald-400 font-semibold text-xs shrink-0">
-              <Text variant="caption" className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-semibold text-xs shrink-0 ml-2">
+              <span className="font-bold">
                 {isMobileReceiptOpen ? "Thu gọn" : "Chi tiết"}
-              </Text>
+              </span>
               {isMobileReceiptOpen ? (
                 <ChevronUp className="w-4 h-4" />
               ) : (
                 <ChevronDown className="w-4 h-4" />
               )}
-            </Flex>
-          </Button>
+            </div>
+          </div>
 
           {isMobileReceiptOpen && (
-            <Box className="mt-3 animate-in fade-in-50 duration-200">
+            <Box className="mt-3 animate-in fade-in-50 duration-200 w-full max-w-full overflow-hidden">
               <MiniReceiptCard order={order} isMobileModal />
             </Box>
           )}
